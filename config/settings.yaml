@@ -43,6 +43,7 @@ temperature:              # annual range = hottest day - coldest night (Moon: Di
 knn:
   k: 5
   site_quantile: 0.75
+  min_usable_tiles: 6        # fewer usable tiles than this -> "low evidence" label (score rests on too little ground)
 
 stability:                # confidence = share of small changes a site's rank survives
   weight_change: 0.2      # each target weight +/- 20%, one at a time

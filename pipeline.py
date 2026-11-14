@@ -538,6 +538,8 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
     # Interference would ruin the test (step 1), so it decides the order before similarity:
     # clean sites first, then sites without land-cover data, then sites over a limit even at
     # their best tile. The kNN-only order is kept as similarity_rank.
+    min_tiles = settings["knn"].get("min_usable_tiles", 6)
+    ranking["low_evidence"] = ranking["n_tiles_used"] < min_tiles     # too little usable ground to trust
     ranking["similarity_rank"] = ranking["rank"]
     ranking["interference_level"] = ranking["site"].map(lambda s: details[s]["interference"]["level"])
     ranking = ranking.sort_values(["interference_level", "score", "site"],
@@ -574,6 +576,9 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                "earth_sites_incomplete": incomplete,
                "candidate_tiles_blocked_by_interference": len(blocked),
                "candidates_blocked_everywhere": blocked_sites,
+               "min_usable_tiles": min_tiles,
+               "tile_km": settings["bodies"][mission.body]["tile_km"],
+               "low_evidence_sites": ranking.loc[ranking["low_evidence"], "site"].tolist(),
                "earth_sites_no_usable_tiles": stats.loc[(stats.tiles_kept == 0) & (stats.site != mission.target),
                                                         "site"].tolist(),
                "checks": {"negative_controls": report.negative_control_check(ranking, "similarity_rank"),

@@ -180,3 +180,12 @@ def test_candidates_scored_only_on_usable_tiles(fake_project):
     assert blocked == {("forest", "a"), ("forest", "b")}
     kept = pipeline.drop_blocked(t, blocked)
     assert list(kept["site"]) == ["forest", "nasa", "farm"] and kept.iloc[0]["tile_id"] == "c"
+
+
+def test_low_evidence_flag(fake_project):
+    """Sites judged on fewer usable tiles than min_usable_tiles are labelled, and the report says so."""
+    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    r = pd.read_csv(out / "ranking.csv")
+    assert (r["low_evidence"] == (r["n_tiles_used"] < 6)).all()
+    assert "**Low evidence:** sites judged on fewer than 6 usable 5 km squares (under 150 km²" \
+        in (out / "report.md").read_text(encoding="utf-8")

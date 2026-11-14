@@ -61,7 +61,8 @@ def ranking_chart(ranking: pd.DataFrame, mission: str, out: Path, max_sites: int
     ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0])
     for yi, (_, r) in zip(y, shown.iterrows()):           # value + requirements beside each bar
         rules = r.req_met + r.req_not_met + r.req_unknown
-        ax.text(r.score + 0.015, yi, f"{r.score:.2f}   {r.req_met}/{rules} rules met",
+        low = "   · low evidence" if r.get("low_evidence", False) else ""
+        ax.text(r.score + 0.015, yi, f"{r.score:.2f}   {r.req_met}/{rules} rules met{low}",
                 va="center", fontsize=8.5, color=INK_2)
     ax.set_xlabel("Similarity to the Moon target  (0 = nothing alike, 1 = identical terrain)",
                   color=INK_2, fontsize=9)

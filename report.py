@@ -142,6 +142,15 @@ def interference_text(r) -> str:
     return f"unknown ({unknown})" if unknown else "clear"
 
 
+def _low_evidence_line(summary: dict) -> str:
+    n, km = summary.get("min_usable_tiles", 6), summary.get("tile_km", 5)
+    sites = summary.get("low_evidence_sites", [])
+    return (f"**Low evidence:** sites judged on fewer than {n} usable {km:g} km squares (under "
+            f"{n * km * km:g} km² of usable ground) are marked *low evidence*. Their score rests on too "
+            "little ground to be reliable, so treat their rank as a lead to check, not a "
+            f"recommendation. Here: {', '.join(sites) or 'none'}.")
+
+
 def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], disclaimer: str,
                     top: int = 15) -> str:
     """A short human-readable report (e.g. for the pitch)."""
@@ -154,10 +163,12 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
          f"{', '.join(summary.get('candidates_blocked_everywhere', [])) or 'none'}. NASA sites and "
          "farmland keep all tiles but rank below clean sites if their test tile is interfered. "
          "The similarity-only order is `similarity_rank` in ranking.csv.", "",
+         _low_evidence_line(summary), "",
          "| # | Site | Role | Score | Covers | Requirements met / not / unknown | Interference | Confidence |",
          "|---|---|---|---|---|---|---|---|"]
     for _, r in ranking.head(top).iterrows():
-        L.append(f"| {r['rank']} | {r.site} | {r.role} | {r.score:.2f} | {r.target_coverage:.0%} | "
+        low = " *(low evidence)*" if r.get("low_evidence", False) else ""
+        L.append(f"| {r['rank']} | {r.site}{low} | {r.role} | {r.score:.2f} | {r.target_coverage:.0%} | "
                  f"{r.req_met} / {r.req_not_met} / {r.req_unknown} | {interference_text(r)} | "
                  f"{r.confidence_label} |")
     base = ranking[ranking.role == "baseline"]
