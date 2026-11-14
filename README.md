@@ -9,7 +9,7 @@ target area on the Moon, and ranks Earth sites from most to least similar.
 
 1. **Pick a subsystem** (e.g. lunar rover wheels) and sort every condition into ✅ **target** (must match: slope, bumpiness), ⚪ **ignored** (doesn't matter for this test: temperature), or ⚠️ **interference** (would ruin the test: trees, snow, water). Pass/fail requirements are set here too.
 2. **Turn the Moon site into numbers** from NASA LOLA elevation data: slope, steep ground, bumpiness, crater-like dips, cut into 5 × 5 km tiles.
-3. **Turn Earth sites into the same numbers, at the same scale** (100 m pixels): NASA's analog sites (the baseline), USGS impact craters (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
+3. **Turn Earth sites into the same numbers, at the same scale** (100 m pixels): NASA's analog sites (the baseline), USGS impact craters and hand-picked volcanic/lava fields (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
 4. **Rank** with weighted nearest-neighbour search, comparing each site with the Moon target and with NASA's sites.
 5. **Report each site honestly:** what it covers, requirements met / not met / unknown, interference risks, confidence, and what Earth can't reproduce.
 
@@ -26,7 +26,7 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 58 tests, no internet needed
+pytest                                               # 61 tests, no internet needed
 python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
 ```
 
@@ -36,7 +36,8 @@ the sites already downloaded.
 
 ## Status
 
-- ✅ All 5 steps work for the Moon, plus the model checks; 53 tests pass.
+- ✅ All 5 steps work for the Moon, plus the model checks; 61 tests pass.
+- ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.
 - ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `lunar_rover_thermal_terrain` uses terrain + temperature.

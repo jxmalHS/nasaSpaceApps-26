@@ -60,6 +60,25 @@ earth_sites:
     lon: -93.6170
     source: "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"
 
+  # --- Moon candidates beyond craters: volcanic cinder / lava fields (the kind of ground
+  #     NASA's own top sites, Cinder Lake and SP Crater, are). Hand-picked, not NASA-used.
+  - {name: lunar_crater_nevada, role: candidate, compare_with: moon, lat: 38.3839, lon: -116.0694,
+     source: "OpenStreetMap way 992237522 'Lunar Crater' (Lunar Crater volcanic field, Nevada)"}
+  - {name: amboy_crater, role: candidate, compare_with: moon, lat: 34.5450, lon: -115.7907,
+     source: "OpenStreetMap node 299496225 'Amboy Crater' (cinder cone + lava field, California)"}
+  - {name: pisgah_crater, role: candidate, compare_with: moon, lat: 34.7464, lon: -116.3756,
+     source: "OpenStreetMap node 358790676 'Pisgah Crater' (cinder cone + lava field, California)"}
+  - {name: valley_of_fires_carrizozo, role: candidate, compare_with: moon, lat: 33.6832, lon: -105.9275,
+     source: "OpenStreetMap way 660866320 'Valley of Fires Recreation Area' (Carrizozo lava flow, New Mexico)"}
+  - {name: el_malpais, role: candidate, compare_with: moon, lat: 34.8630, lon: -108.0980,
+     source: "OpenStreetMap relation 5946885 'El Malpais National Monument' (lava fields, New Mexico)"}
+  - {name: holuhraun, role: candidate, compare_with: moon, lat: 64.8709, lon: -16.8348,
+     source: "OpenStreetMap node 3062325628 'Holuhraun' (2014-15 lava field, Iceland)"}
+  - {name: hverfjall, role: candidate, compare_with: moon, lat: 65.6051, lon: -16.8740,
+     source: "OpenStreetMap node 270956581 'Hverfjall' (tephra cone, Iceland)"}
+  - {name: jabal_qidr_harrat_khaybar, role: candidate, compare_with: moon, lat: 25.7200, lon: 39.9433,
+     source: "OpenStreetMap node 1111949118 'Jabal Qidr' (volcano in Harrat Khaybar lava field, Saudi Arabia)"}
+
   # --- Mars baselines: Mars 2020 Lander Vision System test spots (JPL PIA23265) + Grand Falls dunes
   - {name: mesquite_flat_dunes, role: baseline, compare_with: mars, lat: 36.6619, lon: -117.0962,
      source: "OpenStreetMap way 131820446 'Mesquite Dunes'"}

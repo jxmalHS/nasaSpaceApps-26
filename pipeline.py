@@ -411,15 +411,17 @@ def stability(mission, settings, base_sites, table, inp: Inputs) -> dict:
 def download_sites(mission_name: str, root: Path, count: int, seed: int = 42) -> list[str]:
     """Stream and cache the next `count` Earth sites that aren't downloaded yet.
 
-    Order: NASA baselines and farmland controls first (needed for the checks), then
-    candidate craters in a fixed random order (seeded, so every run picks the same ones).
+    Order: everything in sites.yaml first (NASA baselines, farmland controls, hand-picked
+    candidates), then USGS candidate craters in a fixed random order (seeded, so every run
+    picks the same ones).
     """
     settings, sites_cfg, missions = load_config(root)
     mission = parse_mission(mission_name, missions[mission_name])
     body_cfg = settings["bodies"][mission.body]
     earth = earth_sites_for(mission.body, sites_cfg, root)
-    first = [s for s in earth if s["role"] != "candidate"]
-    rest = [s for s in earth if s["role"] == "candidate"]
+    hand_picked = {s["name"] for s in sites_cfg["earth_sites"]}      # sites.yaml entries go first
+    first = [s for s in earth if s["role"] != "candidate" or s["name"] in hand_picked]
+    rest = [s for s in earth if s["role"] == "candidate" and s["name"] not in hand_picked]
     rest = [rest[i] for i in np.random.default_rng(seed).permutation(len(rest))]
     todo = [s for s in first + rest
             if not _cache_path(root, "earth", s["name"], body_cfg["resolution_m"], body_cfg["earth_box_km"]).exists()
