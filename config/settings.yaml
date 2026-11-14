@@ -23,7 +23,7 @@ max_missing_frac: 0.05    # tiles with more missing pixels than this are dropped
 spike_threshold_m: 300    # pixels this far from their 5x5 neighbourhood median are treated as errors
 
 terrain:
-  steep_slope_deg: 15     # threshold for frac_steep
+  steep_slope_deg: 15     # threshold for frac_steep = VIPER's normal driving limit (NASA VIPER ops page)
   roughness_scales_m:     # only computed when the scale is at least 3 pixels
     rough_small: 500
     rough_large: 2500
@@ -31,7 +31,7 @@ terrain:
     window_m: 1000
     min_depth_m: 5
 
-landcover:                # ESA WorldCover (Earth only; "test spoiler" flags, never scored)
+landcover:                # ESA WorldCover (Earth only): interference; candidate tiles over a mission limit are left out
   resolution_m: 40        # read the 40 m built-in copy (coarsen 4 x 10 m); 5 km tile = 125 px
   coarsen: 4
 

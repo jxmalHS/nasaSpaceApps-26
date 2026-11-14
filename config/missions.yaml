@@ -8,20 +8,37 @@
 # All weights and limits are EXAMPLE values chosen by the engine team,
 # not official NASA requirements.
 
+# --- Rover weights (lunar_surface_mobility, lunar_rover_mons_mouton) -------------------
+# No published source gives "weights"; they rank measurements by how directly they tie
+# to a published rover limit. The limits:
+#   - VIPER generally drives slopes up to 15 deg; 25-30 deg possible but slip increases
+#     (NASA, science.nasa.gov/mission/viper/lunar-operations)
+#   - Apollo LRV climbed/descended slopes of ~25 deg, crossed 30 cm obstacles
+#     (NASA SP-350 "Apollo Expeditions to the Moon", ch. 14.8)
+#   - Apollo 15/16 traverses: max slope 22.1 / 24.7 deg, mean 5.6 / 4.5 deg
+#     (NASA LPSC abstract, ntrs.nasa.gov/citations/20250011301)
+# frac_steep (share of ground over 15 deg) = VIPER's normal driving limit  -> 2.0, highest
+# slope_p90  (steepest 10%), vs the 22-25 deg Apollo/VIPER maximum          -> 1.5
+# slope_mean, vs the 4.5-5.6 deg mean of real driven traverses             -> 1.0
+# pit_density: craters were driven around, but no published limit         -> 0.5
+# rough_small / rough_large: 500 m / 2.5 km bumpiness; no rover limit at
+#   these scales (30 cm rocks are invisible at 100 m pixels)                -> 0.5 / 0.3
+# Caveat: slopes from 100 m pixels are gentler than what a wheel feels at 1 m.
 lunar_surface_mobility:
   description: >-
-    Rover wheels / astronaut surface mobility at the lunar south pole: slopes,
-    steep ground and small-scale bumpiness matter most.
+    Rover wheels / astronaut surface mobility at the lunar south pole. Weighted toward
+    published rover slope limits (VIPER 15 deg normal, ~25 deg maximum). Rocks the size a
+    wheel must cross (~30 cm) are NOT measured: they are invisible at 100 m pixels.
   body: moon
   target: lunar_south_pole
   features:
     target:
-      slope_mean: 1.0
+      frac_steep: 2.0
       slope_p90: 1.5
-      frac_steep: 1.0
-      rough_small: 1.0
-      rough_large: 0.7
+      slope_mean: 1.0
       pit_density: 0.5
+      rough_small: 0.5
+      rough_large: 0.3
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
               grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
     interference:
@@ -40,16 +57,17 @@ lunar_rover_mons_mouton:
     Same rover-wheel test as lunar_surface_mobility, but the target is the Mons Mouton
     plateau (VIPER / IM-2 landing area): the gentler ground a rover would really drive on,
     instead of a box round the pole that includes Shackleton crater's steep walls.
+    Weights as lunar_surface_mobility (published rover slope limits); ~30 cm rocks NOT measured.
   body: moon
   target: mons_mouton
   features:
     target:
-      slope_mean: 1.0
+      frac_steep: 2.0
       slope_p90: 1.5
-      frac_steep: 1.0
-      rough_small: 1.0
-      rough_large: 0.7
+      slope_mean: 1.0
       pit_density: 0.5
+      rough_small: 0.5
+      rough_large: 0.3
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
               grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
     interference:
