@@ -15,4 +15,4 @@ results/
 # Downloaded datasets and the streaming cache (large, re-creatable)...
 data/*
 # ...except the small USGS analog-site list (public domain, can't be fetched automatically)
-!data/baselines/
+!data/site_lists/

@@ -13,7 +13,7 @@ import pipeline
 from helpers import bumpy, cratered
 
 ROOT = Path(__file__).resolve().parent.parent
-ZIP = ROOT / "data" / "baselines" / "KnownTerrestria.zip"
+ZIP = ROOT / "data" / "site_lists" / "usgs_known_terrestrial_analogs.zip"
 
 
 def test_usgs_list_reads_192_sites():
@@ -34,8 +34,8 @@ def test_baseline_duplicates_are_not_candidates():
 def fake_project(tmp_path, monkeypatch):
     """Copy the config, keep only a few sites, and replace streaming with made-up grids."""
     shutil.copytree(ROOT / "config", tmp_path / "config")
-    (tmp_path / "data" / "baselines").mkdir(parents=True)
-    shutil.copy(ZIP, tmp_path / "data" / "baselines")
+    (tmp_path / "data" / "site_lists").mkdir(parents=True)
+    shutil.copy(ZIP, tmp_path / "data" / "site_lists")
     keep = {"meteor_crater", "buffalo_park", "garden_city_kansas", "ames_iowa",
             "lonar", "sudbury", "chesapeake_bay"}
     real = pipeline.earth_sites_for
@@ -85,7 +85,7 @@ def fake_project(tmp_path, monkeypatch):
 
 
 def test_terrain_plus_temperature_mission(fake_project):
-    out = pipeline.run_mission("lunar_rover_thermal_terrain", fake_project, run_stability=False)
+    out = pipeline.run_mission("moon_rover_thermal_south_pole", fake_project, run_stability=False)
     ranking = pd.read_csv(out / "ranking.csv")
     summary = json.loads((out / "summary.json").read_text())
     assert "temp_range_mean" in summary["weights_used"]
@@ -102,7 +102,7 @@ def test_terrain_plus_temperature_mission(fake_project):
 
 
 def test_run_mission_end_to_end(fake_project):
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project)
     ranking = pd.read_csv(out / "ranking.csv")
     summary = json.loads((out / "summary.json").read_text())
 
@@ -116,7 +116,7 @@ def test_run_mission_end_to_end(fake_project):
 
 
 def test_interference_flags(fake_project):
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project)
     r = pd.read_csv(out / "ranking.csv", keep_default_na=False).set_index("site")
     assert r.loc["garden_city_kansas", "interference_flags"] == "cropland_frac"
     assert r.loc["meteor_crater", "interference_flags"] == ""        # bare ground: clear
@@ -124,7 +124,7 @@ def test_interference_flags(fake_project):
 
 
 def test_step5_report_outputs(fake_project):
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project)
     r = pd.read_csv(out / "ranking.csv")
     summary = json.loads((out / "summary.json").read_text())
     # requirements: every site has a verdict for each of the 3 mandatory rules
@@ -153,14 +153,14 @@ def test_offline_mode_skips_sites_not_downloaded(fake_project, monkeypatch):
             raise FileNotFoundError("not downloaded yet (offline mode)")
         return real(site, body_cfg, root, offline)
     monkeypatch.setattr(pipeline, "earth_grid", only_meteor)
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project, offline=True, run_stability=False)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project, offline=True, run_stability=False)
     assert list(pd.read_csv(out / "ranking.csv")["site"]) == ["meteor_crater"]
 
 
 def test_interference_ranks_below_clean_sites(fake_project):
     """Clean sites first, then unknown land cover, then sites over a limit; the kNN-only
     order is kept as similarity_rank."""
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project)
     r = pd.read_csv(out / "ranking.csv")
     assert list(r["rank"]) == list(range(1, len(r) + 1))
     assert r["interference_level"].is_monotonic_increasing
@@ -172,7 +172,7 @@ def test_candidates_scored_only_on_usable_tiles(fake_project):
     """A forested candidate is judged on its clear tiles only; NASA sites and farmland
     (yardsticks) keep every tile."""
     settings, _, missions = pipeline.load_config(fake_project)
-    mission = pipeline.parse_mission("lunar_surface_mobility", missions["lunar_surface_mobility"])
+    mission = pipeline.parse_mission("moon_rover_south_pole", missions["moon_rover_south_pole"])
     t = pd.DataFrame({"site": ["forest"] * 3 + ["nasa", "farm"], "tile_id": ["a", "b", "c", "a", "a"],
                       "role": ["candidate"] * 3 + ["baseline", "negative_control"],
                       "tree_frac": [0.9, 0.95, 0.1, 0.9, 0.0], "cropland_frac": [0, 0, 0, 0, 0.9]})
@@ -184,7 +184,7 @@ def test_candidates_scored_only_on_usable_tiles(fake_project):
 
 def test_low_evidence_flag(fake_project):
     """Sites judged on fewer usable tiles than min_usable_tiles are labelled, and the report says so."""
-    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    out = pipeline.run_mission("moon_rover_south_pole", fake_project)
     r = pd.read_csv(out / "ranking.csv")
     assert (r["low_evidence"] == (r["n_tiles_used"] < 6)).all()
     assert "**Low evidence:** sites judged on fewer than 6 usable 5 km squares (under 150 km²" \

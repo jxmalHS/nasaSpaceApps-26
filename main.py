@@ -1,9 +1,9 @@
 """
 main.py - command-line entry point.
 
-    python main.py run --mission lunar_surface_mobility             # full run (streams what's missing)
-    python main.py run --mission lunar_surface_mobility --offline   # only sites already downloaded
-    python main.py run --mission lunar_surface_mobility --no-stability
+    python main.py run --mission moon_rover_south_pole             # full run (streams what's missing)
+    python main.py run --mission moon_rover_south_pole --offline   # only sites already downloaded
+    python main.py run --mission moon_rover_south_pole --no-stability
 
 Results are written to results/<mission>/ (see docs/pipeline.md).
 """

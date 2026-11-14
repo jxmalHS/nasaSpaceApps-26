@@ -27,7 +27,7 @@ python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 pytest                                               # 65 tests, no internet needed
-python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
+python main.py run --mission moon_rover_south_pole  # results in results/<mission>/report.md
 ```
 
 The first run streams data for ~200 sites, which is slow on a weak connection. Every site is
@@ -40,7 +40,7 @@ the sites already downloaded.
 - ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.
-- ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `lunar_rover_thermal_terrain` uses terrain + temperature.
+- ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `moon_rover_thermal_south_pole` uses terrain + temperature.
 - ✅ Two-way matching: a site must resemble the whole Moon area, not one corner of it.
 - ⏳ Not built yet: minerals, Mars.
 

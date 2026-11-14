@@ -104,7 +104,7 @@ earth_sites:
 
 # Extra candidate sites read from the USGS list (impact craters -> compared with the Moon).
 candidate_lists:
-  - file: data/baselines/KnownTerrestria.zip
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
     analog_type: Impact Crater
     compare_with: moon
     role: candidate

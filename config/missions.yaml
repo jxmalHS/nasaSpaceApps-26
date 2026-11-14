@@ -8,7 +8,7 @@
 # All weights and limits are EXAMPLE values chosen by the engine team,
 # not official NASA requirements.
 
-# --- Rover weights (lunar_surface_mobility, lunar_rover_mons_mouton) -------------------
+# --- Rover weights (moon_rover_south_pole, moon_rover_mons_mouton) -------------------
 # No published source gives "weights"; they rank measurements by how directly they tie
 # to a published rover limit. The limits:
 #   - VIPER generally drives slopes up to 15 deg; 25-30 deg possible but slip increases
@@ -24,7 +24,7 @@
 # rough_small / rough_large: 500 m / 2.5 km bumpiness; no rover limit at
 #   these scales (30 cm rocks are invisible at 100 m pixels)                -> 0.5 / 0.3
 # Caveat: slopes from 100 m pixels are gentler than what a wheel feels at 1 m.
-lunar_surface_mobility:
+moon_rover_south_pole:
   description: >-
     Rover wheels / astronaut surface mobility at the lunar south pole. Weighted toward
     published rover slope limits (VIPER 15 deg normal, ~25 deg maximum). Rocks the size a
@@ -52,12 +52,12 @@ lunar_surface_mobility:
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
     - {feature: rough_small, max_abs_diff: 3.0, unit: m}
 
-lunar_rover_mons_mouton:
+moon_rover_mons_mouton:
   description: >-
-    Same rover-wheel test as lunar_surface_mobility, but the target is the Mons Mouton
+    Same rover-wheel test as moon_rover_south_pole, but the target is the Mons Mouton
     plateau (VIPER / IM-2 landing area): the gentler ground a rover would really drive on,
     instead of a box round the pole that includes Shackleton crater's steep walls.
-    Weights as lunar_surface_mobility (published rover slope limits); ~30 cm rocks NOT measured.
+    Weights as moon_rover_south_pole (published rover slope limits); ~30 cm rocks NOT measured.
   body: moon
   target: mons_mouton
   features:
@@ -81,7 +81,7 @@ lunar_rover_mons_mouton:
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
     - {feature: rough_small, max_abs_diff: 3.0, unit: m}
 
-lunar_landing_hazards:
+moon_landing_hazards_south_pole:
   description: >-
     Lander hazard-detection cameras / landing-site survey: crater-like dips,
     curvature and overall relief matter most; fine slope detail matters less.
@@ -105,7 +105,7 @@ lunar_landing_hazards:
     - {feature: pit_density, max_abs_diff: 0.5, unit: per_km2}
     - {feature: relief, max_abs_diff: 150, unit: m}
 
-lunar_rover_thermal_terrain:
+moon_rover_thermal_south_pole:
   description: >-
     Rover field test needing BOTH a strong terrain match and the widest temperature
     swings Earth can offer (thermal cycling of wheels, motors and batteries).

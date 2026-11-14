@@ -1,8 +1,8 @@
 # Pipeline: the 5 steps
 
 ```
-python main.py run --mission lunar_surface_mobility             # streams what isn't downloaded yet
-python main.py run --mission lunar_surface_mobility --offline   # only sites already downloaded (fast)
+python main.py run --mission moon_rover_south_pole             # streams what isn't downloaded yet
+python main.py run --mission moon_rover_south_pole --offline   # only sites already downloaded (fast)
 ```
 
 | Step | What happens | Files |
@@ -24,7 +24,7 @@ python main.py run --mission lunar_surface_mobility --offline   # only sites alr
 - **Interference**: trees, crops, water... over the mission's limit would ruin the test. Candidate tiles over a limit are left out, so a candidate is judged only on its usable ground (candidates with no usable tile are listed, not ranked). NASA sites and farmland are yardsticks: they keep all tiles, but rank below clean sites if their test tile is interfered. Shows *unknown* when land cover wasn't available, never "clear". `similarity_rank` in ranking.csv is the order on similarity alone.
 - **Confidence**: share of 14 small changes the site's rank survives (each weight ±20%, pixels 2× bigger, tiles shifted half a tile). High ≥ 80%, medium ≥ 50%.
 - **Negative controls**: farmland must rank in the bottom half on similarity alone (its crops would push it down anyway, so the final rank can't test the model); otherwise the report says FAIL.
-- **Two Moon targets**: `lunar_south_pole` (40 km box at the pole, includes Shackleton crater's steep walls) and `mons_mouton` (30 km box on the VIPER / IM-2 landing plateau, the gentler ground a rover would actually drive). Mission `lunar_rover_mons_mouton` is the wheels test on the second one.
+- **Two Moon targets**: `lunar_south_pole` (40 km box at the pole, includes Shackleton crater's steep walls) and `mons_mouton` (30 km box on the VIPER / IM-2 landing plateau, the gentler ground a rover would actually drive). Mission `moon_rover_mons_mouton` is the wheels test on the second one.
 
 ## How the model is tested (`validation.py`)
 
