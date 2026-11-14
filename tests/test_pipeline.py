@@ -45,7 +45,7 @@ def fake_project(tmp_path, monkeypatch):
     utm = CRS.from_epsg(32612)
     tr = Affine(100, 0, 500000, 0, -100, 4000000)
 
-    def fake_earth(site, body_cfg, root):
+    def fake_earth(site, body_cfg, root, offline=False):
         seed = sum(map(ord, site["name"]))
         if site["role"] == "negative_control":
             z = bumpy(300, 0.5, seed)                          # flat farmland
@@ -60,8 +60,15 @@ def fake_project(tmp_path, monkeypatch):
         moon = CRS.from_proj4("+proj=stere +lat_0=-90 +lon_0=0 +R=1737400 +units=m +no_defs")
         return z.astype("float32"), Affine(100, 0, -20000, 0, -100, 20000), moon
 
+    def fake_landcover(site, body_cfg, settings, root, offline=False):
+        if site["name"] == "buffalo_park":
+            raise ConnectionError("no network")               # land cover fails -> flags unknown
+        code = 40 if site["role"] == "negative_control" else 60   # farmland = cropland, else bare
+        return np.full((750, 750), code, "uint8"), tr, utm
+
     monkeypatch.setattr(pipeline, "earth_grid", fake_earth)
     monkeypatch.setattr(pipeline, "target_grid", fake_target)
+    monkeypatch.setattr(pipeline, "earth_landcover", fake_landcover)
     return tmp_path
 
 
@@ -77,3 +84,41 @@ def test_run_mission_end_to_end(fake_project):
     assert (controls > len(ranking) / 2).all()                 # farmland ranks in the bottom half
     assert {"lat", "lon", "source", "best_tile_lat"} <= set(ranking.columns)
     assert "Copernicus" in summary["attribution"][0]
+
+
+def test_interference_flags(fake_project):
+    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    r = pd.read_csv(out / "ranking.csv", keep_default_na=False).set_index("site")
+    assert r.loc["garden_city_kansas", "interference_flags"] == "cropland_frac"
+    assert r.loc["meteor_crater", "interference_flags"] == ""        # bare ground: clear
+    assert "tree_frac" in r.loc["buffalo_park", "interference_unknown"]   # no data -> unknown, not pass
+
+
+def test_step5_report_outputs(fake_project):
+    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    r = pd.read_csv(out / "ranking.csv")
+    summary = json.loads((out / "summary.json").read_text())
+    # requirements: every site has a verdict for each of the 3 mandatory rules
+    assert ((r.req_met + r.req_not_met + r.req_unknown) == 3).all()
+    # confidence from the stability check
+    assert r["confidence"].between(0, 1).all()
+    assert set(r["confidence_label"]) <= {"high", "medium", "low"}
+    assert summary["checks"]["stability"]["n_variants"] == 2 * 6 + 2
+    assert summary["checks"]["negative_controls"]["status"] == "PASS"
+    # per-site file: differences in real units + what Earth can't reproduce
+    site = json.loads((out / "sites" / "meteor_crater.json").read_text())
+    assert any("than the target" in d["statement"] for d in site["differences_from_target"])
+    assert site["cannot_reproduce_on_earth"] and site["disclaimer"]
+    assert "Gravity" in (out / "report.md").read_text(encoding="utf-8")
+
+
+def test_offline_mode_skips_sites_not_downloaded(fake_project, monkeypatch):
+    real = pipeline.earth_grid
+
+    def only_meteor(site, body_cfg, root, offline=False):
+        if site["name"] != "meteor_crater" and offline:
+            raise FileNotFoundError("not downloaded yet (offline mode)")
+        return real(site, body_cfg, root, offline)
+    monkeypatch.setattr(pipeline, "earth_grid", only_meteor)
+    out = pipeline.run_mission("lunar_surface_mobility", fake_project, offline=True, run_stability=False)
+    assert list(pd.read_csv(out / "ranking.csv")["site"]) == ["meteor_crater"]

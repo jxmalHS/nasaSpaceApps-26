@@ -7,6 +7,13 @@ bodies:
     resolution_m: 100     # LOLA 20 m and Copernicus 30 m both averaged down to 100 m
     tile_km: 5
     earth_box_km: 30      # area around each Earth site point
+    cannot_reproduce:     # reported on every site (step 5)
+      - "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ."
+      - "Vacuum: no atmosphere; Earth sites have air, wind and weathering."
+      - "Radiation: no magnetic field or atmosphere shielding the lunar surface."
+      - "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers."
+      - "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils."
+      - "Lighting: very low sun angles and long shadows at the lunar poles."
   mars:
     resolution_m: 500     # MOLA ~463 m -> 500 m (coarser, and 20 km / 500 m = 40 px exactly)
     tile_km: 20
@@ -24,8 +31,22 @@ terrain:
     window_m: 1000
     min_depth_m: 5
 
+landcover:                # ESA WorldCover (Earth only; "test spoiler" flags, never scored)
+  resolution_m: 40        # read the 40 m built-in copy (coarsen 4 x 10 m); 5 km tile = 125 px
+  coarsen: 4
+
 knn:
   k: 5
   site_quantile: 0.75
+
+stability:                # confidence = share of small changes a site's rank survives
+  weight_change: 0.2      # each target weight +/- 20%, one at a time
+  alt_resolution_factor: 2  # also re-run with pixels 2x bigger (100 m -> 200 m)
+  rank_tolerance_frac: 0.05 # "survives" = rank moves by at most 5% of the number of sites (min 1)
+
+disclaimer: >-
+  A terrain match does not validate hardware. It only shows the ground shape resembles
+  the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs
+  separate soil, load and environmental testing.
 
 workers: 4                # how many sites are streamed at the same time (8 was slower on a weak connection)

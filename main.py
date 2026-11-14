@@ -1,7 +1,9 @@
 """
 main.py - command-line entry point.
 
-    python main.py run --mission lunar_surface_mobility
+    python main.py run --mission lunar_surface_mobility             # full run (streams what's missing)
+    python main.py run --mission lunar_surface_mobility --offline   # only sites already downloaded
+    python main.py run --mission lunar_surface_mobility --no-stability
 
 Results are written to results/<mission>/ (see docs/pipeline.md).
 """
@@ -22,11 +24,14 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     run = sub.add_parser("run", help="run one mission end to end")
     run.add_argument("--mission", required=True, choices=sorted(missions))
+    run.add_argument("--offline", action="store_true",
+                     help="don't stream: use only sites already saved in data/cache/")
+    run.add_argument("--no-stability", action="store_true", help="skip the confidence check (faster)")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
-    out = run_mission(args.mission, ROOT)
-    print(f"Done. Results in {out}")
+    out = run_mission(args.mission, ROOT, offline=args.offline, run_stability=not args.no_stability)
+    print(f"Done. Results in {out}  (start with report.md)")
 
 
 if __name__ == "__main__":

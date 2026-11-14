@@ -5,14 +5,15 @@
 This engine compares the *shape* of the ground (slopes, bumpiness, craters) on Earth with a
 target area on the Moon, and ranks Earth sites from most to least similar.
 
-## How it works
+## How it works (5 steps)
 
-1. **Pick sites.** Earth sites NASA already uses (the baselines), new candidate sites (USGS impact craters), and flat farmland that *should* score badly (a sanity check).
-2. **Stream elevation maps.** Only the needed area is read over the internet: Copernicus DEM for Earth, NASA LOLA for the Moon.
-3. **Clean them.** Same map units (metres), the same 100 m pixel size everywhere, and obvious errors removed.
-4. **Cut into 5 × 5 km tiles** and measure each tile: slope, steep ground, relief, bumpiness, crater-like dips. Height above "sea level" is never used, because the Moon has no sea level.
-5. **Compare (k-nearest neighbours).** For each Earth tile, find the most similar Moon tiles. The mission file decides which measurements matter most.
-6. **Rank.** Each site gets a score from 0 to 1, its best tile's location, and which NASA baseline it beats.
+1. **Pick a subsystem** (e.g. lunar rover wheels) and sort every condition into ✅ **target** (must match: slope, bumpiness), ⚪ **ignored** (doesn't matter for this test: temperature), or ⚠️ **interference** (would ruin the test: trees, snow, water). Pass/fail requirements are set here too.
+2. **Turn the Moon site into numbers** from NASA LOLA elevation data: slope, steep ground, bumpiness, crater-like dips, cut into 5 × 5 km tiles.
+3. **Turn Earth sites into the same numbers, at the same scale** (100 m pixels): NASA's analog sites (the baseline), USGS impact craters (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
+4. **Rank** with weighted nearest-neighbour search, comparing each site with the Moon target and with NASA's sites.
+5. **Report each site honestly:** what it covers, requirements met / not met / unknown, interference risks, confidence, and what Earth can't reproduce.
+
+Height above "sea level" is never used, because the Moon has no sea level. Missing data is always "unknown", never a pass.
 
 ## Run it
 
@@ -20,18 +21,20 @@ target area on the Moon, and ranks Earth sites from most to least similar.
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 29 tests, no internet needed
-python main.py run --mission lunar_surface_mobility  # results in results/<mission>/
+pytest                                               # 48 tests, no internet needed
+python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
 ```
 
 The first run streams data for ~200 sites, which is slow on a weak connection. Every site is
-saved in `data/cache/`, so later runs (or a restarted run) are fast.
+saved in `data/cache/`, so later runs (or a restarted run) are fast. Add `--offline` to rank only
+the sites already downloaded.
 
 ## Status
 
-- ✅ Code complete for the Moon; all tests pass on made-up terrain.
-- ⏳ First full run on real data not finished yet (slow internet), so there is no real ranking yet.
-- ⏳ Mars: settings and baseline sites exist, but the Mars map reader isn't built yet.
+- ✅ All 5 steps work for the Moon; 48 tests pass.
+- ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
+- ⏳ Full real run (~200 sites) not done yet: slow internet.
+- ⏳ Not built yet: temperature and mineral modules, Mars.
 
 ## Files
 
@@ -44,6 +47,9 @@ saved in `data/cache/`, so later runs (or a restarted run) are fast.
 | `tiles.py` | Cuts tiles |
 | `features.py` | Terrain measurements |
 | `analog_knn.py` | The k-nearest-neighbours comparison |
+| `mission.py` | Step 1: checks a mission's target / ignored / interference sorting and requirements |
+| `landcover.py` | Interference conditions (trees, crops, snow, water...) from ESA WorldCover |
+| `report.py` | Step 5: requirements, differences, confidence, report files |
 | `config/` | Settings, sites (with sources) and mission weights |
 | `docs/` | More detail: `pipeline.md`, `knn_model.md` |
 

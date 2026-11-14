@@ -1,19 +1,38 @@
-# Pipeline: from raw elevation data to a ranking
+# Pipeline: the 5 steps
 
 ```
-python main.py run --mission lunar_surface_mobility
+python main.py run --mission lunar_surface_mobility             # streams what isn't downloaded yet
+python main.py run --mission lunar_surface_mobility --offline   # only sites already downloaded (fast)
 ```
 
-## Steps
+| Step | What happens | Files |
+|---|---|---|
+| **1. Mission** | Every condition is sorted into **target** (must match, with a weight), **ignored**, or **interference** (would ruin the test, with a limit). Mandatory pass/fail rules are set here, before ranking. Typos and unsorted conditions are rejected | `config/missions.yaml`, `mission.py` |
+| **2. Moon → numbers** | LOLA 20 m elevation streamed, averaged to 100 m, cut into 5 km tiles, measured (slope, steep ground, relief, bumpiness, crater-like dips; never absolute height) | `sources.py`, `preprocess.py`, `tiles.py`, `features.py` |
+| **3. Earth → same numbers** | NASA baselines, USGS crater candidates and farmland controls: Copernicus 30 m elevation, same 100 m pixels and 5 km tiles. ESA WorldCover land cover per tile for interference | `config/sites.yaml`, `landcover.py` |
+| **4. Rank** | Weighted k-nearest-neighbours against the Moon tiles, plus a comparison with every NASA baseline | `analog_knn.py` |
+| **5. Report** | Per site: coverage, requirements met / not met / unknown, real-unit differences, interference, confidence, what Earth can't reproduce | `report.py` |
 
-| # | Step | File | What happens |
-|---|---|---|---|
-| 1 | Sites | `config/sites.yaml`, `data/baselines/` | Baselines, negative controls and USGS crater candidates, each with a cited location |
-| 2 | Stream | `sources.py` | Reads only the needed area: Copernicus DEM (Earth), LOLA 20 m (Moon). Saved to `data/cache/` so it streams only once |
-| 3 | Clean | `preprocess.py` | Metric map projection (UTM / polar), average down to 100 m, remove spikes. Gaps stay empty |
-| 4 | Tiles | `tiles.py` | 5 × 5 km tiles; tiles over 5% missing are dropped and counted |
-| 5 | Measure | `features.py` | Slope, steepness, relief, bumpiness, curvature, crater-like dips. Never absolute height |
-| 6 | Compare | `analog_knn.py` | kNN against the target tiles, see `docs/knn_model.md` |
+## What the report means
+
+- **Score** (0–1): how closely the site's tiles match the Moon tiles, weighted by the mission.
+- **Covers**: share of the Moon area's variety the site reproduces. High score + low coverage = it only matches part of the target.
+- **Test tile**: the 5 km tile we'd recommend testing in: the one meeting the most mandatory requirements, ties going to the most similar tile.
+- **Requirements**: checked at the test tile. *Unknown* (no data) never counts as met.
+- **Interference**: land cover over the mission limit at the test tile. Shows *unknown* when land cover wasn't available, never "clear".
+- **Confidence**: share of 14 small changes the site's rank survives (each weight ±20%, pixels 2× bigger, tiles shifted half a tile). High ≥ 80%, medium ≥ 50%.
+- **Negative controls**: farmland must rank in the bottom half; otherwise the report says FAIL.
+
+## Outputs (`results/<mission>/`)
+
+| File | Contents |
+|---|---|
+| `report.md` | Human-readable summary: top sites, baselines, checks, what Earth can't reproduce |
+| `ranking.csv` | One row per site: rank, score, coverage, test tile, requirements, interference, confidence |
+| `sites/<site>.json` | Full per-site report, including real-unit differences ("4.0° gentler than the target") |
+| `tiles.csv`, `target_tiles.csv` | Every tile's measurements (for maps) |
+| `site_stats.csv` | Tiles kept / dropped and spikes removed per site |
+| `summary.json` | Mission, target profile, weights used, checks, failed sites, credits |
 
 ## Settings (`config/settings.yaml`)
 
@@ -23,26 +42,18 @@ python main.py run --mission lunar_surface_mobility
 | Tile size | 5 km | 20 km |
 | Box around each Earth site | 30 km | 60 km |
 
-## Outputs (`results/<mission>/`)
-
-| File | Contents |
-|---|---|
-| `ranking.csv` | One row per Earth site: rank, score, coverage, best tile, nearest baseline, source |
-| `tiles.csv` | Every Earth tile with its measurements and similarity (for maps) |
-| `target_tiles.csv` | The target tiles' measurements |
-| `site_stats.csv` | Tiles kept / dropped and spikes removed per site |
-| `summary.json` | Weights used, skipped features, failed sites, attribution |
-
 ## Data sources and credits
 
-- **Earth:** Copernicus DEM GLO-30. Required notice: *Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.*
+- **Earth elevation:** Copernicus DEM GLO-30. *Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.*
+- **Earth land cover:** ESA WorldCover 2021. *© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium* (CC-BY 4.0).
 - **Moon:** LOLA LDEM_80S_20M (NASA PDS, MIT LOLA archive).
-- **Sites:** USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921); USGS LGRS Artemis training grids (McClernan 2024, doi:10.5066/P14KSANW); JPL PIA23265 (Mars 2020 test spots); OpenStreetMap (© OpenStreetMap contributors, ODbL) for named-place coordinates.
+- **Sites:** USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921); USGS LGRS Artemis training grids (McClernan 2024, doi:10.5066/P14KSANW); JPL PIA23265 (Mars 2020 test spots); © OpenStreetMap contributors (ODbL) for named-place coordinates.
 
 ## Known limits
 
-- Mars needs a MOLA reader and a target area; only its settings and baselines exist so far.
+- Temperature and minerals have no data module yet (temperature is "ignored" for rover wheels).
+- Mars: settings and baselines only; the MOLA reader and a Mars target aren't built.
 - No coordinates found for JETT5, JETT2 Iceland or the Mojave lava tube; they're left out.
 - The USGS crater list includes buried craters with little surface expression.
-- First run streams ~200 sites; on a slow connection that takes a while. Re-runs use the cache.
-- Weights in `config/missions.yaml` are example values, not NASA requirements.
+- The first full run streams ~200 sites; on a slow connection that takes hours. Use `--offline` for what's already downloaded.
+- Weights and limits in `config/missions.yaml` are example values, not NASA requirements.

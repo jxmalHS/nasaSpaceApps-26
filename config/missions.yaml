@@ -1,17 +1,36 @@
-# Mission profiles: which terrain measurements matter for a test, and how much.
-# Measurements not listed are ignored. Weights are EXAMPLE values chosen by the
-# engine team, not official NASA requirements.
+# Mission profiles (step 1 of the pipeline). Every condition is sorted into:
+#   target       - must match the Moon/Mars target; the weight says how much it matters
+#   ignored      - doesn't matter for this test
+#   interference - would ruin the test (Earth land cover); share of a tile, 0-1, with a limit
+# mandatory: pass/fail rules set BEFORE ranking. max_abs_diff = "within X of the target";
+#            max / min = fixed limits. Unknown (no data) is never a pass.
+#
+# All weights and limits are EXAMPLE values chosen by the engine team,
+# not official NASA requirements.
 
 lunar_surface_mobility:
   description: >-
-    Rover / astronaut surface mobility at the lunar south pole: slopes,
-    steep ground and small-scale roughness matter most.
+    Rover wheels / astronaut surface mobility at the lunar south pole: slopes,
+    steep ground and small-scale bumpiness matter most.
   body: moon
   target: lunar_south_pole
-  weights:
-    slope_mean: 1.0
-    slope_p90: 1.5
-    frac_steep: 1.0
-    rough_small: 1.0
-    rough_large: 0.7
-    pit_density: 0.5
+  features:
+    target:
+      slope_mean: 1.0
+      slope_p90: 1.5
+      frac_steep: 1.0
+      rough_small: 1.0
+      rough_large: 0.7
+      pit_density: 0.5
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
+              grass_shrub_frac, bare_frac, surface_temperature, minerals]
+    interference:
+      tree_frac: {max: 0.3}
+      cropland_frac: {max: 0.2}
+      builtup_frac: {max: 0.1}
+      snow_ice_frac: {max: 0.1}
+      water_frac: {max: 0.05}
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
+    - {feature: rough_small, max_abs_diff: 3.0, unit: m}

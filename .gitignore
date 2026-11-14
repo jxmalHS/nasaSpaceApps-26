@@ -6,6 +6,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
+# Generated results (re-create with: python main.py run --mission ...)
+results/
+
+# Settings file created by the NASA earthaccess login tool
+.dodsrc
+
 # Downloaded datasets and the streaming cache (large, re-creatable)...
 data/*
 # ...except the small USGS analog-site list (public domain, can't be fetched automatically)

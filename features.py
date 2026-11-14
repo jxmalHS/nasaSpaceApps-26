@@ -21,6 +21,21 @@ from scipy import ndimage
 
 FEATURES = ["slope_mean", "slope_std", "slope_p90", "frac_steep", "relief", "hypsometric_integral",
             "rough_small", "rough_large", "curvature_abs_mean", "pit_density"]
+
+# Unit and plain-English wording for each feature, used in reports:
+# (unit, label, word when the site is ABOVE the target, word when BELOW)
+FEATURE_INFO = {
+    "slope_mean": ("deg", "Average slope", "steeper", "gentler"),
+    "slope_std": ("deg", "Slope variability", "higher", "lower"),
+    "slope_p90": ("deg", "Steepest-10% slope", "steeper", "gentler"),
+    "frac_steep": ("fraction", "Share of steep ground", "higher", "lower"),
+    "relief": ("m", "Relief (highest minus lowest)", "greater", "smaller"),
+    "hypsometric_integral": ("unitless", "Hypsometric integral", "higher", "lower"),
+    "rough_small": ("m", "Small-scale bumpiness", "rougher", "smoother"),
+    "rough_large": ("m", "Large-scale bumpiness", "rougher", "smoother"),
+    "curvature_abs_mean": ("1/km", "Curvature", "more curved", "less curved"),
+    "pit_density": ("per_km2", "Density of crater-like dips", "higher", "lower"),
+}
 MIN_ROUGHNESS_PX = 3   # roughness measured over fewer pixels than this is meaningless
 
 
