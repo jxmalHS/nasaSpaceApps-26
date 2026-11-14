@@ -18,6 +18,7 @@ import re
 import struct
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
@@ -26,9 +27,11 @@ import yaml
 from affine import Affine
 from rasterio.crs import CRS
 
+import charts
 import landcover
 import report
 import sources
+import temperature
 import validation
 from analog_knn import run_knn
 from features import tile_features
@@ -206,13 +209,93 @@ def landcover_by_tile(classes, body_cfg: dict, settings: dict) -> dict[str, dict
             for tid, _, _, block in tile_blocks(classes, tile_px)}
 
 
+# -------------------------------------------------------------- temperature
+def target_temperature(name: str, target: dict, body_cfg: dict, settings: dict, root: Path, offline: bool):
+    """Moon annual temperature range on a 1 km grid over the target box (cached). None if unavailable."""
+    res = settings["temperature"]["resolution_m"]
+    path = _cache_path(root, target["body"], name + "_temprange", res, target["box_km"])
+    if path.exists():
+        return _load(path)
+    if offline:
+        return None
+    box = snapped_box(*target["center_xy_m"], target["box_km"] * 1000, body_cfg["resolution_m"])
+    grid, transform, crs = temperature.moon_range(box, res)
+    _save(path, grid, transform, crs)
+    return grid, transform, crs
+
+
+def earth_temperature(site: dict, body_cfg: dict, settings: dict, root: Path):
+    """Earth annual temperature range for a site, from the cache only (see download_temperature)."""
+    path = _cache_path(root, "earth", site["name"] + "_temprange",
+                       settings["temperature"]["resolution_m"], body_cfg["earth_box_km"])
+    return _load(path) if path.exists() else None
+
+
+def temperature_by_tile(grid, body_cfg: dict, settings: dict, offset_frac: float = 0.0) -> dict[str, dict]:
+    """Temperature mean / spread / pixel count per tile, keyed by tile id."""
+    tile_px = round(body_cfg["tile_km"] * 1000 / settings["temperature"]["resolution_m"])
+    return {tid: temperature.tile_temperature(block)
+            for tid, _, _, block in tile_blocks(grid, tile_px, round(offset_frac * tile_px))}
+
+
+def download_temperature(mission_name: str, root: Path) -> list[str]:
+    """Fetch MODIS temperature (via AppEEARS) for every downloaded Earth site that lacks it."""
+    settings, sites_cfg, missions = load_config(root)
+    mission = parse_mission(mission_name, missions[mission_name])
+    body_cfg, tcfg = settings["bodies"][mission.body], settings["temperature"]
+    todo, boxes = {}, {}
+    for s in earth_sites_for(mission.body, sites_cfg, root):
+        have_dem = _cache_path(root, "earth", s["name"], body_cfg["resolution_m"], body_cfg["earth_box_km"]).exists()
+        if have_dem and earth_temperature(s, body_cfg, settings, root) is None:
+            crs, box, lonlat = earth_box(s["lon"], s["lat"], body_cfg["earth_box_km"], body_cfg["resolution_m"])
+            todo[s["name"]], boxes[s["name"]] = (crs, box), lonlat
+    if not todo:
+        log.info("All downloaded sites already have temperature data")
+        return []
+    token, tasks = temperature.submit_tasks(boxes, tcfg["year"])
+    done = []
+    for name, task_id in tasks.items():
+        try:
+            temperature.wait_for(token, task_id, max_wait_s=tcfg["max_wait_s"])
+            layers = temperature.read_task(token, task_id)
+            got = temperature.earth_range_from_layers(layers["LST_Day_1km"], layers["LST_Night_1km"])
+            if got is None:
+                raise ValueError("no temperature files in the AppEEARS result")
+            crs, box = todo[name]
+            grid, transform = temperature.to_grid(got[0], got[1], got[2], crs, box, tcfg["resolution_m"])
+            _save(_cache_path(root, "earth", name + "_temprange", tcfg["resolution_m"],
+                              body_cfg["earth_box_km"]), grid, transform, crs)
+            done.append(name)
+            log.info("  temperature saved: %s", name)
+        except Exception as exc:
+            log.warning("  %s: temperature failed: %s", name, exc)
+    return done
+
+
 # ------------------------------------------------------------------- steps
-def load_grids(mission: Mission, settings: dict, sites_cfg: dict, root: Path, offline: bool):
+@dataclass
+class Inputs:
+    """Everything loaded for one mission (all grids are on metric grids, from the cache or streamed)."""
+    target: tuple                      # (heights, transform, crs)
+    target_temp: tuple | None          # (annual temperature range, transform, crs) or None
+    earth: list[dict]                  # Earth site descriptions
+    grids: dict[str, tuple]            # site -> elevation grid
+    covers: dict[str, dict]            # site -> {tile_id: land-cover shares}
+    temps: dict[str, tuple]            # site -> temperature grid (missing = no data)
+    failed: list[dict]
+
+
+def load_grids(mission: Mission, settings: dict, sites_cfg: dict, root: Path, offline: bool) -> Inputs:
     """Steps 2-3 (data part): get every grid, streaming only what isn't cached yet."""
     body_cfg = settings["bodies"][mission.body]
     log.info("Target %s: reading (cached after first run)", mission.target)
     target = sites_cfg["targets"][mission.target]
     target_g = target_grid(mission.target, target, body_cfg, root)
+    try:
+        target_t = target_temperature(mission.target, target, body_cfg, settings, root, offline)
+    except Exception as exc:
+        log.warning("Moon temperature unavailable (%s) -> unknown", exc)
+        target_t = None
 
     earth = earth_sites_for(mission.body, sites_cfg, root)
     log.info("%d Earth sites to process", len(earth))
@@ -238,24 +321,35 @@ def load_grids(mission: Mission, settings: dict, sites_cfg: dict, root: Path, of
                 log.warning("  %s skipped: %s", site["name"], exc)
             if i % 10 == 0 or i == len(earth):
                 log.info("  %d/%d sites done", i, len(earth))
-    return target_g, earth, grids, covers, failed
+    temps = {s["name"]: t for s in earth if (t := earth_temperature(s, body_cfg, settings, root)) is not None}
+    return Inputs(target_g, target_t, earth, grids, covers, temps, failed)
 
 
-def build_table(mission, settings, target_g, earth, grids, covers, factor=1, offset_frac=0.0):
-    """Turn every grid into tiles with terrain numbers (+ land-cover shares for Earth)."""
+def build_table(mission, settings, inp: Inputs, factor=1, offset_frac=0.0):
+    """Turn every grid into tiles with terrain numbers, plus temperature (both worlds)
+    and land-cover shares (Earth). Missing data stays NaN = unknown."""
     body_cfg = settings["bodies"][mission.body]
-    rows, stats = grid_to_rows(mission.target, "target", *target_g, GEO_CRS[mission.body], body_cfg,
+    no_temp = {"temp_range_mean": np.nan, "temp_range_std": np.nan, "temp_pixels": 0}
+    no_cover = {f: np.nan for f in landcover.LANDCOVER_FEATURES}
+
+    def add_temperature(rows, grid):
+        temps = temperature_by_tile(grid[0], body_cfg, settings, offset_frac) if grid is not None else {}
+        for r in rows:
+            r.update(temps.get(r["tile_id"], no_temp))
+
+    rows, stats = grid_to_rows(mission.target, "target", *inp.target, GEO_CRS[mission.body], body_cfg,
                                settings, factor, offset_frac)
+    add_temperature(rows, inp.target_temp)
     all_stats = [stats]
-    unknown = {f: np.nan for f in landcover.LANDCOVER_FEATURES}
-    for site in earth:
-        if site["name"] not in grids:
+    for site in inp.earth:
+        if site["name"] not in inp.grids:
             continue
-        site_rows, stats = grid_to_rows(site["name"], site["role"], *grids[site["name"]], GEO_CRS["earth"],
+        site_rows, stats = grid_to_rows(site["name"], site["role"], *inp.grids[site["name"]], GEO_CRS["earth"],
                                         body_cfg, settings, factor, offset_frac)
+        add_temperature(site_rows, inp.temps.get(site["name"]))
         if factor == 1 and offset_frac == 0:       # land cover only matters for the main run's report
             for r in site_rows:
-                r.update(covers[site["name"]].get(r["tile_id"], unknown))
+                r.update(inp.covers[site["name"]].get(r["tile_id"], no_cover))
         rows += site_rows
         all_stats.append(stats)
     return pd.DataFrame(rows), pd.DataFrame(all_stats)
@@ -273,7 +367,7 @@ def rank(table: pd.DataFrame, weights: dict, settings: dict):
     return run_knn(table, usable, k=k["k"], site_quantile=k["site_quantile"]), skipped
 
 
-def stability(mission, settings, base_sites, table, target_g, earth, grids, covers) -> dict:
+def stability(mission, settings, base_sites, table, inp: Inputs) -> dict:
     """Confidence: change ONE thing at a time and see whether each site keeps its rank.
 
     Changes: each target weight +/-20%, pixels 2x bigger, tile grid shifted by half a tile.
@@ -287,10 +381,8 @@ def stability(mission, settings, base_sites, table, target_g, earth, grids, cove
             w[f] *= 1 + sign * cfg["weight_change"]
             variants.append((f"weight {f} {'+' if sign > 0 else '-'}{cfg['weight_change']:.0%}", table, w))
     fac = cfg["alt_resolution_factor"]
-    variants.append((f"pixels x{fac}", build_table(mission, settings, target_g, earth, grids, covers, fac)[0],
-                     mission.weights))
-    variants.append(("tiles shifted half a tile",
-                     build_table(mission, settings, target_g, earth, grids, covers, 1, 0.5)[0], mission.weights))
+    variants.append((f"pixels x{fac}", build_table(mission, settings, inp, fac)[0], mission.weights))
+    variants.append(("tiles shifted half a tile", build_table(mission, settings, inp, 1, 0.5)[0], mission.weights))
 
     base = base_sites.set_index("site")["rank"]
     tol = max(1, round(cfg["rank_tolerance_frac"] * len(base)))
@@ -315,13 +407,63 @@ def stability(mission, settings, base_sites, table, target_g, earth, grids, cove
             "variants": results, "site_confidence": {s: survived[s] / n for s in base.index}}
 
 
+def download_sites(mission_name: str, root: Path, count: int, seed: int = 42) -> list[str]:
+    """Stream and cache the next `count` Earth sites that aren't downloaded yet.
+
+    Order: NASA baselines and farmland controls first (needed for the checks), then
+    candidate craters in a fixed random order (seeded, so every run picks the same ones).
+    """
+    settings, sites_cfg, missions = load_config(root)
+    mission = parse_mission(mission_name, missions[mission_name])
+    body_cfg = settings["bodies"][mission.body]
+    earth = earth_sites_for(mission.body, sites_cfg, root)
+    first = [s for s in earth if s["role"] != "candidate"]
+    rest = [s for s in earth if s["role"] == "candidate"]
+    rest = [rest[i] for i in np.random.default_rng(seed).permutation(len(rest))]
+    todo = [s for s in first + rest
+            if not _cache_path(root, "earth", s["name"], body_cfg["resolution_m"], body_cfg["earth_box_km"]).exists()
+            ][:count]
+    # Already-downloaded sites may still be missing their land cover: fetch that too.
+    lc_missing = [s for s in earth
+                  if _cache_path(root, "earth", s["name"], body_cfg["resolution_m"], body_cfg["earth_box_km"]).exists()
+                  and not _cache_path(root, "earth", s["name"] + "_landcover",
+                                      settings["landcover"]["resolution_m"], body_cfg["earth_box_km"]).exists()]
+    log.info("Downloading %d new sites (+ land cover for %d already downloaded)", len(todo), len(lc_missing))
+
+    def work(site):
+        if site in todo:
+            earth_grid(site, body_cfg, root)
+        earth_landcover(site, body_cfg, settings, root)
+        return site["name"]
+
+    done = []
+    with ThreadPoolExecutor(max_workers=settings.get("workers", 4)) as pool:
+        futures = {pool.submit(work, s): s for s in todo + lc_missing}
+        for fut in as_completed(futures):
+            try:
+                done.append(fut.result())
+                log.info("  done: %s", done[-1])
+            except Exception as exc:
+                log.warning("  %s failed: %s", futures[fut]["name"], exc)
+    return done
+
+
 # ----------------------------------------------------------------- mission
 def run_mission(mission_name: str, root: Path, offline: bool = False, run_stability: bool = True) -> Path:
     settings, sites_cfg, missions = load_config(root)
     mission = parse_mission(mission_name, missions[mission_name])                 # step 1
-    target_g, earth, grids, covers, failed = load_grids(mission, settings, sites_cfg, root, offline)
-    table, stats = build_table(mission, settings, target_g, earth, grids, covers)  # steps 2-3
+    inp = load_grids(mission, settings, sites_cfg, root, offline)
+    earth, failed = inp.earth, inp.failed
+    table, stats = build_table(mission, settings, inp)                            # steps 2-3
     result, skipped = rank(table, mission.weights, settings)                      # step 4
+    # Sites with data that still dropped out: they lack a measurement the mission needs
+    # (e.g. no temperature yet). Reported as "incomplete", never silently ranked on less.
+    used = set(result.weights)
+    incomplete = []
+    for s in sorted(set(table.loc[table.role != "target", "site"]) - set(result.sites["site"])):
+        rows = table[table.site == s]
+        missing = [f for f in used if rows[f].isna().all()]
+        incomplete.append({"site": s, "missing": missing or ["too many tiles with gaps"]})
 
     # Validation: held-out NASA sites, simple-method comparison, mission sensitivity
     knn = settings["knn"]
@@ -337,7 +479,7 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
 
     # Step 5: report
     profile = report.target_profile(table[table.role == "target"])
-    stab = (stability(mission, settings, result.sites, table, target_g, earth, grids, covers)
+    stab = (stability(mission, settings, result.sites, table, inp)
             if run_stability else {"site_confidence": {}})
     info = pd.DataFrame(earth).set_index("name")[["lat", "lon", "source"]]
     ranking = result.sites.join(info, on="site").merge(simple, on="site", how="left")
@@ -384,6 +526,7 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                "interference_limits": mission.interference,
                "mandatory": [r.describe() for r in mission.mandatory],
                "earth_sites_ranked": int(len(ranking)), "earth_sites_failed": failed,
+               "earth_sites_incomplete": incomplete,
                "earth_sites_no_usable_tiles": stats.loc[(stats.tiles_kept == 0) & (stats.site != mission.target),
                                                         "site"].tolist(),
                "checks": {"negative_controls": report.negative_control_check(ranking),
@@ -391,10 +534,14 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                           "held_out_nasa_sites": held_out,
                           "simple_method_agreement": agreement,
                           "mission_sensitivity": sensitivity},
-               "attribution": [sources.COPERNICUS_NOTICE, landcover.WORLDCOVER_NOTICE]}
+               "attribution": [sources.COPERNICUS_NOTICE, landcover.WORLDCOVER_NOTICE,
+                               temperature.DIVINER_NOTICE, temperature.MODIS_NOTICE]}
     report.write_json(out / "summary.json", summary)
     (out / "report.md").write_text(report.markdown_report(ranking, summary, cannot, settings["disclaimer"]),
                                    encoding="utf-8")
+    charts.ranking_chart(ranking, mission.name, out)
+    for s in ranking.head(3)["site"]:                       # "how close to the Moon" for the top 3
+        charts.closeness_chart(s, details[s], mission.weights, out)
     if summary["checks"]["negative_controls"]["status"] == "FAIL":
         log.error("NEGATIVE CONTROL CHECK FAILED: farmland ranked in the top half - see report.md")
     return out

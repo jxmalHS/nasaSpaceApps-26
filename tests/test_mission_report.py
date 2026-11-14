@@ -8,7 +8,8 @@ from mission import MET, NOT_MET, UNKNOWN, Requirement, parse_mission
 
 ALL_IGNORED = ["slope_std", "relief", "hypsometric_integral", "curvature_abs_mean", "rough_large",
                "pit_density", "slope_mean", "frac_steep", "grass_shrub_frac", "bare_frac",
-               "tree_frac", "cropland_frac", "builtup_frac", "snow_ice_frac", "water_frac"]
+               "tree_frac", "cropland_frac", "builtup_frac", "snow_ice_frac", "water_frac",
+               "temp_range_mean", "temp_range_std"]
 
 
 def raw(**over):

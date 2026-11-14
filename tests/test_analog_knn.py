@@ -106,6 +106,12 @@ def test_coverage_catches_partial_match():
     sites = run_knn(tiles, WEIGHTS).sites.set_index("site")
     assert sites.loc["full_match", "target_coverage"] > sites.loc["smooth_only", "target_coverage"]
     assert sites.loc["smooth_only", "target_coverage"] <= 0.5
+    # Two-way matching: the site resembling the WHOLE target wins overall...
+    assert sites.loc["full_match", "rank"] == 1
+    assert sites.loc["full_match", "moon_to_site_score"] > sites.loc["smooth_only", "moon_to_site_score"]
+    # ...while one-way kNN alone can be fooled by the partial match.
+    one_way = run_knn(tiles, WEIGHTS, two_way_weight=0.0).sites.set_index("site")
+    assert (one_way["score"] == one_way["site_to_moon_score"]).all()
 
 
 @pytest.mark.parametrize("change, message", [

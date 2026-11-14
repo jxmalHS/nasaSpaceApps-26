@@ -161,6 +161,9 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
              if ms.get("comparisons") else ms.get("reason", ""))
           + (f". ⚠️ {ms['warning']}" if ms.get("warning") else ""),
           f"- Features skipped (no data at this pixel size): {', '.join(summary['features_skipped_no_data']) or 'none'}",
+          "- Sites not ranked because a needed measurement is missing (incomplete): "
+          + (", ".join(f"{i['site']} ({', '.join(i['missing'])})" for i in summary.get("earth_sites_incomplete", []))
+             or "none"),
           "", "## What Earth cannot reproduce", ""] + [f"- {c}" for c in cannot]
     L += ["", "## Disclaimer", "", disclaimer, "", "## Data credits", ""] + [f"- {a}" for a in summary["attribution"]]
     return "\n".join(L) + "\n"

@@ -35,6 +35,11 @@ landcover:                # ESA WorldCover (Earth only; "test spoiler" flags, ne
   resolution_m: 40        # read the 40 m built-in copy (coarsen 4 x 10 m); 5 km tile = 125 px
   coarsen: 4
 
+temperature:              # annual range = hottest day - coldest night (Moon: Diviner, Earth: MODIS)
+  resolution_m: 1000      # MODIS is 1 km, Diviner 240 m -> compare at 1 km (the coarser one)
+  year: 2023              # which year of MODIS data to use for Earth
+  max_wait_s: 3600        # how long to wait for NASA AppEEARS to prepare each site
+
 knn:
   k: 5
   site_quantile: 0.75

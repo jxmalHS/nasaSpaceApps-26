@@ -23,7 +23,7 @@ from landcover import LANDCOVER_FEATURES
 
 # Conditions with no data module yet. A mission may IGNORE them; using them as
 # targets or requirements is allowed but they will always be "unknown".
-PLANNED = {"surface_temperature": "K", "minerals": "various"}
+PLANNED = {"minerals": "various"}
 
 UNITS = {**{f: info[0] for f, info in FEATURE_INFO.items()},
          **{f: "fraction" for f in LANDCOVER_FEATURES}, **PLANNED}

@@ -35,7 +35,11 @@ FEATURE_INFO = {
     "rough_large": ("m", "Large-scale bumpiness", "rougher", "smoother"),
     "curvature_abs_mean": ("1/km", "Curvature", "more curved", "less curved"),
     "pit_density": ("per_km2", "Density of crater-like dips", "higher", "lower"),
+    # Temperature group (temperature.py): hottest day minus coldest night over a year, per 1 km pixel
+    "temp_range_mean": ("K", "Annual temperature range", "wider", "narrower"),
+    "temp_range_std": ("K", "Variation of temperature range", "higher", "lower"),
 }
+GROUPS = {f: ("temperature" if f.startswith("temp_") else "terrain") for f in FEATURE_INFO}
 MIN_ROUGHNESS_PX = 3   # roughness measured over fewer pixels than this is meaningless
 
 

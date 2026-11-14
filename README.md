@@ -26,7 +26,7 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 53 tests, no internet needed
+pytest                                               # 58 tests, no internet needed
 python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
 ```
 
@@ -39,7 +39,9 @@ the sites already downloaded.
 - ✅ All 5 steps work for the Moon, plus the model checks; 53 tests pass.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.
-- ⏳ Not built yet: temperature and mineral modules, Mars.
+- ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `lunar_rover_thermal_terrain` uses terrain + temperature.
+- ✅ Two-way matching: a site must resemble the whole Moon area, not one corner of it.
+- ⏳ Not built yet: minerals, Mars.
 
 ## Files
 
@@ -56,6 +58,8 @@ the sites already downloaded.
 | `landcover.py` | Interference conditions (trees, crops, snow, water...) from ESA WorldCover |
 | `report.py` | Step 5: requirements, differences, confidence, report files |
 | `validation.py` | Model checks: held-out NASA sites, simple-method comparison, mission sensitivity |
+| `temperature.py` | Temperature group: annual range from Diviner (Moon) and MODIS via AppEEARS (Earth) |
+| `charts.py` | Two simple PNG charts: the ranking, and "how close to the Moon" per top site |
 | `config/` | Settings, sites (with sources) and mission weights |
 | `docs/` | More detail: `pipeline.md`, `knn_model.md` |
 

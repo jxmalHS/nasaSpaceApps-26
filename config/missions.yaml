@@ -23,7 +23,7 @@ lunar_surface_mobility:
       rough_large: 0.7
       pit_density: 0.5
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
-              grass_shrub_frac, bare_frac, surface_temperature, minerals]
+              grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
     interference:
       tree_frac: {max: 0.3}
       cropland_frac: {max: 0.2}
@@ -49,7 +49,7 @@ lunar_landing_hazards:
       hypsometric_integral: 1.0
       rough_large: 0.5
     ignored: [slope_mean, slope_std, slope_p90, frac_steep, rough_small,
-              grass_shrub_frac, bare_frac, cropland_frac, surface_temperature, minerals]
+              grass_shrub_frac, bare_frac, cropland_frac, temp_range_mean, temp_range_std, minerals]
     interference:
       tree_frac: {max: 0.2}
       builtup_frac: {max: 0.1}
@@ -58,3 +58,30 @@ lunar_landing_hazards:
   mandatory:
     - {feature: pit_density, max_abs_diff: 0.5, unit: per_km2}
     - {feature: relief, max_abs_diff: 150, unit: m}
+
+lunar_rover_thermal_terrain:
+  description: >-
+    Rover field test needing BOTH a strong terrain match and the widest temperature
+    swings Earth can offer (thermal cycling of wheels, motors and batteries).
+    Terrain counts about twice as much as temperature.
+  body: moon
+  target: lunar_south_pole
+  features:
+    target:
+      slope_mean: 1.0
+      slope_p90: 1.0
+      frac_steep: 0.5
+      rough_small: 1.0
+      rough_large: 0.5
+      temp_range_mean: 2.0
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean, pit_density,
+              temp_range_std, grass_shrub_frac, bare_frac, minerals]
+    interference:
+      tree_frac: {max: 0.3}
+      cropland_frac: {max: 0.2}
+      builtup_frac: {max: 0.1}
+      snow_ice_frac: {max: 0.1}
+      water_frac: {max: 0.05}
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: temp_range_mean, min: 60, unit: K}

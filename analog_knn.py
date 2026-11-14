@@ -232,7 +232,8 @@ def target_coverage(target_space: np.ndarray, earth_space: np.ndarray,
     (the 90th percentile of each target tile's distance to its nearest
     other target tile), so the threshold comes from the target itself.
 
-    Reported separately; it does NOT change the score (open decision).
+    Reported separately as an easy-to-read percentage; the score itself uses the
+    smoother reverse check in moon_to_site_similarity().
     """
     if len(target_space) < 2:
         return {}  # need at least two target tiles to measure their spacing
@@ -247,27 +248,57 @@ def target_coverage(target_space: np.ndarray, earth_space: np.ndarray,
     return coverage
 
 
+def moon_to_site_similarity(target_space: np.ndarray, earth_space: np.ndarray,
+                            earth_sites: np.ndarray) -> dict[str, float]:
+    """The REVERSE check (Moon -> site), one number per site between 0 and 1.
+
+    The normal kNN asks "does each Earth tile look like SOME Moon tile?". A site
+    can score well by matching only a corner of the Moon area (e.g. its few
+    gentle patches). This asks the other way round: "does each Moon tile find
+    a close match SOMEWHERE in this site?" Each Moon tile's best match is turned
+    into a similarity with exp(-distance), then averaged over all Moon tiles.
+    (Averaging similarities, not distances: a few Moon tiles that NO Earth site
+    can match would otherwise push every site to ~0 and hide real differences.)
+    Only a site that resembles the WHOLE Moon area scores high on both.
+    """
+    out = {}
+    for site in np.unique(earth_sites):
+        site_points = earth_space[earth_sites == site]
+        nearest, _ = NearestNeighbors(n_neighbors=1).fit(site_points).kneighbors(target_space)
+        out[site] = float(np.exp(-nearest[:, 0]).mean())
+    return out
+
+
 # --------------------------------------------------------------------------
 # Step 4: summarise tiles into one score per site
 # --------------------------------------------------------------------------
 def summarise_sites(earth_tiles: pd.DataFrame, baselines: list[str], site_quantile: float,
-                    coverage: dict[str, float], dropped: dict[str, int]) -> pd.DataFrame:
+                    coverage: dict[str, float], dropped: dict[str, int],
+                    back: dict[str, float] | None = None, two_way_weight: float = 0.5) -> pd.DataFrame:
     """One row per Earth site, ranked from best (rank 1) to worst.
 
-    score: the site_quantile (default 75th percentile) of its tiles' similarity.
+    site_to_moon_score: the site_quantile (default 75th percentile) of its tiles' similarity.
         Why not the best tile? One lucky tile would decide everything.
         Why not the average? A few poor tiles at the edge of an area would
         drag a good site down. The 75th percentile means "a quarter of this
         site's tiles are at least this good": a fair middle ground.
+    moon_to_site_score: the reverse check (see moon_to_site_similarity).
+    score: (1 - two_way_weight) x site_to_moon + two_way_weight x moon_to_site.
+        With the default 0.5 both directions count equally ("two-way matching").
     best tile: the single most similar tile, kept so we can say WHERE to test.
     """
+    back = back or {}
     rows = []
     for site, group in earth_tiles.groupby(SITE_COL, sort=True):
         best = group.loc[group["similarity"].idxmax()]
+        forward = float(group["similarity"].quantile(site_quantile))
+        reverse = back.get(site, forward)                 # no reverse score -> one-way only
         row = {
             "site": site,
             "role": group[ROLE_COL].iloc[0],
-            "score": float(group["similarity"].quantile(site_quantile)),
+            "score": (1 - two_way_weight) * forward + two_way_weight * reverse,
+            "site_to_moon_score": forward,
+            "moon_to_site_score": back.get(site, np.nan),
             "best_tile_similarity": float(best["similarity"]),
             "target_coverage": coverage.get(site, np.nan),
             "n_tiles_used": len(group),
@@ -301,7 +332,8 @@ def summarise_sites(earth_tiles: pd.DataFrame, baselines: list[str], site_quanti
 # The one function to call
 # --------------------------------------------------------------------------
 def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
-            site_quantile: float = 0.75, exclude_from_fit: tuple[str, ...] = ()) -> KnnResult:
+            site_quantile: float = 0.75, exclude_from_fit: tuple[str, ...] = (),
+            two_way_weight: float = 0.5) -> KnnResult:
     """Rank Earth sites by how closely they match the target, for one mission.
 
     tiles            : the tile table described at the top of this file
@@ -310,6 +342,8 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
     site_quantile    : which percentile of tile similarity becomes the site score
     exclude_from_fit : sites left OUT of everything the model learns (the scaler),
                        but still scored - used for the held-out test
+    two_way_weight   : share of the score from the reverse (Moon -> site) check;
+                       0 = one-way kNN only, 0.5 = both directions equally (default)
 
     Nothing here is random, so the same input always gives the same output.
     """
@@ -338,7 +372,10 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
     earth_tiles["similarity"] = np.exp(-earth_tiles["distance_to_target"])
 
     baselines = add_baseline_distances(earth_tiles, earth_space, k)
-    coverage = target_coverage(target_space, earth_space, earth_tiles[SITE_COL].to_numpy())
-    sites = summarise_sites(earth_tiles, baselines, site_quantile, coverage, dropped)
+    site_ids = earth_tiles[SITE_COL].to_numpy()
+    coverage = target_coverage(target_space, earth_space, site_ids)
+    back = moon_to_site_similarity(target_space, earth_space, site_ids)
+    sites = summarise_sites(earth_tiles, baselines, site_quantile, coverage, dropped,
+                            back=back, two_way_weight=two_way_weight)
 
     return KnnResult(tiles=earth_tiles, sites=sites, features_used=features, weights=w, k=k)

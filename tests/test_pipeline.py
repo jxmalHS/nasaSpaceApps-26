@@ -66,10 +66,39 @@ def fake_project(tmp_path, monkeypatch):
         code = 40 if site["role"] == "negative_control" else 60   # farmland = cropland, else bare
         return np.full((750, 750), code, "uint8"), tr, utm
 
+    def fake_target_temp(name, target, body_cfg, settings, root, offline):
+        moon = CRS.from_proj4("+proj=stere +lat_0=-90 +lon_0=0 +R=1737400 +units=m +no_defs")
+        return np.full((40, 40), 200.0, "float32"), Affine(1000, 0, -20000, 0, -1000, 20000), moon
+
+    def fake_earth_temp(site, body_cfg, settings, root):
+        if site["name"] == "lonar":
+            return None                                         # no temperature yet -> incomplete
+        swing = 30.0 if site["role"] == "negative_control" else 70.0
+        return np.full((30, 30), swing, "float32"), Affine(1000, 0, 500000, 0, -1000, 4000000), utm
+
     monkeypatch.setattr(pipeline, "earth_grid", fake_earth)
     monkeypatch.setattr(pipeline, "target_grid", fake_target)
     monkeypatch.setattr(pipeline, "earth_landcover", fake_landcover)
+    monkeypatch.setattr(pipeline, "target_temperature", fake_target_temp)
+    monkeypatch.setattr(pipeline, "earth_temperature", fake_earth_temp)
     return tmp_path
+
+
+def test_terrain_plus_temperature_mission(fake_project):
+    out = pipeline.run_mission("lunar_rover_thermal_terrain", fake_project, run_stability=False)
+    ranking = pd.read_csv(out / "ranking.csv")
+    summary = json.loads((out / "summary.json").read_text())
+    assert "temp_range_mean" in summary["weights_used"]
+    # a site without temperature is NOT ranked on terrain alone - it is reported as incomplete
+    assert "lonar" not in set(ranking["site"])
+    assert {"site": "lonar", "missing": ["temp_range_mean"]} in summary["earth_sites_incomplete"]
+    assert "lonar (temp_range_mean)" in (out / "report.md").read_text(encoding="utf-8")
+    # farmland has a small temperature swing AND flat terrain -> bottom half
+    assert summary["checks"]["negative_controls"]["status"] == "PASS"
+    # the temperature rule (swing >= 60 K) is evaluated with real-unit values
+    site = json.loads((out / "sites" / "meteor_crater.json").read_text())
+    rule = next(r for r in site["requirements"] if r["requirement"].startswith("temp_range_mean"))
+    assert rule["status"] == "met" and rule["value"] == pytest.approx(70.0)
 
 
 def test_run_mission_end_to_end(fake_project):
@@ -110,6 +139,10 @@ def test_step5_report_outputs(fake_project):
     assert any("than the target" in d["statement"] for d in site["differences_from_target"])
     assert site["cannot_reproduce_on_earth"] and site["disclaimer"]
     assert "Gravity" in (out / "report.md").read_text(encoding="utf-8")
+    # consumer charts
+    assert (out / "ranking.png").stat().st_size > 10_000
+    top = pd.read_csv(out / "ranking.csv")["site"].head(3)
+    assert all((out / f"closeness_{s}.png").exists() for s in top)
 
 
 def test_offline_mode_skips_sites_not_downloaded(fake_project, monkeypatch):
