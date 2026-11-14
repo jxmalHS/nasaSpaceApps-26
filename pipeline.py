@@ -355,6 +355,29 @@ def build_table(mission, settings, inp: Inputs, factor=1, offset_frac=0.0):
     return pd.DataFrame(rows), pd.DataFrame(all_stats)
 
 
+def interference_blocked(table: pd.DataFrame, mission: Mission) -> set[tuple[str, str]]:
+    """(site, tile_id) of CANDIDATE tiles over an interference limit (trees, crops, water...).
+
+    That ground would ruin the test, so a candidate is scored only on its usable tiles: a
+    forest with one clear corner is judged on that corner, not on the whole forest.
+    NASA baselines and farmland controls are yardsticks, not recommendations, so they keep
+    all their tiles (and still rank below clean sites if their test tile is interfered).
+    """
+    cand = table[table.role == "candidate"]
+    if cand.empty or not mission.interference:
+        return set()
+    bad = cand.apply(lambda t: report.interference_level(t.to_dict(), mission.interference)
+                     == report.INTERFERED, axis=1)
+    return set(zip(cand.loc[bad, "site"], cand.loc[bad, "tile_id"]))
+
+
+def drop_blocked(table: pd.DataFrame, blocked: set) -> pd.DataFrame:
+    if not blocked:
+        return table
+    keep = [k not in blocked for k in zip(table["site"], table["tile_id"])]
+    return table[keep].reset_index(drop=True)
+
+
 def rank(table: pd.DataFrame, weights: dict, settings: dict):
     """Step 4: weighted kNN, using only weighted features that actually have data."""
     if table.empty or not (table.role != "target").any():
@@ -368,11 +391,13 @@ def rank(table: pd.DataFrame, weights: dict, settings: dict):
                    cap_to_earth=CLOSEST_ACHIEVABLE), skipped
 
 
-def stability(mission, settings, base_sites, table, inp: Inputs) -> dict:
+def stability(mission, settings, base_sites, table, inp: Inputs, blocked: set = frozenset()) -> dict:
     """Confidence: change ONE thing at a time and see whether each site keeps its rank.
 
     Changes: each target weight +/-20%, pixels 2x bigger, tile grid shifted by half a tile.
     A site 'survives' a change if its rank moves by at most 5% of the number of sites (min 1).
+    Interference-blocked tiles are removed from the rebuilt tables by tile id (for the
+    half-tile shift this is an approximation: the shifted tile mostly overlaps the original).
     """
     cfg = settings["stability"]
     variants = []
@@ -382,8 +407,10 @@ def stability(mission, settings, base_sites, table, inp: Inputs) -> dict:
             w[f] *= 1 + sign * cfg["weight_change"]
             variants.append((f"weight {f} {'+' if sign > 0 else '-'}{cfg['weight_change']:.0%}", table, w))
     fac = cfg["alt_resolution_factor"]
-    variants.append((f"pixels x{fac}", build_table(mission, settings, inp, fac)[0], mission.weights))
-    variants.append(("tiles shifted half a tile", build_table(mission, settings, inp, 1, 0.5)[0], mission.weights))
+    variants.append((f"pixels x{fac}", drop_blocked(build_table(mission, settings, inp, fac)[0], blocked),
+                     mission.weights))
+    variants.append(("tiles shifted half a tile",
+                     drop_blocked(build_table(mission, settings, inp, 1, 0.5)[0], blocked), mission.weights))
 
     base = base_sites.set_index("site")["rank"]
     tol = max(1, round(cfg["rank_tolerance_frac"] * len(base)))
@@ -458,6 +485,10 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
     inp = load_grids(mission, settings, sites_cfg, root, offline)
     earth, failed = inp.earth, inp.failed
     table, stats = build_table(mission, settings, inp)                            # steps 2-3
+    blocked = interference_blocked(table, mission)
+    all_candidates = set(table.loc[table.role == "candidate", "site"])
+    table = drop_blocked(table, blocked)
+    blocked_sites = sorted(all_candidates - set(table["site"]))                   # no usable tile at all
     result, skipped = rank(table, mission.weights, settings)                      # step 4
     # Sites with data that still dropped out: they lack a measurement the mission needs
     # (e.g. no temperature yet). Reported as "incomplete", never silently ranked on less.
@@ -484,7 +515,7 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
 
     # Step 5: report
     profile = report.target_profile(table[table.role == "target"])
-    stab = (stability(mission, settings, result.sites, table, inp)
+    stab = (stability(mission, settings, result.sites, table, inp, blocked)
             if run_stability else {"site_confidence": {}})
     info = pd.DataFrame(earth).set_index("name")[["lat", "lon", "source"]]
     ranking = result.sites.join(info, on="site").merge(simple, on="site", how="left")
@@ -504,6 +535,14 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
         ranking[col] = ranking["site"].map(lambda s: fn(details[s]))
     ranking["confidence"] = ranking["site"].map(stab["site_confidence"])
     ranking["confidence_label"] = ranking["confidence"].map(report.confidence_label)
+    # Interference would ruin the test (step 1), so it decides the order before similarity:
+    # clean sites first, then sites without land-cover data, then sites over a limit even at
+    # their best tile. The kNN-only order is kept as similarity_rank.
+    ranking["similarity_rank"] = ranking["rank"]
+    ranking["interference_level"] = ranking["site"].map(lambda s: details[s]["interference"]["level"])
+    ranking = ranking.sort_values(["interference_level", "score", "site"],
+                                  ascending=[True, False, True]).reset_index(drop=True)
+    ranking["rank"] = np.arange(1, len(ranking) + 1)
 
     out = root / "results" / mission_name
     out.mkdir(parents=True, exist_ok=True)
@@ -533,9 +572,11 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                "mandatory": [r.describe() for r in mission.mandatory],
                "earth_sites_ranked": int(len(ranking)), "earth_sites_failed": failed,
                "earth_sites_incomplete": incomplete,
+               "candidate_tiles_blocked_by_interference": len(blocked),
+               "candidates_blocked_everywhere": blocked_sites,
                "earth_sites_no_usable_tiles": stats.loc[(stats.tiles_kept == 0) & (stats.site != mission.target),
                                                         "site"].tolist(),
-               "checks": {"negative_controls": report.negative_control_check(ranking),
+               "checks": {"negative_controls": report.negative_control_check(ranking, "similarity_rank"),
                           "stability": {k: v for k, v in stab.items() if k != "site_confidence"},
                           "held_out_nasa_sites": held_out,
                           "simple_method_agreement": agreement,

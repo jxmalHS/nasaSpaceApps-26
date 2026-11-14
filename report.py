@@ -3,8 +3,9 @@ report.py - step 5 of the pipeline: an honest report for every site.
 
 For each Earth site:
     what it covers        - target_coverage: share of the Moon area's variety it reproduces
-    test tile             - the 5 km tile we'd recommend testing in: the one meeting the most
-                            mandatory requirements (ties: the most similar)
+    test tile             - the 5 km tile we'd recommend testing in: a tile free of interference
+                            if there is one, then the most mandatory requirements met, then
+                            the most similar
     requirements          - met / not met / unknown at the test tile (unknown is never a pass)
     differences           - real-unit gaps to the target, e.g. "4.2 deg steeper than the target"
     interference          - land-cover flags at the test tile
@@ -45,11 +46,23 @@ def requirement_statuses(tile: dict, mission: Mission, profile: dict) -> list[st
     return [r.check(tile.get(r.feature, np.nan), profile.get(r.feature, np.nan)) for r in mission.mandatory]
 
 
+CLEAN, INTERFERENCE_UNKNOWN, INTERFERED = 0, 1, 2
+
+
+def interference_level(tile: dict, limits: dict) -> int:
+    """0 = clean, 1 = unknown (no land-cover data), 2 = over a limit (would ruin the test)."""
+    flagged, unknown = check_limits(tile, limits)
+    return INTERFERED if flagged else INTERFERENCE_UNKNOWN if unknown else CLEAN
+
+
 def choose_test_tile(site_tiles: pd.DataFrame, mission: Mission, profile: dict) -> pd.Series:
-    """The tile meeting the most mandatory requirements; ties go to the most similar tile."""
+    """The tile to test in. Trees, crops or water over the limit would ruin the test, so a
+    clean tile always wins; then the most mandatory requirements met; then the most similar."""
     n_met = site_tiles.apply(lambda t: requirement_statuses(t.to_dict(), mission, profile).count(MET), axis=1)
-    order = pd.DataFrame({"n_met": n_met, "similarity": site_tiles["similarity"]})
-    return site_tiles.loc[order.sort_values(["n_met", "similarity"], ascending=False).index[0]]
+    level = site_tiles.apply(lambda t: interference_level(t.to_dict(), mission.interference), axis=1)
+    order = pd.DataFrame({"level": level, "n_met": n_met, "similarity": site_tiles["similarity"]})
+    best = order.sort_values(["level", "n_met", "similarity"], ascending=[True, False, False]).index[0]
+    return site_tiles.loc[best]
 
 
 def site_details(site: str, site_tiles: pd.DataFrame, mission: Mission, profile: dict) -> dict:
@@ -73,6 +86,7 @@ def site_details(site: str, site_tiles: pd.DataFrame, mission: Mission, profile:
     flagged, unknown = check_limits(t, mission.interference)
     return {"test_tile": t, "requirements": reqs, "differences": diffs,
             "interference": {"flagged": flagged, "unknown": unknown,
+                             "level": interference_level(t, mission.interference),
                              "values": {f: _num(t.get(f)) for f in mission.interference}}}
 
 
@@ -90,13 +104,16 @@ def confidence_label(c: float | None) -> str:
     return "high" if c >= 0.8 else "medium" if c >= 0.5 else "low"
 
 
-def negative_control_check(ranking: pd.DataFrame) -> dict:
-    """Farmland controls must rank in the bottom half; if not, something is wrong."""
+def negative_control_check(ranking: pd.DataFrame, rank_col: str = "rank") -> dict:
+    """Farmland controls must rank in the bottom half; if not, something is wrong.
+
+    Run on the similarity-only rank: farmland is always pushed down for its crops
+    (interference), so the final rank would pass even if the terrain model were broken."""
     n = len(ranking)
     ctrl = ranking[ranking["role"] == "negative_control"]
     if ctrl.empty:
         return {"status": "NOT RUN", "reason": "no negative controls"}
-    rows = [{"site": r.site, "rank": int(r["rank"]), "bottom_half": bool(r["rank"] > n / 2)}
+    rows = [{"site": r.site, "rank": int(r[rank_col]), "bottom_half": bool(r[rank_col] > n / 2)}
             for _, r in ctrl.iterrows()]
     return {"status": "PASS" if all(r["bottom_half"] for r in rows) else "FAIL", "controls": rows}
 
@@ -131,6 +148,12 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
     L = [f"# Analog ranking: {summary['mission']}", "", summary.get("description", ""), "",
          f"Target: **{summary['target']}** ({summary['target_tiles']} tiles). "
          f"Earth sites ranked: {summary['earth_sites_ranked']}.", "",
+         "Interference (trees, crops, water... over the mission's limits) would ruin the test: "
+         f"{summary.get('candidate_tiles_blocked_by_interference', 0)} candidate tiles were left out, "
+         "so each candidate is judged only on its usable ground. Candidates with no usable tile: "
+         f"{', '.join(summary.get('candidates_blocked_everywhere', [])) or 'none'}. NASA sites and "
+         "farmland keep all tiles but rank below clean sites if their test tile is interfered. "
+         "The similarity-only order is `similarity_rank` in ranking.csv.", "",
          "| # | Site | Role | Score | Covers | Requirements met / not / unknown | Interference | Confidence |",
          "|---|---|---|---|---|---|---|---|"]
     for _, r in ranking.head(top).iterrows():
@@ -150,7 +173,8 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
              f"recall@5 = {ho['recall_at_5']:.0%} (random guess: {ho['random_guess_recall_at_5']:.0%})"
              + (f". ⚠️ {ho['warning']}" if ho.get("warning") else "")
              if ho["status"] != "NOT RUN" else ho["reason"]),
-          f"- **Negative controls** (farmland must rank in the bottom half): **{nc['status']}**",
+          f"- **Negative controls** (farmland must rank in the bottom half on similarity alone, "
+          f"ignoring its crops): **{nc['status']}**",
           f"- **Stability:** #1 site unchanged in {st['top1_unchanged_share']:.0%} of {st['n_variants']} "
           f"small changes; on average {st['mean_top5_survivors']:.1f} of the top 5 stay in the top 5"
           if st.get("n_variants") else "- **Stability:** not run",

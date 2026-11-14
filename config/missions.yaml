@@ -35,6 +35,34 @@ lunar_surface_mobility:
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
     - {feature: rough_small, max_abs_diff: 3.0, unit: m}
 
+lunar_rover_mons_mouton:
+  description: >-
+    Same rover-wheel test as lunar_surface_mobility, but the target is the Mons Mouton
+    plateau (VIPER / IM-2 landing area): the gentler ground a rover would really drive on,
+    instead of a box round the pole that includes Shackleton crater's steep walls.
+  body: moon
+  target: mons_mouton
+  features:
+    target:
+      slope_mean: 1.0
+      slope_p90: 1.5
+      frac_steep: 1.0
+      rough_small: 1.0
+      rough_large: 0.7
+      pit_density: 0.5
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
+              grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.3}
+      cropland_frac: {max: 0.2}
+      builtup_frac: {max: 0.1}
+      snow_ice_frac: {max: 0.1}
+      water_frac: {max: 0.05}
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
+    - {feature: rough_small, max_abs_diff: 3.0, unit: m}
+
 lunar_landing_hazards:
   description: >-
     Lander hazard-detection cameras / landing-site survey: crater-like dips,

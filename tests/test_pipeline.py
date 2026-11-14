@@ -155,3 +155,28 @@ def test_offline_mode_skips_sites_not_downloaded(fake_project, monkeypatch):
     monkeypatch.setattr(pipeline, "earth_grid", only_meteor)
     out = pipeline.run_mission("lunar_surface_mobility", fake_project, offline=True, run_stability=False)
     assert list(pd.read_csv(out / "ranking.csv")["site"]) == ["meteor_crater"]
+
+
+def test_interference_ranks_below_clean_sites(fake_project):
+    """Clean sites first, then unknown land cover, then sites over a limit; the kNN-only
+    order is kept as similarity_rank."""
+    out = pipeline.run_mission("lunar_surface_mobility", fake_project)
+    r = pd.read_csv(out / "ranking.csv")
+    assert list(r["rank"]) == list(range(1, len(r) + 1))
+    assert r["interference_level"].is_monotonic_increasing
+    assert set(r.tail(2)["site"]) == {"garden_city_kansas", "ames_iowa"}     # cropland: last
+    assert sorted(r["similarity_rank"]) == list(range(1, len(r) + 1))
+
+
+def test_candidates_scored_only_on_usable_tiles(fake_project):
+    """A forested candidate is judged on its clear tiles only; NASA sites and farmland
+    (yardsticks) keep every tile."""
+    settings, _, missions = pipeline.load_config(fake_project)
+    mission = pipeline.parse_mission("lunar_surface_mobility", missions["lunar_surface_mobility"])
+    t = pd.DataFrame({"site": ["forest"] * 3 + ["nasa", "farm"], "tile_id": ["a", "b", "c", "a", "a"],
+                      "role": ["candidate"] * 3 + ["baseline", "negative_control"],
+                      "tree_frac": [0.9, 0.95, 0.1, 0.9, 0.0], "cropland_frac": [0, 0, 0, 0, 0.9]})
+    blocked = pipeline.interference_blocked(t, mission)
+    assert blocked == {("forest", "a"), ("forest", "b")}
+    kept = pipeline.drop_blocked(t, blocked)
+    assert list(kept["site"]) == ["forest", "nasa", "farm"] and kept.iloc[0]["tile_id"] == "c"

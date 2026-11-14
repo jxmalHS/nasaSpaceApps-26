@@ -12,6 +12,15 @@ targets:
       LOLA LDEM_80S_20M (20 m/pixel, 80-90 S), streamed from the MIT LOLA archive.
       Box centred on the pole; it contains several Artemis III candidate regions
       (e.g. Peak near Shackleton, de Gerlache rim).
+  mons_mouton:
+    body: moon
+    dataset: lola_south_pole_20m
+    center_xy_m: [77100, 138000]  # = 84.7906 S, 29.1957 E in the same polar stereographic grid
+    box_km: 30
+    source: >-
+      Mons Mouton plateau, the gentler ground where rovers are actually meant to drive:
+      NASA's VIPER landing site (selected Sept 2021) and the IM-2 Athena landing point
+      (6 March 2025, 84.7906 S, 29.1957 E), used as the box centre. LOLA LDEM_80S_20M.
 
 earth_sites:
   # --- Moon baselines: Artemis navigation-training sites (USGS LGRS release, McClernan 2024, doi:10.5066/P14KSANW)

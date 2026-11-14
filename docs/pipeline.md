@@ -19,11 +19,12 @@ python main.py run --mission lunar_surface_mobility --offline   # only sites alr
 - **Score** (0–1): half "site → Moon" (do the site's tiles look like Moon tiles?) and half "Moon → site" (does every part of the Moon area find a match in the site?), weighted by the mission.
 - **Incomplete**: a site missing a measurement the mission needs (e.g. no temperature yet) is listed as incomplete, never ranked on less data.
 - **Covers**: share of the Moon area's variety the site reproduces. High score + low coverage = it only matches part of the target.
-- **Test tile**: the 5 km tile we'd recommend testing in: the one meeting the most mandatory requirements, ties going to the most similar tile.
+- **Test tile**: the 5 km tile we'd recommend testing in: a tile free of interference first, then the most mandatory requirements met, then the most similar.
 - **Requirements**: checked at the test tile. *Unknown* (no data) never counts as met.
-- **Interference**: land cover over the mission limit at the test tile. Shows *unknown* when land cover wasn't available, never "clear".
+- **Interference**: trees, crops, water... over the mission's limit would ruin the test. Candidate tiles over a limit are left out, so a candidate is judged only on its usable ground (candidates with no usable tile are listed, not ranked). NASA sites and farmland are yardsticks: they keep all tiles, but rank below clean sites if their test tile is interfered. Shows *unknown* when land cover wasn't available, never "clear". `similarity_rank` in ranking.csv is the order on similarity alone.
 - **Confidence**: share of 14 small changes the site's rank survives (each weight ±20%, pixels 2× bigger, tiles shifted half a tile). High ≥ 80%, medium ≥ 50%.
-- **Negative controls**: farmland must rank in the bottom half; otherwise the report says FAIL.
+- **Negative controls**: farmland must rank in the bottom half on similarity alone (its crops would push it down anyway, so the final rank can't test the model); otherwise the report says FAIL.
+- **Two Moon targets**: `lunar_south_pole` (40 km box at the pole, includes Shackleton crater's steep walls) and `mons_mouton` (30 km box on the VIPER / IM-2 landing plateau, the gentler ground a rover would actually drive). Mission `lunar_rover_mons_mouton` is the wheels test on the second one.
 
 ## How the model is tested (`validation.py`)
 

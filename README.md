@@ -26,7 +26,7 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 61 tests, no internet needed
+pytest                                               # 64 tests, no internet needed
 python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
 ```
 
@@ -36,7 +36,7 @@ the sites already downloaded.
 
 ## Status
 
-- ✅ All 5 steps work for the Moon, plus the model checks; 61 tests pass.
+- ✅ All 5 steps work for the Moon, plus the model checks; 64 tests pass.
 - ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.

@@ -75,3 +75,17 @@ def test_negative_control_check():
     assert report.negative_control_check(good)["status"] == "PASS"
     bad = good.assign(rank=[4, 2, 3, 1])
     assert report.negative_control_check(bad)["status"] == "FAIL"
+
+
+def test_test_tile_avoids_interference_first():
+    """A tile full of trees would ruin the test, so a clean tile wins even if it meets fewer rules."""
+    feats = {"target": {"slope_p90": 1.0, "rough_small": 0.5},
+             "ignored": [f for f in ALL_IGNORED if f != "tree_frac"],
+             "interference": {"tree_frac": {"max": 0.3}}}
+    m = parse_mission("m", raw(features=feats))
+    tiles = pd.DataFrame({"tile_id": ["forest", "clean", "no_data"], "slope_p90": [21.0, 40.0, 21.0],
+                          "tree_frac": [0.9, 0.0, np.nan], "similarity": [0.9, 0.5, 0.8]})
+    assert report.choose_test_tile(tiles, m, {"slope_p90": 20.0})["tile_id"] == "clean"
+    assert report.interference_level({"tree_frac": 0.9}, m.interference) == report.INTERFERED
+    assert report.interference_level({"tree_frac": np.nan}, m.interference) == report.INTERFERENCE_UNKNOWN
+    assert report.interference_level({"tree_frac": 0.1}, m.interference) == report.CLEAN
