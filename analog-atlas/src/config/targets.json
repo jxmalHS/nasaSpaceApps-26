@@ -1,0 +1,998 @@
+{
+ "schema_version": 1,
+ "_comment": "Target profiles. Each value: v (number or null), s = status. 'verify' = published or mission-measured value, still to be re-extracted at matched scale; 'estimate' = order-of-magnitude placeholder pending pipeline extraction (LOLA, Diviner, MOLA, THEMIS, MEDA/REMS); null = not known, which scores as Unknown. Regional terrain values are at ~15-55 km scale to match the Earth 0.5° index.",
+ "targets": [
+  {
+   "id": "connecting-ridge",
+   "name": "Shackleton–de Gerlache Connecting Ridge",
+   "body": "moon",
+   "lat": -89.45,
+   "lon": -137.5,
+   "region": "Lunar south pole",
+   "why": "Among the best-lit terrain on the Moon and a long-studied base-camp location next to Shackleton's permanently shadowed floor.",
+   "f": {
+    "slope_deg": {
+     "v": 6,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 80,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 90,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -170,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 120,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 4,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "LOLA polar DEM and illumination (Mazarico et al. 2011)",
+    "Diviner polar temperatures (Williams et al. 2019)"
+   ]
+  },
+  {
+   "id": "de-gerlache-rim-2",
+   "name": "de Gerlache Rim 2",
+   "body": "moon",
+   "lat": -88.5,
+   "lon": -87.1,
+   "region": "Lunar south pole · Artemis candidate",
+   "why": "NASA Artemis candidate landing region on the rim of de Gerlache crater.",
+   "f": {
+    "slope_deg": {
+     "v": 8,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 100,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 95,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -175,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 120,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 6,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "NASA Artemis III candidate regions (Oct 2024)",
+    "LOLA GDR slope"
+   ]
+  },
+  {
+   "id": "malapert-massif",
+   "name": "Malapert Massif",
+   "body": "moon",
+   "lat": -86.0,
+   "lon": 0.0,
+   "region": "Lunar south pole · Artemis candidate",
+   "why": "A 5 km-high massif with good Earth visibility for direct communication, and steep flanks.",
+   "f": {
+    "slope_deg": {
+     "v": 15,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 220,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 110,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -160,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 130,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 8,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 4,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "NASA Artemis III candidate regions (Oct 2024)",
+    "LOLA topography"
+   ]
+  },
+  {
+   "id": "mons-mouton-plateau",
+   "name": "Mons Mouton Plateau",
+   "body": "moon",
+   "lat": -84.79,
+   "lon": 29.2,
+   "region": "Lunar south pole · Artemis candidate",
+   "why": "Broad summit plateau of Mons Mouton (VIPER / IM-2 landing area, 84.79°S 29.20°E): gentle terrain for landing and driving.",
+   "f": {
+    "slope_deg": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 40,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 105,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -165,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 125,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 9,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "NASA Artemis III candidate regions (Oct 2024)"
+   ]
+  },
+  {
+   "id": "haworth",
+   "name": "Haworth",
+   "body": "moon",
+   "lat": -86.9,
+   "lon": -4.0,
+   "region": "Lunar south pole · Artemis candidate",
+   "why": "Next to a large permanently shadowed crater: access to the coldest ground and possible ice.",
+   "f": {
+    "slope_deg": {
+     "v": 10,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 120,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 70,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -190,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 100,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 12,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "NASA Artemis III candidate regions (Oct 2024)",
+    "Diviner PSR maximum temperature ~75 K"
+   ]
+  },
+  {
+   "id": "nobile-rim-2",
+   "name": "Nobile Rim 2",
+   "body": "moon",
+   "lat": -83.9,
+   "lon": 58.7,
+   "region": "Lunar south pole · Artemis candidate",
+   "why": "Rim of Nobile crater, the VIPER rover's planned exploration area.",
+   "f": {
+    "slope_deg": {
+     "v": 10,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 110,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 115,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -160,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 130,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 100,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 10,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "TODO"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "NASA Artemis III candidate regions (Oct 2024)"
+   ]
+  },
+  {
+   "id": "marius-hills",
+   "name": "Marius Hills skylight",
+   "body": "moon",
+   "lat": 14.1,
+   "lon": -56.8,
+   "region": "Oceanus Procellarum · lava tube",
+   "why": "A collapse pit into a probable lava tube in mare basalt: a natural radiation shelter for a permanent base.",
+   "f": {
+    "slope_deg": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 50,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 280,
+     "s": "verify"
+    },
+    "t_mean_C": {
+     "v": -20,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 5,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 12,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 14.8,
+     "s": "verify"
+    },
+    "pressure_kPa": {
+     "v": 0,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "n/a"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 1,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "n/a"
+    },
+    "salt_pct": {
+     "v": 0,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "Haruyama et al. 2009 (SELENE skylight)",
+    "Diviner equatorial day/night ~390 K / ~100 K"
+   ]
+  },
+  {
+   "id": "jezero",
+   "name": "Jezero Crater",
+   "body": "mars",
+   "lat": 18.38,
+   "lon": 77.58,
+   "region": "Perseverance landing site",
+   "why": "Ancient delta and lake bed explored by Perseverance; olivine-rich basaltic floor.",
+   "f": {
+    "slope_deg": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 30,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 85,
+     "s": "verify"
+    },
+    "t_mean_C": {
+     "v": -55,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 40,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 13,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 0.55,
+     "s": "verify"
+    },
+    "pressure_kPa": {
+     "v": 0.7,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "TODO"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0.8,
+     "s": "verify"
+    },
+    "rock_pct": {
+     "v": 10,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "n/a"
+    },
+    "salt_pct": {
+     "v": 0.6,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "Perseverance MEDA ground temperature",
+    "CRISM olivine detections (Jezero floor)"
+   ]
+  },
+  {
+   "id": "gale",
+   "name": "Gale Crater",
+   "body": "mars",
+   "lat": -5.4,
+   "lon": 137.8,
+   "region": "Curiosity field site",
+   "why": "Layered sediments of Mount Sharp; the longest in-situ weather and terrain record on Mars.",
+   "f": {
+    "slope_deg": {
+     "v": 6,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 120,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 90,
+     "s": "verify"
+    },
+    "t_mean_C": {
+     "v": -50,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 30,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 12,
+     "s": "verify"
+    },
+    "dark_d": {
+     "v": 0.53,
+     "s": "verify"
+    },
+    "pressure_kPa": {
+     "v": 0.85,
+     "s": "verify"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "TODO"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 0,
+     "s": "verify"
+    },
+    "basalt": {
+     "v": 0.6,
+     "s": "estimate"
+    },
+    "rock_pct": {
+     "v": 8,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": null,
+     "s": "n/a"
+    },
+    "salt_pct": {
+     "v": 0.5,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "Curiosity REMS ground temperature and pressure"
+   ]
+  },
+  {
+   "id": "arcadia-planitia",
+   "name": "Arcadia Planitia",
+   "body": "mars",
+   "lat": 49.02,
+   "lon": -171.85,
+   "region": "Mid-latitude ice plains",
+   "why": "Flat northern plains with shallow ground ice: a leading candidate for a crewed Mars base.",
+   "f": {
+    "slope_deg": {
+     "v": 0.5,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 15,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 70,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -70,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 60,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 22,
+     "s": "estimate"
+    },
+    "dark_d": {
+     "v": 0.65,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0.75,
+     "s": "estimate"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "TODO"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 3,
+     "s": "estimate"
+    },
+    "basalt": {
+     "v": 0.7,
+     "s": "estimate"
+    },
+    "rock_pct": {
+     "v": 5,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": 1,
+     "s": "estimate"
+    },
+    "salt_pct": {
+     "v": 0.6,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "SWIM ice consistency maps (Morgan et al. 2021)",
+    "Bramson et al. 2015 excess ice"
+   ]
+  },
+  {
+   "id": "utopia-planitia",
+   "name": "Utopia Planitia",
+   "body": "mars",
+   "lat": 46.74,
+   "lon": 117.52,
+   "region": "Northern lowlands",
+   "why": "Scalloped terrain with thick buried ice; Viking 2 and Zhurong landed in this basin.",
+   "f": {
+    "slope_deg": {
+     "v": 0.5,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 20,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 70,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -65,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 60,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 21,
+     "s": "estimate"
+    },
+    "dark_d": {
+     "v": 0.65,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0.8,
+     "s": "estimate"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "TODO"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "basalt": {
+     "v": 0.7,
+     "s": "estimate"
+    },
+    "rock_pct": {
+     "v": 6,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": 2,
+     "s": "estimate"
+    },
+    "salt_pct": {
+     "v": 0.6,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "SHARAD buried ice (Stuurman et al. 2016)",
+    "Viking 2 lander meteorology"
+   ]
+  },
+  {
+   "id": "deuteronilus-mensae",
+   "name": "Deuteronilus Mensae",
+   "body": "mars",
+   "lat": 42.0,
+   "lon": 27.0,
+   "region": "Glacial mesas",
+   "why": "Debris-covered glaciers wrap rugged mesas: ice under a thin rocky lag.",
+   "f": {
+    "slope_deg": {
+     "v": 4,
+     "s": "estimate"
+    },
+    "rough_m": {
+     "v": 150,
+     "s": "estimate"
+    },
+    "lst_dtr_K": {
+     "v": 65,
+     "s": "estimate"
+    },
+    "t_mean_C": {
+     "v": -60,
+     "s": "estimate"
+    },
+    "t_range_K": {
+     "v": 55,
+     "s": "estimate"
+    },
+    "low_sun_pct": {
+     "v": 19,
+     "s": "estimate"
+    },
+    "dark_d": {
+     "v": 0.62,
+     "s": "estimate"
+    },
+    "pressure_kPa": {
+     "v": 0.8,
+     "s": "estimate"
+    },
+    "dust_ug": {
+     "v": null,
+     "s": "TODO"
+    },
+    "precip_mm": {
+     "v": 0,
+     "s": "verify"
+    },
+    "ndvi": {
+     "v": 0,
+     "s": "verify"
+    },
+    "snow_mo": {
+     "v": 1,
+     "s": "estimate"
+    },
+    "basalt": {
+     "v": 0.5,
+     "s": "estimate"
+    },
+    "rock_pct": {
+     "v": 12,
+     "s": "estimate"
+    },
+    "soil_kPa": {
+     "v": null,
+     "s": "TODO"
+    },
+    "ice_m": {
+     "v": 0.5,
+     "s": "estimate"
+    },
+    "salt_pct": {
+     "v": 0.5,
+     "s": "estimate"
+    }
+   },
+   "sources": [
+    "SHARAD lobate debris aprons (Plaut et al. 2009)"
+   ]
+  }
+ ]
+}

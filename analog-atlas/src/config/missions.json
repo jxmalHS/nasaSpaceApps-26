@@ -1,0 +1,1201 @@
+{
+ "schema_version": 1,
+ "_comment": "Missions are data. Every feature in a test plays one role. target: w = default weight (0-100), dir = match | high | low (used in Stress mode; Realism mode always matches). interference: the site must stay on the right side of v; hard = strict pass/fail, soft = penalty plus warning. Features not listed are ignored for this test. 'baseline' = precedent field sites (analogs.json). 'lab' = what to pair the field test with.",
+ "systems": [
+  {
+   "id": "ltv",
+   "label": "Lunar Terrain Vehicle",
+   "blurb": "Unpressurised crew rover for the south pole (and its Mars cousins).",
+   "icon": "rover",
+   "tests": [
+    {
+     "id": "ltv.wheels",
+     "label": "Wheel traction & suspension",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where can wheels meet the same slopes, bumps and rocks they will meet at the target?",
+     "target": {
+      "slope_deg": {
+       "w": 30,
+       "dir": "match",
+       "why": "Grade sets the torque the wheels must deliver and the tip-over margin."
+      },
+      "rough_m": {
+       "w": 35,
+       "dir": "match",
+       "why": "Bumps excite the suspension; too smooth hides failure modes."
+      },
+      "rock_pct": {
+       "w": 20,
+       "dir": "match",
+       "why": "Rocks above wheel height are the main mobility hazard."
+      },
+      "soil_kPa": {
+       "w": 15,
+       "dir": "match",
+       "why": "Soft ground means sinkage and slip."
+      }
+     },
+     "interference": {
+      "snow_mo": {
+       "op": "<=",
+       "v": 9,
+       "hard": true,
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": true,
+       "why": "Roots and plants bind the soil and hide obstacles."
+      },
+      "precip_mm": {
+       "op": "<=",
+       "v": 300,
+       "hard": false,
+       "why": "Wet soil is cohesive; lunar soil is bone dry."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Air temperature does not change traction.",
+      "lst_dtr_K": "Thermal cycling is tested separately.",
+      "dust_ug": "Airborne dust is a separate dust test."
+     },
+     "baseline": [
+      "black-point",
+      "mojave",
+      "holuhraun"
+     ],
+     "limits": [
+      "gravity",
+      "regolith"
+     ],
+     "lab": "Pair with reduced-gravity traction runs in a regolith bin (e.g. NASA Glenn SLOPE lab) with offloaded wheel loads."
+    },
+    {
+     "id": "ltv.nav",
+     "label": "Navigation cameras & lidar",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where do long shadows and rough ground challenge stereo cameras and lidar the way the pole will?",
+     "target": {
+      "low_sun_pct": {
+       "w": 40,
+       "dir": "high",
+       "why": "Grazing light makes deep shadows that hide hazards from cameras."
+      },
+      "rough_m": {
+       "w": 30,
+       "dir": "match",
+       "why": "Relief creates occlusions and false obstacles."
+      },
+      "slope_deg": {
+       "w": 15,
+       "dir": "match",
+       "why": "Slopes change the camera's view of the horizon."
+      },
+      "dark_d": {
+       "w": 15,
+       "dir": "high",
+       "why": "Driving through darkness relies on lidar and headlights."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Plants move in wind and confuse stereo matching."
+      },
+      "snow_mo": {
+       "op": "<=",
+       "v": 6,
+       "hard": false,
+       "why": "Long snow seasons shorten the usable field window and flatten contrast."
+      },
+      "dust_ug": {
+       "op": "<=",
+       "v": 60,
+       "hard": false,
+       "why": "Airborne haze scatters lidar; the Moon has none."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Sensors are tested at ambient temperature here.",
+      "basalt": "Rock type barely changes optical navigation."
+     },
+     "baseline": [
+      "haughton-crater",
+      "black-point",
+      "mojave"
+     ],
+     "limits": [
+      "light",
+      "vacuum"
+     ],
+     "lab": "Pair with a collimated low-angle lighting bay to remove Earth's sky fill-light."
+    },
+    {
+     "id": "ltv.comms",
+     "label": "Remote driving & radio links",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where does terrain break line-of-sight the way crater rims and ridges will?",
+     "target": {
+      "rough_m": {
+       "w": 40,
+       "dir": "high",
+       "why": "Ridges and pits block line-of-sight radio."
+      },
+      "slope_deg": {
+       "w": 30,
+       "dir": "high",
+       "why": "Steep relief creates shadow zones behind hills."
+      },
+      "remote_km": {
+       "w": 30,
+       "dir": "high",
+       "why": "Few towns means a quiet radio spectrum and no cell towers to lean on."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": false,
+       "why": "Foliage absorbs radio signals in ways regolith does not."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Not a driver for link margin.",
+      "precip_mm": "Rain fade matters only at high frequencies."
+     },
+     "baseline": [
+      "sf-volcanic-field"
+     ],
+     "limits": [
+      "vacuum"
+     ],
+     "lab": "Inject 2.6 s Earth–Moon round-trip delay in the ground segment during the field test."
+    },
+    {
+     "id": "ltv.thermal",
+     "label": "Thermal control & batteries",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where are day–night swings and cold closest to the target, without liquid water?",
+     "target": {
+      "lst_dtr_K": {
+       "w": 40,
+       "dir": "high",
+       "why": "Each swing is one thermal cycle on seals, joints and cells."
+      },
+      "t_mean_C": {
+       "w": 30,
+       "dir": "low",
+       "why": "Cold soaks drain batteries and stiffen lubricants."
+      },
+      "t_range_K": {
+       "w": 15,
+       "dir": "high",
+       "why": "Seasonal extremes widen the cycle envelope."
+      },
+      "dark_d": {
+       "w": 15,
+       "dir": "high",
+       "why": "Long darkness tests survival heaters."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Liquid water freeze–thaw is a failure mode the Moon never sees."
+      },
+      "snow_mo": {
+       "op": "<=",
+       "v": 6,
+       "hard": false,
+       "why": "Snow insulates hardware and blunts the cycle."
+      }
+     },
+     "ignore": {
+      "slope_deg": "Terrain does not matter for a parked thermal test.",
+      "rough_m": "As above.",
+      "ndvi": "Not relevant to heat flow."
+     },
+     "baseline": [
+      "mcmurdo-dry-valleys",
+      "atacama-yungay"
+     ],
+     "limits": [
+      "vacuum",
+      "psr"
+     ],
+     "lab": "Pair with a thermal-vacuum chamber: in air, convection carries heat away that vacuum would not."
+    },
+    {
+     "id": "ltv.dust",
+     "label": "Dust seals & bearings",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where is abrasive, angular, dry dust most abundant?",
+     "target": {
+      "dust_ug": {
+       "w": 40,
+       "dir": "high",
+       "why": "More dust means more grit reaching seals."
+      },
+      "basalt": {
+       "w": 35,
+       "dir": "match",
+       "why": "Basaltic fines are angular and glassy like the target's regolith."
+      },
+      "rough_m": {
+       "w": 25,
+       "dir": "match",
+       "why": "Rough driving pumps dust into joints."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Moisture clumps dust and stops it migrating."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Plant cover keeps dust on the ground."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Wear does not depend on air temperature here.",
+      "low_sun_pct": "Light is irrelevant to wear."
+     },
+     "baseline": [
+      "atacama-yungay",
+      "sf-volcanic-field",
+      "death-valley"
+     ],
+     "limits": [
+      "regolith",
+      "vacuum"
+     ],
+     "lab": "Pair with a dust chamber using LHS-1 simulant and UV charging."
+    }
+   ]
+  },
+  {
+   "id": "eva",
+   "label": "Spacesuits & EVA",
+   "blurb": "Exploration suits (AxEMU), boots, lights and the crew who wear them.",
+   "icon": "suit",
+   "tests": [
+    {
+     "id": "eva.boots",
+     "label": "Boots & lower body",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where will boots meet the same grades, bumps and rocks as the traverse?",
+     "target": {
+      "slope_deg": {
+       "w": 35,
+       "dir": "match",
+       "why": "Walking grade drives knee and ankle loads in the suit."
+      },
+      "rough_m": {
+       "w": 35,
+       "dir": "match",
+       "why": "Uneven ground tests stability and boot sole grip."
+      },
+      "rock_pct": {
+       "w": 30,
+       "dir": "match",
+       "why": "Rock fields set trip hazards and route choice."
+      }
+     },
+     "interference": {
+      "snow_mo": {
+       "op": "<=",
+       "v": 9,
+       "hard": true,
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": true,
+       "why": "Vegetation softens and hides the ground."
+      },
+      "precip_mm": {
+       "op": "<=",
+       "v": 300,
+       "hard": false,
+       "why": "Mud and wet rock are slippery in a way regolith is not."
+      }
+     },
+     "ignore": {
+      "lst_dtr_K": "Suit thermal is tested in chambers.",
+      "dust_ug": "Covered by the dust test."
+     },
+     "baseline": [
+      "sf-volcanic-field",
+      "black-point",
+      "lanzarote"
+     ],
+     "limits": [
+      "gravity",
+      "regolith"
+     ],
+     "lab": "Pair with partial-gravity walking on NASA JSC's ARGOS offload rig."
+    },
+    {
+     "id": "eva.lights",
+     "label": "Helmet lights & low-sun vision",
+     "bodies": [
+      "moon"
+     ],
+     "question": "Where do crews work in grazing light and long darkness?",
+     "target": {
+      "low_sun_pct": {
+       "w": 50,
+       "dir": "high",
+       "why": "Low sun creates blinding glare and black shadows."
+      },
+      "dark_d": {
+       "w": 25,
+       "dir": "high",
+       "why": "Long darkness means working by helmet light."
+      },
+      "rough_m": {
+       "w": 25,
+       "dir": "match",
+       "why": "Relief casts the long shadows lights must fill."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": true,
+       "why": "Vegetation changes surface brightness and texture."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Not a lighting driver.",
+      "basalt": "Albedo matters more than rock type; not yet measured."
+     },
+     "baseline": [
+      "haughton-crater",
+      "svalbard-bockfjorden"
+     ],
+     "limits": [
+      "light"
+     ],
+     "lab": "Pair with a black-walled lighting bay: Earth's blue sky fills shadows the Moon leaves black."
+    },
+    {
+     "id": "eva.suitdust",
+     "label": "Suit dust protection",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where will suits collect the most angular, dry dust?",
+     "target": {
+      "dust_ug": {
+       "w": 45,
+       "dir": "high",
+       "why": "Dust loading drives abrasion of bearings and visors."
+      },
+      "basalt": {
+       "w": 35,
+       "dir": "match",
+       "why": "Basaltic fines are the closest Earth analog to regolith."
+      },
+      "rough_m": {
+       "w": 20,
+       "dir": "match",
+       "why": "Kneeling and sampling on rough ground kicks up more dust."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Damp dust sticks rather than migrates."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Plants keep dust down."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Light is not a dust driver."
+     },
+     "baseline": [
+      "sf-volcanic-field",
+      "atacama-yungay"
+     ],
+     "limits": [
+      "regolith",
+      "vacuum"
+     ],
+     "lab": "Pair with a dust chamber; lunar dust clings electrostatically in vacuum."
+    },
+    {
+     "id": "eva.crewops",
+     "label": "Crew operations & isolation",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where can a crew live and work far from help, in cold and darkness?",
+     "target": {
+      "remote_km": {
+       "w": 40,
+       "dir": "high",
+       "why": "Isolation forces self-reliance and real procedures."
+      },
+      "t_mean_C": {
+       "w": 20,
+       "dir": "low",
+       "why": "Cold adds workload and constrains EVA time."
+      },
+      "dark_d": {
+       "w": 20,
+       "dir": "high",
+       "why": "Odd light cycles disrupt sleep like the lunar day does."
+      },
+      "slope_deg": {
+       "w": 20,
+       "dir": "match",
+       "why": "Traverse terrain shapes daily EVA planning."
+      }
+     },
+     "interference": {},
+     "ignore": {
+      "basalt": "Geology is not the point of a crew test.",
+      "ndvi": "Not relevant to operations."
+     },
+     "baseline": [
+      "haughton-crater",
+      "mcmurdo-dry-valleys",
+      "hi-seas",
+      "tso-kar"
+     ],
+     "limits": [
+      "radiation",
+      "gravity"
+     ],
+     "lab": "Pair with closed habitats (NASA HERA, CHAPEA) for long-duration isolation."
+    }
+   ]
+  },
+  {
+   "id": "isru",
+   "label": "Resource extraction (ISRU)",
+   "blurb": "Digging, drilling, filtering and cleaning what the ground provides.",
+   "icon": "drill",
+   "tests": [
+    {
+     "id": "isru.intake",
+     "label": "Air-intake filters",
+     "bodies": [
+      "mars"
+     ],
+     "question": "Where is the air dustiest, thinnest and coldest, so filters clog the way they would on Mars?",
+     "target": {
+      "dust_ug": {
+       "w": 45,
+       "dir": "high",
+       "why": "Dust loading sets how fast filters clog."
+      },
+      "pressure_kPa": {
+       "w": 35,
+       "dir": "low",
+       "why": "Thin air changes flow and pressure drop across filters."
+      },
+      "t_mean_C": {
+       "w": 20,
+       "dir": "low",
+       "why": "Cold air is denser and stiffens filter media."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Humidity makes dust cake on filters in an un-Martian way."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": false,
+       "why": "Pollen and organic aerosols contaminate the test."
+      }
+     },
+     "ignore": {
+      "slope_deg": "Terrain is irrelevant to a static intake.",
+      "rough_m": "As above."
+     },
+     "baseline": [
+      "atacama-yungay"
+     ],
+     "limits": [
+      "atmosphere",
+      "dust"
+     ],
+     "lab": "Pair with a 0.6 kPa CO₂ chamber: no Earth site comes within 80× of Mars pressure."
+    },
+    {
+     "id": "isru.icedig",
+     "label": "Ice excavation",
+     "bodies": [
+      "mars",
+      "moon"
+     ],
+     "question": "Where is ice-cemented ground shallow, cold and dry at the surface?",
+     "target": {
+      "ice_m": {
+       "w": 35,
+       "dir": "match",
+       "why": "Depth to ice sets how much overburden must be moved."
+      },
+      "t_mean_C": {
+       "w": 35,
+       "dir": "low",
+       "why": "Only cold ground keeps ice cemented year-round."
+      },
+      "slope_deg": {
+       "w": 15,
+       "dir": "match",
+       "why": "Excavators need workable grades."
+      },
+      "rough_m": {
+       "w": 15,
+       "dir": "match",
+       "why": "Surface relief changes access and spoil handling."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 400,
+       "hard": false,
+       "why": "Surface meltwater makes mud, not ice-cemented regolith."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": false,
+       "why": "Vegetated permafrost has an organic layer Mars lacks."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Light does not affect digging.",
+      "dust_ug": "Not a driver for excavation."
+     },
+     "baseline": [
+      "mcmurdo-dry-valleys",
+      "haughton-crater"
+     ],
+     "limits": [
+      "atmosphere",
+      "gravity"
+     ],
+     "lab": "Pair with cold-room bins of ice-regolith simulant at −60 °C."
+    },
+    {
+     "id": "isru.drill",
+     "label": "Ice & rock drills",
+     "bodies": [
+      "mars",
+      "moon"
+     ],
+     "question": "Where is the ground coldest and hardest, with ice and target-like rock?",
+     "target": {
+      "t_mean_C": {
+       "w": 40,
+       "dir": "low",
+       "why": "Cold changes ice hardness and bit cooling."
+      },
+      "ice_m": {
+       "w": 25,
+       "dir": "match",
+       "why": "Ice at depth is the drilling target."
+      },
+      "basalt": {
+       "w": 20,
+       "dir": "match",
+       "why": "Bit wear depends on rock type."
+      },
+      "t_range_K": {
+       "w": 15,
+       "dir": "high",
+       "why": "Thermal stress on the drill string."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 300,
+       "hard": false,
+       "why": "Groundwater and meltwater flood holes."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Light is irrelevant to drilling."
+     },
+     "baseline": [
+      "haughton-crater",
+      "mcmurdo-dry-valleys",
+      "atacama-yungay",
+      "rio-tinto"
+     ],
+     "limits": [
+      "atmosphere",
+      "gravity"
+     ],
+     "lab": "Pair with a cryo-vacuum drill chamber: ice sublimates at 0.6 kPa."
+    },
+    {
+     "id": "isru.water",
+     "label": "Water cleanup",
+     "bodies": [
+      "mars"
+     ],
+     "question": "Where do soils carry the salts and oxidants Mars water will contain?",
+     "target": {
+      "salt_pct": {
+       "w": 40,
+       "dir": "match",
+       "why": "Perchlorate and salts are what cleanup must remove."
+      },
+      "precip_mm": {
+       "w": 40,
+       "dir": "low",
+       "why": "Only hyper-arid ground keeps salts in the soil."
+      },
+      "t_mean_C": {
+       "w": 20,
+       "dir": "low",
+       "why": "Cold slows treatment chemistry."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Organic matter changes the chemistry."
+      }
+     },
+     "ignore": {
+      "slope_deg": "Terrain is irrelevant to a process plant.",
+      "rough_m": "As above."
+     },
+     "baseline": [
+      "atacama-yungay"
+     ],
+     "limits": [
+      "chemistry"
+     ],
+     "lab": "Pair with spiked simulant runs (MGS-1 + perchlorate)."
+    },
+    {
+     "id": "isru.regolith",
+     "label": "Regolith excavation & processing",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where is loose, dry, target-like rock easy to dig and process?",
+     "target": {
+      "basalt": {
+       "w": 35,
+       "dir": "match",
+       "why": "Feedstock chemistry: mare basalt or highland anorthosite."
+      },
+      "slope_deg": {
+       "w": 20,
+       "dir": "match",
+       "why": "Excavators work on modest grades."
+      },
+      "rough_m": {
+       "w": 15,
+       "dir": "match",
+       "why": "Relief changes haul routes."
+      },
+      "soil_kPa": {
+       "w": 15,
+       "dir": "match",
+       "why": "Ground strength sets digging forces."
+      },
+      "dust_ug": {
+       "w": 15,
+       "dir": "high",
+       "why": "Fines drive wear on processing hardware."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Wet feedstock behaves nothing like regolith."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.3,
+       "hard": true,
+       "why": "Organic soil contaminates feedstock."
+      },
+      "snow_mo": {
+       "op": "<=",
+       "v": 9,
+       "hard": true,
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Light is irrelevant to processing."
+     },
+     "baseline": [
+      "mauna-kea",
+      "sf-volcanic-field"
+     ],
+     "limits": [
+      "gravity",
+      "vacuum",
+      "regolith"
+     ],
+     "lab": "Pair with simulant bins (LHS-1 highland, LMS-1 mare) in vacuum."
+    }
+   ]
+  },
+  {
+   "id": "hab",
+   "label": "Habitats & power",
+   "blurb": "Shelter, foundations and the power that keeps the base alive.",
+   "icon": "hab",
+   "tests": [
+    {
+     "id": "hab.thermal",
+     "label": "Habitat thermal cycling",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where will a habitat shell see the largest, coldest cycles without rain?",
+     "target": {
+      "lst_dtr_K": {
+       "w": 40,
+       "dir": "high",
+       "why": "Daily cycling fatigues joints, seals and coatings."
+      },
+      "t_range_K": {
+       "w": 25,
+       "dir": "high",
+       "why": "Seasonal extremes widen the envelope."
+      },
+      "t_mean_C": {
+       "w": 20,
+       "dir": "low",
+       "why": "Cold sets heater power and insulation needs."
+      },
+      "dark_d": {
+       "w": 15,
+       "dir": "high",
+       "why": "Long darkness tests heat retention."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 250,
+       "hard": true,
+       "why": "Rain and freeze–thaw add failures that space never causes."
+      },
+      "snow_mo": {
+       "op": "<=",
+       "v": 6,
+       "hard": false,
+       "why": "Snow loads and insulation distort the test."
+      }
+     },
+     "ignore": {
+      "basalt": "Rock type does not affect shell temperatures."
+     },
+     "baseline": [
+      "haughton-crater",
+      "mcmurdo-dry-valleys",
+      "tso-kar"
+     ],
+     "limits": [
+      "vacuum",
+      "radiation"
+     ],
+     "lab": "Pair with thermal-vacuum cycling of shell coupons."
+    },
+    {
+     "id": "hab.ground",
+     "label": "Foundations & ground stability",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where is flat, firm, dry ground like a base site?",
+     "target": {
+      "slope_deg": {
+       "w": 35,
+       "dir": "low",
+       "why": "Level ground limits leveling work and tipping risk."
+      },
+      "rough_m": {
+       "w": 25,
+       "dir": "low",
+       "why": "Smooth pads reduce site preparation."
+      },
+      "soil_kPa": {
+       "w": 25,
+       "dir": "match",
+       "why": "Bearing capacity sets footing size."
+      },
+      "basalt": {
+       "w": 15,
+       "dir": "match",
+       "why": "Bedrock type affects anchoring."
+      }
+     },
+     "interference": {
+      "snow_mo": {
+       "op": "<=",
+       "v": 6,
+       "hard": false,
+       "why": "Long snow seasons shorten the usable field window and flatten contrast."
+      },
+      "precip_mm": {
+       "op": "<=",
+       "v": 400,
+       "hard": false,
+       "why": "Wet ground loses bearing strength."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Light does not affect foundations."
+     },
+     "baseline": [
+      "hi-seas"
+     ],
+     "limits": [
+      "gravity"
+     ],
+     "lab": "Pair with plate-load tests in compacted simulant."
+    },
+    {
+     "id": "hab.solar",
+     "label": "Solar arrays & night survival",
+     "bodies": [
+      "moon"
+     ],
+     "question": "Where is sunlight low and darkness long, like the polar day–night cycle?",
+     "target": {
+      "low_sun_pct": {
+       "w": 40,
+       "dir": "high",
+       "why": "Vertical arrays must track a Sun skimming the horizon."
+      },
+      "dark_d": {
+       "w": 30,
+       "dir": "high",
+       "why": "Night survival needs stored energy."
+      },
+      "t_mean_C": {
+       "w": 15,
+       "dir": "low",
+       "why": "Cold lowers battery capacity."
+      },
+      "slope_deg": {
+       "w": 15,
+       "dir": "match",
+       "why": "Terrain sets horizon shading."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 500,
+       "hard": false,
+       "why": "Cloudy, wet climates cut irradiance unpredictably."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.35,
+       "hard": false,
+       "why": "Vegetation shades low arrays."
+      }
+     },
+     "ignore": {
+      "basalt": "Not relevant to power."
+     },
+     "baseline": [
+      "svalbard-bockfjorden",
+      "haughton-crater"
+     ],
+     "limits": [
+      "light",
+      "vacuum"
+     ],
+     "lab": "Pair with a solar simulator; a 14-day lunar night cannot be reproduced outdoors."
+    },
+    {
+     "id": "hab.fission",
+     "label": "Fission surface power siting",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where is there flat, stable ground, far from people, for a reactor pad and berms?",
+     "target": {
+      "slope_deg": {
+       "w": 35,
+       "dir": "low",
+       "why": "A level pad for the reactor and radiators."
+      },
+      "rough_m": {
+       "w": 25,
+       "dir": "low",
+       "why": "Smooth ground for berm construction."
+      },
+      "remote_km": {
+       "w": 25,
+       "dir": "high",
+       "why": "Exclusion distance from the crew habitat."
+      },
+      "basalt": {
+       "w": 15,
+       "dir": "match",
+       "why": "Regolith for shielding berms."
+      }
+     },
+     "interference": {
+      "precip_mm": {
+       "op": "<=",
+       "v": 300,
+       "hard": false,
+       "why": "Rain cools radiators in ways vacuum never will."
+      },
+      "ndvi": {
+       "op": "<=",
+       "v": 0.35,
+       "hard": false,
+       "why": "Vegetated ground is not regolith."
+      }
+     },
+     "ignore": {
+      "low_sun_pct": "Fission does not need sunlight."
+     },
+     "baseline": [],
+     "limits": [
+      "vacuum",
+      "gravity"
+     ],
+     "lab": "No field precedent yet: pair with DOE/NASA ground tests in the style of KRUSTY."
+    }
+   ]
+  },
+  {
+   "id": "sci",
+   "label": "Science instruments",
+   "blurb": "Spectrometers and sampling tools for geology and life detection.",
+   "icon": "sci",
+   "tests": [
+    {
+     "id": "sci.spectro",
+     "label": "Mineral ID spectrometers",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where is bare rock of the right type exposed to the sky?",
+     "target": {
+      "basalt": {
+       "w": 60,
+       "dir": "match",
+       "why": "Spectra must see the same mineral families."
+      },
+      "dust_ug": {
+       "w": 15,
+       "dir": "match",
+       "why": "Dust coatings mute spectral features."
+      },
+      "rough_m": {
+       "w": 25,
+       "dir": "match",
+       "why": "Outcrops need relief to be exposed."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Plants mask rock spectra."
+      },
+      "precip_mm": {
+       "op": "<=",
+       "v": 500,
+       "hard": false,
+       "why": "Weathering coats rocks with clays."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Instrument thermal is tested separately."
+     },
+     "baseline": [
+      "mauna-kea",
+      "holuhraun",
+      "lanzarote"
+     ],
+     "limits": [
+      "regolith"
+     ],
+     "lab": "Pair with EMIT-vs-CRISM spectral matching once the mineral layer is added."
+    },
+    {
+     "id": "sci.astrobio",
+     "label": "Astrobiology sampling",
+     "bodies": [
+      "mars"
+     ],
+     "question": "Where is the ground so dry and cold that life is barely detectable?",
+     "target": {
+      "precip_mm": {
+       "w": 40,
+       "dir": "low",
+       "why": "Hyper-aridity pushes life to its detection limit."
+      },
+      "t_mean_C": {
+       "w": 25,
+       "dir": "low",
+       "why": "Cold slows biology and preserves biomarkers."
+      },
+      "salt_pct": {
+       "w": 20,
+       "dir": "match",
+       "why": "Salts and oxidants degrade organics like on Mars."
+      },
+      "ndvi": {
+       "w": 15,
+       "dir": "low",
+       "why": "Bare ground only."
+      }
+     },
+     "interference": {},
+     "ignore": {
+      "slope_deg": "Terrain does not matter for sampling.",
+      "rough_m": "As above."
+     },
+     "baseline": [
+      "atacama-yungay",
+      "mcmurdo-dry-valleys",
+      "rio-tinto"
+     ],
+     "limits": [
+      "radiation",
+      "chemistry"
+     ],
+     "lab": "Pair with sterile-sample handling and UV-irradiated controls."
+    }
+   ]
+  },
+  {
+   "id": "land",
+   "label": "Landers",
+   "blurb": "Landing sensors and the ground they must judge from above.",
+   "icon": "land",
+   "tests": [
+    {
+     "id": "land.hazards",
+     "label": "Landing hazard detection",
+     "bodies": [
+      "moon",
+      "mars"
+     ],
+     "question": "Where can landing sensors practise spotting slopes, rocks and craters like those at the landing zone?",
+     "target": {
+      "slope_deg": {
+       "w": 35,
+       "dir": "match",
+       "why": "Hazard detection must classify slopes near the lander's tip-over limit."
+      },
+      "rough_m": {
+       "w": 30,
+       "dir": "match",
+       "why": "Relief and crater rims are what the sensor maps from altitude."
+      },
+      "rock_pct": {
+       "w": 20,
+       "dir": "match",
+       "why": "Boulders above the leg clearance are the main touchdown hazard."
+      },
+      "low_sun_pct": {
+       "w": 15,
+       "dir": "high",
+       "why": "Grazing light hides hazards in shadow from camera-based sensors."
+      }
+     },
+     "interference": {
+      "ndvi": {
+       "op": "<=",
+       "v": 0.25,
+       "hard": true,
+       "why": "Vegetation hides the ground from lidar and cameras."
+      },
+      "snow_mo": {
+       "op": "<=",
+       "v": 9,
+       "hard": true,
+       "why": "Needs a snow-free season: snow erases rocks and shadows."
+      }
+     },
+     "ignore": {
+      "t_mean_C": "Sensor thermal is tested in chambers.",
+      "precip_mm": "Not a driver for a flight test window."
+     },
+     "baseline": [
+      "sf-volcanic-field",
+      "mojave"
+     ],
+     "limits": [
+      "gravity",
+      "vacuum",
+      "regolith"
+     ],
+     "lab": "Pair with helicopter or drone sensor flights and plume–surface interaction tests in vacuum."
+    }
+   ]
+  }
+ ]
+}
