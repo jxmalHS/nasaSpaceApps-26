@@ -1,0 +1,31 @@
+# Engine settings. Every number here is a design choice, not a scientific fact.
+
+# Per world: pixel size, tile size and the box drawn around each Earth site.
+# Rule: the same measurement on two worlds uses the same pixel size (the coarser one).
+bodies:
+  moon:
+    resolution_m: 100     # LOLA 20 m and Copernicus 30 m both averaged down to 100 m
+    tile_km: 5
+    earth_box_km: 30      # area around each Earth site point
+  mars:
+    resolution_m: 500     # MOLA ~463 m -> 500 m (coarser, and 20 km / 500 m = 40 px exactly)
+    tile_km: 20
+    earth_box_km: 60
+
+max_missing_frac: 0.05    # tiles with more missing pixels than this are dropped (and counted)
+spike_threshold_m: 300    # pixels this far from their 5x5 neighbourhood median are treated as errors
+
+terrain:
+  steep_slope_deg: 15     # threshold for frac_steep
+  roughness_scales_m:     # only computed when the scale is at least 3 pixels
+    rough_small: 500
+    rough_large: 2500
+  pit:                    # crater/obstacle proxy
+    window_m: 1000
+    min_depth_m: 5
+
+knn:
+  k: 5
+  site_quantile: 0.75
+
+workers: 4                # how many sites are streamed at the same time (8 was slower on a weak connection)

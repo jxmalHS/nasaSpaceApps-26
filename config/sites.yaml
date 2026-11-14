@@ -1,0 +1,83 @@
+# Where every site is, and where that location comes from.
+# Earth points are only used to FIND a site; the engine then analyses a square box
+# around each point (size per world in settings.yaml).
+
+targets:
+  lunar_south_pole:
+    body: moon
+    dataset: lola_south_pole_20m
+    center_xy_m: [0, 0]          # polar stereographic metres; (0, 0) is the south pole itself
+    box_km: 40
+    source: >-
+      LOLA LDEM_80S_20M (20 m/pixel, 80-90 S), streamed from the MIT LOLA archive.
+      Box centred on the pole; it contains several Artemis III candidate regions
+      (e.g. Peak near Shackleton, de Gerlache rim).
+
+earth_sites:
+  # --- Moon baselines: Artemis navigation-training sites (USGS LGRS release, McClernan 2024, doi:10.5066/P14KSANW)
+  - name: meteor_crater
+    role: baseline
+    compare_with: moon
+    lat: 35.0333
+    lon: -111.017
+    source: "USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921), entry 'Barringer (= Meteor)'"
+  - name: cinder_lake_crater_field
+    role: baseline
+    compare_with: moon
+    lat: 35.3315
+    lon: -111.4834
+    source: "OpenStreetMap way 1319347968 'Cinder Hills OHV Area' (Cinder Lake Crater Field 2 lies in this recreation area, per USGS)"
+  - name: sp_crater_jett3
+    role: baseline
+    compare_with: moon
+    lat: 35.5824
+    lon: -111.6319
+    source: "OpenStreetMap node 359272327 'S P Crater' (JETT3 base, NASA NTRS 20230000146)"
+  - name: buffalo_park
+    role: baseline
+    compare_with: moon
+    lat: 35.2222
+    lon: -111.6332
+    source: "OpenStreetMap way 205504372 'Buffalo Park, Flagstaff'"
+  - name: yucca_flat
+    role: baseline
+    compare_with: moon
+    lat: 36.9476
+    lon: -116.0253
+    source: "OpenStreetMap relation 14656758 'Yucca Dry Lake' (southern Yucca Flat)"
+
+  # --- Moon negative controls: flat farmland that SHOULD rank low
+  - name: garden_city_kansas
+    role: negative_control
+    compare_with: moon
+    lat: 37.9717
+    lon: -100.8727
+    source: "OpenStreetMap relation 129924 'Garden City, Kansas' (High Plains farmland)"
+  - name: ames_iowa
+    role: negative_control
+    compare_with: moon
+    lat: 42.0268
+    lon: -93.6170
+    source: "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"
+
+  # --- Mars baselines: Mars 2020 Lander Vision System test spots (JPL PIA23265) + Grand Falls dunes
+  - {name: mesquite_flat_dunes, role: baseline, compare_with: mars, lat: 36.6619, lon: -117.0962,
+     source: "OpenStreetMap way 131820446 'Mesquite Dunes'"}
+  - {name: badwater_basin, role: baseline, compare_with: mars, lat: 36.2303, lon: -116.7674,
+     source: "OpenStreetMap way 96614687 'Badwater Basin'"}
+  - {name: panamint_valley, role: baseline, compare_with: mars, lat: 36.0759, lon: -117.2544,
+     source: "OpenStreetMap way 163728245 'Panamint Valley'"}
+  - {name: kelso_dunes, role: baseline, compare_with: mars, lat: 34.9342, lon: -115.7196,
+     source: "OpenStreetMap way 61011696 'Kelso Dunes'"}
+  - {name: hole_in_the_wall, role: baseline, compare_with: mars, lat: 35.0472, lon: -115.3940,
+     source: "OpenStreetMap way 1449569484 'Hole-in-the-Wall Campground'"}
+  - {name: grand_falls_dunes, role: baseline, compare_with: mars, lat: 35.49, lon: -111.164,
+     source: "USGS Known Terrestrial Analog Sites (Hunter 2020), entry 'Grand Falls' (Dunes, Mars)"}
+
+# Extra candidate sites read from the USGS list (impact craters -> compared with the Moon).
+candidate_lists:
+  - file: data/baselines/KnownTerrestria.zip
+    analog_type: Impact Crater
+    compare_with: moon
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"

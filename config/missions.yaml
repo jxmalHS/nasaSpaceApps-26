@@ -1,0 +1,17 @@
+# Mission profiles: which terrain measurements matter for a test, and how much.
+# Measurements not listed are ignored. Weights are EXAMPLE values chosen by the
+# engine team, not official NASA requirements.
+
+lunar_surface_mobility:
+  description: >-
+    Rover / astronaut surface mobility at the lunar south pole: slopes,
+    steep ground and small-scale roughness matter most.
+  body: moon
+  target: lunar_south_pole
+  weights:
+    slope_mean: 1.0
+    slope_p90: 1.5
+    frac_steep: 1.0
+    rough_small: 1.0
+    rough_large: 0.7
+    pit_density: 0.5
