@@ -301,13 +301,15 @@ def summarise_sites(earth_tiles: pd.DataFrame, baselines: list[str], site_quanti
 # The one function to call
 # --------------------------------------------------------------------------
 def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
-            site_quantile: float = 0.75) -> KnnResult:
+            site_quantile: float = 0.75, exclude_from_fit: tuple[str, ...] = ()) -> KnnResult:
     """Rank Earth sites by how closely they match the target, for one mission.
 
-    tiles         : the tile table described at the top of this file
-    weights       : {measurement: importance}; anything not listed is ignored
-    k             : how many nearest target tiles to average (default 5)
-    site_quantile : which percentile of tile similarity becomes the site score
+    tiles            : the tile table described at the top of this file
+    weights          : {measurement: importance}; anything not listed is ignored
+    k                : how many nearest target tiles to average (default 5)
+    site_quantile    : which percentile of tile similarity becomes the site score
+    exclude_from_fit : sites left OUT of everything the model learns (the scaler),
+                       but still scored - used for the held-out test
 
     Nothing here is random, so the same input always gives the same output.
     """
@@ -322,7 +324,10 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
         raise ValueError("No usable Earth tiles (none given, or all had missing values)")
 
     w = normalise_weights(weights)
-    scaler = fit_scaler(earth, features)
+    fit_on = earth[~earth[SITE_COL].isin(exclude_from_fit)]
+    if fit_on.empty:
+        raise ValueError("No Earth tiles left to fit the scaler after excluding held-out sites")
+    scaler = fit_scaler(fit_on, features)
     target_space = to_weighted_space(target, features, scaler, w)
     earth_space = to_weighted_space(earth, features, scaler, w)
 

@@ -29,6 +29,7 @@ from rasterio.crs import CRS
 import landcover
 import report
 import sources
+import validation
 from analog_knn import run_knn
 from features import tile_features
 from mission import MET, NOT_MET, UNKNOWN, Mission, parse_mission
@@ -322,12 +323,24 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
     table, stats = build_table(mission, settings, target_g, earth, grids, covers)  # steps 2-3
     result, skipped = rank(table, mission.weights, settings)                      # step 4
 
+    # Validation: held-out NASA sites, simple-method comparison, mission sensitivity
+    knn = settings["knn"]
+    held_out = validation.held_out_test(table, result.weights, knn["k"], knn["site_quantile"])
+    simple = validation.simple_method_ranking(table, result.weights, knn["site_quantile"])
+    agreement = validation.method_agreement(result.sites, simple)
+    others = {}
+    for other_name, other_raw in missions.items():
+        other = parse_mission(other_name, other_raw)
+        if other_name != mission_name and other.body == mission.body and other.target == mission.target:
+            others[other_name] = rank(table, other.weights, settings)[0].sites
+    sensitivity = validation.mission_sensitivity(result.sites, others)
+
     # Step 5: report
     profile = report.target_profile(table[table.role == "target"])
     stab = (stability(mission, settings, result.sites, table, target_g, earth, grids, covers)
             if run_stability else {"site_confidence": {}})
     info = pd.DataFrame(earth).set_index("name")[["lat", "lon", "source"]]
-    ranking = result.sites.join(info, on="site")
+    ranking = result.sites.join(info, on="site").merge(simple, on="site", how="left")
     details = {s: report.site_details(s, result.tiles[result.tiles.site == s], mission, profile)
                for s in ranking["site"]}
     cannot = settings["bodies"][mission.body].get("cannot_reproduce", [])
@@ -374,7 +387,10 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                "earth_sites_no_usable_tiles": stats.loc[(stats.tiles_kept == 0) & (stats.site != mission.target),
                                                         "site"].tolist(),
                "checks": {"negative_controls": report.negative_control_check(ranking),
-                          "stability": {k: v for k, v in stab.items() if k != "site_confidence"}},
+                          "stability": {k: v for k, v in stab.items() if k != "site_confidence"},
+                          "held_out_nasa_sites": held_out,
+                          "simple_method_agreement": agreement,
+                          "mission_sensitivity": sensitivity},
                "attribution": [sources.COPERNICUS_NOTICE, landcover.WORLDCOVER_NOTICE]}
     report.write_json(out / "summary.json", summary)
     (out / "report.md").write_text(report.markdown_report(ranking, summary, cannot, settings["disclaimer"]),

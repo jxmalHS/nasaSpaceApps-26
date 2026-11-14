@@ -23,6 +23,19 @@ python main.py run --mission lunar_surface_mobility --offline   # only sites alr
 - **Confidence**: share of 14 small changes the site's rank survives (each weight ±20%, pixels 2× bigger, tiles shifted half a tile). High ≥ 80%, medium ≥ 50%.
 - **Negative controls**: farmland must rank in the bottom half; otherwise the report says FAIL.
 
+## How the model is tested (`validation.py`)
+
+kNN here is **unsupervised**: nothing is trained on "good"/"bad" labels, because only ~5 known
+analogs exist (far too few to train on). Instead of a train/test split, the method is tested by:
+
+| Check | What it shows |
+|---|---|
+| **Held-out NASA sites** | Each NASA site is left out of fitting in turn; where does it rank? Reported as recall@5 / recall@10 next to what a random ranking would score. Warns when there are too few sites for this to mean much |
+| **Negative controls** | Farmland must rank in the bottom half |
+| **Stability** | 14 small changes (weights ±20%, 2× pixels, half-tile shift): does the #1 site / top 5 survive? |
+| **Simple-method comparison** | A plain "distance to the target's typical values" ranking. Agreement shows consistency, **not** accuracy |
+| **Mission sensitivity** | Two missions on the same sites should rank differently; near-identical rankings mean the weights aren't doing much |
+
 ## Outputs (`results/<mission>/`)
 
 | File | Contents |

@@ -139,13 +139,27 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
                  f"{r.confidence_label} |")
     base = ranking[ranking.role == "baseline"]
     L += ["", "## NASA baselines", ""] + [f"- {r.site}: rank {r['rank']}" for _, r in base.iterrows()]
-    nc = summary["checks"]["negative_controls"]
-    st = summary["checks"]["stability"]
+    checks = summary["checks"]
+    nc, st = checks["negative_controls"], checks["stability"]
+    ho, ag, ms = checks["held_out_nasa_sites"], checks["simple_method_agreement"], checks["mission_sensitivity"]
     L += ["", "## Checks", "",
-          f"- Negative controls (farmland must rank in the bottom half): **{nc['status']}**",
-          f"- Stability: #1 site unchanged in {st['top1_unchanged_share']:.0%} of {st['n_variants']} "
+          "The model is unsupervised (no training labels), so these checks are how it is tested.", "",
+          f"- **Held-out NASA sites** ({ho['status']}): "
+          + (f"each NASA site left out of fitting in turn: ranks "
+             f"{', '.join(f'{h['site']} #{h['rank']}' for h in ho['held_out'])}; "
+             f"recall@5 = {ho['recall_at_5']:.0%} (random guess: {ho['random_guess_recall_at_5']:.0%})"
+             + (f". ⚠️ {ho['warning']}" if ho.get("warning") else "")
+             if ho["status"] != "NOT RUN" else ho["reason"]),
+          f"- **Negative controls** (farmland must rank in the bottom half): **{nc['status']}**",
+          f"- **Stability:** #1 site unchanged in {st['top1_unchanged_share']:.0%} of {st['n_variants']} "
           f"small changes; on average {st['mean_top5_survivors']:.1f} of the top 5 stay in the top 5"
-          if st.get("n_variants") else "- Stability: not run",
+          if st.get("n_variants") else "- **Stability:** not run",
+          f"- **Simple-method comparison** ({ag['label']}): top-5 overlap {ag['top5_overlap']}/5, "
+          f"Spearman {ag['spearman']:.2f}",
+          f"- **Mission sensitivity** ({ms['status']}): "
+          + ("; ".join(f"vs {c['mission']} Spearman {c['spearman']:.2f}" for c in ms["comparisons"])
+             if ms.get("comparisons") else ms.get("reason", ""))
+          + (f". ⚠️ {ms['warning']}" if ms.get("warning") else ""),
           f"- Features skipped (no data at this pixel size): {', '.join(summary['features_skipped_no_data']) or 'none'}",
           "", "## What Earth cannot reproduce", ""] + [f"- {c}" for c in cannot]
     L += ["", "## Disclaimer", "", disclaimer, "", "## Data credits", ""] + [f"- {a}" for a in summary["attribution"]]

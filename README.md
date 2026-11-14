@@ -15,13 +15,18 @@ target area on the Moon, and ranks Earth sites from most to least similar.
 
 Height above "sea level" is never used, because the Moon has no sea level. Missing data is always "unknown", never a pass.
 
+**Is it ML?** Yes: unsupervised nearest-neighbour search. There is no training on labels (only ~5 known
+analog sites exist, too few to train on), so it is tested instead with held-out NASA sites, farmland
+negative controls, stability checks, a simple-method comparison and mission sensitivity
+(see `docs/pipeline.md`).
+
 ## Run it
 
 ```powershell
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 48 tests, no internet needed
+pytest                                               # 53 tests, no internet needed
 python main.py run --mission lunar_surface_mobility  # results in results/<mission>/report.md
 ```
 
@@ -31,7 +36,7 @@ the sites already downloaded.
 
 ## Status
 
-- ✅ All 5 steps work for the Moon; 48 tests pass.
+- ✅ All 5 steps work for the Moon, plus the model checks; 53 tests pass.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.
 - ⏳ Not built yet: temperature and mineral modules, Mars.
@@ -50,6 +55,7 @@ the sites already downloaded.
 | `mission.py` | Step 1: checks a mission's target / ignored / interference sorting and requirements |
 | `landcover.py` | Interference conditions (trees, crops, snow, water...) from ESA WorldCover |
 | `report.py` | Step 5: requirements, differences, confidence, report files |
+| `validation.py` | Model checks: held-out NASA sites, simple-method comparison, mission sensitivity |
 | `config/` | Settings, sites (with sources) and mission weights |
 | `docs/` | More detail: `pipeline.md`, `knn_model.md` |
 

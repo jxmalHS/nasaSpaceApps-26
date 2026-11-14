@@ -34,3 +34,27 @@ lunar_surface_mobility:
     - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
     - {feature: rough_small, max_abs_diff: 3.0, unit: m}
+
+lunar_landing_hazards:
+  description: >-
+    Lander hazard-detection cameras / landing-site survey: crater-like dips,
+    curvature and overall relief matter most; fine slope detail matters less.
+  body: moon
+  target: lunar_south_pole
+  features:
+    target:
+      pit_density: 2.0
+      curvature_abs_mean: 1.5
+      relief: 1.0
+      hypsometric_integral: 1.0
+      rough_large: 0.5
+    ignored: [slope_mean, slope_std, slope_p90, frac_steep, rough_small,
+              grass_shrub_frac, bare_frac, cropland_frac, surface_temperature, minerals]
+    interference:
+      tree_frac: {max: 0.2}
+      builtup_frac: {max: 0.1}
+      snow_ice_frac: {max: 0.1}
+      water_frac: {max: 0.05}
+  mandatory:
+    - {feature: pit_density, max_abs_diff: 0.5, unit: per_km2}
+    - {feature: relief, max_abs_diff: 150, unit: m}
