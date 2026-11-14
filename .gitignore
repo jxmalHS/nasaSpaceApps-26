@@ -6,8 +6,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
-# Generated results (re-create with: python main.py run --mission ...)
-results/
+# Generated results ARE committed so teammates can see them without running the engine.
+# Re-create with: python main.py run --mission ... (and python main.py export-atlas)
 
 # Settings file created by the NASA earthaccess login tool
 .dodsrc

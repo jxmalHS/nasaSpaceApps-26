@@ -1,0 +1,186 @@
+{
+  "site": "tin_bider",
+  "role": "candidate",
+  "rank": 14,
+  "score": 0.2737882445623602,
+  "location": {
+    "lat": 27.6,
+    "lon": 5.11667,
+    "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Tin Bider'"
+  },
+  "covers": {
+    "target_coverage": 0.046875
+  },
+  "test_tile": {
+    "tile_id": "r00c05",
+    "lat": 27.710033582424483,
+    "lon": 5.245461476669091,
+    "similarity": 0.44799785201511133
+  },
+  "requirements": [
+    {
+      "requirement": "pit_density within 0.5 per_km2 of the target",
+      "status": "met",
+      "value": 1.2399999999999998,
+      "target": 0.7999999999999999,
+      "met_somewhere_on_site": true
+    },
+    {
+      "requirement": "relief within 150 m of the target",
+      "status": "not_met",
+      "value": 123.227783203125,
+      "target": 1005.6599807739258,
+      "met_somewhere_on_site": false
+    }
+  ],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 11.691177839896522,
+      "test_tile": 3.029380958084146,
+      "site_median": 1.3668327145224195,
+      "difference": -8.661796881812375,
+      "statement": "Average slope is 8.66\u00b0 gentler than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 4.35791507472881,
+      "test_tile": 2.913408044029678,
+      "site_median": 1.3849622848767917,
+      "difference": -1.4445070306991319,
+      "statement": "Slope variability is 1.44\u00b0 lower than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 18.806584481402048,
+      "test_tile": 6.301064634350006,
+      "site_median": 2.749514699140427,
+      "difference": -12.505519847052042,
+      "statement": "Steepest-10% slope is 12.5\u00b0 gentler than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "ignored",
+      "target": 0.2486,
+      "test_tile": 0.0132,
+      "site_median": 0.0,
+      "difference": -0.2354,
+      "statement": "Share of steep ground is 0.235 lower than the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 1005.6599807739258,
+      "test_tile": 123.227783203125,
+      "site_median": 68.41246032714844,
+      "difference": -882.4321975708008,
+      "statement": "Relief (highest minus lowest) is 882 m smaller than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "target",
+      "target": 0.49959563105715865,
+      "test_tile": 0.589378304219392,
+      "site_median": 0.4186283381336935,
+      "difference": 0.08978267316223332,
+      "statement": "Hypsometric integral is 0.0898 higher than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": 3.2322887241050373,
+      "test_tile": 4.379208073293604,
+      "site_median": 1.6665260025630355,
+      "difference": 1.146919349188567,
+      "statement": "Small-scale bumpiness is 1.15 m rougher than the target"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 36.3784061016397,
+      "test_tile": 11.965037674950464,
+      "site_median": 5.773265186090754,
+      "difference": -24.41336842668923,
+      "statement": "Large-scale bumpiness is 24.4 m smoother than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "target",
+      "target": 0.2852543664550781,
+      "test_tile": 0.3983958587646485,
+      "site_median": 0.1603019546508789,
+      "difference": 0.11314149230957038,
+      "statement": "Curvature is 0.113 /km more curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "target",
+      "target": 0.7999999999999999,
+      "test_tile": 1.2399999999999998,
+      "site_median": 0.33999999999999997,
+      "difference": 0.43999999999999984,
+      "statement": "Density of crater-like dips is 0.44 per km\u00b2 higher than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": 176.91690826416016,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": 17.52491283416748,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.0,
+      "builtup_frac": 0.0,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.0
+    }
+  },
+  "baselines": {
+    "nearest": "meteor_crater",
+    "closer_than": "meteor_crater"
+  },
+  "confidence": {
+    "value": 0.9166666666666666,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ.",
+    "Vacuum: no atmosphere; Earth sites have air, wind and weathering.",
+    "Radiation: no magnetic field or atmosphere shielding the lunar surface.",
+    "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers.",
+    "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils.",
+    "Lighting: very low sun angles and long shadows at the lunar poles."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

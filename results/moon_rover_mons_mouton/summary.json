@@ -1,0 +1,830 @@
+{
+  "mission": "moon_rover_mons_mouton",
+  "description": "Same rover-wheel test as moon_rover_south_pole, but the target is the Mons Mouton plateau (VIPER / IM-2 landing area): the gentler ground a rover would really drive on, instead of a box round the pole that includes Shackleton crater's steep walls. Weights as moon_rover_south_pole (published rover slope limits); ~30 cm rocks NOT measured.",
+  "body": "moon",
+  "target": "mons_mouton",
+  "target_tiles": 36,
+  "target_profile": {
+    "slope_mean": 7.118272756245361,
+    "slope_std": 3.312472053750806,
+    "slope_p90": 11.436544371468484,
+    "frac_steep": 0.0186,
+    "relief": 503.269775390625,
+    "hypsometric_integral": 0.5076647044715916,
+    "rough_small": 3.8579238592793206,
+    "rough_large": 30.962817462440505,
+    "curvature_abs_mean": 0.31817297607421874,
+    "pit_density": 0.6799999999999999,
+    "temp_range_mean": NaN,
+    "temp_range_std": NaN
+  },
+  "weights_used": {
+    "frac_steep": 0.3448275862068966,
+    "slope_p90": 0.25862068965517243,
+    "slope_mean": 0.1724137931034483,
+    "pit_density": 0.08620689655172414,
+    "rough_small": 0.08620689655172414,
+    "rough_large": 0.05172413793103448
+  },
+  "features_skipped_no_data": [],
+  "closest_achievable": {},
+  "ignored": [
+    "slope_std",
+    "relief",
+    "hypsometric_integral",
+    "curvature_abs_mean",
+    "grass_shrub_frac",
+    "bare_frac",
+    "temp_range_mean",
+    "temp_range_std",
+    "minerals"
+  ],
+  "interference_limits": {
+    "tree_frac": {
+      "max": 0.3
+    },
+    "cropland_frac": {
+      "max": 0.2
+    },
+    "builtup_frac": {
+      "max": 0.1
+    },
+    "snow_ice_frac": {
+      "max": 0.1
+    },
+    "water_frac": {
+      "max": 0.05
+    }
+  },
+  "mandatory": [
+    "slope_p90 within 5 deg of the target",
+    "frac_steep within 0.1 fraction of the target",
+    "rough_small within 3 m of the target"
+  ],
+  "earth_sites_ranked": 32,
+  "earth_sites_failed": [
+    {
+      "site": "agoudal",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "amelia_creek",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "amguid",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "aorounga",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "aouelloul",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "amboy",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "beaverhead",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "beyenchime_salaaty",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "bigach",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "boltysh",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "bosumtwi_ashanti",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "boxhole",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "brent",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "calvin",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "campo_del_cielo",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "carswell",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "charlevoix_la_malbaie",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "chesapeake_bay",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "chukcha",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "clearwater_east_2",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "colonia",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "connolly_basin",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "couture_lac_couture",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "crooked_creek",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "dalgaranga",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "decaturville",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "des_plaines",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "dhala",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "dobele",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "eagle_butte",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "el_gygytgyn",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "elbow",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "flaxman_2",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "foelsche",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "gardnos",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "glasford",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "glikson",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "glover_bluff",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "goat_paddock",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "gosses_bluff",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "gow",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "granby",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kamensk",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "gweni_fada",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "haughton",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "haviland",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "henbury",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "holleford",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "hummeln",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "ile_rouleau",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "ilumetsa",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "iso_naakkima",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "janisjarvi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "jebel_waqf_as_suwwan",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kalkkop",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kaluga",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kamensk_2",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kamil",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kara",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kardla",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kara_kul",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "karikkoselka",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "karla",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "keurusselka",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kgagodi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "kursk",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "lawn_hill",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "liverpool",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "lockne",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "logancha",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "logoisk",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "lonar",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "luizi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "lumparn",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "macha",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "lockne_2",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "manicouagan",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "manson",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "maple_creek_white_valley",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "marquez",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "middlesboro",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "mien",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "mistastin",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "mjolnir",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "montagnais",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "monturaqui",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "morasko",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "morokweng",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "mount_toondina",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "neugrund",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "new_quebec_chubb_ungava_pingualuit",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "newporte",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "nicholson",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "oasis",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "obolon",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "paasselka",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "piccaninny",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "popigai",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "presqu_ile",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "red_wing",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "riachao_ring",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "rio_cuarto",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "ritland",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "rochechouart",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "rock_elm",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "roter_kamm",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "boltysh_2",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "saaksjarvi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "saarijarvi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "saint_martin",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "santa_fe",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "santa_marta",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "saqqar",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "serpent_mound",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "shoemaker_formerly_teague",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "shunak",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "sierra_madera",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "slate_islands",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "sobolev",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "soderfjarden",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "spider",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "steen_river",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "suavjarvi",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "sudbury",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "suvasvesi_n",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "suvasvesi_s",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "tabun_khara_obo",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "talemzane_maadna",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "tenoumer",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "ternovka",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "tookoonooka",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "tswaing_formerly_pretoria_saltpan",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "upheaval_dome",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "veevers",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "viewfield",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "vista_alegre",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "vredefort",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "wabar",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "wanapitei",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "wells_creek",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "whitecourt",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "woodleigh",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "xiuyan",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "yarrabubba",
+      "error": "not downloaded yet (offline mode)"
+    },
+    {
+      "site": "zhamanshin",
+      "error": "not downloaded yet (offline mode)"
+    }
+  ],
+  "earth_sites_incomplete": [],
+  "candidate_tiles_blocked_by_interference": 1221,
+  "candidates_blocked_everywhere": [
+    "avak",
+    "chicxulub",
+    "clearwater_east",
+    "deep_bay",
+    "dellen",
+    "flynn_creek",
+    "goyder",
+    "ilyinets",
+    "kaalijarv",
+    "kentland",
+    "la_moinerie",
+    "lappajarvi",
+    "mishina_gora",
+    "mizarai",
+    "pilot",
+    "puchezh_katunki",
+    "ragozinka",
+    "ries",
+    "siljan",
+    "steinheim",
+    "tvaren",
+    "vargeao_dome",
+    "vepriai",
+    "west_hawk",
+    "wetumpka",
+    "zapadnaya",
+    "zeleny_gai"
+  ],
+  "min_usable_tiles": 6,
+  "tile_km": 5,
+  "low_evidence_sites": [
+    "serra_da_cangalha",
+    "sikhote_alin",
+    "strangways",
+    "el_malpais",
+    "ames"
+  ],
+  "earth_sites_no_usable_tiles": [],
+  "checks": {
+    "negative_controls": {
+      "status": "PASS",
+      "controls": [
+        {
+          "site": "garden_city_kansas",
+          "rank": 28,
+          "bottom_half": true
+        },
+        {
+          "site": "ames_iowa",
+          "rank": 23,
+          "bottom_half": true
+        }
+      ]
+    },
+    "stability": {
+      "n_variants": 14,
+      "rank_tolerance": 2,
+      "top1_unchanged_share": 0.8571428571428571,
+      "mean_top5_survivors": 4.928571428571429,
+      "variants": [
+        {
+          "variant": "weight frac_steep +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight frac_steep -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_p90 +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_p90 -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_mean +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_mean -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight pit_density +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight pit_density -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_small +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_small -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "pixels x2",
+          "top1_same": false,
+          "top5_survivors": 4
+        },
+        {
+          "variant": "tiles shifted half a tile",
+          "top1_same": false,
+          "top5_survivors": 5
+        }
+      ]
+    },
+    "held_out_nasa_sites": {
+      "status": "INFO",
+      "n_sites_ranked": 32,
+      "held_out": [
+        {
+          "site": "buffalo_park",
+          "rank": 4
+        },
+        {
+          "site": "cinder_lake_crater_field",
+          "rank": 9
+        },
+        {
+          "site": "meteor_crater",
+          "rank": 20
+        },
+        {
+          "site": "sp_crater_jett3",
+          "rank": 7
+        },
+        {
+          "site": "yucca_flat",
+          "rank": 3
+        }
+      ],
+      "skipped_incomplete": [],
+      "recall_at_5": 0.4,
+      "recall_at_10": 0.8,
+      "random_guess_recall_at_5": 0.16
+    },
+    "simple_method_agreement": {
+      "status": "INFO",
+      "label": "agreement \u2260 accuracy",
+      "top5_overlap": 3,
+      "spearman": 0.9006598240469208,
+      "note": "Two methods agreeing shows consistency, not that either is right."
+    },
+    "mission_sensitivity": {
+      "status": "NOT RUN",
+      "reason": "only one mission for this target"
+    }
+  },
+  "attribution": [
+    "Produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+    "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium (CC-BY 4.0)",
+    "Diviner polar temperatures: Williams et al. (2019), Seasonal polar temperatures on the Moon, JGR Planets 124, 2505-2521",
+    "MODIS MOD11A2 v061 land surface temperature (Wan, Hook, Hulley 2021), via NASA AppEEARS"
+  ]
+}

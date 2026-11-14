@@ -1,0 +1,113 @@
+cell_id,test_id,score,target_id,uncertainty,lat,lon,confidence,low_evidence,req_met,req_not_met,req_unknown,flags,spot_lat,spot_lon,note,site_name
+179918,ltv.wheels,0.6504,mons-mouton-plateau,0.0,-34.7167,139.033,1.0,false,slope_p90;frac_steep;rough_small,,,,-34.8307,139.1114,role: candidate,Flaxman
+153614,ltv.wheels,0.6445,mons-mouton-plateau,0.071,-16.7833,-52.9833,0.929,false,slope_p90;frac_steep;rough_small,,,,-16.7606,-53.0535,role: candidate,Araguainha
+76447,ltv.wheels,0.6407,mons-mouton-plateau,0.0,36.9476,-116.0253,1.0,false,slope_p90;frac_steep;rough_small,,,,36.9712,-116.1664,role: baseline,Yucca Flat
+79327,ltv.wheels,0.6192,mons-mouton-plateau,0.071,34.7464,-116.3756,0.929,false,slope_p90;frac_steep;rough_small,,,,34.6785,-116.5131,role: candidate,Pisgah Crater
+80788,ltv.wheels,0.6042,mons-mouton-plateau,0.143,33.6832,-105.9275,0.857,false,slope_p90;frac_steep;rough_small,,,,33.7045,-106.0629,role: candidate,Valley Of Fires Carrizozo
+77896,ltv.wheels,0.5929,mons-mouton-plateau,0.0,35.5824,-111.6319,1.0,false,slope_p90;frac_steep;rough_small,,,,35.6497,-111.6606,role: baseline,Sp Crater Jett3
+78617,ltv.wheels,0.5928,mons-mouton-plateau,0.0,35.3315,-111.4834,1.0,false,slope_p90;frac_steep;rough_small,,,,35.3544,-111.3467,role: baseline,Cinder Lake Crater Field
+152542,ltv.wheels,0.592,mons-mouton-plateau,0.071,-15.5,131.183,0.929,false,slope_p90;frac_steep;rough_small,,,,-15.4327,131.2048,role: candidate,Matt Wilson
+92599,ltv.wheels,0.5911,mons-mouton-plateau,0.0,25.72,39.9433,1.0,false,slope_p90;frac_steep;rough_small,,,,25.8326,39.9688,role: candidate,Jabal Qidr Harrat Khaybar
+74287,ltv.wheels,0.5719,mons-mouton-plateau,0.071,38.3839,-116.0694,0.929,false,slope_p90;frac_steep;rough_small,,,,38.3614,-116.0992,role: candidate,Lunar Crater Nevada
+88184,ltv.wheels,0.5664,mons-mouton-plateau,0.0,29.0,-7.55,1.0,false,slope_p90;frac_steep;rough_small,,,,28.9761,-7.4738,role: candidate,Ouarkziz
+34886,ltv.wheels,0.5525,mons-mouton-plateau,0.071,65.6051,-16.874,0.929,false,slope_p90;frac_steep;rough_small,,,,65.6709,-16.9341,role: candidate,Hverfjall
+141386,ltv.wheels,0.5524,mons-mouton-plateau,0.143,-8.08333,-46.8667,0.857,true,slope_p90;frac_steep;rough_small,,,,-8.151,-46.9359,role: candidate,Serra Da Cangalha
+79328,ltv.wheels,0.5476,mons-mouton-plateau,0.071,34.545,-115.7907,0.929,false,slope_p90;frac_steep;rough_small,,,,34.6585,-115.9261,role: candidate,Amboy Crater
+36326,ltv.wheels,0.5405,mons-mouton-plateau,0.0,64.8709,-16.8348,1.0,false,slope_p90;frac_steep;rough_small,,,,64.9821,-16.8969,role: candidate,Holuhraun
+67106,ltv.wheels,0.5276,mons-mouton-plateau,0.0,43.1167,-106.75,1.0,false,slope_p90;frac_steep;rough_small,,,,43.0012,-106.9004,role: candidate,Cloud Creek
+89650,ltv.wheels,0.5041,mons-mouton-plateau,0.0,27.6,5.11667,1.0,false,slope_p90;frac_steep;rough_small,,,,27.7132,5.0427,role: candidate,Tin Bider
+176310,ltv.wheels,0.4525,mons-mouton-plateau,0.071,-32.0167,135.45,0.929,false,slope_p90;frac_steep;rough_small,,,,-31.9036,135.5806,role: candidate,Acraman
+78617,ltv.wheels,0.4216,mons-mouton-plateau,0.0,35.0333,-111.017,1.0,false,frac_steep;rough_small,slope_p90,,,34.9202,-111.0996,role: baseline,Meteor Crater
+153581,ltv.wheels,0.3964,mons-mouton-plateau,0.0,-16.6667,-69.05,1.0,false,slope_p90;frac_steep,rough_small,,,-16.599,-69.0741,role: candidate,Carancas
+63269,ltv.wheels,0.3955,mons-mouton-plateau,0.071,46.1167,134.667,0.929,true,frac_steep;rough_small,slope_p90,,,46.003,134.5053,role: candidate,Sikhote Alin
+93288,ltv.wheels,0.3692,mons-mouton-plateau,0.0,25.3167,24.3333,1.0,false,frac_steep;rough_small,slope_p90,,,25.2955,24.4575,role: candidate,B P Structure
+151827,ltv.wheels,0.3636,mons-mouton-plateau,0.071,-15.2,133.583,0.929,true,frac_steep;rough_small,slope_p90,,,-15.223,133.5587,role: candidate,Strangways
+58795,ltv.wheels,0.3531,mons-mouton-plateau,0.0,49.1667,57.85,1.0,false,frac_steep;rough_small,slope_p90,,,49.1886,57.8838,role: candidate,Chiyli
+79343,ltv.wheels,0.3385,mons-mouton-plateau,0.0,34.863,-108.098,1.0,true,frac_steep;rough_small,slope_p90,,,34.7503,-108.1303,role: candidate,El Malpais
+75038,ltv.wheels,0.3232,mons-mouton-plateau,0.0,37.9717,-100.8727,1.0,false,frac_steep;rough_small,slope_p90,,,37.9485,-100.9007,role: negative_control,Garden City Kansas
+77203,ltv.wheels,0.3193,mons-mouton-plateau,0.0,36.25,-98.2,1.0,true,frac_steep;rough_small,slope_p90,,,36.2727,-98.3398,role: candidate,Ames
+83675,ltv.wheels,0.314,mons-mouton-plateau,0.0,31.75,-102.483,1.0,false,frac_steep;rough_small,slope_p90,,,31.7283,-102.563,role: candidate,Odessa
+157575,ltv.wheels,0.2972,mons-mouton-plateau,0.0,-19.1667,127.8,1.0,false,frac_steep,slope_p90;rough_small,,,-19.0999,127.8241,role: candidate,Wolfe Creek
+158307,ltv.wheels,0.2837,mons-mouton-plateau,0.0,-19.9333,133.95,1.0,false,frac_steep,slope_p90;rough_small,,,-19.9565,133.9736,role: candidate,Kelly West
+78616,ltv.wheels,0.6369,mons-mouton-plateau,0.071,35.2222,-111.6332,0.929,false,slope_p90;frac_steep;rough_small,,,tree_frac,35.1095,-111.496,role: baseline,Buffalo Park
+68572,ltv.wheels,0.3723,mons-mouton-plateau,0.071,42.0268,-93.617,0.929,false,frac_steep;rough_small,slope_p90,,cropland_frac,42.0942,-93.5877,role: negative_control,Ames Iowa
+179918,ltv.wheels,0.5067,connecting-ridge,0.0,-34.7167,139.033,1.0,false,rough_small,slope_p90;frac_steep,,,-34.7839,139.0032,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Flaxman
+92599,ltv.wheels,0.4858,connecting-ridge,0.143,25.72,39.9433,0.857,false,slope_p90;frac_steep,rough_small,,,25.6523,39.9176,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Jabal Qidr Harrat Khaybar
+78617,ltv.wheels,0.465,connecting-ridge,0.143,35.3315,-111.4834,0.857,false,rough_small,slope_p90;frac_steep,,,35.4444,-111.4022,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Cinder Lake Crater Field
+67106,ltv.wheels,0.4576,connecting-ridge,0.071,43.1167,-106.75,0.929,false,rough_small,slope_p90;frac_steep,,,43.2291,-106.7228,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Cloud Creek
+77896,ltv.wheels,0.4519,connecting-ridge,0.0,35.5824,-111.6319,1.0,false,rough_small,slope_p90;frac_steep,,,35.515,-111.5492,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Sp Crater Jett3
+80788,ltv.wheels,0.4516,connecting-ridge,0.071,33.6832,-105.9275,0.929,false,slope_p90;frac_steep,rough_small,,,33.7967,-105.794,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Valley Of Fires Carrizozo
+79327,ltv.wheels,0.4478,connecting-ridge,0.071,34.7464,-116.3756,0.929,false,slope_p90;frac_steep,rough_small,,,34.7676,-116.2941,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Pisgah Crater
+76447,ltv.wheels,0.4467,connecting-ridge,0.143,36.9476,-116.0253,0.857,false,slope_p90;frac_steep,rough_small,,,36.9243,-115.9424,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Yucca Flat
+153614,ltv.wheels,0.4461,connecting-ridge,0.143,-16.7833,-52.9833,0.857,false,rough_small,slope_p90;frac_steep,,,-16.7606,-53.0535,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Araguainha
+141386,ltv.wheels,0.4362,connecting-ridge,0.143,-8.08333,-46.8667,0.857,true,rough_small,slope_p90;frac_steep,,,-7.9706,-46.8444,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Serra Da Cangalha
+34886,ltv.wheels,0.4144,connecting-ridge,0.071,65.6051,-16.874,0.929,false,slope_p90;frac_steep,rough_small,,,65.4929,-16.8128,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Hverfjall
+36326,ltv.wheels,0.4041,connecting-ridge,0.071,64.8709,-16.8348,0.929,false,slope_p90;frac_steep,rough_small,,,64.9846,-16.6851,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Holuhraun
+79328,ltv.wheels,0.3988,connecting-ridge,0.143,34.545,-115.7907,0.857,false,slope_p90;frac_steep,rough_small,,,34.4782,-115.9284,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Amboy Crater
+89650,ltv.wheels,0.3961,connecting-ridge,0.0,27.6,5.11667,1.0,false,rough_small,slope_p90;frac_steep,,,27.4845,5.2409,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tin Bider
+74287,ltv.wheels,0.3949,connecting-ridge,0.071,38.3839,-116.0694,0.929,false,slope_p90;frac_steep;rough_small,,,,38.36,-115.9275,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Lunar Crater Nevada
+88184,ltv.wheels,0.3921,connecting-ridge,0.071,29.0,-7.55,0.929,false,rough_small,slope_p90;frac_steep,,,28.9772,-7.5764,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Ouarkziz
+152542,ltv.wheels,0.3748,connecting-ridge,0.143,-15.5,131.183,0.857,false,slope_p90;frac_steep,rough_small,,,-15.6139,131.1601,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Matt Wilson
+63269,ltv.wheels,0.3744,connecting-ridge,0.071,46.1167,134.667,0.929,true,rough_small,slope_p90;frac_steep,,,46.003,134.5053,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Sikhote Alin
+78617,ltv.wheels,0.34,connecting-ridge,0.0,35.0333,-111.017,1.0,false,rough_small,slope_p90;frac_steep,,,35.0103,-111.1545,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Meteor Crater
+176310,ltv.wheels,0.3395,connecting-ridge,0.0,-32.0167,135.45,1.0,false,rough_small,slope_p90;frac_steep,,,-31.9039,135.5277,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Acraman
+153581,ltv.wheels,0.3282,connecting-ridge,0.0,-16.6667,-69.05,1.0,false,slope_p90;frac_steep,rough_small,,,-16.599,-69.1209,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Carancas
+151827,ltv.wheels,0.3012,connecting-ridge,0.071,-15.2,133.583,0.929,true,rough_small,slope_p90;frac_steep,,,-15.223,133.5587,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Strangways
+58795,ltv.wheels,0.2944,connecting-ridge,0.0,49.1667,57.85,1.0,false,rough_small,slope_p90;frac_steep,,,49.28,57.6792,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Chiyli
+93288,ltv.wheels,0.2929,connecting-ridge,0.0,25.3167,24.3333,1.0,false,rough_small,slope_p90;frac_steep,,,25.2955,24.4575,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",B P Structure
+79343,ltv.wheels,0.2876,connecting-ridge,0.0,34.863,-108.098,1.0,true,rough_small,slope_p90;frac_steep,,,34.7503,-108.1303,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",El Malpais
+75038,ltv.wheels,0.2677,connecting-ridge,0.0,37.9717,-100.8727,1.0,false,rough_small,slope_p90;frac_steep,,,37.9485,-100.9007,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: negative_control",Garden City Kansas
+77203,ltv.wheels,0.2657,connecting-ridge,0.0,36.25,-98.2,1.0,true,rough_small,slope_p90;frac_steep,,,36.2727,-98.3398,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Ames
+83675,ltv.wheels,0.2539,connecting-ridge,0.0,31.75,-102.483,1.0,false,rough_small,slope_p90;frac_steep,,,31.7283,-102.563,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Odessa
+157575,ltv.wheels,0.2414,connecting-ridge,0.0,-19.1667,127.8,1.0,false,rough_small,slope_p90;frac_steep,,,-19.0999,127.8241,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Wolfe Creek
+158307,ltv.wheels,0.2331,connecting-ridge,0.0,-19.9333,133.95,1.0,false,rough_small,slope_p90;frac_steep,,,-19.9565,133.9736,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kelly West
+78616,ltv.wheels,0.5157,connecting-ridge,0.071,35.2222,-111.6332,0.929,false,slope_p90;frac_steep,rough_small,,tree_frac,35.2891,-111.662,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Buffalo Park
+68572,ltv.wheels,0.3368,connecting-ridge,0.0,42.0268,-93.617,1.0,false,rough_small,slope_p90;frac_steep,,tree_frac;builtup_frac,42.0488,-93.6477,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: negative_control",Ames Iowa
+78617,ltv.thermal,0.526,connecting-ridge,0.0,35.3315,-111.4834,1.0,false,temp_range_mean,slope_p90,,,35.3544,-111.3467,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Cinder Lake Crater Field
+77896,ltv.thermal,0.5046,connecting-ridge,0.0,35.5824,-111.6319,1.0,false,slope_p90;temp_range_mean,,,,35.5599,-111.6047,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Sp Crater Jett3
+76447,ltv.thermal,0.4297,connecting-ridge,0.0,36.9476,-116.0253,1.0,false,temp_range_mean,slope_p90,,,37.0605,-116.0529,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Yucca Flat
+78617,ltv.thermal,0.3962,connecting-ridge,0.0,35.0333,-111.017,1.0,false,temp_range_mean,slope_p90,,,34.9203,-110.9901,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Meteor Crater
+75038,ltv.thermal,0.2308,connecting-ridge,0.0,37.9717,-100.8727,1.0,false,,slope_p90;temp_range_mean,,,37.9485,-100.9007,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: negative_control",Garden City Kansas
+176310,ltv.thermal,0.2025,connecting-ridge,0.0,-32.0167,135.45,1.0,false,,slope_p90;temp_range_mean,,,-32.1292,135.582,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Acraman
+77203,ltv.thermal,0.1968,connecting-ridge,0.0,36.25,-98.2,1.0,true,,slope_p90;temp_range_mean,,,36.2727,-98.3398,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Ames
+153614,ltv.thermal,0.1056,connecting-ridge,0.0,-16.7833,-52.9833,1.0,false,,slope_p90;temp_range_mean,,,-16.7615,-52.9598,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Araguainha
+78616,ltv.thermal,0.4301,connecting-ridge,0.0,35.2222,-111.6332,1.0,false,slope_p90;temp_range_mean,,,tree_frac;water_frac,35.3349,-111.4974,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Buffalo Park
+68572,ltv.thermal,0.3471,connecting-ridge,0.0,42.0268,-93.617,1.0,false,temp_range_mean,slope_p90,,cropland_frac,42.1395,-93.5276,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: negative_control",Ames Iowa
+92599,land.hazards,0.3947,connecting-ridge,0.083,25.72,39.9433,0.917,false,pit_density,relief,,,25.7426,39.9183,role: candidate,Jabal Qidr Harrat Khaybar
+78617,land.hazards,0.388,connecting-ridge,0.0,35.3315,-111.4834,1.0,false,pit_density,relief,,,35.3544,-111.3467,role: baseline,Cinder Lake Crater Field
+77896,land.hazards,0.3829,connecting-ridge,0.0,35.5824,-111.6319,1.0,false,pit_density,relief,,,35.4697,-111.604,role: baseline,Sp Crater Jett3
+34886,land.hazards,0.3567,connecting-ridge,0.167,65.6051,-16.874,0.833,false,pit_density,relief,,,65.7196,-16.6107,role: candidate,Hverfjall
+79327,land.hazards,0.3533,connecting-ridge,0.0,34.7464,-116.3756,1.0,false,pit_density,relief,,,34.6783,-116.4586,role: candidate,Pisgah Crater
+36326,land.hazards,0.352,connecting-ridge,0.083,64.8709,-16.8348,0.917,false,pit_density,relief,,,64.9821,-16.8969,role: candidate,Holuhraun
+74287,land.hazards,0.35,connecting-ridge,0.0,38.3839,-116.0694,1.0,false,pit_density,relief,,,38.2704,-115.986,role: candidate,Lunar Crater Nevada
+76447,land.hazards,0.3497,connecting-ridge,0.0,36.9476,-116.0253,1.0,false,pit_density,relief,,,36.9261,-116.1669,role: baseline,Yucca Flat
+79328,land.hazards,0.3329,connecting-ridge,0.0,34.545,-115.7907,1.0,false,pit_density,relief,,,34.6558,-115.6534,role: candidate,Amboy Crater
+67106,land.hazards,0.3174,connecting-ridge,0.0,43.1167,-106.75,1.0,false,pit_density,relief,,,43.1362,-106.9046,role: candidate,Cloud Creek
+179918,land.hazards,0.3135,connecting-ridge,0.0,-34.7167,139.033,1.0,false,pit_density,relief,,,-34.829,139.0021,role: candidate,Flaxman
+80788,land.hazards,0.3082,connecting-ridge,0.083,33.6832,-105.9275,0.917,false,pit_density,relief,,,33.5709,-105.8458,role: candidate,Valley Of Fires Carrizozo
+88184,land.hazards,0.2784,connecting-ridge,0.0,29.0,-7.55,1.0,false,pit_density,relief,,,29.0234,-7.6784,role: candidate,Ouarkziz
+89650,land.hazards,0.2738,connecting-ridge,0.083,27.6,5.11667,0.917,false,pit_density,relief,,,27.71,5.2455,role: candidate,Tin Bider
+59420,land.hazards,0.2689,connecting-ridge,0.0,48.6833,10.0667,1.0,true,pit_density,relief,,,48.6608,9.9642,role: candidate,Steinheim
+58018,land.hazards,0.2672,connecting-ridge,0.0,49.7333,29.0,1.0,false,pit_density,relief,,,49.6656,28.9623,role: candidate,Zapadnaya
+168015,land.hazards,0.2623,connecting-ridge,0.083,-26.8333,-52.1167,0.917,true,pit_density,relief,,,-26.7198,-52.2416,role: candidate,Vargeao Dome
+78617,land.hazards,0.2584,connecting-ridge,0.083,35.0333,-111.017,0.917,false,pit_density,relief,,,35.0103,-111.1545,role: baseline,Meteor Crater
+59421,land.hazards,0.2571,connecting-ridge,0.0,48.8833,10.6167,1.0,false,pit_density,relief,,,48.9948,10.6542,role: candidate,Ries
+58738,land.hazards,0.2456,connecting-ridge,0.0,49.1167,29.1,1.0,false,pit_density,relief,,,49.0931,29.1328,role: candidate,Ilyinets
+68572,land.hazards,0.2349,connecting-ridge,0.083,42.0268,-93.617,0.917,false,pit_density,relief,,,41.9591,-93.5865,role: negative_control,Ames Iowa
+141386,land.hazards,0.2338,connecting-ridge,0.083,-8.08333,-46.8667,0.917,true,pit_density,relief,,,-8.0162,-46.7539,role: candidate,Serra Da Cangalha
+60185,land.hazards,0.2316,connecting-ridge,0.083,48.0667,32.75,0.917,false,pit_density,relief,,,48.0441,32.9168,role: candidate,Zeleny Gai
+176310,land.hazards,0.2213,connecting-ridge,0.083,-32.0167,135.45,0.917,false,pit_density,relief,,,-31.9036,135.5806,role: candidate,Acraman
+152542,land.hazards,0.2134,connecting-ridge,0.0,-15.5,131.183,1.0,false,pit_density,relief,,,-15.4327,131.2048,role: candidate,Matt Wilson
+79343,land.hazards,0.2073,connecting-ridge,0.083,34.863,-108.098,0.917,true,pit_density,relief,,,34.7503,-108.1303,role: candidate,El Malpais
+50089,land.hazards,0.2071,connecting-ridge,0.167,55.0833,24.5833,0.833,true,pit_density,relief,,,55.1912,24.3797,role: candidate,Vepriai
+58795,land.hazards,0.1986,connecting-ridge,0.0,49.1667,57.85,1.0,false,pit_density,relief,,,49.28,57.6792,role: candidate,Chiyli
+93288,land.hazards,0.1961,connecting-ridge,0.0,25.3167,24.3333,1.0,false,pit_density,relief,,,25.2955,24.4575,role: candidate,B P Structure
+153581,land.hazards,0.1812,connecting-ridge,0.0,-16.6667,-69.05,1.0,false,pit_density,relief,,,-16.599,-69.0741,role: candidate,Carancas
+75038,land.hazards,0.1808,connecting-ridge,0.0,37.9717,-100.8727,1.0,false,pit_density,relief,,,37.906,-100.729,role: negative_control,Garden City Kansas
+151827,land.hazards,0.1732,connecting-ridge,0.083,-15.2,133.583,0.917,true,,pit_density;relief,,,-15.1778,133.559,role: candidate,Strangways
+77203,land.hazards,0.1706,connecting-ridge,0.0,36.25,-98.2,1.0,false,pit_density,relief,,,36.3614,-98.1161,role: candidate,Ames
+83675,land.hazards,0.169,connecting-ridge,0.0,31.75,-102.483,1.0,false,,pit_density;relief,,,31.7283,-102.563,role: candidate,Odessa
+70745,land.hazards,0.1687,connecting-ridge,0.0,40.75,-87.4,1.0,false,pit_density,relief,,,40.8162,-87.549,role: candidate,Kentland
+157575,land.hazards,0.16,connecting-ridge,0.0,-19.1667,127.8,1.0,false,,pit_density;relief,,,-19.0999,127.8241,role: candidate,Wolfe Creek
+158307,land.hazards,0.155,connecting-ridge,0.0,-19.9333,133.95,1.0,false,,pit_density;relief,,,-19.9565,133.9736,role: candidate,Kelly West
+78616,land.hazards,0.3992,connecting-ridge,0.0,35.2222,-111.6332,1.0,false,pit_density;relief,,,tree_frac,35.3338,-111.7174,role: baseline,Buffalo Park

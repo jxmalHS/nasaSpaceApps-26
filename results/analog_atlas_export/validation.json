@@ -1,0 +1,124 @@
+[
+  {
+    "name": "Held-out NASA sites (moon_rover_mons_mouton)",
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "status": "INFO",
+    "recall_at_5": 0.4,
+    "random_recall_at_5": 0.16,
+    "sites_ranked": 32,
+    "ranks": "buffalo_park #4, cinder_lake_crater_field #9, meteor_crater #20, sp_crater_jett3 #7, yucca_flat #3",
+    "warning": ""
+  },
+  {
+    "name": "Farmland negative controls (moon_rover_mons_mouton)",
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half on similarity",
+    "ranks": "garden_city_kansas #28, ames_iowa #23"
+  },
+  {
+    "name": "Stability (moon_rover_mons_mouton)",
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "small_changes": 14,
+    "top1_unchanged_share": 0.857,
+    "mean_top5_survivors": 4.93
+  },
+  {
+    "name": "Held-out NASA sites (moon_rover_south_pole)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "status": "INFO",
+    "recall_at_5": 0.4,
+    "random_recall_at_5": 0.16,
+    "sites_ranked": 32,
+    "ranks": "buffalo_park #1, cinder_lake_crater_field #5, meteor_crater #20, sp_crater_jett3 #6, yucca_flat #10",
+    "warning": ""
+  },
+  {
+    "name": "Farmland negative controls (moon_rover_south_pole)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half on similarity",
+    "ranks": "garden_city_kansas #28, ames_iowa #22"
+  },
+  {
+    "name": "Stability (moon_rover_south_pole)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "small_changes": 14,
+    "top1_unchanged_share": 0.929,
+    "mean_top5_survivors": 4.5
+  },
+  {
+    "name": "Held-out NASA sites (moon_rover_thermal_south_pole)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "status": "WARN",
+    "recall_at_5": 1.0,
+    "random_recall_at_5": 0.5,
+    "sites_ranked": 10,
+    "ranks": "buffalo_park #3, cinder_lake_crater_field #1, meteor_crater #5, sp_crater_jett3 #2, yucca_flat #4",
+    "warning": "Only 10 sites ranked: even a random ranking would put 50% of sites in the top 5. Weak evidence."
+  },
+  {
+    "name": "Farmland negative controls (moon_rover_thermal_south_pole)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half on similarity",
+    "ranks": "garden_city_kansas #7, ames_iowa #6"
+  },
+  {
+    "name": "Stability (moon_rover_thermal_south_pole)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "small_changes": 14,
+    "top1_unchanged_share": 1.0,
+    "mean_top5_survivors": 5.0
+  },
+  {
+    "name": "Held-out NASA sites (moon_landing_hazards_south_pole)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "status": "INFO",
+    "recall_at_5": 0.6,
+    "random_recall_at_5": 0.13,
+    "sites_ranked": 38,
+    "ranks": "buffalo_park #1, cinder_lake_crater_field #3, meteor_crater #19, sp_crater_jett3 #4, yucca_flat #8",
+    "warning": ""
+  },
+  {
+    "name": "Farmland negative controls (moon_landing_hazards_south_pole)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half on similarity",
+    "ranks": "ames_iowa #22, garden_city_kansas #32"
+  },
+  {
+    "name": "Stability (moon_landing_hazards_south_pole)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "small_changes": 12,
+    "top1_unchanged_share": 0.917,
+    "mean_top5_survivors": 4.67
+  },
+  {
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "status": "loo",
+    "held_out": [
+      {
+        "site": "sf-volcanic-field",
+        "percentile": 77.4
+      }
+    ],
+    "median_percentile": 77.4,
+    "top5_rate": 0.4,
+    "note": "sf-volcanic-field = median of SP Crater (JETT3) and Cinder Lake, each held out"
+  }
+]
