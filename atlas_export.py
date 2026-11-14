@@ -32,7 +32,6 @@ ATLAS_MAP = {
 }
 # Our NASA sites that are one of the Atlas's analog IDs (both lie in the San Francisco Volcanic Field).
 ATLAS_ANALOG_IDS = {"sp_crater_jett3": "sf-volcanic-field", "cinder_lake_crater_field": "sf-volcanic-field"}
-LOO_MISSION = "moon_rover_mons_mouton"     # the rover-realistic target, used for the per-site dots
 
 NOTES = {
     "moon_rover_thermal_south_pole": "Our ltv.thermal score is terrain + yearly temperature range "
@@ -49,10 +48,19 @@ def cell_id(lat: float, lon: float) -> int:
     return row * 720 + col
 
 
-def _rows_for(mission_name: str, mission, out: Path) -> list[dict]:
+def percentile_from_rank(rank: int, n: int) -> float:
+    """Website meaning: share of the OTHER sites this one beats, 0-100 (100 = ranked first)."""
+    return 100.0 if n <= 1 else round(100 * (n - rank) / (n - 1), 1)
+
+
+def _rows_for(mission_name: str, mission, out: Path, summary: dict) -> list[dict]:
     test_id, target_id = ATLAS_MAP[mission_name]
     ranking = pd.read_csv(out / "ranking.csv")
     features = [r.feature for r in mission.mandatory]
+    total_runs = summary["checks"]["stability"].get("n_variants")
+    # score_percentile: where the site's score sits among the sites analysed in THIS set
+    by_score = ranking["score"].rank(ascending=False, method="min").astype(int)
+    pct = {s: percentile_from_rank(k, len(ranking)) for s, k in zip(ranking["site"], by_score)}
     rows = []
     for _, r in ranking.iterrows():
         d = json.loads((out / "sites" / f"{r.site}.json").read_text(encoding="utf-8"))
@@ -76,57 +84,93 @@ def _rows_for(mission_name: str, mission, out: Path) -> list[dict]:
             "spot_lat": round(d["test_tile"]["lat"], 4), "spot_lon": round(d["test_tile"]["lon"], 4),
             "note": "; ".join(n for n in note if n),
             "site_name": r.site.replace("_", " ").title(),
+            # extra columns (new): plain counts behind "confidence", and a within-set percentile
+            "stable_runs": None if conf is None or not total_runs else round(conf * total_runs),
+            "total_runs": total_runs,
+            "score_percentile": pct[r.site],
         })
     return rows
 
 
-def _validation(summaries: dict) -> list[dict]:
-    out = []
+PRETTY = {"sp_crater_jett3": "SP Crater (JETT3)", "cinder_lake_crater_field": "Cinder Lake Crater Field",
+          "buffalo_park": "Buffalo Park", "meteor_crater": "Meteor Crater", "yucca_flat": "Yucca Flat"}
+POPULATION = ("the {n} Earth sites the engine ranked for this set (not the 78,993 website cells); "
+              "percentile = share of the other ranked sites the held-out site beats (100 = first); "
+              "rank on similarity alone, before the land-cover ordering")
+
+
+def _held_out_entry(m: str, s: dict, coords: dict) -> dict:
+    """One Trust-page 'loo' entry per (test, target): website ids where the place matches,
+    plus every engine site in engine_held_out (most have no website match)."""
+    test_id, target_id = ATLAS_MAP[m]
+    ho = s["checks"]["held_out_nasa_sites"]
+    n = ho.get("n_sites_ranked") or 0
+    engine = []
+    for h in ho.get("held_out", []):
+        lat, lon = coords.get(h["site"], (None, None))
+        engine.append({"site": h["site"], "name": PRETTY.get(h["site"], h["site"]), "lat": lat, "lon": lon,
+                       "rank": h["rank"], "of": n, "percentile": percentile_from_rank(h["rank"], n),
+                       "website_id": ATLAS_ANALOG_IDS.get(h["site"])})
+    matched: dict[str, list] = {}
+    for e in engine:
+        if e["website_id"]:
+            matched.setdefault(e["website_id"], []).append(e)
+    held_out = [{"site": wid, "percentile": round(statistics.median(x["percentile"] for x in es), 1),
+                 "engine_sites": ", ".join(f"{x['name']} {x['percentile']:g}" for x in es)}
+                for wid, es in matched.items()]
+    entry = {"name": f"Held-out NASA sites ({test_id} / {target_id})", "test_id": test_id,
+             "target_id": target_id, "status": "loo", "held_out": held_out,
+             "median_percentile": round(statistics.median(e["percentile"] for e in engine), 1) if engine else None,
+             "median_over": f"all {len(engine)} engine held-out sites",
+             "top5_rate": ho.get("recall_at_5"), "random_top5_rate": ho.get("random_guess_recall_at_5"),
+             "population": POPULATION.format(n=n), "engine_held_out": engine}
+    if ho.get("status") == "WARN" or n < 20:
+        entry["warning"] = (f"Only {n} sites ranked (few sites have temperature data yet): a random order "
+                            f"would put {ho.get('random_guess_recall_at_5', 0):.0%} of them in the top 5. "
+                            "Weak evidence.")
+    return entry
+
+
+def _stability_text(st: dict) -> str:
+    ok = [v for v in st.get("variants", []) if "error" not in v]
+    same = sum(bool(v.get("top1_same")) for v in ok)
+    return (f"top site unchanged in {same} of {len(ok)} small changes; "
+            f"{st['mean_top5_survivors']:.2f} of top 5 kept on average")
+
+
+def _validation(summaries: dict, coords: dict) -> list[dict]:
+    out = [_held_out_entry(m, s, coords) for m, s in summaries.items()]
     for m, s in summaries.items():
         test_id, target_id = ATLAS_MAP[m]
-        c = s["checks"]
-        ho, nc, st = c["held_out_nasa_sites"], c["negative_controls"], c["stability"]
-        out.append({"name": f"Held-out NASA sites ({m})", "test_id": test_id, "target_id": target_id,
-                    "status": ho.get("status"), "recall_at_5": ho.get("recall_at_5"),
-                    "random_recall_at_5": ho.get("random_guess_recall_at_5"),
-                    "sites_ranked": ho.get("n_sites_ranked"),
-                    "ranks": ", ".join(f"{h['site']} #{h['rank']}" for h in ho.get("held_out", [])),
-                    "warning": ho.get("warning", ho.get("reason", ""))})
-        out.append({"name": f"Farmland negative controls ({m})", "test_id": test_id, "target_id": target_id,
-                    "status": nc.get("status"), "rule": "farmland must rank in the bottom half on similarity",
+        nc, st = s["checks"]["negative_controls"], s["checks"]["stability"]
+        out.append({"name": f"Farmland negative controls ({test_id} / {target_id})", "test_id": test_id,
+                    "target_id": target_id, "status": nc.get("status"),
+                    "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
                     "ranks": ", ".join(f"{x['site']} #{x['rank']}" for x in nc.get("controls", []))})
         if st.get("n_variants"):
-            out.append({"name": f"Stability ({m})", "test_id": test_id, "target_id": target_id,
-                        "small_changes": st["n_variants"],
-                        "top1_unchanged_share": round(st["top1_unchanged_share"], 3),
-                        "mean_top5_survivors": round(st["mean_top5_survivors"], 2)})
-    s = summaries.get(LOO_MISSION)
-    if s:                                     # per-site dots in the Atlas precedent table
-        ho = s["checks"]["held_out_nasa_sites"]
-        n = ho.get("n_sites_ranked") or 0
-        pct = [100 * (n - h["rank"]) / (n - 1) for h in ho.get("held_out", [])
-               if h["site"] in ATLAS_ANALOG_IDS and n > 1]
-        if pct:
-            p = round(statistics.median(pct), 1)
-            out.append({"test_id": ATLAS_MAP[LOO_MISSION][0], "target_id": ATLAS_MAP[LOO_MISSION][1],
-                        "status": "loo", "held_out": [{"site": "sf-volcanic-field", "percentile": p}],
-                        "median_percentile": p, "top5_rate": ho.get("recall_at_5"),
-                        "note": "sf-volcanic-field = median of SP Crater (JETT3) and Cinder Lake, each held out"})
+            out.append({"name": f"Engine stability ({test_id} / {target_id})", "test_id": test_id,
+                        "target_id": target_id, "result": _stability_text(st),
+                        "what_changed": "see small_change_definition in the model card"})
     return out
 
 
-def _card(summaries: dict, n_sites: int) -> dict:
-    # One line per mission: pooling them would mix a 32-site check with an 11-site one.
+def _card(summaries: dict, n_sites: int, settings: dict) -> dict:
+    stab, knn = settings["stability"], settings["knn"]
     metrics = {}
-    for m, s in summaries.items():
-        ho = s["checks"]["held_out_nasa_sites"]
+    for m, s in summaries.items():                 # one line per set, never pooled
+        test_id, target_id = ATLAS_MAP[m]
+        ho, st = s["checks"]["held_out_nasa_sites"], s["checks"]["stability"]
         if ho.get("recall_at_5") is not None:
-            metrics[f"recall_at_5 ({m})"] = (f"{ho['recall_at_5']:.2f} vs {ho['random_guess_recall_at_5']:.2f} "
-                                             f"random, {ho['n_sites_ranked']} sites")
-    metrics["stability_checks"] = max((s["checks"]["stability"].get("n_variants") or 0) for s in summaries.values())
+            metrics[f"held-out NASA sites in top 5 ({test_id} / {target_id})"] = (
+                f"{ho['recall_at_5']:.0%} (random order: {ho['random_guess_recall_at_5']:.0%}; "
+                f"{ho['n_sites_ranked']} sites ranked)")
+        if st.get("n_variants"):
+            metrics[f"stability ({test_id} / {target_id})"] = _stability_text(st)
     metrics["nasa_sites_for_validation"] = 5
+    n_runs = sorted({s["checks"]["stability"].get("n_variants") for s in summaries.values()} - {None})
+    min_tiles = knn.get("min_usable_tiles", 6)
     return {
-        "name": "Two-way weighted kNN (analog engine)", "version": "1.0.0",
+        "name": "Two-way weighted kNN (analog engine)", "version": "1.1.0",
         "kind": "Unsupervised weighted k-nearest-neighbour on 100 m relief, two-way matching",
         "trained_on": f"Copernicus GLO-30 + ESA WorldCover 2021 (+ MODIS MOD11A2 for thermal) vs "
                       f"LOLA LDEM_80S_20M (+ Diviner for thermal); {n_sites} Earth sites; no labels",
@@ -137,6 +181,34 @@ def _card(summaries: dict, n_sites: int) -> dict:
                   "were rejected and are not exported. "
                   "~30 cm rocks invisible at 100 m. Only 5 NASA sites to validate on: checks show the "
                   "ranking is sensible, not proven. Pass/fail limits always come from the Atlas rules.",
+        "score_definition": (
+            f"Similarity, 0-1. Each 5 km square is compared with the Moon target's squares: d = weighted "
+            f"distance after scaling every measurement by Earth's typical spread (1 unit = one interquartile "
+            f"range); similarity = exp(-d). Score = 0.5 x (the {knn['site_quantile']:.0%} percentile of the "
+            f"site's square similarities, each vs its {knn['k']} nearest Moon squares) + 0.5 x (average over "
+            f"Moon squares of exp(-distance to the site's closest square)). 1.0 = identical to the Moon on "
+            f"every weighted measurement. No Earth site gets close (the Moon is steeper than any site), so "
+            f"about 0.6 is a strong match. NOT on the same scale as rule scores."),
+        "score_comparability": ("Compare scores within one test/target set only: each set has its own target, "
+                                "weights and Earth scaling, so 0.5 in one set is not 0.5 in another. "
+                                "score_percentile (0-100) = share of the other sites analysed in the same "
+                                "set that this site out-scores."),
+        "confidence_definition": (
+            f"Stability, not certainty: confidence = stable_runs / total_runs. A run is one small change "
+            f"(see small_change_definition); 'stable' = the site's rank moved by at most "
+            f"max(1, {stab['rank_tolerance_frac']:.0%} of the sites ranked) places. 100% = stable in every run. "
+            f"uncertainty = 1 - confidence. Suggested label: 'Stable in 14/14 runs'."),
+        "small_change_definition": (
+            f"One change at a time: each weighted measurement's weight x{1 + stab['weight_change']:g} and "
+            f"x{1 - stab['weight_change']:g} (2 runs per measurement), pixels {stab['alt_resolution_factor']}x "
+            f"bigger (100 m -> {100 * stab['alt_resolution_factor']} m), and the 5 km grid shifted by half a "
+            f"square. total_runs = 2 x (weighted measurements) + 2 = {' or '.join(str(r) for r in n_runs)} "
+            f"(land.hazards weighs 5 measurements -> 12; the others weigh 6 -> 14). Not the same as the "
+            f"website's +/-30% x 30 weight jitter."),
+        "low_evidence_rule": (f"low_evidence = true when the site has fewer than {min_tiles} usable 5 km "
+                              f"squares (under {min_tiles * 25} km2 left after removing squares with missing "
+                              "data or over a land-cover limit): a lead to check, not a recommendation."),
+        "aggregation": "Several sites in one cell: keep the highest score (--agg max), as the importer does.",
         "demo": False,
         "metrics": metrics,
     }
@@ -144,23 +216,25 @@ def _card(summaries: dict, n_sites: int) -> dict:
 
 def export_atlas(root: Path) -> Path:
     """Write scores.csv, model_card.json and validation.json for Analog Atlas."""
-    _, _, missions = load_config(root)
+    settings, sites_cfg, missions = load_config(root)
+    coords = {s["name"]: (s["lat"], s["lon"]) for s in sites_cfg["earth_sites"]}
     rows, summaries, missing = [], {}, []
     for name in ATLAS_MAP:
         out = root / "results" / name
         if not (out / "ranking.csv").exists():
             missing.append(name)
             continue
-        rows += _rows_for(name, parse_mission(name, missions[name]), out)
         summaries[name] = json.loads((out / "summary.json").read_text(encoding="utf-8"))
+        rows += _rows_for(name, parse_mission(name, missions[name]), out, summaries[name])
     if not rows:
         raise FileNotFoundError("No results to export: run `python main.py run --mission ...` first")
     dest = root / "results" / "analog_atlas_export"
     dest.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(dest / "scores.csv", index=False)
     n_sites = len({(r["lat"], r["lon"]) for r in rows})
-    (dest / "model_card.json").write_text(json.dumps(_card(summaries, n_sites), indent=2), encoding="utf-8")
-    (dest / "validation.json").write_text(json.dumps(_validation(summaries), indent=2), encoding="utf-8")
+    (dest / "model_card.json").write_text(json.dumps(_card(summaries, n_sites, settings), indent=2),
+                                          encoding="utf-8")
+    (dest / "validation.json").write_text(json.dumps(_validation(summaries, coords), indent=2), encoding="utf-8")
     if missing:
         print("Not exported (no results yet): " + ", ".join(missing))
     return dest

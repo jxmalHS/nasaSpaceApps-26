@@ -29,4 +29,20 @@ def test_export_converts_results_without_reranking(fake_project, monkeypatch):  
         ranking.set_index(ranking["site"].str.replace("_", " ").str.title())["score"].round(4).to_dict()
     card = json.loads((dest / "model_card.json").read_text())
     assert {"name", "version", "kind", "trained_on", "limits"} <= set(card) and card["demo"] is False
-    assert isinstance(json.loads((dest / "validation.json").read_text()), list)
+    assert {"score_definition", "confidence_definition", "small_change_definition", "low_evidence_rule"} <= set(card)
+
+    # Trust-page shape: one 'loo' entry per (test, target), percentiles 0-100, website ids only in held_out
+    val = json.loads((dest / "validation.json").read_text())
+    loo = [e for e in val if e.get("status") == "loo"]
+    assert [(e["test_id"], e["target_id"]) for e in loo] == [("ltv.wheels", "connecting-ridge")]
+    e = loo[0]
+    assert all(h["site"] == "sf-volcanic-field" for h in e["held_out"])   # only places the website knows
+    assert {x["site"] for x in e["engine_held_out"]} == {"meteor_crater", "buffalo_park"}
+    assert all(0 <= x["percentile"] <= 100 for x in e["engine_held_out"]) and "population" in e
+
+
+def test_percentile_means_share_of_other_sites_beaten():
+    assert atlas_export.percentile_from_rank(1, 32) == 100.0
+    assert atlas_export.percentile_from_rank(32, 32) == 0.0
+    assert atlas_export.percentile_from_rank(4, 32) == 90.3          # beats 28 of the other 31
+    assert atlas_export.percentile_from_rank(1, 1) == 100.0

@@ -1,124 +1,343 @@
 [
   {
-    "name": "Held-out NASA sites (moon_rover_mons_mouton)",
-    "test_id": "ltv.wheels",
-    "target_id": "mons-mouton-plateau",
-    "status": "INFO",
-    "recall_at_5": 0.4,
-    "random_recall_at_5": 0.16,
-    "sites_ranked": 32,
-    "ranks": "buffalo_park #4, cinder_lake_crater_field #9, meteor_crater #20, sp_crater_jett3 #7, yucca_flat #3",
-    "warning": ""
-  },
-  {
-    "name": "Farmland negative controls (moon_rover_mons_mouton)",
-    "test_id": "ltv.wheels",
-    "target_id": "mons-mouton-plateau",
-    "status": "PASS",
-    "rule": "farmland must rank in the bottom half on similarity",
-    "ranks": "garden_city_kansas #28, ames_iowa #23"
-  },
-  {
-    "name": "Stability (moon_rover_mons_mouton)",
-    "test_id": "ltv.wheels",
-    "target_id": "mons-mouton-plateau",
-    "small_changes": 14,
-    "top1_unchanged_share": 0.857,
-    "mean_top5_survivors": 4.93
-  },
-  {
-    "name": "Held-out NASA sites (moon_rover_south_pole)",
-    "test_id": "ltv.wheels",
-    "target_id": "connecting-ridge",
-    "status": "INFO",
-    "recall_at_5": 0.4,
-    "random_recall_at_5": 0.16,
-    "sites_ranked": 32,
-    "ranks": "buffalo_park #1, cinder_lake_crater_field #5, meteor_crater #20, sp_crater_jett3 #6, yucca_flat #10",
-    "warning": ""
-  },
-  {
-    "name": "Farmland negative controls (moon_rover_south_pole)",
-    "test_id": "ltv.wheels",
-    "target_id": "connecting-ridge",
-    "status": "PASS",
-    "rule": "farmland must rank in the bottom half on similarity",
-    "ranks": "garden_city_kansas #28, ames_iowa #22"
-  },
-  {
-    "name": "Stability (moon_rover_south_pole)",
-    "test_id": "ltv.wheels",
-    "target_id": "connecting-ridge",
-    "small_changes": 14,
-    "top1_unchanged_share": 0.929,
-    "mean_top5_survivors": 4.5
-  },
-  {
-    "name": "Held-out NASA sites (moon_rover_thermal_south_pole)",
-    "test_id": "ltv.thermal",
-    "target_id": "connecting-ridge",
-    "status": "WARN",
-    "recall_at_5": 1.0,
-    "random_recall_at_5": 0.5,
-    "sites_ranked": 10,
-    "ranks": "buffalo_park #3, cinder_lake_crater_field #1, meteor_crater #5, sp_crater_jett3 #2, yucca_flat #4",
-    "warning": "Only 10 sites ranked: even a random ranking would put 50% of sites in the top 5. Weak evidence."
-  },
-  {
-    "name": "Farmland negative controls (moon_rover_thermal_south_pole)",
-    "test_id": "ltv.thermal",
-    "target_id": "connecting-ridge",
-    "status": "PASS",
-    "rule": "farmland must rank in the bottom half on similarity",
-    "ranks": "garden_city_kansas #7, ames_iowa #6"
-  },
-  {
-    "name": "Stability (moon_rover_thermal_south_pole)",
-    "test_id": "ltv.thermal",
-    "target_id": "connecting-ridge",
-    "small_changes": 14,
-    "top1_unchanged_share": 1.0,
-    "mean_top5_survivors": 5.0
-  },
-  {
-    "name": "Held-out NASA sites (moon_landing_hazards_south_pole)",
-    "test_id": "land.hazards",
-    "target_id": "connecting-ridge",
-    "status": "INFO",
-    "recall_at_5": 0.6,
-    "random_recall_at_5": 0.13,
-    "sites_ranked": 38,
-    "ranks": "buffalo_park #1, cinder_lake_crater_field #3, meteor_crater #19, sp_crater_jett3 #4, yucca_flat #8",
-    "warning": ""
-  },
-  {
-    "name": "Farmland negative controls (moon_landing_hazards_south_pole)",
-    "test_id": "land.hazards",
-    "target_id": "connecting-ridge",
-    "status": "PASS",
-    "rule": "farmland must rank in the bottom half on similarity",
-    "ranks": "ames_iowa #22, garden_city_kansas #32"
-  },
-  {
-    "name": "Stability (moon_landing_hazards_south_pole)",
-    "test_id": "land.hazards",
-    "target_id": "connecting-ridge",
-    "small_changes": 12,
-    "top1_unchanged_share": 0.917,
-    "mean_top5_survivors": 4.67
-  },
-  {
+    "name": "Held-out NASA sites (ltv.wheels / mons-mouton-plateau)",
     "test_id": "ltv.wheels",
     "target_id": "mons-mouton-plateau",
     "status": "loo",
     "held_out": [
       {
         "site": "sf-volcanic-field",
-        "percentile": 77.4
+        "percentile": 77.4,
+        "engine_sites": "Cinder Lake Crater Field 74.2, SP Crater (JETT3) 80.6"
       }
     ],
-    "median_percentile": 77.4,
+    "median_percentile": 80.6,
+    "median_over": "all 5 engine held-out sites",
     "top5_rate": 0.4,
-    "note": "sf-volcanic-field = median of SP Crater (JETT3) and Cinder Lake, each held out"
+    "random_top5_rate": 0.16,
+    "population": "the 32 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
+    "engine_held_out": [
+      {
+        "site": "buffalo_park",
+        "name": "Buffalo Park",
+        "lat": 35.2222,
+        "lon": -111.6332,
+        "rank": 4,
+        "of": 32,
+        "percentile": 90.3,
+        "website_id": null
+      },
+      {
+        "site": "cinder_lake_crater_field",
+        "name": "Cinder Lake Crater Field",
+        "lat": 35.3315,
+        "lon": -111.4834,
+        "rank": 9,
+        "of": 32,
+        "percentile": 74.2,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "meteor_crater",
+        "name": "Meteor Crater",
+        "lat": 35.0333,
+        "lon": -111.017,
+        "rank": 20,
+        "of": 32,
+        "percentile": 38.7,
+        "website_id": null
+      },
+      {
+        "site": "sp_crater_jett3",
+        "name": "SP Crater (JETT3)",
+        "lat": 35.5824,
+        "lon": -111.6319,
+        "rank": 7,
+        "of": 32,
+        "percentile": 80.6,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "yucca_flat",
+        "name": "Yucca Flat",
+        "lat": 36.9476,
+        "lon": -116.0253,
+        "rank": 3,
+        "of": 32,
+        "percentile": 93.5,
+        "website_id": null
+      }
+    ]
+  },
+  {
+    "name": "Held-out NASA sites (ltv.wheels / connecting-ridge)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "status": "loo",
+    "held_out": [
+      {
+        "site": "sf-volcanic-field",
+        "percentile": 85.5,
+        "engine_sites": "Cinder Lake Crater Field 87.1, SP Crater (JETT3) 83.9"
+      }
+    ],
+    "median_percentile": 83.9,
+    "median_over": "all 5 engine held-out sites",
+    "top5_rate": 0.4,
+    "random_top5_rate": 0.16,
+    "population": "the 32 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
+    "engine_held_out": [
+      {
+        "site": "buffalo_park",
+        "name": "Buffalo Park",
+        "lat": 35.2222,
+        "lon": -111.6332,
+        "rank": 1,
+        "of": 32,
+        "percentile": 100.0,
+        "website_id": null
+      },
+      {
+        "site": "cinder_lake_crater_field",
+        "name": "Cinder Lake Crater Field",
+        "lat": 35.3315,
+        "lon": -111.4834,
+        "rank": 5,
+        "of": 32,
+        "percentile": 87.1,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "meteor_crater",
+        "name": "Meteor Crater",
+        "lat": 35.0333,
+        "lon": -111.017,
+        "rank": 20,
+        "of": 32,
+        "percentile": 38.7,
+        "website_id": null
+      },
+      {
+        "site": "sp_crater_jett3",
+        "name": "SP Crater (JETT3)",
+        "lat": 35.5824,
+        "lon": -111.6319,
+        "rank": 6,
+        "of": 32,
+        "percentile": 83.9,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "yucca_flat",
+        "name": "Yucca Flat",
+        "lat": 36.9476,
+        "lon": -116.0253,
+        "rank": 10,
+        "of": 32,
+        "percentile": 71.0,
+        "website_id": null
+      }
+    ]
+  },
+  {
+    "name": "Held-out NASA sites (ltv.thermal / connecting-ridge)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "status": "loo",
+    "held_out": [
+      {
+        "site": "sf-volcanic-field",
+        "percentile": 94.5,
+        "engine_sites": "Cinder Lake Crater Field 100, SP Crater (JETT3) 88.9"
+      }
+    ],
+    "median_percentile": 77.8,
+    "median_over": "all 5 engine held-out sites",
+    "top5_rate": 1.0,
+    "random_top5_rate": 0.5,
+    "population": "the 10 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
+    "engine_held_out": [
+      {
+        "site": "buffalo_park",
+        "name": "Buffalo Park",
+        "lat": 35.2222,
+        "lon": -111.6332,
+        "rank": 3,
+        "of": 10,
+        "percentile": 77.8,
+        "website_id": null
+      },
+      {
+        "site": "cinder_lake_crater_field",
+        "name": "Cinder Lake Crater Field",
+        "lat": 35.3315,
+        "lon": -111.4834,
+        "rank": 1,
+        "of": 10,
+        "percentile": 100.0,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "meteor_crater",
+        "name": "Meteor Crater",
+        "lat": 35.0333,
+        "lon": -111.017,
+        "rank": 5,
+        "of": 10,
+        "percentile": 55.6,
+        "website_id": null
+      },
+      {
+        "site": "sp_crater_jett3",
+        "name": "SP Crater (JETT3)",
+        "lat": 35.5824,
+        "lon": -111.6319,
+        "rank": 2,
+        "of": 10,
+        "percentile": 88.9,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "yucca_flat",
+        "name": "Yucca Flat",
+        "lat": 36.9476,
+        "lon": -116.0253,
+        "rank": 4,
+        "of": 10,
+        "percentile": 66.7,
+        "website_id": null
+      }
+    ],
+    "warning": "Only 10 sites ranked (few sites have temperature data yet): a random order would put 50% of them in the top 5. Weak evidence."
+  },
+  {
+    "name": "Held-out NASA sites (land.hazards / connecting-ridge)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "status": "loo",
+    "held_out": [
+      {
+        "site": "sf-volcanic-field",
+        "percentile": 93.2,
+        "engine_sites": "Cinder Lake Crater Field 94.6, SP Crater (JETT3) 91.9"
+      }
+    ],
+    "median_percentile": 91.9,
+    "median_over": "all 5 engine held-out sites",
+    "top5_rate": 0.6,
+    "random_top5_rate": 0.13,
+    "population": "the 38 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
+    "engine_held_out": [
+      {
+        "site": "buffalo_park",
+        "name": "Buffalo Park",
+        "lat": 35.2222,
+        "lon": -111.6332,
+        "rank": 1,
+        "of": 38,
+        "percentile": 100.0,
+        "website_id": null
+      },
+      {
+        "site": "cinder_lake_crater_field",
+        "name": "Cinder Lake Crater Field",
+        "lat": 35.3315,
+        "lon": -111.4834,
+        "rank": 3,
+        "of": 38,
+        "percentile": 94.6,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "meteor_crater",
+        "name": "Meteor Crater",
+        "lat": 35.0333,
+        "lon": -111.017,
+        "rank": 19,
+        "of": 38,
+        "percentile": 51.4,
+        "website_id": null
+      },
+      {
+        "site": "sp_crater_jett3",
+        "name": "SP Crater (JETT3)",
+        "lat": 35.5824,
+        "lon": -111.6319,
+        "rank": 4,
+        "of": 38,
+        "percentile": 91.9,
+        "website_id": "sf-volcanic-field"
+      },
+      {
+        "site": "yucca_flat",
+        "name": "Yucca Flat",
+        "lat": 36.9476,
+        "lon": -116.0253,
+        "rank": 8,
+        "of": 38,
+        "percentile": 81.1,
+        "website_id": null
+      }
+    ]
+  },
+  {
+    "name": "Farmland negative controls (ltv.wheels / mons-mouton-plateau)",
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
+    "ranks": "garden_city_kansas #28, ames_iowa #23"
+  },
+  {
+    "name": "Engine stability (ltv.wheels / mons-mouton-plateau)",
+    "test_id": "ltv.wheels",
+    "target_id": "mons-mouton-plateau",
+    "result": "top site unchanged in 12 of 14 small changes; 4.93 of top 5 kept on average",
+    "what_changed": "see small_change_definition in the model card"
+  },
+  {
+    "name": "Farmland negative controls (ltv.wheels / connecting-ridge)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
+    "ranks": "garden_city_kansas #28, ames_iowa #22"
+  },
+  {
+    "name": "Engine stability (ltv.wheels / connecting-ridge)",
+    "test_id": "ltv.wheels",
+    "target_id": "connecting-ridge",
+    "result": "top site unchanged in 13 of 14 small changes; 4.50 of top 5 kept on average",
+    "what_changed": "see small_change_definition in the model card"
+  },
+  {
+    "name": "Farmland negative controls (ltv.thermal / connecting-ridge)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
+    "ranks": "garden_city_kansas #7, ames_iowa #6"
+  },
+  {
+    "name": "Engine stability (ltv.thermal / connecting-ridge)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "result": "top site unchanged in 14 of 14 small changes; 5.00 of top 5 kept on average",
+    "what_changed": "see small_change_definition in the model card"
+  },
+  {
+    "name": "Farmland negative controls (land.hazards / connecting-ridge)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "status": "PASS",
+    "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
+    "ranks": "ames_iowa #22, garden_city_kansas #32"
+  },
+  {
+    "name": "Engine stability (land.hazards / connecting-ridge)",
+    "test_id": "land.hazards",
+    "target_id": "connecting-ridge",
+    "result": "top site unchanged in 11 of 12 small changes; 4.67 of top 5 kept on average",
+    "what_changed": "see small_change_definition in the model card"
   }
 ]
