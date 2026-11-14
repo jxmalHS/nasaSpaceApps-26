@@ -26,8 +26,9 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 65 tests, no internet needed
+pytest                                               # 67 tests, no internet needed
 python main.py run --mission moon_rover_south_pole  # results in results/<mission>/report.md
+python main.py export-atlas                         # hand results to the Analog Atlas web app
 ```
 
 The first run streams data for ~200 sites, which is slow on a weak connection. Every site is
@@ -36,7 +37,7 @@ the sites already downloaded.
 
 ## Status
 
-- ✅ All 5 steps work for the Moon, plus the model checks; 65 tests pass.
+- ✅ All 5 steps work for the Moon, plus the model checks; 67 tests pass.
 - ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
 - ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
 - ⏳ Full real run (~200 sites) not done yet: slow internet.
@@ -61,6 +62,7 @@ the sites already downloaded.
 | `validation.py` | Model checks: held-out NASA sites, simple-method comparison, mission sensitivity |
 | `temperature.py` | Temperature group: annual range from Diviner (Moon) and MODIS via AppEEARS (Earth) |
 | `charts.py` | Two simple PNG charts: the ranking, and "how close to the Moon" per top site |
+| `atlas_export.py` | Converts results into the Analog Atlas web app's sparse-score CSV + model card + validation |
 | `config/` | Settings, sites (with sources) and mission weights |
 | `docs/` | More detail: `pipeline.md`, `knn_model.md` |
 

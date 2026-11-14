@@ -4,6 +4,7 @@ main.py - command-line entry point.
     python main.py run --mission moon_rover_south_pole             # full run (streams what's missing)
     python main.py run --mission moon_rover_south_pole --offline   # only sites already downloaded
     python main.py run --mission moon_rover_south_pole --no-stability
+    python main.py export-atlas      # results -> Analog Atlas web app (see atlas_export.py)
 
 Results are written to results/<mission>/ (see docs/pipeline.md).
 """
@@ -33,9 +34,17 @@ def main() -> None:
     dt = sub.add_parser("download-temperature",
                         help="get MODIS temperature (NASA AppEEARS, needs Earthdata login) for downloaded sites")
     dt.add_argument("--mission", required=True, choices=sorted(missions))
+    sub.add_parser("export-atlas", help="convert results into the Analog Atlas web app's sparse-score CSV")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s", datefmt="%H:%M:%S")
+    if args.command == "export-atlas":
+        from atlas_export import export_atlas
+        dest = export_atlas(ROOT)
+        print(f"Analog Atlas files written to {dest}\nIn the analog-atlas project run:\n"
+              f"  python ml/export_scores.py {dest / 'scores.csv'} --card {dest / 'model_card.json'} "
+              f"--validation {dest / 'validation.json'}\n  python ml/validate.py\n  npm run build")
+        return
     if args.command == "download-temperature":
         done = download_temperature(args.mission, ROOT)
         print(f"Temperature saved for {len(done)} sites.")
