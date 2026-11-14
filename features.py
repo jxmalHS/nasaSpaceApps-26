@@ -40,6 +40,9 @@ FEATURE_INFO = {
     "temp_range_std": ("K", "Variation of temperature range", "higher", "lower"),
 }
 GROUPS = {f: ("temperature" if f.startswith("temp_") else "terrain") for f in FEATURE_INFO}
+# Measurements where the target can be far outside anything on Earth: ranked as
+# "closest achievable" (target clipped to Earth's range, see analog_knn.cap_target_to_earth)
+CLOSEST_ACHIEVABLE = ("temp_range_mean", "temp_range_std")
 MIN_ROUGHNESS_PX = 3   # roughness measured over fewer pixels than this is meaningless
 
 

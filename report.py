@@ -161,6 +161,10 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
              if ms.get("comparisons") else ms.get("reason", ""))
           + (f". ⚠️ {ms['warning']}" if ms.get("warning") else ""),
           f"- Features skipped (no data at this pixel size): {', '.join(summary['features_skipped_no_data']) or 'none'}",
+          *[f"- **Closest achievable:** {f}: the target's typical value ({c['target_median']:.1f}) is beyond "
+            f"anything on Earth here ({c['earth_min']:.1f}–{c['earth_max']:.1f}), so sites are ranked on how "
+            f"close they get to it. No Earth site reproduces the real value."
+            for f, c in summary.get("closest_achievable", {}).items()],
           "- Sites not ranked because a needed measurement is missing (incomplete): "
           + (", ".join(f"{i['site']} ({', '.join(i['missing'])})" for i in summary.get("earth_sites_incomplete", []))
              or "none"),

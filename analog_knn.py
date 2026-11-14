@@ -68,6 +68,7 @@ class KnnResult:
     features_used: list[str]     # the measurements that were compared
     weights: dict[str, float]    # the weights after scaling them to add up to 1
     k: int                       # how many neighbours were averaged
+    capped: dict | None = None   # "closest achievable" features: {feature: {target_median, capped_to}}
 
 
 # --------------------------------------------------------------------------
@@ -128,6 +129,30 @@ def drop_incomplete(tiles: pd.DataFrame, features: list[str]) -> tuple[pd.DataFr
     dropped = tiles.loc[has_gap, SITE_COL].value_counts().to_dict()
     clean = tiles.loc[~has_gap].reset_index(drop=True)   # renumber rows 0, 1, 2, ...
     return clean, dropped
+
+
+def cap_target_to_earth(target: pd.DataFrame, earth: pd.DataFrame,
+                        features: list[str]) -> tuple[pd.DataFrame, dict]:
+    """For measurements Earth physically can't reach, aim at the best Earth CAN offer.
+
+    Example: the Moon's yearly temperature swing is ~177 K; no place on Earth gets
+    near that (deserts reach ~60-70 K). Compared directly, that gap swamps every
+    other measurement and all scores collapse to ~0, which says nothing useful.
+    So the target's value is clipped to the range seen on Earth: the question
+    becomes "which site comes CLOSEST to the Moon?". The real Moon value is kept
+    everywhere else (reports, requirement checks, "what Earth can't reproduce").
+    Returns the clipped copy of the target and {feature: what was capped}.
+    """
+    target = target.copy()
+    capped = {}
+    for f in features:
+        lo, hi = float(earth[f].min()), float(earth[f].max())
+        outside = (target[f] < lo) | (target[f] > hi)
+        if outside.any():
+            capped[f] = {"target_median": float(target[f].median()), "earth_min": lo, "earth_max": hi,
+                         "share_of_target_tiles_capped": float(outside.mean())}
+            target[f] = target[f].clip(lo, hi)
+    return target, capped
 
 
 # --------------------------------------------------------------------------
@@ -333,7 +358,7 @@ def summarise_sites(earth_tiles: pd.DataFrame, baselines: list[str], site_quanti
 # --------------------------------------------------------------------------
 def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
             site_quantile: float = 0.75, exclude_from_fit: tuple[str, ...] = (),
-            two_way_weight: float = 0.5) -> KnnResult:
+            two_way_weight: float = 0.5, cap_to_earth: tuple[str, ...] = ()) -> KnnResult:
     """Rank Earth sites by how closely they match the target, for one mission.
 
     tiles            : the tile table described at the top of this file
@@ -344,6 +369,8 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
                        but still scored - used for the held-out test
     two_way_weight   : share of the score from the reverse (Moon -> site) check;
                        0 = one-way kNN only, 0.5 = both directions equally (default)
+    cap_to_earth     : measurements Earth can't reach (e.g. lunar temperature range);
+                       the target is clipped to Earth's range for them ("closest achievable")
 
     Nothing here is random, so the same input always gives the same output.
     """
@@ -361,6 +388,7 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
     fit_on = earth[~earth[SITE_COL].isin(exclude_from_fit)]
     if fit_on.empty:
         raise ValueError("No Earth tiles left to fit the scaler after excluding held-out sites")
+    target, capped = cap_target_to_earth(target, fit_on, [f for f in cap_to_earth if f in features])
     scaler = fit_scaler(fit_on, features)
     target_space = to_weighted_space(target, features, scaler, w)
     earth_space = to_weighted_space(earth, features, scaler, w)
@@ -378,4 +406,5 @@ def run_knn(tiles: pd.DataFrame, weights: dict[str, float], k: int = 5,
     sites = summarise_sites(earth_tiles, baselines, site_quantile, coverage, dropped,
                             back=back, two_way_weight=two_way_weight)
 
-    return KnnResult(tiles=earth_tiles, sites=sites, features_used=features, weights=w, k=k)
+    return KnnResult(tiles=earth_tiles, sites=sites, features_used=features, weights=w, k=k,
+                     capped=capped)

@@ -34,7 +34,7 @@ import sources
 import temperature
 import validation
 from analog_knn import run_knn
-from features import tile_features
+from features import CLOSEST_ACHIEVABLE, tile_features
 from mission import MET, NOT_MET, UNKNOWN, Mission, parse_mission
 from preprocess import earth_box, remove_spikes, snapped_box, to_metric_grid
 from tiles import cut_tiles, tile_blocks
@@ -364,7 +364,8 @@ def rank(table: pd.DataFrame, weights: dict, settings: dict):
               and table.loc[table.role != "target", f].notna().any()}
     skipped = sorted(set(weights) - set(usable))
     k = settings["knn"]
-    return run_knn(table, usable, k=k["k"], site_quantile=k["site_quantile"]), skipped
+    return run_knn(table, usable, k=k["k"], site_quantile=k["site_quantile"],
+                   cap_to_earth=CLOSEST_ACHIEVABLE), skipped
 
 
 def stability(mission, settings, base_sites, table, inp: Inputs) -> dict:
@@ -467,8 +468,10 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
 
     # Validation: held-out NASA sites, simple-method comparison, mission sensitivity
     knn = settings["knn"]
-    held_out = validation.held_out_test(table, result.weights, knn["k"], knn["site_quantile"])
-    simple = validation.simple_method_ranking(table, result.weights, knn["site_quantile"])
+    held_out = validation.held_out_test(table, result.weights, knn["k"], knn["site_quantile"],
+                                        cap_to_earth=CLOSEST_ACHIEVABLE)
+    simple = validation.simple_method_ranking(table, result.weights, knn["site_quantile"],
+                                              cap_to_earth=CLOSEST_ACHIEVABLE)
     agreement = validation.method_agreement(result.sites, simple)
     others = {}
     for other_name, other_raw in missions.items():
@@ -522,7 +525,8 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
     summary = {"mission": mission.name, "description": mission.description, "body": mission.body,
                "target": mission.target, "target_tiles": int((table.role == "target").sum()),
                "target_profile": profile, "weights_used": result.weights,
-               "features_skipped_no_data": skipped, "ignored": mission.ignored,
+               "features_skipped_no_data": skipped, "closest_achievable": result.capped or {},
+               "ignored": mission.ignored,
                "interference_limits": mission.interference,
                "mandatory": [r.describe() for r in mission.mandatory],
                "earth_sites_ranked": int(len(ranking)), "earth_sites_failed": failed,

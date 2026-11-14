@@ -22,26 +22,35 @@ import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr
 
-from analog_knn import (ROLE_COL, SITE_COL, drop_incomplete, fit_scaler, normalise_weights,
-                        run_knn, to_weighted_space)
+from analog_knn import (ROLE_COL, SITE_COL, cap_target_to_earth, drop_incomplete, fit_scaler,
+                        normalise_weights, run_knn, to_weighted_space)
 
 SMALL_SAMPLE = 20   # below this many ranked sites, recall@k says little - we warn
 
 
-def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float) -> dict:
+def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float,
+                  cap_to_earth: tuple[str, ...] = ()) -> dict:
     """Leave each NASA baseline out of the fitting, one at a time, and record its rank."""
     baselines = sorted(table.loc[table[ROLE_COL] == "baseline", SITE_COL].unique())
     if not baselines:
         return {"status": "NOT RUN", "reason": "no baseline sites with data"}
     if table.loc[table[ROLE_COL] != "target", SITE_COL].nunique() < 2:
         return {"status": "NOT RUN", "reason": "need at least one other Earth site to fit on"}
-    rows = []
+    rows, skipped = [], []
     for b in baselines:
-        sites = run_knn(table, weights, k=k, site_quantile=quantile, exclude_from_fit=(b,)).sites
-        rows.append({"site": b, "rank": int(sites.set_index("site").at[b, "rank"])})
+        sites = run_knn(table, weights, k=k, site_quantile=quantile, exclude_from_fit=(b,),
+                        cap_to_earth=cap_to_earth).sites
+        ranked = sites.set_index("site")["rank"]
+        if b in ranked.index:
+            rows.append({"site": b, "rank": int(ranked[b])})
+        else:                                   # missing a measurement the mission needs: can't be ranked
+            skipped.append(b)
+    if not rows:
+        return {"status": "NOT RUN", "reason": "no NASA site has every measurement this mission needs",
+                "skipped_incomplete": skipped}
     ranks = np.array([r["rank"] for r in rows])
-    n = int(table.loc[table[ROLE_COL] != "target", SITE_COL].nunique())
-    out = {"status": "INFO", "n_sites_ranked": n, "held_out": rows,
+    n = len(sites)
+    out = {"status": "INFO", "n_sites_ranked": n, "held_out": rows, "skipped_incomplete": skipped,
            "recall_at_5": float((ranks <= 5).mean()), "recall_at_10": float((ranks <= 10).mean()),
            "random_guess_recall_at_5": round(min(5, n) / n, 2)}
     if n < SMALL_SAMPLE:
@@ -51,12 +60,14 @@ def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float) -
     return out
 
 
-def simple_method_ranking(table: pd.DataFrame, weights: dict, quantile: float) -> pd.DataFrame:
+def simple_method_ranking(table: pd.DataFrame, weights: dict, quantile: float,
+                          cap_to_earth: tuple[str, ...] = ()) -> pd.DataFrame:
     """Rank sites by weighted distance of each tile to the target's MEDIAN tile (no kNN)."""
     features = list(weights)
     clean, _ = drop_incomplete(table, features)
     target = clean[clean[ROLE_COL] == "target"]
     earth = clean[clean[ROLE_COL] != "target"].reset_index(drop=True)
+    target, _ = cap_target_to_earth(target, earth, [f for f in cap_to_earth if f in features])
     w = normalise_weights(weights)
     scaler = fit_scaler(earth, features)
     centre = to_weighted_space(target[features].median().to_frame().T, features, scaler, w)

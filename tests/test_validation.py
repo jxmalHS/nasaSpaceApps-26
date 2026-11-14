@@ -39,6 +39,14 @@ def test_held_out_nasa_sites_rank_high(table):
     assert out["status"] == "WARN"                             # only 9 sites: says so loudly
 
 
+def test_held_out_skips_incomplete_nasa_sites(table):
+    """A NASA site missing a needed measurement is skipped and listed, not a crash."""
+    table.loc[table.site == "nasa_b", "rough_small"] = np.nan
+    out = validation.held_out_test(table, W, k=5, quantile=0.75)
+    assert [h["site"] for h in out["held_out"]] == ["nasa_a"]
+    assert out["skipped_incomplete"] == ["nasa_b"]
+
+
 def test_held_out_without_baselines():
     t = pd.concat([site("moon", "target", 9, 8), site("c", "candidate", 5, 5)], ignore_index=True)
     assert validation.held_out_test(t, W, 5, 0.75)["status"] == "NOT RUN"

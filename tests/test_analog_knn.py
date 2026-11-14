@@ -132,3 +132,27 @@ def test_bad_weights_and_settings(tiles):
         run_knn(tiles, {})
     with pytest.raises(ValueError, match="k must be"):
         run_knn(tiles, WEIGHTS, k=0)
+
+
+def test_closest_achievable_caps_unreachable_target(tiles):
+    """Moon value far beyond Earth: without the cap every score collapses; with it, the
+    Earth site closest to the Moon value wins with a usable score and the cap is reported."""
+    t = tiles.copy()
+    t["temp_range"] = np.where(t.role == "target", 177.0, 40.0)
+    t.loc[t.site == "good_candidate", "temp_range"] = 65.0           # Earth's widest swing
+    w = {**WEIGHTS, "temp_range": 2.0}
+    raw = run_knn(t, w).sites.set_index("site")
+    capped = run_knn(t, w, cap_to_earth=("temp_range",))
+    sites = capped.sites.set_index("site")
+    assert raw["score"].max() < 0.05                                 # the problem
+    assert sites.index[0] == "good_candidate" and sites["score"].max() > 0.3
+    assert capped.capped["temp_range"]["target_median"] == 177.0
+    assert capped.capped["temp_range"]["earth_max"] == 65.0
+    assert t.loc[t.role == "target", "temp_range"].eq(177.0).all()   # input table untouched
+
+
+def test_cap_does_nothing_when_target_is_reachable(tiles):
+    a = run_knn(tiles, WEIGHTS).sites
+    b = run_knn(tiles, WEIGHTS, cap_to_earth=("slope_mean", "not_weighted"))
+    pd.testing.assert_frame_equal(a, b.sites)
+    assert b.capped == {}
