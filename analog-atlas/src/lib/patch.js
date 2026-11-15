@@ -15,7 +15,7 @@ export async function loadPatch({body, key, lat, lon, signal}) {
       if (p.body !== body || p.lat !== lat || p.lon !== lon || p.n !== PATCH_N || p.size_m !== PATCH_M || p.z?.length !== p.n*p.n || !p.z.every(Number.isFinite)) continue;
       p.z = Float32Array.from(p.z);
       p.stats = patchStats(p);
-      if (cache.size >= 32) cache.delete(cache.keys().next().value);
+      if (cache.size >= 96) cache.delete(cache.keys().next().value);
       cache.set(id,p);
       return p;
     } catch { if(signal?.aborted) break; }

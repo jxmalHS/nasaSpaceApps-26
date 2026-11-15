@@ -111,7 +111,7 @@ export default function Inspector({ d, loading, onBack }) {
             </div>
             <div className="row wrap" style={{ marginTop: 6 }}>
               <SiteStatus status={d.status} warn={d.warn} />
-              {d.beatsBaseline && <Status kind="beats" />}
+              {d.beatsBaseline && <Status kind="beats">Above NASA’s best site (55 km)</Status>}
               <EvidenceTag d={d} />
             </div>
           </div>

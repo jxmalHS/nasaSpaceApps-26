@@ -206,7 +206,7 @@ function Proof() {
                   <div className="row"><span className="tag-ab a">A</span><b>{det.place ? `Near ${det.place}` : 'Unnamed cell'}, {det.country}</b></div>
                   <div className="small dim">Rank #1 of {d.r.scored.toLocaleString()} passing cells · score {Math.round(det.score * 100)}</div>
                 </div>
-                <Status kind="beats" />
+                <Status kind="beats">Above NASA’s best site (55 km)</Status>
               </div>
               <table className="proof-table">
                 <thead><tr><th scope="col">Stressor</th><th scope="col" className="earth-c">This site</th><th scope="col">{det.baseline ? det.baseline.name.split(',')[0] : 'Baseline'}</th><th scope="col" className="target-c">Ridge</th></tr></thead>
