@@ -1,8 +1,8 @@
 {
   "site": "ames",
   "role": "candidate",
-  "rank": 7,
-  "score": 0.19677912242187257,
+  "rank": 20,
+  "score": 0.1919622879226548,
   "location": {
     "lat": 36.25,
     "lon": -98.2,
@@ -15,7 +15,7 @@
     "tile_id": "r02c00",
     "lat": 36.2727207124831,
     "lon": -98.33976780724905,
-    "similarity": 0.30625742645982473
+    "similarity": 0.2792827766087951
   },
   "requirements": [
     {
@@ -168,11 +168,11 @@
     }
   },
   "baselines": {
-    "nearest": "yucca_flat",
+    "nearest": "buffalo_park",
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

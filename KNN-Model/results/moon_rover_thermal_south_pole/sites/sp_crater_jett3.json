@@ -1,21 +1,21 @@
 {
   "site": "sp_crater_jett3",
   "role": "baseline",
-  "rank": 2,
-  "score": 0.5045539869440663,
+  "rank": 3,
+  "score": 0.47878382637533723,
   "location": {
     "lat": 35.5824,
     "lon": -111.6319,
     "source": "OpenStreetMap node 359272327 'S P Crater' (JETT3 base, NASA NTRS 20230000146)"
   },
   "covers": {
-    "target_coverage": 0.171875
+    "target_coverage": 0.0625
   },
   "test_tile": {
     "tile_id": "r03c03",
     "lat": 35.5598558769105,
     "lon": -111.6046808566966,
-    "similarity": 0.5390322879797409
+    "similarity": 0.5716624130995974
   },
   "requirements": [
     {

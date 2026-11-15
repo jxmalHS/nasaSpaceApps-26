@@ -1,0 +1,187 @@
+{
+  "site": "jabal_qidr_harrat_khaybar",
+  "role": "candidate",
+  "rank": 11,
+  "score": 0.3451460584742907,
+  "location": {
+    "lat": 25.72,
+    "lon": 39.9433,
+    "source": "OpenStreetMap node 1111949118 'Jabal Qidr' (volcano in Harrat Khaybar lava field, Saudi Arabia)"
+  },
+  "covers": {
+    "target_coverage": 0.0
+  },
+  "test_tile": {
+    "tile_id": "r02c04",
+    "lat": 25.741941936948194,
+    "lon": 40.01796020907436,
+    "similarity": 0.6010905385348317
+  },
+  "requirements": [
+    {
+      "requirement": "slope_p90 within 5 deg of the target",
+      "status": "not_met",
+      "value": 4.616323253735837,
+      "target": 18.806584481402048,
+      "met_somewhere_on_site": true
+    },
+    {
+      "requirement": "temp_range_mean >= 60 K",
+      "status": "met",
+      "value": 60.56565475463867,
+      "target": 176.91690826416016,
+      "met_somewhere_on_site": true
+    }
+  ],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "target",
+      "target": 11.691177839896522,
+      "test_tile": 2.7701610215071155,
+      "site_median": 2.587851822665691,
+      "difference": -8.921016818389406,
+      "statement": "Average slope is 8.92\u00b0 gentler than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 4.35791507472881,
+      "test_tile": 2.7473835032047895,
+      "site_median": 2.0915900970232695,
+      "difference": -1.6105315715240205,
+      "statement": "Slope variability is 1.61\u00b0 lower than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "target",
+      "target": 18.806584481402048,
+      "test_tile": 4.616323253735837,
+      "site_median": 4.593092992275139,
+      "difference": -14.19026122766621,
+      "statement": "Steepest-10% slope is 14.2\u00b0 gentler than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "target",
+      "target": 0.2486,
+      "test_tile": 0.0124,
+      "site_median": 0.006200000000000001,
+      "difference": -0.2362,
+      "statement": "Share of steep ground is 0.236 lower than the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": 1005.6599807739258,
+      "test_tile": 211.9879150390625,
+      "site_median": 227.95257568359375,
+      "difference": -793.6720657348633,
+      "statement": "Relief (highest minus lowest) is 794 m smaller than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "ignored",
+      "target": 0.49959563105715865,
+      "test_tile": 0.5324550580011,
+      "site_median": 0.4131524979370054,
+      "difference": 0.032859426943941394,
+      "statement": "Hypsometric integral is 0.0329 higher than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 3.2322887241050373,
+      "test_tile": 2.562064613503397,
+      "site_median": 2.2721034019852797,
+      "difference": -0.6702241106016404,
+      "statement": "Small-scale bumpiness is 0.67 m smoother than the target"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 36.3784061016397,
+      "test_tile": 11.92060458117021,
+      "site_median": 9.813812690970781,
+      "difference": -24.457801520469488,
+      "statement": "Large-scale bumpiness is 24.5 m smoother than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "ignored",
+      "target": 0.2852543664550781,
+      "test_tile": 0.23652660400390624,
+      "site_median": 0.20719590087890624,
+      "difference": -0.048727762451171885,
+      "statement": "Curvature is 0.0487 /km less curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "ignored",
+      "target": 0.7999999999999999,
+      "test_tile": 0.9199999999999998,
+      "site_median": 0.9199999999999998,
+      "difference": 0.11999999999999988,
+      "statement": "Density of crater-like dips is 0.12 per km\u00b2 higher than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "target",
+      "target": 176.91690826416016,
+      "test_tile": 60.56565475463867,
+      "site_median": 50.26181221008301,
+      "difference": -116.35125350952148,
+      "statement": "Annual temperature range is 116 K narrower than the target"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": 17.52491283416748,
+      "test_tile": 0.42226818203926086,
+      "site_median": 0.8801602721214294,
+      "difference": -17.10264465212822,
+      "statement": "Variation of temperature range is 17.1 K lower than the target"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.0,
+      "cropland_frac": 0.0,
+      "builtup_frac": 0.0,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.0
+    }
+  },
+  "baselines": {
+    "nearest": "buffalo_park",
+    "closer_than": ""
+  },
+  "confidence": {
+    "value": 1.0,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ.",
+    "Vacuum: no atmosphere; Earth sites have air, wind and weathering.",
+    "Radiation: no magnetic field or atmosphere shielding the lunar surface.",
+    "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers.",
+    "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils.",
+    "Lighting: very low sun angles and long shadows at the lunar poles."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

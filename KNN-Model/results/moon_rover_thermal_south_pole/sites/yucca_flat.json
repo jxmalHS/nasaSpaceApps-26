@@ -1,21 +1,21 @@
 {
   "site": "yucca_flat",
   "role": "baseline",
-  "rank": 3,
-  "score": 0.42973543307384265,
+  "rank": 6,
+  "score": 0.3994025238401149,
   "location": {
     "lat": 36.9476,
     "lon": -116.0253,
     "source": "OpenStreetMap relation 14656758 'Yucca Dry Lake' (southern Yucca Flat)"
   },
   "covers": {
-    "target_coverage": 0.109375
+    "target_coverage": 0.0
   },
   "test_tile": {
     "tile_id": "r00c02",
     "lat": 37.06047053733031,
     "lon": -116.05293950585677,
-    "similarity": 0.5431329936333323
+    "similarity": 0.5244309838135655
   },
   "requirements": [
     {
@@ -172,7 +172,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

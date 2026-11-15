@@ -1,34 +1,34 @@
 {
   "site": "meteor_crater",
   "role": "baseline",
-  "rank": 4,
-  "score": 0.39624331030340804,
+  "rank": 7,
+  "score": 0.39066237754392885,
   "location": {
     "lat": 35.0333,
     "lon": -111.017,
     "source": "USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921), entry 'Barringer (= Meteor)'"
   },
   "covers": {
-    "target_coverage": 0.0625
+    "target_coverage": 0.0
   },
   "test_tile": {
-    "tile_id": "r05c03",
-    "lat": 34.9202572572658,
-    "lon": -110.99014671466287,
-    "similarity": 0.6413013390224742
+    "tile_id": "r00c00",
+    "lat": 35.14559360309508,
+    "lon": -111.15479236347154,
+    "similarity": 0.6077308234420229
   },
   "requirements": [
     {
       "requirement": "slope_p90 within 5 deg of the target",
       "status": "not_met",
-      "value": 6.215213407060184,
+      "value": 1.5145420773839964,
       "target": 18.806584481402048,
       "met_somewhere_on_site": false
     },
     {
       "requirement": "temp_range_mean >= 60 K",
       "status": "met",
-      "value": 60.94267654418945,
+      "value": 64.26494598388672,
       "target": 176.91690826416016,
       "met_somewhere_on_site": true
     }
@@ -39,120 +39,120 @@
       "unit": "deg",
       "mission_role": "target",
       "target": 11.691177839896522,
-      "test_tile": 2.5661595848395105,
+      "test_tile": 1.3233111339502894,
       "site_median": 1.151942316802053,
-      "difference": -9.125018255057011,
-      "statement": "Average slope is 9.13\u00b0 gentler than the target"
+      "difference": -10.367866705946232,
+      "statement": "Average slope is 10.4\u00b0 gentler than the target"
     },
     {
       "feature": "slope_std",
       "unit": "deg",
       "mission_role": "ignored",
       "target": 4.35791507472881,
-      "test_tile": 3.805229555710074,
+      "test_tile": 1.9179138400688054,
       "site_median": 0.6210123786358392,
-      "difference": -0.5526855190187359,
-      "statement": "Slope variability is 0.553\u00b0 lower than the target"
+      "difference": -2.440001234660005,
+      "statement": "Slope variability is 2.44\u00b0 lower than the target"
     },
     {
       "feature": "slope_p90",
       "unit": "deg",
       "mission_role": "target",
       "target": 18.806584481402048,
-      "test_tile": 6.215213407060184,
+      "test_tile": 1.5145420773839964,
       "site_median": 1.8066655929097708,
-      "difference": -12.591371074341865,
-      "statement": "Steepest-10% slope is 12.6\u00b0 gentler than the target"
+      "difference": -17.29204240401805,
+      "statement": "Steepest-10% slope is 17.3\u00b0 gentler than the target"
     },
     {
       "feature": "frac_steep",
       "unit": "fraction",
       "mission_role": "target",
       "target": 0.2486,
-      "test_tile": 0.0316,
+      "test_tile": 0.0064,
       "site_median": 0.0,
-      "difference": -0.21699999999999997,
-      "statement": "Share of steep ground is 0.217 lower than the target"
+      "difference": -0.2422,
+      "statement": "Share of steep ground is 0.242 lower than the target"
     },
     {
       "feature": "relief",
       "unit": "m",
       "mission_role": "ignored",
       "target": 1005.6599807739258,
-      "test_tile": 266.5174560546875,
+      "test_tile": 135.010986328125,
       "site_median": 86.59039306640625,
-      "difference": -739.1425247192383,
-      "statement": "Relief (highest minus lowest) is 739 m smaller than the target"
+      "difference": -870.6489944458008,
+      "statement": "Relief (highest minus lowest) is 871 m smaller than the target"
     },
     {
       "feature": "hypsometric_integral",
       "unit": "unitless",
       "mission_role": "ignored",
       "target": 0.49959563105715865,
-      "test_tile": 0.2361317514545569,
+      "test_tile": 0.6497044558367462,
       "site_median": 0.5009009762910916,
-      "difference": -0.26346387960260176,
-      "statement": "Hypsometric integral is 0.263 lower than the target"
+      "difference": 0.15010882477958754,
+      "statement": "Hypsometric integral is 0.15 higher than the target"
     },
     {
       "feature": "rough_small",
       "unit": "m",
       "mission_role": "target",
       "target": 3.2322887241050373,
-      "test_tile": 2.3200606711407024,
+      "test_tile": 1.2697667385519193,
       "site_median": 1.116990739837266,
-      "difference": -0.912228052964335,
-      "statement": "Small-scale bumpiness is 0.912 m smoother than the target"
+      "difference": -1.962521985553118,
+      "statement": "Small-scale bumpiness is 1.96 m smoother than the target"
     },
     {
       "feature": "rough_large",
       "unit": "m",
       "mission_role": "target",
       "target": 36.3784061016397,
-      "test_tile": 14.324728461462811,
+      "test_tile": 4.15229978377887,
       "site_median": 3.6710054016568883,
-      "difference": -22.053677640176886,
-      "statement": "Large-scale bumpiness is 22.1 m smoother than the target"
+      "difference": -32.226106317860825,
+      "statement": "Large-scale bumpiness is 32.2 m smoother than the target"
     },
     {
       "feature": "curvature_abs_mean",
       "unit": "1/km",
       "mission_role": "ignored",
       "target": 0.2852543664550781,
-      "test_tile": 0.2110191857910156,
+      "test_tile": 0.11776578247070314,
       "site_median": 0.10554844360351563,
-      "difference": -0.07423518066406251,
-      "statement": "Curvature is 0.0742 /km less curved than the target"
+      "difference": -0.167488583984375,
+      "statement": "Curvature is 0.167 /km less curved than the target"
     },
     {
       "feature": "pit_density",
       "unit": "per_km2",
       "mission_role": "ignored",
       "target": 0.7999999999999999,
-      "test_tile": 0.15999999999999998,
+      "test_tile": 0.5999999999999999,
       "site_median": 0.23999999999999996,
-      "difference": -0.6399999999999999,
-      "statement": "Density of crater-like dips is 0.64 per km\u00b2 lower than the target"
+      "difference": -0.20000000000000007,
+      "statement": "Density of crater-like dips is 0.2 per km\u00b2 lower than the target"
     },
     {
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "target",
       "target": 176.91690826416016,
-      "test_tile": 60.94267654418945,
+      "test_tile": 64.26494598388672,
       "site_median": 61.41387939453125,
-      "difference": -115.9742317199707,
-      "statement": "Annual temperature range is 116 K narrower than the target"
+      "difference": -112.65196228027344,
+      "statement": "Annual temperature range is 113 K narrower than the target"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
       "target": 17.52491283416748,
-      "test_tile": 1.1270644664764404,
+      "test_tile": 0.800687849521637,
       "site_median": 0.8953279852867126,
-      "difference": -16.39784836769104,
-      "statement": "Variation of temperature range is 16.4 K lower than the target"
+      "difference": -16.724224984645844,
+      "statement": "Variation of temperature range is 16.7 K lower than the target"
     }
   ],
   "interference": {
@@ -160,11 +160,11 @@
     "unknown": [],
     "level": 0,
     "values": {
-      "tree_frac": 0.008128,
+      "tree_frac": 0.0,
       "cropland_frac": 0.0,
-      "builtup_frac": 0.0,
+      "builtup_frac": 0.004672,
       "snow_ice_frac": 0.0,
-      "water_frac": 0.000128
+      "water_frac": 0.0
     }
   },
   "baselines": {

@@ -1,8 +1,8 @@
 {
   "site": "acraman",
   "role": "candidate",
-  "rank": 6,
-  "score": 0.20253080659926792,
+  "rank": 18,
+  "score": 0.19512569457018655,
   "location": {
     "lat": -32.0167,
     "lon": 135.45,
@@ -15,7 +15,7 @@
     "tile_id": "r05c05",
     "lat": -32.12915499103739,
     "lon": 135.5820400277973,
-    "similarity": 0.3539394168725973
+    "similarity": 0.3149549603894852
   },
   "requirements": [
     {
@@ -172,7 +172,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

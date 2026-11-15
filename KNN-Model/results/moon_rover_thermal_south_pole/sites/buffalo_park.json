@@ -1,21 +1,21 @@
 {
   "site": "buffalo_park",
   "role": "baseline",
-  "rank": 9,
-  "score": 0.4300541360495256,
+  "rank": 24,
+  "score": 0.41378096691619914,
   "location": {
     "lat": 35.2222,
     "lon": -111.6332,
     "source": "OpenStreetMap way 205504372 'Buffalo Park, Flagstaff'"
   },
   "covers": {
-    "target_coverage": 0.109375
+    "target_coverage": 0.0
   },
   "test_tile": {
     "tile_id": "r00c05",
     "lat": 35.33492980427323,
     "lon": -111.4973665442217,
-    "similarity": 0.4845491756139617
+    "similarity": 0.5192111022950636
   },
   "requirements": [
     {

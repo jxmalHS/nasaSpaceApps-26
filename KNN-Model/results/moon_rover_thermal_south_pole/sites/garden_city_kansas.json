@@ -1,8 +1,8 @@
 {
   "site": "garden_city_kansas",
   "role": "negative_control",
-  "rank": 5,
-  "score": 0.23078412685016503,
+  "rank": 16,
+  "score": 0.2284056489322788,
   "location": {
     "lat": 37.9717,
     "lon": -100.8727,
@@ -15,7 +15,7 @@
     "tile_id": "r03c02",
     "lat": 37.948457021296846,
     "lon": -100.9006925838259,
-    "similarity": 0.3569106847381511
+    "similarity": 0.3225065935825475
   },
   "requirements": [
     {

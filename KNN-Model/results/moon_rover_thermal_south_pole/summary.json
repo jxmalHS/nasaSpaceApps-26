@@ -31,8 +31,8 @@
     "temp_range_mean": {
       "target_median": 176.91690826416016,
       "earth_min": 22.132436752319336,
-      "earth_max": 66.60564422607422,
-      "share_of_target_tiles_capped": 0.953125
+      "earth_max": 72.02009582519531,
+      "share_of_target_tiles_capped": 0.921875
     }
   },
   "ignored": [
@@ -67,598 +67,35 @@
     "slope_p90 within 5 deg of the target",
     "temp_range_mean >= 60 K"
   ],
-  "earth_sites_ranked": 10,
-  "earth_sites_failed": [
-    {
-      "site": "agoudal",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "amelia_creek",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "amguid",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "aorounga",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "aouelloul",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "amboy",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "beaverhead",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "beyenchime_salaaty",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "bigach",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "boltysh",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "bosumtwi_ashanti",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "boxhole",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "brent",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "calvin",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "campo_del_cielo",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "carswell",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "charlevoix_la_malbaie",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "chesapeake_bay",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "chukcha",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "clearwater_east_2",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "colonia",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "connolly_basin",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "couture_lac_couture",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "crooked_creek",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "dalgaranga",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "decaturville",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "des_plaines",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "dhala",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "dobele",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "eagle_butte",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "el_gygytgyn",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "elbow",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "flaxman_2",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "foelsche",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "gardnos",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "glasford",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "glikson",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "glover_bluff",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "goat_paddock",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "gosses_bluff",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "gow",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "granby",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kamensk",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "gweni_fada",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "haughton",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "haviland",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "henbury",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "holleford",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "hummeln",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "ile_rouleau",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "ilumetsa",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "iso_naakkima",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "janisjarvi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "jebel_waqf_as_suwwan",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kalkkop",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kaluga",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kamensk_2",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kamil",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kara",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kara_kul",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kardla",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "karikkoselka",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "karla",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "keurusselka",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kgagodi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "kursk",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "lawn_hill",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "liverpool",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "lockne",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "logancha",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "logoisk",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "lonar",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "luizi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "lumparn",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "macha",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "lockne_2",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "manicouagan",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "manson",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "maple_creek_white_valley",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "marquez",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "middlesboro",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "mien",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "mistastin",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "mjolnir",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "montagnais",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "monturaqui",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "morasko",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "morokweng",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "mount_toondina",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "neugrund",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "new_quebec_chubb_ungava_pingualuit",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "newporte",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "nicholson",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "oasis",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "obolon",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "paasselka",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "piccaninny",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "popigai",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "presqu_ile",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "red_wing",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "riachao_ring",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "rio_cuarto",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "ritland",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "rochechouart",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "rock_elm",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "roter_kamm",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "boltysh_2",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "saaksjarvi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "saarijarvi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "saint_martin",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "santa_fe",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "santa_marta",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "saqqar",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "serpent_mound",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "shoemaker_formerly_teague",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "shunak",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "sierra_madera",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "slate_islands",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "sobolev",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "soderfjarden",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "spider",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "steen_river",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "suavjarvi",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "sudbury",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "suvasvesi_n",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "suvasvesi_s",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "tabun_khara_obo",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "talemzane_maadna",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "tenoumer",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "ternovka",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "tookoonooka",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "tswaing_formerly_pretoria_saltpan",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "upheaval_dome",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "veevers",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "viewfield",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "vista_alegre",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "vredefort",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "wabar",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "wanapitei",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "wells_creek",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "whitecourt",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "woodleigh",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "xiuyan",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "yarrabubba",
-      "error": "not downloaded yet (offline mode)"
-    },
-    {
-      "site": "zhamanshin",
-      "error": "not downloaded yet (offline mode)"
-    }
-  ],
+  "earth_sites_ranked": 25,
+  "earth_sites_failed": [],
   "earth_sites_incomplete": [
     {
-      "site": "amboy_crater",
+      "site": "beaverhead",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
-      "site": "b_p_structure",
+      "site": "beyenchime_salaaty",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "bigach",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "boxhole",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "campo_del_cielo",
       "missing": [
         "temp_range_mean"
       ]
@@ -676,13 +113,43 @@
       ]
     },
     {
+      "site": "chukcha",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
       "site": "cloud_creek",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
-      "site": "el_malpais",
+      "site": "connolly_basin",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "dalgaranga",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "eagle_butte",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "el_gygytgyn",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "elbow",
       "missing": [
         "temp_range_mean"
       ]
@@ -694,19 +161,97 @@
       ]
     },
     {
-      "site": "holuhraun",
+      "site": "flaxman_2",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
-      "site": "hverfjall",
+      "site": "foelsche",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
-      "site": "jabal_qidr_harrat_khaybar",
+      "site": "gardnos",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "glikson",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "goat_paddock",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "gosses_bluff",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "gweni_fada",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "haughton",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "haviland",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "henbury",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "jebel_waqf_as_suwwan",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kalkkop",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kamensk_2",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kamil",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kara",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kara_kul",
       "missing": [
         "temp_range_mean"
       ]
@@ -718,13 +263,79 @@
       ]
     },
     {
-      "site": "lunar_crater_nevada",
+      "site": "kgagodi",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "kursk",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "lawn_hill",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "maple_creek_white_valley",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "marquez",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
       "site": "matt_wilson",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "mistastin",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "monturaqui",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "morokweng",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "mount_toondina",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "new_quebec_chubb_ungava_pingualuit",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "oasis",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "obolon",
       "missing": [
         "temp_range_mean"
       ]
@@ -742,7 +353,61 @@
       ]
     },
     {
-      "site": "pisgah_crater",
+      "site": "piccaninny",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "red_wing",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "riachao_ring",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "ritland",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "rochechouart",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "roter_kamm",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "saint_martin",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "santa_fe",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "santa_marta",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "saqqar",
       "missing": [
         "temp_range_mean"
       ]
@@ -754,7 +419,31 @@
       ]
     },
     {
+      "site": "shoemaker_formerly_teague",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "shunak",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "sierra_madera",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
       "site": "sikhote_alin",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "spider",
       "missing": [
         "temp_range_mean"
       ]
@@ -766,13 +455,61 @@
       ]
     },
     {
+      "site": "tabun_khara_obo",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "talemzane_maadna",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "tenoumer",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
       "site": "tin_bider",
       "missing": [
         "temp_range_mean"
       ]
     },
     {
-      "site": "valley_of_fires_carrizozo",
+      "site": "tookoonooka",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "tswaing_formerly_pretoria_saltpan",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "upheaval_dome",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "veevers",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "vredefort",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "wabar",
       "missing": [
         "temp_range_mean"
       ]
@@ -782,56 +519,150 @@
       "missing": [
         "temp_range_mean"
       ]
+    },
+    {
+      "site": "woodleigh",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "yarrabubba",
+      "missing": [
+        "temp_range_mean"
+      ]
+    },
+    {
+      "site": "zhamanshin",
+      "missing": [
+        "temp_range_mean"
+      ]
     }
   ],
-  "candidate_tiles_blocked_by_interference": 1221,
+  "candidate_tiles_blocked_by_interference": 4570,
   "candidates_blocked_everywhere": [
     "avak",
+    "boltysh",
+    "boltysh_2",
+    "bosumtwi_ashanti",
+    "brent",
+    "calvin",
+    "carswell",
+    "charlevoix_la_malbaie",
+    "chesapeake_bay",
     "chicxulub",
     "clearwater_east",
+    "clearwater_east_2",
+    "colonia",
+    "couture_lac_couture",
+    "crooked_creek",
+    "decaturville",
     "deep_bay",
     "dellen",
+    "des_plaines",
+    "dhala",
+    "dobele",
     "flynn_creek",
+    "glasford",
+    "glover_bluff",
+    "gow",
     "goyder",
+    "granby",
+    "holleford",
+    "hummeln",
+    "ile_rouleau",
+    "ilumetsa",
     "ilyinets",
+    "iso_naakkima",
+    "janisjarvi",
     "kaalijarv",
+    "kaluga",
+    "kamensk",
+    "kardla",
+    "karikkoselka",
+    "karla",
     "kentland",
+    "keurusselka",
     "la_moinerie",
     "lappajarvi",
+    "liverpool",
+    "lockne",
+    "lockne_2",
+    "logancha",
+    "logoisk",
+    "lonar",
+    "luizi",
+    "lumparn",
+    "macha",
+    "manicouagan",
+    "manson",
+    "middlesboro",
+    "mien",
     "mishina_gora",
     "mizarai",
+    "morasko",
+    "neugrund",
+    "newporte",
+    "nicholson",
+    "paasselka",
     "pilot",
+    "popigai",
+    "presqu_ile",
     "puchezh_katunki",
     "ragozinka",
     "ries",
+    "rio_cuarto",
+    "rock_elm",
+    "saaksjarvi",
+    "saarijarvi",
+    "serpent_mound",
     "siljan",
+    "slate_islands",
+    "sobolev",
+    "soderfjarden",
+    "steen_river",
     "steinheim",
+    "suavjarvi",
+    "sudbury",
+    "suvasvesi_n",
+    "suvasvesi_s",
+    "ternovka",
     "tvaren",
     "vargeao_dome",
     "vepriai",
+    "viewfield",
+    "vista_alegre",
+    "wanapitei",
+    "wells_creek",
     "west_hawk",
     "wetumpka",
+    "whitecourt",
+    "xiuyan",
     "zapadnaya",
     "zeleny_gai"
   ],
   "min_usable_tiles": 6,
   "tile_km": 5,
   "low_evidence_sites": [
+    "el_malpais",
     "ames"
   ],
-  "earth_sites_no_usable_tiles": [],
+  "earth_sites_no_usable_tiles": [
+    "mjolnir",
+    "montagnais"
+  ],
   "checks": {
     "negative_controls": {
       "status": "PASS",
       "controls": [
         {
           "site": "garden_city_kansas",
-          "rank": 7,
+          "rank": 18,
           "bottom_half": true
         },
         {
           "site": "ames_iowa",
-          "rank": 6,
+          "rank": 13,
           "bottom_half": true
         }
       ]
@@ -840,12 +671,12 @@
       "n_variants": 14,
       "rank_tolerance": 1,
       "top1_unchanged_share": 1.0,
-      "mean_top5_survivors": 5.0,
+      "mean_top5_survivors": 4.642857142857143,
       "variants": [
         {
           "variant": "weight slope_mean +20%",
           "top1_same": true,
-          "top5_survivors": 5
+          "top5_survivors": 4
         },
         {
           "variant": "weight slope_mean -20%",
@@ -855,7 +686,7 @@
         {
           "variant": "weight slope_p90 +20%",
           "top1_same": true,
-          "top5_survivors": 5
+          "top5_survivors": 4
         },
         {
           "variant": "weight slope_p90 -20%",
@@ -885,7 +716,7 @@
         {
           "variant": "weight rough_large +20%",
           "top1_same": true,
-          "top5_survivors": 5
+          "top5_survivors": 4
         },
         {
           "variant": "weight rough_large -20%",
@@ -900,7 +731,7 @@
         {
           "variant": "weight temp_range_mean -20%",
           "top1_same": true,
-          "top5_survivors": 5
+          "top5_survivors": 4
         },
         {
           "variant": "pixels x2",
@@ -910,46 +741,54 @@
         {
           "variant": "tiles shifted half a tile",
           "top1_same": true,
-          "top5_survivors": 5
+          "top5_survivors": 4
         }
       ]
     },
     "held_out_nasa_sites": {
-      "status": "WARN",
-      "n_sites_ranked": 10,
+      "status": "INFO",
+      "n_sites_ranked": 25,
       "held_out": [
         {
           "site": "buffalo_park",
-          "rank": 3
+          "rank": 4,
+          "percentile": 87.5
         },
         {
           "site": "cinder_lake_crater_field",
-          "rank": 1
+          "rank": 2,
+          "percentile": 95.8
         },
         {
           "site": "meteor_crater",
-          "rank": 5
+          "rank": 8,
+          "percentile": 70.8
         },
         {
           "site": "sp_crater_jett3",
-          "rank": 2
+          "rank": 3,
+          "percentile": 91.7
         },
         {
           "site": "yucca_flat",
-          "rank": 4
+          "rank": 7,
+          "percentile": 75.0
         }
       ],
       "skipped_incomplete": [],
-      "recall_at_5": 1.0,
+      "recall_at_5": 0.6,
       "recall_at_10": 1.0,
-      "random_guess_recall_at_5": 0.5,
-      "warning": "Only 10 sites ranked: even a random ranking would put 50% of sites in the top 5. Weak evidence."
+      "random_guess_recall_at_5": 0.2,
+      "median_percentile": 87.5,
+      "random_median_percentile": 50.0,
+      "top_10pct_share": 0.2,
+      "chance_random_does_as_well": 0.0179
     },
     "simple_method_agreement": {
       "status": "INFO",
       "label": "agreement \u2260 accuracy",
-      "top5_overlap": 5,
-      "spearman": 0.8666666666666665,
+      "top5_overlap": 2,
+      "spearman": 0.6753846153846154,
       "note": "Two methods agreeing shows consistency, not that either is right."
     },
     "mission_sensitivity": {
@@ -958,16 +797,118 @@
       "comparisons": [
         {
           "mission": "moon_rover_south_pole",
-          "spearman": 0.7454545454545454,
+          "spearman": 0.14307692307692307,
           "too_similar": false
         },
         {
           "mission": "moon_landing_hazards_south_pole",
-          "spearman": 0.7575757575757575,
+          "spearman": 0.5992307692307692,
           "too_similar": false
         }
       ]
     }
+  },
+  "multi_site_coverage": {
+    "requirements": [
+      {
+        "id": "slope_p90_max_abs_diff",
+        "text": "slope_p90 within 5 deg of the target",
+        "kind": "mandatory"
+      },
+      {
+        "id": "temp_range_mean_min",
+        "text": "temp_range_mean >= 60 K",
+        "kind": "mandatory"
+      },
+      {
+        "id": "slope_mean_in_target_range",
+        "kind": "target_range",
+        "feature": "slope_mean",
+        "low": 5.3063860916942405,
+        "high": 24.41959853203731,
+        "text": "Average slope inside the target's range (5.31\u201324.4\u00b0)"
+      },
+      {
+        "id": "slope_p90_in_target_range",
+        "kind": "target_range",
+        "feature": "slope_p90",
+        "low": 9.261813271579607,
+        "high": 32.16829201774625,
+        "text": "Steepest-10% slope inside the target's range (9.26\u201332.2\u00b0)"
+      },
+      {
+        "id": "frac_steep_in_target_range",
+        "kind": "target_range",
+        "feature": "frac_steep",
+        "low": 0.0013200000000000002,
+        "high": 0.8752800000000001,
+        "text": "Share of steep ground inside the target's range (0.00132\u20130.875)"
+      },
+      {
+        "id": "rough_small_in_target_range",
+        "kind": "target_range",
+        "feature": "rough_small",
+        "low": 2.5014741457652545,
+        "high": 4.916874356831626,
+        "text": "Small-scale bumpiness inside the target's range (2.5\u20134.92 m)"
+      },
+      {
+        "id": "rough_large_in_target_range",
+        "kind": "target_range",
+        "feature": "rough_large",
+        "low": 17.193345191427245,
+        "high": 60.70136773455394,
+        "text": "Large-scale bumpiness inside the target's range (17.2\u201360.7 m)"
+      },
+      {
+        "id": "temp_range_mean_in_target_range",
+        "kind": "target_range",
+        "feature": "temp_range_mean",
+        "low": 88.20194625854492,
+        "high": 201.06677551269533,
+        "text": "Annual temperature range inside the target's range (88.2\u2013201 K)"
+      }
+    ],
+    "n_requirements": 8,
+    "steps": [
+      {
+        "site": "lunar_crater_nevada",
+        "role": "candidate",
+        "rank": 1,
+        "tile_id": "r00c01",
+        "lat": 38.497,
+        "lon": -116.1548,
+        "adds": [
+          "slope_p90 within 5 deg of the target",
+          "temp_range_mean >= 60 K",
+          "Average slope inside the target's range (5.31\u201324.4\u00b0)",
+          "Steepest-10% slope inside the target's range (9.26\u201332.2\u00b0)",
+          "Share of steep ground inside the target's range (0.00132\u20130.875)",
+          "Large-scale bumpiness inside the target's range (17.2\u201360.7 m)"
+        ],
+        "covered_so_far": 6
+      },
+      {
+        "site": "cinder_lake_crater_field",
+        "role": "baseline",
+        "rank": 2,
+        "tile_id": "r01c05",
+        "lat": 35.3995,
+        "lon": -111.3469,
+        "adds": [
+          "Small-scale bumpiness inside the target's range (2.5\u20134.92 m)"
+        ],
+        "covered_so_far": 7
+      }
+    ],
+    "not_covered_by_any_site": [
+      "Annual temperature range inside the target's range (88.2\u2013201 K)"
+    ],
+    "best_single_site": [
+      "lunar_crater_nevada",
+      6
+    ],
+    "rule": "A site covers a requirement only if one interference-free tile meets it; requirements met together must be met on the same tile. Target range = 10%-90% of the target's tiles. Greedy: each step adds the site covering the most new requirements."
   },
   "attribution": [
     "Produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",

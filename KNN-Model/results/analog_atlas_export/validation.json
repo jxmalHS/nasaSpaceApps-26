@@ -155,27 +155,27 @@
     "held_out": [
       {
         "site": "sf-volcanic-field",
-        "percentile": 94.5,
-        "engine_sites": "Cinder Lake Crater Field 100, SP Crater (JETT3) 88.9"
+        "percentile": 93.8,
+        "engine_sites": "Cinder Lake Crater Field 95.8, SP Crater (JETT3) 91.7"
       }
     ],
-    "median_percentile": 77.8,
+    "median_percentile": 87.5,
     "median_over": "all 5 engine held-out sites",
     "random_median_percentile": 50.0,
-    "chance_random_does_as_well": 0.0828,
-    "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 78% of the other sites; 5 sites picked at random do this well 8.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
-    "top5_rate": 1.0,
-    "random_top5_rate": 0.5,
-    "population": "the 10 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
+    "chance_random_does_as_well": 0.0179,
+    "agreement_note": "Note on agreement with NASA: moderate. The typical NASA site beats 88% of the other sites; 5 sites picked at random do this well 1.8% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
+    "top5_rate": 0.6,
+    "random_top5_rate": 0.2,
+    "population": "the 25 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
     "engine_held_out": [
       {
         "site": "buffalo_park",
         "name": "Buffalo Park",
         "lat": 35.2222,
         "lon": -111.6332,
-        "rank": 3,
-        "of": 10,
-        "percentile": 77.8,
+        "rank": 4,
+        "of": 25,
+        "percentile": 87.5,
         "website_id": null
       },
       {
@@ -183,9 +183,9 @@
         "name": "Cinder Lake Crater Field",
         "lat": 35.3315,
         "lon": -111.4834,
-        "rank": 1,
-        "of": 10,
-        "percentile": 100.0,
+        "rank": 2,
+        "of": 25,
+        "percentile": 95.8,
         "website_id": "sf-volcanic-field"
       },
       {
@@ -193,9 +193,9 @@
         "name": "Meteor Crater",
         "lat": 35.0333,
         "lon": -111.017,
-        "rank": 5,
-        "of": 10,
-        "percentile": 55.6,
+        "rank": 8,
+        "of": 25,
+        "percentile": 70.8,
         "website_id": null
       },
       {
@@ -203,9 +203,9 @@
         "name": "SP Crater (JETT3)",
         "lat": 35.5824,
         "lon": -111.6319,
-        "rank": 2,
-        "of": 10,
-        "percentile": 88.9,
+        "rank": 3,
+        "of": 25,
+        "percentile": 91.7,
         "website_id": "sf-volcanic-field"
       },
       {
@@ -213,13 +213,13 @@
         "name": "Yucca Flat",
         "lat": 36.9476,
         "lon": -116.0253,
-        "rank": 4,
-        "of": 10,
-        "percentile": 66.7,
+        "rank": 7,
+        "of": 25,
+        "percentile": 75.0,
         "website_id": null
       }
     ],
-    "warning": "Only 10 sites ranked: a random order would put 50% of them in the top 5. Weak evidence. Note on agreement with NASA: weak. The typical NASA site beats 78% of the other sites; 5 sites picked at random do this well 8.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
+    "warning": "Note on agreement with NASA: moderate. The typical NASA site beats 88% of the other sites; 5 sites picked at random do this well 1.8% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
     "name": "Held-out NASA sites (land.hazards / connecting-ridge)",
@@ -590,14 +590,55 @@
     "target_id": "connecting-ridge",
     "status": "PASS",
     "rule": "farmland must rank in the bottom half of the engine's sites, on similarity alone",
-    "ranks": "garden_city_kansas #7, ames_iowa #6"
+    "ranks": "garden_city_kansas #18, ames_iowa #13"
   },
   {
     "name": "Engine stability (ltv.thermal / connecting-ridge)",
     "test_id": "ltv.thermal",
     "target_id": "connecting-ridge",
-    "result": "top site unchanged in 14 of 14 small changes; 5.00 of top 5 kept on average",
+    "result": "top site unchanged in 14 of 14 small changes; 4.64 of top 5 kept on average",
     "what_changed": "see small_change_definition in the model card"
+  },
+  {
+    "name": "Multi-site coverage (ltv.thermal / connecting-ridge)",
+    "test_id": "ltv.thermal",
+    "target_id": "connecting-ridge",
+    "status": "coverage",
+    "result": "7 of 8 requirements covered by 2 site(s); 1 covered by no site",
+    "rule": "A site covers a requirement only if one interference-free tile meets it; requirements met together must be met on the same tile. Target range = 10%-90% of the target's tiles. Greedy: each step adds the site covering the most new requirements.",
+    "steps": [
+      {
+        "site": "Lunar Crater Nevada",
+        "role": "candidate",
+        "rank": 1,
+        "lat": 38.497,
+        "lon": -116.1548,
+        "adds": [
+          "slope_p90 within 5 deg of the target",
+          "temp_range_mean >= 60 K",
+          "Average slope inside the target's range (5.31\u201324.4\u00b0)",
+          "Steepest-10% slope inside the target's range (9.26\u201332.2\u00b0)",
+          "Share of steep ground inside the target's range (0.00132\u20130.875)",
+          "Large-scale bumpiness inside the target's range (17.2\u201360.7 m)"
+        ],
+        "covered_so_far": 6
+      },
+      {
+        "site": "Cinder Lake Crater Field",
+        "role": "baseline",
+        "rank": 2,
+        "lat": 35.3995,
+        "lon": -111.3469,
+        "adds": [
+          "Small-scale bumpiness inside the target's range (2.5\u20134.92 m)"
+        ],
+        "covered_so_far": 7
+      }
+    ],
+    "not_covered": [
+      "Annual temperature range inside the target's range (88.2\u2013201 K)"
+    ],
+    "n_requirements": 8
   },
   {
     "name": "Farmland negative controls (land.hazards / connecting-ridge)",

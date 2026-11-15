@@ -1,21 +1,21 @@
 {
   "site": "ames_iowa",
   "role": "negative_control",
-  "rank": 10,
-  "score": 0.34707958425388497,
+  "rank": 25,
+  "score": 0.3401532435637765,
   "location": {
     "lat": 42.0268,
     "lon": -93.617,
     "source": "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"
   },
   "covers": {
-    "target_coverage": 0.046875
+    "target_coverage": 0.0
   },
   "test_tile": {
     "tile_id": "r00c04",
     "lat": 42.13950333841668,
     "lon": -93.52761121450533,
-    "similarity": 0.5515041468692907
+    "similarity": 0.5226520666342743
   },
   "requirements": [
     {
