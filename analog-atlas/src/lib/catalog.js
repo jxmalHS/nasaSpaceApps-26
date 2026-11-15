@@ -15,6 +15,7 @@ export const T = Object.fromEntries(targets.map((t) => [t.id, t]));
 export const analogs = analogsJson.sites;
 export const A = Object.fromEntries(analogs.map((a) => [a.id, a]));
 export const limits = limitsJson;
+export const sources = missionsJson.sources || {};
 
 export const catalog = { F, tests, T, A, features, limits };
 

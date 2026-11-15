@@ -39,3 +39,15 @@ test('order: matching first, unchecked next, no-match last; same order inside gr
   const checks = { 1: { ok: false }, 2: { ok: true }, 3: { ok: false }, 4: { ok: true } };
   assert.deepEqual(orderByCheck(list, checks).map((x) => x.id), [2, 4, 5, 1, 3]);
 });
+
+import { siteVerdict } from '../src/lib/localCheck.js';
+
+test('one verdict per site', () => {
+  const pass = { status: 0, warn: 0 };
+  assert.equal(siteVerdict(pass, { ok: true }).text, 'Good match');
+  assert.equal(siteVerdict(pass, { ok: false }).text, 'Poor up close');
+  assert.equal(siteVerdict(pass, null).text, 'Check first');                 // not checked yet
+  assert.equal(siteVerdict({ status: 0, warn: 1 }, { ok: true }).text, 'Check first');   // soft-limit warning
+  assert.equal(siteVerdict({ status: 1 }, { ok: true }).text, 'Check first');           // unverified
+  assert.equal(siteVerdict({ status: 2 }, { ok: true }).text, 'Poor: fails a limit');
+});

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Upload, Download, Activity, Pin, X } from 'lucide-react';
 import { tests, F, features, T } from '../lib/catalog.js';
-import { useLocalChecks, orderByCheck, LOCAL_CHECK_TOP } from '../lib/localCheck.js';
+import { useLocalChecks, orderByCheck, siteVerdict, verdictDetails, LOCAL_CHECK_TOP } from '../lib/localCheck.js';
 import { useStore, setState, scoringConfig, getState, togglePin } from '../lib/store.js';
 import { useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
@@ -24,8 +24,7 @@ export default function Results({ onOpen }) {
   const checks = useLocalChecks(list.slice(0, LOCAL_CHECK_TOP), T[targetId]);
   const [originalOrder, setOriginalOrder] = useState(false);
   const shownList = originalOrder ? list : orderByCheck(list, checks);
-  const nChecked = Object.keys(checks).length, nFailed = Object.values(checks).filter((c) => !c.ok).length;
-  const bestBase = d?.baseline?.filter((b) => b.representative && b.rank).sort((a, b) => a.rank - b.rank)[0];
+  const nChecked = Object.keys(checks).length;
 
   const onKey = (e) => {
     if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return;
@@ -41,15 +40,9 @@ export default function Results({ onOpen }) {
         <div>
           <h2 className="res-title">{tests[testId].label}</h2>
           {d && r.status === 'ready' && <p className="small"><b>{rankBy === 'rules' || !d.mlAvailable ? 'Mission rules' : rankBy === 'ml' ? 'Model ranking' : 'Blended ranking'}</b> · {d.mlAvailable ? `${d.mlCount.toLocaleString()} Earth cells have a model score for this target and test.` : 'This target and test have no model scores.'}</p>}
-            <p className="small dim">Ranked by how closely each place matches on the features we can measure (55 km cells). “Top 1%” = closer than 99% of Earth places on those features, not a perfect copy of the target. Pass or fail shows whether the site meets the strict limits.</p>
-            {d && list.length > 0 && (
-              <p className="small dim">
-                2 km check: the top {LOCAL_CHECK_TOP} are re-measured at 5 spots (centre and 15 km N, S, E, W) and compared with the target.
-                {nChecked > 0 && ` ${nChecked} checked, ${nFailed} with no matching spot${originalOrder ? '' : ', moved to the end of the list'}.`}{' '}
-                <button className="link-btn" onClick={() => setOriginalOrder(!originalOrder)}>{originalOrder ? 'Move unmatched sites down' : 'Show original order'}</button>
-              </p>
-            )}
-            {bestBase && <p className="small dim">{(bestBase.rank - 1).toLocaleString()} places score above NASA’s best usual site for this test ({bestBase.name.split(',')[0]}, #{bestBase.rank.toLocaleString()}) on what we measure. “Beats NASA site” is only shown where the 2 km check also passes.</p>}
+            <p className="small dim"><b>Good match</b> = close on what we measure and the ground matches up close (2 km check).
+              <b> Check first</b> = promising, not yet confirmed. <b>Poor</b> = fails a limit or wrong up close. Click a site for details.{' '}
+              {nChecked > 0 && <button className="link-btn" onClick={() => setOriginalOrder(!originalOrder)}>{originalOrder ? 'Group by verdict' : 'Show original order'}</button>}</p>
             <div className="small dim" aria-live="polite">
             {r.status === 'loading' && 'Loading 78,993 Earth cells…'}
             {d && <>{d.counts[0].toLocaleString()} pass · {d.counts[1].toLocaleString()} unverified · {d.counts[2].toLocaleString()} fail{r.status === 'updating' ? ' · updating' : ''}</>}
@@ -73,19 +66,14 @@ export default function Results({ onOpen }) {
         {shownList.map((x, k) => (
           <li key={x.id}>
             <button className={'site-row' + (sel === x.id ? ' on' : '')} onClick={() => onOpen(x)} aria-current={sel === x.id ? 'true' : undefined}
-              aria-label={`Rank ${x.rank}: ${x.place ? 'near ' + x.place + ', ' : ''}${x.country}. ${topPct(x.rank, d.scored) || 'Unranked'} of Earth places on what we measure.`}>
+              aria-label={`Rank ${x.rank}: ${x.place ? 'near ' + x.place + ', ' : ''}${x.country}. ${siteVerdict(x, checks[x.id]).text}. ${verdictDetails(x, checks[x.id], topPct(x.rank, d.scored))}.`}>
               <span className="rank num">{k + 1}</span>
               <span className="grow site-main">
                 <span className="site-name ellipsis">{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}</span>
                 <span className="tiny faint ellipsis">{x.country} · {latlon(x.lat, x.lon)}{rankBy === 'blend' && x.mlScored === false ? ' · rules only' : ''}{rankBy !== 'rules' && x.mlScored ? ' · model-analysed' : ''}</span>
-                <span className="row site-badges">
-                  <SiteStatus status={x.status} warn={x.warn} />{x.beatsBaseline && checks[x.id]?.ok && <Status kind="beats">Beats NASA site · 2 km OK</Status>}
-                  {checks[x.id] && <span title="Mean slope of a 2 × 2 km patch here vs the same patch at the target (as on the Compare page). The rank uses one 55 km cell, which can average out mountains or hide flat ground."><Status kind={checks[x.id].ok ? 'met' : 'warn'}>{checks[x.id].text}</Status></span>}
+                <span className="row site-badges" title={verdictDetails(x, checks[x.id], topPct(x.rank, d.scored))}>
+                  <Status kind={siteVerdict(x, checks[x.id]).kind}>{siteVerdict(x, checks[x.id]).text}</Status>
                 </span>
-              </span>
-              <span className="site-score">
-                <b className="num" title={`Rank #${x.rank ?? '—'} of ${d.scored.toLocaleString()} on what we measure · match score ${score100(x.score)}/100`}>{topPct(x.rank, d.scored) || <small>unranked</small>}</b>
-                <ScoreBar v={x.score} ml={rankBy === 'ml'} />
               </span>
             </button>
           </li>

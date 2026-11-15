@@ -10,6 +10,7 @@ import { toCsv, download } from '../lib/csv.js';
 import { Bullet, SiteStatus, Status, Term } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
 import { exceptionFor, ExceptionTag, exceptionText } from '../lib/limitChecks.jsx';
+import { getLocalCheck, siteVerdict } from '../lib/localCheck.js';
 
 /** One-glance verdict for a site, used by the inspector and the report. */
 export function verdict(d) {
@@ -98,6 +99,9 @@ export default function Inspector({ d, loading, onBack }) {
         <button className="btn btn-ghost btn-sm icon-btn" onClick={() => togglePin(d.id)} aria-pressed={pinned} aria-label={pinned ? 'Remove from shortlist' : 'Add to shortlist'} title="Shortlist">{pinned ? <PinOff size={15} /> : <Pin size={15} />}</button>
       </div>
       <header className="ins-head">
+        {(() => { const c = getLocalCheck(d.id), v2 = siteVerdict(d, c); return (
+          <div className="row wrap" style={{ gap: 8 }}><Status kind={v2.kind}>{v2.text}</Status>
+            <span className="small dim">{c ? c.text : '2 km check not run (only the top 10 are checked)'}</span></div>); })()}
         <div className="row"><span className="tag-ab a">A</span><h2 id="ins-h">{d.place ? `Near ${d.place}` : 'Earth cell'}, {d.country}</h2></div>
         <div className="small faint"><Coordinates key={d.id} lat={d.lat} lon={d.lon} label="Selected Earth index cell center"/>0.5° cell {d.id} · {d.continent}</div>
         <div className={'verdict v-' + v.tone}>
