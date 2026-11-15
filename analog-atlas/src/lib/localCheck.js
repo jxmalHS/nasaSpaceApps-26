@@ -17,13 +17,13 @@ export function siteVerdict(x, check) {
 /** Plain-text details for a row's tooltip: everything the verdict is built from. */
 export function verdictDetails(x, check, topText) {
   return [topText ? `${topText} of Earth places on what we measure (55 km)` : 'Not ranked',
-    check ? check.text : '2 km check not run (only the top 10 are checked)',
+    check ? check.text : `2 km check not run (only the top ${LOCAL_CHECK_TOP} are checked)`,
     x.status === STATUS.FAIL ? 'Fails a strict limit' : x.status === STATUS.UNKNOWN ? 'Unverified: missing data for a limit' : x.warn ? `${x.warn} soft-limit warning(s)` : 'Passes every limit',
     x.beatsBaseline ? 'Scores above NASA’s best usual site (55 km)' : null].filter(Boolean).join(' · ');
 }
 
 /** How many of the top results get the 2 km check, and how many spots per 55 km cell. */
-export const LOCAL_CHECK_TOP = 10;
+export const LOCAL_CHECK_TOP = 25;
 export const SPOT_OFFSET_KM = 15;
 
 /** Centre plus 4 spots 15 km north, south, east and west, inside the ~55 km cell. */
@@ -73,7 +73,7 @@ export function useLocalChecks(rows, target) {
       const stats = Object.fromEntries(rows.map((x) => [x.id, []]));
       const left = Object.fromEntries(rows.map((x) => [x.id, 5]));
       let next = 0;
-      const worker = async () => {                      // 8 fetches at a time
+      const worker = async () => {                      // 12 fetches at a time
         while (next < jobs.length && !ctrl.signal.aborted) {
           const { x, s, lat, lon } = jobs[next++];
           const key = s === 0 ? String(x.id) : null;      // only the centre has a pre-built patch file
@@ -85,7 +85,7 @@ export function useLocalChecks(rows, target) {
           }
         }
       };
-      await Promise.all(Array.from({ length: 8 }, worker));
+      await Promise.all(Array.from({ length: 12 }, worker));
     })();
     return () => ctrl.abort();
   }, [ids, target?.id]);  // eslint-disable-line react-hooks/exhaustive-deps
