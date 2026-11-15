@@ -1,0 +1,194 @@
+{
+  "site": "riachao_ring",
+  "role": "candidate",
+  "rank": 67,
+  "score": 0.3509056622285724,
+  "location": {
+    "lat": -7.71667,
+    "lon": -46.65,
+    "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Riachao Ring'"
+  },
+  "covers": {
+    "target_coverage": 0.0
+  },
+  "test_tile": {
+    "tile_id": "r00c04",
+    "lat": -7.604554696166465,
+    "lon": -46.58181400731531,
+    "similarity": 0.5335748701157728
+  },
+  "requirements": [
+    {
+      "requirement": "slope_p90 within 5 deg of the target",
+      "status": "not_met",
+      "value": 3.8570262324333155,
+      "target": 11.436544371468484,
+      "met_somewhere_on_site": false
+    },
+    {
+      "requirement": "frac_steep within 0.1 fraction of the target",
+      "status": "met",
+      "value": 0.0,
+      "target": 0.0186,
+      "met_somewhere_on_site": true
+    },
+    {
+      "requirement": "rough_small within 3 m of the target",
+      "status": "met",
+      "value": 2.6969111007027102,
+      "target": 3.8579238592793206,
+      "met_somewhere_on_site": true
+    }
+  ],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "target",
+      "target": 7.118272756245361,
+      "test_tile": 2.086548662990997,
+      "site_median": 0.9583632856956298,
+      "difference": -5.031724093254364,
+      "statement": "Average slope is 5.03\u00b0 gentler than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 3.312472053750806,
+      "test_tile": 1.421667620694351,
+      "site_median": 0.6181731827387486,
+      "difference": -1.890804433056455,
+      "statement": "Slope variability is 1.89\u00b0 lower than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "target",
+      "target": 11.436544371468484,
+      "test_tile": 3.8570262324333155,
+      "site_median": 1.8949048100231964,
+      "difference": -7.5795181390351685,
+      "statement": "Steepest-10% slope is 7.58\u00b0 gentler than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "target",
+      "target": 0.0186,
+      "test_tile": 0.0,
+      "site_median": 0.0,
+      "difference": -0.0186,
+      "statement": "Share of steep ground is 0.0186 lower than the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": 503.269775390625,
+      "test_tile": 68.26925659179688,
+      "site_median": 47.873443603515625,
+      "difference": -435.0005187988281,
+      "statement": "Relief (highest minus lowest) is 435 m smaller than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "ignored",
+      "target": 0.5076647044715916,
+      "test_tile": 0.47952894829657117,
+      "site_median": 0.4875311457554101,
+      "difference": -0.028135756175020454,
+      "statement": "Hypsometric integral is 0.0281 lower than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 3.8579238592793206,
+      "test_tile": 2.6969111007027102,
+      "site_median": 1.1059798023439995,
+      "difference": -1.1610127585766103,
+      "statement": "Small-scale bumpiness is 1.16 m smoother than the target"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 30.962817462440505,
+      "test_tile": 7.679394954543302,
+      "site_median": 4.09316860375665,
+      "difference": -23.283422507897203,
+      "statement": "Large-scale bumpiness is 23.3 m smoother than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "ignored",
+      "target": 0.31817297607421874,
+      "test_tile": 0.24689841949462893,
+      "site_median": 0.10143674591064453,
+      "difference": -0.07127455657958981,
+      "statement": "Curvature is 0.0713 /km less curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "target",
+      "target": 0.6799999999999999,
+      "test_tile": 1.1199999999999999,
+      "site_median": 0.5199999999999999,
+      "difference": 0.43999999999999995,
+      "statement": "Density of crater-like dips is 0.44 per km\u00b2 higher than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.23232,
+      "cropland_frac": 6.4e-05,
+      "builtup_frac": 6.4e-05,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.0
+    }
+  },
+  "baselines": {
+    "nearest": "meteor_crater",
+    "closer_than": ""
+  },
+  "confidence": {
+    "value": 0.9285714285714286,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ.",
+    "Vacuum: no atmosphere; Earth sites have air, wind and weathering.",
+    "Radiation: no magnetic field or atmosphere shielding the lunar surface.",
+    "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers.",
+    "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils.",
+    "Lighting: very low sun angles and long shadows at the lunar poles."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

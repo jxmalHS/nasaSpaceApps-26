@@ -1,0 +1,89 @@
+{
+ "schema_version": 1,
+ "id_column": "cell_id",
+ "feature_columns": [
+  {
+   "id": "slope_deg",
+   "unit": "\u00b0",
+   "label": "Regional slope"
+  },
+  {
+   "id": "rough_m",
+   "unit": "m",
+   "label": "Terrain roughness"
+  },
+  {
+   "id": "elev_m",
+   "unit": "m",
+   "label": "Elevation"
+  },
+  {
+   "id": "lst_dtr_K",
+   "unit": "K",
+   "label": "Day\u2013night surface temperature swing"
+  },
+  {
+   "id": "t_mean_C",
+   "unit": "\u00b0C",
+   "label": "Mean annual temperature"
+  },
+  {
+   "id": "t_range_K",
+   "unit": "K",
+   "label": "Seasonal temperature range"
+  },
+  {
+   "id": "low_sun_pct",
+   "unit": "%",
+   "label": "Low-sun share"
+  },
+  {
+   "id": "dark_d",
+   "unit": "days",
+   "label": "Longest darkness"
+  },
+  {
+   "id": "pressure_kPa",
+   "unit": "kPa",
+   "label": "Air pressure"
+  },
+  {
+   "id": "dust_ug",
+   "unit": "\u00b5g/m\u00b3",
+   "label": "Airborne dust"
+  },
+  {
+   "id": "precip_mm",
+   "unit": "mm/yr",
+   "label": "Precipitation"
+  },
+  {
+   "id": "ndvi",
+   "unit": "NDVI",
+   "label": "Vegetation"
+  },
+  {
+   "id": "snow_mo",
+   "unit": "months",
+   "label": "Snow or ice cover"
+  },
+  {
+   "id": "basalt",
+   "unit": "share",
+   "label": "Basaltic bedrock"
+  },
+  {
+   "id": "remote_km",
+   "unit": "km",
+   "label": "Distance to settlement"
+  }
+ ],
+ "pending_features": [
+  "rock_pct",
+  "soil_kPa",
+  "ice_m",
+  "salt_pct"
+ ],
+ "rows": 78993,
+ "note": "Score every row of earth_index.csv.gz, keyed by cell_id. Missing inputs are empty strings: keep them missing, do not impute silently."
+}

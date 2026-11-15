@@ -1,0 +1,171 @@
+{
+  "site": "goat_paddock",
+  "role": "candidate",
+  "rank": 33,
+  "score": 0.4342791262873468,
+  "location": {
+    "lat": -18.3333,
+    "lon": 126.667,
+    "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Goat Paddock'"
+  },
+  "covers": {
+    "target_coverage": 0.0625
+  },
+  "test_tile": {
+    "tile_id": "r01c02",
+    "lat": -18.33871895014566,
+    "lon": 126.8519787339976,
+    "similarity": 0.4877611494376953
+  },
+  "requirements": [],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 2.1997243158032846,
+      "test_tile": 2.0316369734367288,
+      "site_median": 2.0316369734367288,
+      "difference": -0.16808734236655587,
+      "statement": "Average slope is 0.168\u00b0 gentler than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 1.4220616497765244,
+      "test_tile": 1.665748169006913,
+      "site_median": 1.665748169006913,
+      "difference": 0.24368651923038853,
+      "statement": "Slope variability is 0.244\u00b0 higher than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 3.9677540290508317,
+      "test_tile": 4.453968907418234,
+      "site_median": 4.453968907418234,
+      "difference": 0.48621487836740185,
+      "statement": "Steepest-10% slope is 0.486\u00b0 steeper than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "ignored",
+      "target": 0.0,
+      "test_tile": 0.0,
+      "site_median": 0.0,
+      "difference": 0.0,
+      "statement": "Share of steep ground matches the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 612.906005859375,
+      "test_tile": 337.4518127441406,
+      "site_median": 299.9276885986328,
+      "difference": -275.4541931152344,
+      "statement": "Relief (highest minus lowest) is 275 m smaller than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "target",
+      "target": 0.46363525587709187,
+      "test_tile": 0.4014134664171887,
+      "site_median": 0.403232415992463,
+      "difference": -0.06222178945990314,
+      "statement": "Hypsometric integral is 0.0622 lower than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Small-scale bumpiness: unknown (no data)"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 10.365266855530383,
+      "test_tile": 14.369671301430106,
+      "site_median": 14.191153702350089,
+      "difference": 4.004404445899723,
+      "statement": "Large-scale bumpiness is 4 m rougher than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "target",
+      "target": 0.033445126075744624,
+      "test_tile": 0.053895580520629885,
+      "site_median": 0.05282819208145141,
+      "difference": 0.02045045444488526,
+      "statement": "Curvature is 0.0205 /km more curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "target",
+      "target": 0.08625,
+      "test_tile": 0.1975,
+      "site_median": 0.2075,
+      "difference": 0.11125000000000002,
+      "statement": "Density of crater-like dips is 0.111 per km\u00b2 higher than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.032956,
+      "builtup_frac": 0.0,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.000176
+    }
+  },
+  "baselines": {
+    "nearest": "grand_falls_dunes",
+    "closer_than": "badwater_basin, mesquite_flat_dunes, panamint_valley"
+  },
+  "confidence": {
+    "value": 0.9166666666666666,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 38% of Earth's (3.73 vs 9.81 m/s^2), so wheel loads, sinkage, dust and landing loads differ.",
+    "Atmosphere: thin CO2 air, 6.36 mb at mean radius (4.0-8.7 mb by season) vs ~1013 mb on Earth: parachutes, heat flow, dust lifting and drills behave differently.",
+    "Radiation: no global magnetic field and a thin atmosphere let more radiation reach the surface.",
+    "Temperatures: ~214 K average; 184-242 K daily range at Viking 1. Earth deserts are far warmer: needs thermal chambers.",
+    "Regolith chemistry: oxidising, perchlorate-bearing Martian soil has no natural Earth equivalent at scale.",
+    "Scale of the comparison: 500 m pixels and 20 km tiles see landforms, not the rocks a wheel or lander foot meets."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

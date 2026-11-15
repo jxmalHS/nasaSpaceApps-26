@@ -1,0 +1,14 @@
+{
+ "name": "Two-way weighted kNN",
+ "version": "1.0.0",
+ "kind": "Unsupervised weighted k-nearest-neighbour on 100 m relief (free text)",
+ "trained_on": "Copernicus GLO-30 + ESA WorldCover (Earth) vs LOLA LDEM_80S_20M (Moon); 59 sites, 30 km each",
+ "inputs": "5 km relief squares, mission weights; no absolute elevation",
+ "limits": "Sparse: scores ~59 of 78,993 cells. Unscored cells are 'not analysed', never 0.",
+ "demo": false,
+ "metrics": {
+  "recall_at_5": "0.40–0.60",
+  "random_recall_at_5": "0.16",
+  "stability_checks": 14
+ }
+}

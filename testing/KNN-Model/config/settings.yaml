@@ -1,0 +1,69 @@
+# Engine settings. Every number here is a design choice, not a scientific fact.
+
+# Per world: pixel size, tile size and the box drawn around each Earth site.
+# Rule: the same measurement on two worlds uses the same pixel size (the coarser one).
+bodies:
+  moon:
+    resolution_m: 100     # LOLA 20 m and Copernicus 30 m both averaged down to 100 m
+    tile_km: 5
+    earth_box_km: 30      # area around each Earth site point
+    earth_read_coarsen: 2 # read Copernicus at 60 m (its built-in half-resolution copy), then average to 100 m
+    cannot_reproduce:     # reported on every site (step 5)
+      - "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ."
+      - "Vacuum: no atmosphere; Earth sites have air, wind and weathering."
+      - "Radiation: no magnetic field or atmosphere shielding the lunar surface."
+      - "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers."
+      - "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils."
+      - "Lighting: very low sun angles and long shadows at the lunar poles."
+  mars:
+    resolution_m: 500     # MOLA ~463 m -> 500 m (coarser, and 20 km / 500 m = 40 px exactly)
+    tile_km: 20
+    earth_box_km: 60
+    earth_read_coarsen: 8 # read Copernicus at 240 m (built-in overview): still 2x sharper than 500 m
+    # At 500 m pixels rough_small (500 m scale = 1 pixel) cannot be measured and is skipped;
+    # the 1 km pit window becomes the 3-pixel minimum (1.5 km).
+    cannot_reproduce:     # NASA Mars Fact Sheet (nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html)
+      - "Gravity: about 38% of Earth's (3.73 vs 9.81 m/s^2), so wheel loads, sinkage, dust and landing loads differ."
+      - "Atmosphere: thin CO2 air, 6.36 mb at mean radius (4.0-8.7 mb by season) vs ~1013 mb on Earth: parachutes, heat flow, dust lifting and drills behave differently."
+      - "Radiation: no global magnetic field and a thin atmosphere let more radiation reach the surface."
+      - "Temperatures: ~214 K average; 184-242 K daily range at Viking 1. Earth deserts are far warmer: needs thermal chambers."
+      - "Regolith chemistry: oxidising, perchlorate-bearing Martian soil has no natural Earth equivalent at scale."
+      - "Scale of the comparison: 500 m pixels and 20 km tiles see landforms, not the rocks a wheel or lander foot meets."
+
+max_missing_frac: 0.05    # tiles with more missing pixels than this are dropped (and counted)
+spike_threshold_m: 300    # pixels this far from their 5x5 neighbourhood median are treated as errors
+
+terrain:
+  steep_slope_deg: 15     # threshold for frac_steep = VIPER's normal driving limit (NASA VIPER ops page)
+  roughness_scales_m:     # only computed when the scale is at least 3 pixels
+    rough_small: 500
+    rough_large: 2500
+  pit:                    # crater/obstacle proxy
+    window_m: 1000
+    min_depth_m: 5
+
+landcover:                # ESA WorldCover (Earth only): interference; candidate tiles over a mission limit are left out
+  resolution_m: 40        # read the 40 m built-in copy (coarsen 4 x 10 m); 5 km tile = 125 px
+  coarsen: 4
+
+temperature:              # annual range = hottest day - coldest night (Moon: Diviner, Earth: MODIS)
+  resolution_m: 1000      # MODIS is 1 km, Diviner 240 m -> compare at 1 km (the coarser one)
+  year: 2023              # which year of MODIS data to use for Earth
+  max_wait_s: 3600        # how long to wait for NASA AppEEARS to prepare each site
+
+knn:
+  k: 5
+  site_quantile: 0.75
+  min_usable_tiles: 6        # fewer usable tiles than this -> "low evidence" label (score rests on too little ground)
+
+stability:                # confidence = share of small changes a site's rank survives
+  weight_change: 0.2      # each target weight +/- 20%, one at a time
+  alt_resolution_factor: 2  # also re-run with pixels 2x bigger (100 m -> 200 m)
+  rank_tolerance_frac: 0.05 # "survives" = rank moves by at most 5% of the number of sites (min 1)
+
+disclaimer: >-
+  A terrain match does not validate hardware. It only shows the ground shape resembles
+  the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs
+  separate soil, load and environmental testing.
+
+workers: 4                # how many sites are streamed at the same time (8 was slower on a weak connection)

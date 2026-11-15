@@ -1,0 +1,18 @@
+# Virtual environment (recreate with: python -m venv venv; pip install -r requirements.txt)
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated results ARE committed so teammates can see them without running the engine.
+# Re-create with: python main.py run --mission ... (and python main.py export-atlas)
+
+# Settings file created by the NASA earthaccess login tool
+.dodsrc
+
+# Downloaded datasets and the streaming cache (large, re-creatable)...
+data/*
+# ...except the small USGS analog-site list (public domain, can't be fetched automatically)
+!data/site_lists/

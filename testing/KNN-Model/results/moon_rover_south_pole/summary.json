@@ -1,0 +1,455 @@
+{
+  "mission": "moon_rover_south_pole",
+  "description": "Rover wheels / astronaut surface mobility at the lunar south pole. Weighted toward published rover slope limits (VIPER 15 deg normal, ~25 deg maximum). Rocks the size a wheel must cross (~30 cm) are NOT measured: they are invisible at 100 m pixels.",
+  "body": "moon",
+  "target": "lunar_south_pole",
+  "target_tiles": 64,
+  "target_profile": {
+    "slope_mean": 11.691177839896522,
+    "slope_std": 4.35791507472881,
+    "slope_p90": 18.806584481402048,
+    "frac_steep": 0.2486,
+    "relief": 1005.6599807739258,
+    "hypsometric_integral": 0.49959563105715865,
+    "rough_small": 3.2322887241050373,
+    "rough_large": 36.3784061016397,
+    "curvature_abs_mean": 0.2852543664550781,
+    "pit_density": 0.7999999999999999,
+    "temp_range_mean": NaN,
+    "temp_range_std": NaN
+  },
+  "weights_used": {
+    "frac_steep": 0.3448275862068966,
+    "slope_p90": 0.25862068965517243,
+    "slope_mean": 0.1724137931034483,
+    "pit_density": 0.08620689655172414,
+    "rough_small": 0.08620689655172414,
+    "rough_large": 0.05172413793103448
+  },
+  "features_skipped_no_data": [],
+  "closest_achievable": {},
+  "ignored": [
+    "slope_std",
+    "relief",
+    "hypsometric_integral",
+    "curvature_abs_mean",
+    "grass_shrub_frac",
+    "bare_frac",
+    "temp_range_mean",
+    "temp_range_std",
+    "minerals"
+  ],
+  "interference_limits": {
+    "tree_frac": {
+      "max": 0.3
+    },
+    "cropland_frac": {
+      "max": 0.2
+    },
+    "builtup_frac": {
+      "max": 0.1
+    },
+    "snow_ice_frac": {
+      "max": 0.1
+    },
+    "water_frac": {
+      "max": 0.05
+    }
+  },
+  "mandatory": [
+    "slope_p90 within 5 deg of the target",
+    "frac_steep within 0.1 fraction of the target",
+    "rough_small within 3 m of the target"
+  ],
+  "earth_sites_ranked": 103,
+  "earth_sites_failed": [],
+  "earth_sites_incomplete": [],
+  "candidate_tiles_blocked_by_interference": 4570,
+  "candidates_blocked_everywhere": [
+    "avak",
+    "boltysh",
+    "boltysh_2",
+    "bosumtwi_ashanti",
+    "brent",
+    "calvin",
+    "carswell",
+    "charlevoix_la_malbaie",
+    "chesapeake_bay",
+    "chicxulub",
+    "clearwater_east",
+    "clearwater_east_2",
+    "colonia",
+    "couture_lac_couture",
+    "crooked_creek",
+    "decaturville",
+    "deep_bay",
+    "dellen",
+    "des_plaines",
+    "dhala",
+    "dobele",
+    "flynn_creek",
+    "glasford",
+    "glover_bluff",
+    "gow",
+    "goyder",
+    "granby",
+    "holleford",
+    "hummeln",
+    "ile_rouleau",
+    "ilumetsa",
+    "ilyinets",
+    "iso_naakkima",
+    "janisjarvi",
+    "kaalijarv",
+    "kaluga",
+    "kamensk",
+    "kardla",
+    "karikkoselka",
+    "karla",
+    "kentland",
+    "keurusselka",
+    "la_moinerie",
+    "lappajarvi",
+    "liverpool",
+    "lockne",
+    "lockne_2",
+    "logancha",
+    "logoisk",
+    "lonar",
+    "luizi",
+    "lumparn",
+    "macha",
+    "manicouagan",
+    "manson",
+    "middlesboro",
+    "mien",
+    "mishina_gora",
+    "mizarai",
+    "morasko",
+    "neugrund",
+    "newporte",
+    "nicholson",
+    "paasselka",
+    "pilot",
+    "popigai",
+    "presqu_ile",
+    "puchezh_katunki",
+    "ragozinka",
+    "ries",
+    "rio_cuarto",
+    "rock_elm",
+    "saaksjarvi",
+    "saarijarvi",
+    "serpent_mound",
+    "siljan",
+    "slate_islands",
+    "sobolev",
+    "soderfjarden",
+    "steen_river",
+    "steinheim",
+    "suavjarvi",
+    "sudbury",
+    "suvasvesi_n",
+    "suvasvesi_s",
+    "ternovka",
+    "tvaren",
+    "vargeao_dome",
+    "vepriai",
+    "viewfield",
+    "vista_alegre",
+    "wanapitei",
+    "wells_creek",
+    "west_hawk",
+    "wetumpka",
+    "whitecourt",
+    "xiuyan",
+    "zapadnaya",
+    "zeleny_gai"
+  ],
+  "min_usable_tiles": 6,
+  "tile_km": 5,
+  "low_evidence_sites": [
+    "rochechouart",
+    "marquez",
+    "serra_da_cangalha",
+    "kamensk_2",
+    "vredefort",
+    "mistastin",
+    "sikhote_alin",
+    "new_quebec_chubb_ungava_pingualuit",
+    "kursk",
+    "strangways",
+    "el_malpais",
+    "obolon",
+    "ames",
+    "saint_martin",
+    "campo_del_cielo",
+    "gardnos",
+    "ritland"
+  ],
+  "earth_sites_no_usable_tiles": [
+    "mjolnir",
+    "montagnais"
+  ],
+  "checks": {
+    "negative_controls": {
+      "status": "PASS",
+      "controls": [
+        {
+          "site": "garden_city_kansas",
+          "rank": 83,
+          "bottom_half": true
+        },
+        {
+          "site": "ames_iowa",
+          "rank": 62,
+          "bottom_half": true
+        }
+      ]
+    },
+    "stability": {
+      "n_variants": 14,
+      "rank_tolerance": 5,
+      "top1_unchanged_share": 0.8571428571428571,
+      "mean_top5_survivors": 4.285714285714286,
+      "variants": [
+        {
+          "variant": "weight frac_steep +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight frac_steep -20%",
+          "top1_same": true,
+          "top5_survivors": 4
+        },
+        {
+          "variant": "weight slope_p90 +20%",
+          "top1_same": true,
+          "top5_survivors": 4
+        },
+        {
+          "variant": "weight slope_p90 -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_mean +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight slope_mean -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight pit_density +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight pit_density -20%",
+          "top1_same": true,
+          "top5_survivors": 4
+        },
+        {
+          "variant": "weight rough_small +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_small -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "pixels x2",
+          "top1_same": false,
+          "top5_survivors": 0
+        },
+        {
+          "variant": "tiles shifted half a tile",
+          "top1_same": false,
+          "top5_survivors": 3
+        }
+      ]
+    },
+    "held_out_nasa_sites": {
+      "status": "INFO",
+      "n_sites_ranked": 103,
+      "held_out": [
+        {
+          "site": "buffalo_park",
+          "rank": 6
+        },
+        {
+          "site": "cinder_lake_crater_field",
+          "rank": 28
+        },
+        {
+          "site": "meteor_crater",
+          "rank": 61
+        },
+        {
+          "site": "sp_crater_jett3",
+          "rank": 15
+        },
+        {
+          "site": "yucca_flat",
+          "rank": 29
+        }
+      ],
+      "skipped_incomplete": [],
+      "recall_at_5": 0.0,
+      "recall_at_10": 0.2,
+      "random_guess_recall_at_5": 0.05
+    },
+    "simple_method_agreement": {
+      "status": "INFO",
+      "label": "agreement \u2260 accuracy",
+      "top5_overlap": 0,
+      "spearman": 0.564424724333348,
+      "note": "Two methods agreeing shows consistency, not that either is right."
+    },
+    "mission_sensitivity": {
+      "status": "PASS",
+      "warn_at": 0.95,
+      "comparisons": [
+        {
+          "mission": "moon_landing_hazards_south_pole",
+          "spearman": 0.8552146026446427,
+          "too_similar": false
+        },
+        {
+          "mission": "moon_rover_thermal_south_pole",
+          "spearman": 0.9494245046786451,
+          "too_similar": false
+        }
+      ]
+    }
+  },
+  "multi_site_coverage": {
+    "requirements": [
+      {
+        "id": "slope_p90_max_abs_diff",
+        "text": "slope_p90 within 5 deg of the target",
+        "kind": "mandatory"
+      },
+      {
+        "id": "frac_steep_max_abs_diff",
+        "text": "frac_steep within 0.1 fraction of the target",
+        "kind": "mandatory"
+      },
+      {
+        "id": "rough_small_max_abs_diff",
+        "text": "rough_small within 3 m of the target",
+        "kind": "mandatory"
+      },
+      {
+        "id": "frac_steep_in_target_range",
+        "kind": "target_range",
+        "feature": "frac_steep",
+        "low": 0.0013200000000000002,
+        "high": 0.8752800000000001,
+        "text": "Share of steep ground inside the target's range (0.00132\u20130.875)"
+      },
+      {
+        "id": "slope_p90_in_target_range",
+        "kind": "target_range",
+        "feature": "slope_p90",
+        "low": 9.261813271579607,
+        "high": 32.16829201774625,
+        "text": "Steepest-10% slope inside the target's range (9.26\u201332.2\u00b0)"
+      },
+      {
+        "id": "slope_mean_in_target_range",
+        "kind": "target_range",
+        "feature": "slope_mean",
+        "low": 5.3063860916942405,
+        "high": 24.41959853203731,
+        "text": "Average slope inside the target's range (5.31\u201324.4\u00b0)"
+      },
+      {
+        "id": "pit_density_in_target_range",
+        "kind": "target_range",
+        "feature": "pit_density",
+        "low": 0.39999999999999997,
+        "high": 1.3880000000000001,
+        "text": "Density of crater-like dips inside the target's range (0.4\u20131.39 per km\u00b2)"
+      },
+      {
+        "id": "rough_small_in_target_range",
+        "kind": "target_range",
+        "feature": "rough_small",
+        "low": 2.5014741457652545,
+        "high": 4.916874356831626,
+        "text": "Small-scale bumpiness inside the target's range (2.5\u20134.92 m)"
+      },
+      {
+        "id": "rough_large_in_target_range",
+        "kind": "target_range",
+        "feature": "rough_large",
+        "low": 17.193345191427245,
+        "high": 60.70136773455394,
+        "text": "Large-scale bumpiness inside the target's range (17.2\u201360.7 m)"
+      }
+    ],
+    "n_requirements": 9,
+    "steps": [
+      {
+        "site": "aorounga",
+        "role": "candidate",
+        "rank": 1,
+        "tile_id": "r03c01",
+        "lat": 19.0766,
+        "lon": 19.179,
+        "adds": [
+          "slope_p90 within 5 deg of the target",
+          "frac_steep within 0.1 fraction of the target",
+          "Share of steep ground inside the target's range (0.00132\u20130.875)",
+          "Steepest-10% slope inside the target's range (9.26\u201332.2\u00b0)",
+          "Average slope inside the target's range (5.31\u201324.4\u00b0)",
+          "Density of crater-like dips inside the target's range (0.4\u20131.39 per km\u00b2)",
+          "Large-scale bumpiness inside the target's range (17.2\u201360.7 m)"
+        ],
+        "covered_so_far": 7
+      },
+      {
+        "site": "flaxman",
+        "role": "candidate",
+        "rank": 2,
+        "tile_id": "r00c03",
+        "lat": -34.6046,
+        "lon": 139.062,
+        "adds": [
+          "rough_small within 3 m of the target",
+          "Small-scale bumpiness inside the target's range (2.5\u20134.92 m)"
+        ],
+        "covered_so_far": 9
+      }
+    ],
+    "not_covered_by_any_site": [],
+    "best_single_site": [
+      "aorounga",
+      7
+    ],
+    "rule": "A site covers a requirement only if one interference-free tile meets it; requirements met together must be met on the same tile. Target range = 10%-90% of the target's tiles. Greedy: each step adds the site covering the most new requirements."
+  },
+  "attribution": [
+    "Produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+    "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium (CC-BY 4.0)",
+    "Diviner polar temperatures: Williams et al. (2019), Seasonal polar temperatures on the Moon, JGR Planets 124, 2505-2521",
+    "MODIS MOD11A2 v061 land surface temperature (Wan, Hook, Hulley 2021), via NASA AppEEARS"
+  ]
+}

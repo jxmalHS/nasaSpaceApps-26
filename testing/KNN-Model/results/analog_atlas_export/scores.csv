@@ -1,0 +1,536 @@
+cell_id,test_id,score,target_id,uncertainty,lat,lon,confidence,low_evidence,req_met,req_not_met,req_unknown,flags,spot_lat,spot_lon,note,site_name,stable_runs,total_runs,score_percentile
+21060,ltv.wheels,0.6552,mons-mouton-plateau,0.071,75.3667,-89.6833,0.929,false,slope_p90;frac_steep;rough_small,,,,75.296,-89.9376,role: candidate,Haughton,13,14,100.0
+163663,ltv.wheels,0.64,mons-mouton-plateau,0.0,-23.9333,-68.2833,1.0,false,slope_p90;frac_steep;rough_small,,,,-23.9117,-68.3574,role: candidate,Monturaqui,14,14,99.0
+179918,ltv.wheels,0.6344,mons-mouton-plateau,0.071,-34.6167,139.067,0.929,false,slope_p90;frac_steep;rough_small,,,,-34.6411,139.1474,role: candidate,Flaxman 2,13,14,98.0
+61705,ltv.wheels,0.6285,mons-mouton-plateau,0.0,47.2,72.7,1.0,false,slope_p90;frac_steep;rough_small,,,,47.1352,72.8663,role: candidate,Shunak,14,14,97.1
+179918,ltv.wheels,0.6201,mons-mouton-plateau,0.071,-34.7167,139.033,0.929,false,slope_p90;frac_steep;rough_small,,,,-34.8307,139.1114,role: candidate,Flaxman,13,14,96.1
+153614,ltv.wheels,0.6083,mons-mouton-plateau,0.071,-16.7833,-52.9833,0.929,false,slope_p90;frac_steep;rough_small,,,,-16.7606,-53.0535,role: candidate,Araguainha,13,14,95.1
+156133,ltv.wheels,0.6054,mons-mouton-plateau,0.143,-18.3333,126.667,0.857,false,slope_p90;frac_steep;rough_small,,,,-18.2658,126.6439,role: candidate,Goat Paddock,12,14,94.1
+33104,ltv.wheels,0.6046,mons-mouton-plateau,0.143,67.5,172.083,0.857,false,slope_p90;frac_steep;rough_small,,,,67.3888,171.902,role: candidate,El Gygytgyn,12,14,93.1
+60632,ltv.wheels,0.5965,mons-mouton-plateau,0.143,47.6,-103.55,0.857,false,slope_p90;frac_steep;rough_small,,,,47.489,-103.7203,role: candidate,Red Wing,12,14,91.2
+57739,ltv.wheels,0.5911,mons-mouton-plateau,0.071,49.7,-110.5,0.929,false,slope_p90;frac_steep;rough_small,,,,49.5866,-110.4673,role: candidate,Eagle Butte,13,14,90.2
+49193,ltv.wheels,0.5896,mons-mouton-plateau,0.071,55.8833,-63.3,0.929,true,slope_p90;frac_steep;rough_small,,,,55.7709,-63.1801,role: candidate,Mistastin,13,14,89.2
+76447,ltv.wheels,0.5894,mons-mouton-plateau,0.071,36.9476,-116.0253,0.929,false,slope_p90;frac_steep;rough_small,,,,36.9712,-116.1664,role: baseline,Yucca Flat,13,14,88.2
+59564,ltv.wheels,0.5846,mons-mouton-plateau,0.143,48.5667,82.0167,0.857,false,slope_p90;frac_steep;rough_small,,,,48.4975,82.1168,role: candidate,Bigach,12,14,87.3
+79327,ltv.wheels,0.581,mons-mouton-plateau,0.071,34.7464,-116.3756,0.929,false,slope_p90;frac_steep;rough_small,,,,34.6785,-116.5131,role: candidate,Pisgah Crater,13,14,86.3
+101918,ltv.wheels,0.5798,mons-mouton-plateau,0.071,19.1,19.25,0.929,false,slope_p90;frac_steep;rough_small,,,,19.0328,19.3219,role: candidate,Aorounga,13,14,85.3
+91808,ltv.wheels,0.577,mons-mouton-plateau,0.0,26.0833,4.38333,1.0,false,slope_p90;frac_steep;rough_small,,,,26.1513,4.3086,role: candidate,Amguid,14,14,84.3
+159749,ltv.wheels,0.5759,mons-mouton-plateau,0.143,-20.9167,134.833,0.857,false,slope_p90;frac_steep;rough_small,,,,-20.8946,134.8087,role: candidate,Amelia Creek,12,14,83.3
+104803,ltv.wheels,0.5666,mons-mouton-plateau,0.071,17.4167,21.75,0.929,false,slope_p90;frac_steep;rough_small,,,,17.3944,21.6317,role: candidate,Gweni Fada,13,14,82.4
+80788,ltv.wheels,0.5582,mons-mouton-plateau,0.143,33.6832,-105.9275,0.857,false,slope_p90;frac_steep;rough_small,,,,33.7045,-106.0629,role: candidate,Valley Of Fires Carrizozo,12,14,81.4
+77896,ltv.wheels,0.5567,mons-mouton-plateau,0.143,35.5824,-111.6319,0.857,false,slope_p90;frac_steep;rough_small,,,,35.6497,-111.6606,role: baseline,Sp Crater Jett3,12,14,80.4
+152542,ltv.wheels,0.5549,mons-mouton-plateau,0.143,-15.5,131.183,0.857,false,slope_p90;frac_steep;rough_small,,,,-15.4327,131.2048,role: candidate,Matt Wilson,12,14,79.4
+78617,ltv.wheels,0.5518,mons-mouton-plateau,0.0,35.3315,-111.4834,1.0,false,slope_p90;frac_steep;rough_small,,,,35.219,-111.4011,role: baseline,Cinder Lake Crater Field,14,14,78.4
+92599,ltv.wheels,0.5511,mons-mouton-plateau,0.0,25.72,39.9433,1.0,false,slope_p90;frac_steep;rough_small,,,,25.8326,39.9688,role: candidate,Jabal Qidr Harrat Khaybar,14,14,77.5
+85114,ltv.wheels,0.5498,mons-mouton-plateau,0.143,30.6,-102.917,0.857,false,slope_p90;frac_steep;rough_small,,,,30.4867,-102.8934,role: candidate,Sierra Madera,12,14,76.5
+77908,ltv.wheels,0.548,mons-mouton-plateau,0.143,35.75,-105.933,0.857,false,slope_p90;frac_steep;rough_small,,,,35.8623,-105.9625,role: candidate,Santa Fe,12,14,75.5
+20715,ltv.wheels,0.5346,mons-mouton-plateau,0.071,75.7,97.8,0.929,false,slope_p90;frac_steep;rough_small,,,,75.7224,97.8884,role: candidate,Chukcha,13,14,74.5
+153972,ltv.wheels,0.5288,mons-mouton-plateau,0.143,-16.7333,126.083,0.857,false,slope_p90;frac_steep;rough_small,,,,-16.7568,126.1055,role: candidate,Spider,12,14,73.5
+88184,ltv.wheels,0.523,mons-mouton-plateau,0.0,29.0,-7.55,1.0,false,slope_p90;frac_steep;rough_small,,,,28.9761,-7.4738,role: candidate,Ouarkziz,14,14,72.5
+34886,ltv.wheels,0.5169,mons-mouton-plateau,0.071,65.6051,-16.874,0.929,false,slope_p90;frac_steep;rough_small,,,,65.6709,-16.9341,role: candidate,Hverfjall,13,14,71.6
+74287,ltv.wheels,0.5165,mons-mouton-plateau,0.143,38.3839,-116.0694,0.857,false,slope_p90;frac_steep;rough_small,,,,38.3614,-116.0992,role: candidate,Lunar Crater Nevada,12,14,70.6
+176808,ltv.wheels,0.516,mons-mouton-plateau,0.071,-32.7167,24.4333,0.929,false,slope_p90;frac_steep;rough_small,,,,-32.7827,24.351,role: candidate,Kalkkop,13,14,69.6
+64934,ltv.wheels,0.513,mons-mouton-plateau,0.071,44.6,-113.0,0.929,false,slope_p90;frac_steep;rough_small,,,,44.5775,-112.9687,role: candidate,Beaverhead,13,14,68.6
+63721,ltv.wheels,0.5108,mons-mouton-plateau,0.143,45.8333,0.933333,0.857,true,frac_steep;rough_small,slope_p90,,,45.7236,1.0968,role: candidate,Rochechouart,12,14,67.6
+141386,ltv.wheels,0.5041,mons-mouton-plateau,0.071,-8.08333,-46.8667,0.929,true,slope_p90;frac_steep;rough_small,,,,-8.151,-46.9359,role: candidate,Serra Da Cangalha,13,14,66.7
+97612,ltv.wheels,0.501,mons-mouton-plateau,0.071,22.0167,26.0833,0.929,false,slope_p90;frac_steep;rough_small,,,,22.1284,25.9606,role: candidate,Kamil,13,14,65.7
+79328,ltv.wheels,0.4987,mons-mouton-plateau,0.143,34.5448,-115.791,0.857,false,slope_p90;frac_steep;rough_small,,,,34.6585,-115.9261,role: candidate,Amboy,12,14,64.7
+79328,ltv.wheels,0.4987,mons-mouton-plateau,0.143,34.545,-115.7907,0.857,false,slope_p90;frac_steep;rough_small,,,,34.6585,-115.9261,role: candidate,Amboy Crater,12,14,64.7
+156877,ltv.wheels,0.4976,mons-mouton-plateau,0.143,-18.6667,138.65,0.857,false,slope_p90;frac_steep;rough_small,,,,-18.5543,138.675,role: candidate,Lawn Hill,12,14,62.7
+36326,ltv.wheels,0.4885,mons-mouton-plateau,0.0,64.8709,-16.8348,1.0,false,slope_p90;frac_steep;rough_small,,,,64.9821,-16.8969,role: candidate,Holuhraun,14,14,61.8
+67106,ltv.wheels,0.4852,mons-mouton-plateau,0.071,43.1167,-106.75,0.929,false,slope_p90;frac_steep;rough_small,,,,43.0012,-106.9004,role: candidate,Cloud Creek,13,14,60.8
+144269,ltv.wheels,0.475,mons-mouton-plateau,0.071,-10.1667,-45.25,0.929,false,slope_p90;frac_steep;rough_small,,,,-10.054,-45.3185,role: candidate,Santa Marta,13,14,59.8
+155416,ltv.wheels,0.4704,mons-mouton-plateau,0.143,-17.5333,128.417,0.857,false,slope_p90;frac_steep;rough_small,,,,-17.4209,128.4407,role: candidate,Piccaninny,12,14,58.8
+89650,ltv.wheels,0.468,mons-mouton-plateau,0.071,27.6,5.11667,0.929,false,slope_p90;frac_steep;rough_small,,,,27.7132,5.0427,role: candidate,Tin Bider,13,14,57.8
+57741,ltv.wheels,0.4569,mons-mouton-plateau,0.143,49.8,-109.1,0.857,false,slope_p90;frac_steep;rough_small,,,,49.6844,-108.9316,role: candidate,Maple Creek White Valley,12,14,56.9
+169592,ltv.wheels,0.4532,mons-mouton-plateau,0.0,-27.7667,16.3,1.0,false,slope_p90;frac_steep;rough_small,,,,-27.7886,16.4261,role: candidate,Roter Kamm,14,14,55.9
+60201,ltv.wheels,0.4496,mons-mouton-plateau,0.071,48.35,40.5,0.929,true,frac_steep;rough_small,slope_p90,,,48.2388,40.3279,role: candidate,Kamensk 2,13,14,54.9
+168895,ltv.wheels,0.4453,mons-mouton-plateau,0.071,-27.0,27.5,0.929,true,frac_steep;rough_small,slope_p90,,,-26.8875,27.5749,role: candidate,Vredefort,13,14,53.9
+100414,ltv.wheels,0.4414,mons-mouton-plateau,0.143,20.25,-12.6833,0.857,false,slope_p90;frac_steep;rough_small,,,,20.3634,-12.7535,role: candidate,Aouelloul,12,14,52.9
+153993,ltv.wheels,0.4388,mons-mouton-plateau,0.143,-16.6667,136.783,0.857,false,slope_p90;frac_steep;rough_small,,,,-16.7808,136.7133,role: candidate,Foelsche,12,14,52.0
+164064,ltv.wheels,0.4317,mons-mouton-plateau,0.0,-23.8167,132.317,1.0,false,slope_p90;frac_steep;rough_small,,,,-23.7042,132.2942,role: candidate,Gosses Bluff,14,14,51.0
+165506,ltv.wheels,0.4182,mons-mouton-plateau,0.071,-24.5667,133.133,0.929,false,slope_p90;frac_steep;rough_small,,,,-24.5009,133.2571,role: candidate,Henbury,13,14,50.0
+176310,ltv.wheels,0.4157,mons-mouton-plateau,0.071,-32.0167,135.45,0.929,false,slope_p90;frac_steep;rough_small,,,,-31.9036,135.5806,role: candidate,Acraman,13,14,49.0
+84673,ltv.wheels,0.4085,mons-mouton-plateau,0.143,31.05,36.8,0.857,false,frac_steep;rough_small,slope_p90,,,31.0277,36.8261,role: candidate,Jebel Waqf As Suwwan,12,14,48.0
+75041,ltv.wheels,0.4072,mons-mouton-plateau,0.143,37.5833,-99.1667,0.857,false,frac_steep;rough_small,slope_p90,,,37.4698,-99.1391,role: candidate,Haviland,12,14,47.1
+41252,ltv.wheels,0.4058,mons-mouton-plateau,0.071,61.2833,-73.6667,0.929,true,slope_p90;frac_steep;rough_small,,,,61.3969,-73.8972,role: candidate,New Quebec Chubb Ungava Pingualuit,13,14,46.1
+78617,ltv.wheels,0.389,mons-mouton-plateau,0.0,35.0333,-111.017,1.0,false,frac_steep;rough_small,slope_p90,,,34.9202,-111.0996,role: baseline,Meteor Crater,14,14,45.1
+86837,ltv.wheels,0.3768,mons-mouton-plateau,0.071,29.5833,38.7,0.929,false,frac_steep;rough_small,slope_p90,,,29.47,38.6741,role: candidate,Saqqar,13,14,44.1
+30008,ltv.wheels,0.3761,mons-mouton-plateau,0.071,69.1,64.15,0.929,false,frac_steep;rough_small,slope_p90,,,69.1687,63.8366,role: candidate,Kara,13,14,43.1
+27963,ltv.wheels,0.3681,mons-mouton-plateau,0.0,71.0,121.667,1.0,false,frac_steep;rough_small,slope_p90,,,71.0683,121.8677,role: candidate,Beyenchime Salaaty,14,14,42.2
+66099,ltv.wheels,0.3677,mons-mouton-plateau,0.0,44.1167,109.65,1.0,false,frac_steep;rough_small,slope_p90,,,44.1851,109.7413,role: candidate,Tabun Khara Obo,14,14,41.2
+63269,ltv.wheels,0.3657,mons-mouton-plateau,0.143,46.1167,134.667,0.857,true,frac_steep;rough_small,slope_p90,,,46.003,134.5053,role: candidate,Sikhote Alin,12,14,40.2
+60241,ltv.wheels,0.3588,mons-mouton-plateau,0.0,48.4,60.9667,1.0,false,frac_steep;rough_small,slope_p90,,,48.4226,60.9995,role: candidate,Zhamanshin,14,14,39.2
+81728,ltv.wheels,0.3572,mons-mouton-plateau,0.071,33.3167,4.03333,0.929,false,frac_steep;rough_small,slope_p90,,,33.204,3.9506,role: candidate,Talemzane Maadna,13,14,38.2
+166016,ltv.wheels,0.3546,mons-mouton-plateau,0.071,-25.4,28.0833,0.929,false,frac_steep;rough_small,slope_p90,,,-25.5125,28.1583,role: candidate,Tswaing Formerly Pretoria Saltpan,13,14,37.3
+153581,ltv.wheels,0.3539,mons-mouton-plateau,0.143,-16.6667,-69.05,0.857,false,slope_p90;frac_steep,rough_small,,,-16.599,-69.0741,role: candidate,Carancas,12,14,36.3
+84407,ltv.wheels,0.3532,mons-mouton-plateau,0.071,31.2833,-96.3,0.929,true,frac_steep;rough_small,slope_p90,,,31.1719,-96.3822,role: candidate,Marquez,13,14,35.3
+140666,ltv.wheels,0.3509,mons-mouton-plateau,0.071,-7.71667,-46.65,0.929,false,frac_steep;rough_small,slope_p90,,,-7.6046,-46.5818,role: candidate,Riachao Ring,13,14,34.3
+169794,ltv.wheels,0.3492,mons-mouton-plateau,0.071,-27.6333,117.283,0.929,false,slope_p90;frac_steep;rough_small,,,,-27.7015,117.4098,role: candidate,Dalgaranga,13,14,33.3
+93288,ltv.wheels,0.3391,mons-mouton-plateau,0.0,25.3167,24.3333,1.0,false,frac_steep;rough_small,slope_p90,,,25.2955,24.4575,role: candidate,B P Structure,14,14,31.4
+164043,ltv.wheels,0.3391,mons-mouton-plateau,0.071,-23.9833,121.567,0.929,false,frac_steep;rough_small,slope_p90,,,-23.8714,121.5926,role: candidate,Glikson,13,14,30.4
+151827,ltv.wheels,0.3343,mons-mouton-plateau,0.071,-15.2,133.583,0.929,true,frac_steep;rough_small,slope_p90,,,-15.223,133.5587,role: candidate,Strangways,13,14,29.4
+162630,ltv.wheels,0.3336,mons-mouton-plateau,0.143,-22.6167,135.2,0.857,false,frac_steep;rough_small,slope_p90,,,-22.7303,135.3214,role: candidate,Boxhole,12,14,28.4
+94008,ltv.wheels,0.33,mons-mouton-plateau,0.071,24.5833,24.4,0.929,false,frac_steep;rough_small,slope_p90,,,24.5603,24.4242,role: candidate,Oasis,13,14,27.5
+166921,ltv.wheels,0.3268,mons-mouton-plateau,0.0,-25.8667,120.883,1.0,false,frac_steep;rough_small,slope_p90,,,-25.7534,120.8096,role: candidate,Shoemaker Formerly Teague,14,14,26.5
+58795,ltv.wheels,0.3251,mons-mouton-plateau,0.071,49.1667,57.85,0.929,false,frac_steep;rough_small,slope_p90,,,49.1886,57.8838,role: candidate,Chiyli,13,14,25.5
+55152,ltv.wheels,0.3168,mons-mouton-plateau,0.071,51.7,36.0,0.929,true,frac_steep;rough_small,slope_p90,,,51.6763,35.964,role: candidate,Kursk,13,14,24.5
+79343,ltv.wheels,0.3111,mons-mouton-plateau,0.0,34.863,-108.098,1.0,true,frac_steep;rough_small,slope_p90,,,34.7503,-108.1303,role: candidate,El Malpais,14,14,23.5
+169125,ltv.wheels,0.3008,mons-mouton-plateau,0.0,-27.1167,142.833,1.0,false,frac_steep;rough_small,slope_p90,,,-27.0056,142.7043,role: candidate,Tookoonooka,14,14,22.5
+56306,ltv.wheels,0.2998,mons-mouton-plateau,0.071,50.9833,-106.717,0.929,false,frac_steep;rough_small,slope_p90,,,50.9607,-106.6817,role: candidate,Elbow,13,14,21.6
+96819,ltv.wheels,0.2989,mons-mouton-plateau,0.071,22.9167,-10.4,0.929,false,frac_steep;rough_small,slope_p90,,,22.9383,-10.4249,role: candidate,Tenoumer,13,14,20.6
+75038,ltv.wheels,0.2959,mons-mouton-plateau,0.071,37.9717,-100.8727,0.929,false,frac_steep;rough_small,slope_p90,,,37.9485,-100.9007,role: negative_control,Garden City Kansas,13,14,19.6
+77203,ltv.wheels,0.2935,mons-mouton-plateau,0.071,36.25,-98.2,0.929,true,frac_steep;rough_small,slope_p90,,,36.2727,-98.3398,role: candidate,Ames,13,14,18.6
+58025,ltv.wheels,0.2921,mons-mouton-plateau,0.143,49.5833,32.9167,0.857,true,frac_steep;rough_small,slope_p90,,,49.6055,32.7426,role: candidate,Obolon,12,14,17.6
+161695,ltv.wheels,0.2913,mons-mouton-plateau,0.071,-22.4833,27.5833,0.929,false,frac_steep;rough_small,slope_p90,,,-22.5965,27.6567,role: candidate,Kgagodi,13,14,16.7
+99100,ltv.wheels,0.2881,mons-mouton-plateau,0.071,21.5,50.4667,0.929,false,frac_steep;rough_small,slope_p90,,,21.4311,50.3457,role: candidate,Wabar,13,14,15.7
+83675,ltv.wheels,0.288,mons-mouton-plateau,0.071,31.75,-102.483,0.929,false,frac_steep;rough_small,slope_p90,,,31.7283,-102.563,role: candidate,Odessa,13,14,14.7
+162610,ltv.wheels,0.2792,mons-mouton-plateau,0.0,-22.9667,125.367,1.0,false,frac_steep;rough_small,slope_p90,,,-22.855,125.2912,role: candidate,Veevers,14,14,13.7
+169830,ltv.wheels,0.2759,mons-mouton-plateau,0.071,-27.95,135.367,0.929,false,frac_steep;rough_small,slope_p90,,,-28.0632,135.4946,role: candidate,Mount Toondina,13,14,12.7
+54882,ltv.wheels,0.2754,mons-mouton-plateau,0.071,51.7833,-98.5333,0.929,true,frac_steep;rough_small,slope_p90,,,51.7159,-98.6439,role: candidate,Saint Martin,13,14,11.8
+157575,ltv.wheels,0.2736,mons-mouton-plateau,0.0,-19.1667,127.8,1.0,false,frac_steep,slope_p90;rough_small,,,-19.0999,127.8241,role: candidate,Wolfe Creek,14,14,10.8
+164049,ltv.wheels,0.269,mons-mouton-plateau,0.0,-23.5333,124.75,1.0,false,frac_steep,slope_p90;rough_small,,,-23.4652,124.822,role: candidate,Connolly Basin,14,14,9.8
+167629,ltv.wheels,0.2685,mons-mouton-plateau,0.0,-26.05,114.65,1.0,false,frac_steep,slope_p90;rough_small,,,-26.1161,114.523,role: candidate,Woodleigh,14,14,8.8
+167447,ltv.wheels,0.2666,mons-mouton-plateau,0.0,-26.4667,23.5333,1.0,false,frac_steep,slope_p90;rough_small,,,-26.5361,23.4589,role: candidate,Morokweng,14,14,7.8
+158307,ltv.wheels,0.2598,mons-mouton-plateau,0.0,-19.9333,133.95,1.0,false,frac_steep,slope_p90;rough_small,,,-19.9565,133.9736,role: candidate,Kelly West,14,14,6.9
+169077,ltv.wheels,0.2593,mons-mouton-plateau,0.0,-27.1667,118.833,1.0,false,frac_steep,slope_p90;rough_small,,,-27.2805,118.8095,role: candidate,Yarrabubba,14,14,5.9
+74300,ltv.wheels,0.2556,mons-mouton-plateau,0.143,38.4333,-109.9,0.857,false,slope_p90;frac_steep;rough_small,,,,38.5439,-109.755,role: candidate,Upheaval Dome,12,14,4.9
+44292,ltv.wheels,0.2542,mons-mouton-plateau,0.143,59.2333,6.43333,0.857,true,slope_p90;frac_steep,rough_small,,,59.2578,6.562,role: candidate,Ritland,12,14,3.9
+169436,ltv.wheels,0.2492,mons-mouton-plateau,0.0,-27.6333,-61.7,1.0,true,frac_steep,slope_p90;rough_small,,,-27.6104,-61.6248,role: candidate,Campo Del Cielo,14,14,2.9
+42138,ltv.wheels,0.2128,mons-mouton-plateau,0.143,60.65,9.0,0.857,true,slope_p90;frac_steep,rough_small,,,60.762,9.2294,role: candidate,Gardnos,12,14,2.0
+73226,ltv.wheels,0.1806,mons-mouton-plateau,0.071,39.0167,73.45,0.929,false,slope_p90;frac_steep;rough_small,,,,38.9038,73.4812,role: candidate,Kara Kul,13,14,1.0
+83869,ltv.wheels,0.1454,mons-mouton-plateau,0.071,31.9833,-5.5,0.929,false,slope_p90;frac_steep;rough_small,,,,32.0963,-5.4775,role: candidate,Agoudal,13,14,0.0
+78616,ltv.wheels,0.6001,mons-mouton-plateau,0.071,35.2222,-111.6332,0.929,false,slope_p90;frac_steep;rough_small,,,tree_frac,35.1095,-111.496,role: baseline,Buffalo Park,13,14,92.2
+68572,ltv.wheels,0.3412,mons-mouton-plateau,0.143,42.0268,-93.617,0.857,false,frac_steep;rough_small,slope_p90,,cropland_frac,42.0942,-93.5877,role: negative_control,Ames Iowa,12,14,32.4
+101918,ltv.wheels,0.4964,connecting-ridge,0.143,19.1,19.25,0.857,false,slope_p90;frac_steep,rough_small,,,19.0766,19.179,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Aorounga,12,14,100.0
+179918,ltv.wheels,0.4923,connecting-ridge,0.071,-34.7167,139.033,0.929,false,rough_small,slope_p90;frac_steep,,,-34.7839,139.0032,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Flaxman,13,14,99.0
+57739,ltv.wheels,0.4916,connecting-ridge,0.071,49.7,-110.5,0.929,false,rough_small,slope_p90;frac_steep,,,49.7211,-110.3965,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Eagle Butte,13,14,98.0
+21060,ltv.wheels,0.4788,connecting-ridge,0.0,75.3667,-89.6833,1.0,false,slope_p90;frac_steep,rough_small,,,75.4364,-89.4304,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Haughton,14,14,97.1
+77908,ltv.wheels,0.4777,connecting-ridge,0.071,35.75,-105.933,0.929,false,rough_small,slope_p90;frac_steep,,,35.8167,-106.0173,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Santa Fe,13,14,96.1
+92599,ltv.wheels,0.4706,connecting-ridge,0.143,25.72,39.9433,0.857,false,slope_p90;frac_steep,rough_small,,,25.6523,39.9176,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Jabal Qidr Harrat Khaybar,12,14,94.1
+60632,ltv.wheels,0.468,connecting-ridge,0.071,47.6,-103.55,0.929,false,rough_small,slope_p90;frac_steep,,,47.6224,-103.5839,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Red Wing,13,14,93.1
+179918,ltv.wheels,0.4669,connecting-ridge,0.071,-34.6167,139.067,0.929,false,rough_small,slope_p90;frac_steep,,,-34.6402,139.0929,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Flaxman 2,13,14,92.2
+67106,ltv.wheels,0.4448,connecting-ridge,0.143,43.1167,-106.75,0.857,false,rough_small,slope_p90;frac_steep,,,43.2291,-106.7228,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Cloud Creek,12,14,91.2
+59564,ltv.wheels,0.4334,connecting-ridge,0.071,48.5667,82.0167,0.929,false,rough_small,slope_p90;frac_steep,,,48.5431,82.05,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Bigach,13,14,90.2
+57741,ltv.wheels,0.4306,connecting-ridge,0.071,49.8,-109.1,0.929,false,rough_small,slope_p90;frac_steep,,,49.8217,-109.0648,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Maple Creek White Valley,13,14,89.2
+159749,ltv.wheels,0.4292,connecting-ridge,0.071,-20.9167,134.833,0.929,false,rough_small,slope_p90;frac_steep,,,-20.9399,134.9048,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Amelia Creek,13,14,88.2
+63721,ltv.wheels,0.4279,connecting-ridge,0.143,45.8333,0.933333,0.857,true,rough_small,slope_p90;frac_steep,,,45.7236,1.0968,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Rochechouart,12,14,87.3
+77896,ltv.wheels,0.4268,connecting-ridge,0.071,35.5824,-111.6319,0.929,false,rough_small,slope_p90;frac_steep,,,35.515,-111.5492,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Sp Crater Jett3,13,14,86.3
+153614,ltv.wheels,0.4256,connecting-ridge,0.071,-16.7833,-52.9833,0.929,false,rough_small,slope_p90;frac_steep,,,-16.8956,-53.1019,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Araguainha,13,14,85.3
+84407,ltv.wheels,0.4217,connecting-ridge,0.143,31.2833,-96.3,0.857,true,rough_small,slope_p90;frac_steep,,,31.1719,-96.3822,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Marquez,12,14,84.3
+75041,ltv.wheels,0.4213,connecting-ridge,0.143,37.5833,-99.1667,0.857,false,rough_small,slope_p90;frac_steep,,,37.4699,-99.0826,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Haviland,12,14,83.3
+163663,ltv.wheels,0.4204,connecting-ridge,0.071,-23.9333,-68.2833,0.929,false,rough_small,slope_p90;frac_steep,,,-23.9571,-68.4064,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Monturaqui,13,14,82.4
+33104,ltv.wheels,0.4145,connecting-ridge,0.214,67.5,172.083,0.786,false,slope_p90;frac_steep,rough_small,,,67.5658,172.261,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",El Gygytgyn,11,14,81.4
+61705,ltv.wheels,0.4136,connecting-ridge,0.071,47.2,72.7,0.929,false,rough_small,slope_p90;frac_steep,,,47.1314,72.6687,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Shunak,13,14,80.4
+141386,ltv.wheels,0.4136,connecting-ridge,0.143,-8.08333,-46.8667,0.857,true,rough_small,slope_p90;frac_steep,,,-7.9706,-46.8444,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Serra Da Cangalha,12,14,79.4
+85114,ltv.wheels,0.4133,connecting-ridge,0.143,30.6,-102.917,0.857,false,rough_small,slope_p90;frac_steep,,,30.5334,-102.9966,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Sierra Madera,12,14,78.4
+79327,ltv.wheels,0.41,connecting-ridge,0.071,34.7464,-116.3756,0.929,false,slope_p90;frac_steep,rough_small,,,34.7676,-116.2941,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Pisgah Crater,13,14,77.5
+78617,ltv.wheels,0.4095,connecting-ridge,0.143,35.3315,-111.4834,0.857,false,rough_small,slope_p90;frac_steep,,,35.4444,-111.4022,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Cinder Lake Crater Field,12,14,76.5
+60201,ltv.wheels,0.4088,connecting-ridge,0.071,48.35,40.5,0.929,true,rough_small,slope_p90;frac_steep,,,48.2345,40.6645,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kamensk 2,13,14,75.5
+20715,ltv.wheels,0.4064,connecting-ridge,0.143,75.7,97.8,0.857,false,rough_small,slope_p90;frac_steep,,,75.7224,97.8884,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Chukcha,12,14,74.5
+91808,ltv.wheels,0.4059,connecting-ridge,0.071,26.0833,4.38333,0.929,false,slope_p90;frac_steep;rough_small,,,,26.0145,4.4569,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Amguid,13,14,73.5
+76447,ltv.wheels,0.4053,connecting-ridge,0.143,36.9476,-116.0253,0.857,false,slope_p90;frac_steep,rough_small,,,36.9243,-115.9424,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Yucca Flat,12,14,72.5
+156133,ltv.wheels,0.4025,connecting-ridge,0.071,-18.3333,126.667,0.929,false,rough_small,slope_p90;frac_steep,,,-18.2658,126.6439,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Goat Paddock,13,14,71.6
+153993,ltv.wheels,0.4024,connecting-ridge,0.143,-16.6667,136.783,0.857,false,rough_small,slope_p90;frac_steep,,,-16.7808,136.7133,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Foelsche,12,14,70.6
+80788,ltv.wheels,0.3982,connecting-ridge,0.0,33.6832,-105.9275,1.0,false,slope_p90;frac_steep,rough_small,,,33.7967,-105.794,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Valley Of Fires Carrizozo,14,14,69.6
+34886,ltv.wheels,0.3956,connecting-ridge,0.071,65.6051,-16.874,0.929,false,slope_p90;frac_steep,rough_small,,,65.4929,-16.8128,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Hverfjall,13,14,68.6
+168895,ltv.wheels,0.3931,connecting-ridge,0.071,-27.0,27.5,0.929,true,rough_small,slope_p90;frac_steep,,,-26.888,27.4239,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Vredefort,13,14,67.6
+153972,ltv.wheels,0.3842,connecting-ridge,0.143,-16.7333,126.083,0.857,false,rough_small,slope_p90;frac_steep,,,-16.845,125.9636,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Spider,12,14,66.7
+49193,ltv.wheels,0.3812,connecting-ridge,0.071,55.8833,-63.3,0.929,true,,slope_p90;frac_steep;rough_small,,,55.7709,-63.1801,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Mistastin,13,14,65.7
+36326,ltv.wheels,0.3796,connecting-ridge,0.071,64.8709,-16.8348,0.929,false,slope_p90;frac_steep,rough_small,,,64.9846,-16.6851,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Holuhraun,13,14,64.7
+89650,ltv.wheels,0.378,connecting-ridge,0.071,27.6,5.11667,0.929,false,rough_small,slope_p90;frac_steep,,,27.4845,5.2409,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tin Bider,13,14,63.7
+64934,ltv.wheels,0.3758,connecting-ridge,0.071,44.6,-113.0,0.929,false,slope_p90;frac_steep,rough_small,,,44.7145,-112.8471,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Beaverhead,13,14,62.7
+156877,ltv.wheels,0.3685,connecting-ridge,0.143,-18.6667,138.65,0.857,false,rough_small,slope_p90;frac_steep,,,-18.6446,138.6738,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Lawn Hill,12,14,61.8
+88184,ltv.wheels,0.3681,connecting-ridge,0.071,29.0,-7.55,0.929,false,rough_small,slope_p90;frac_steep,,,28.9772,-7.5764,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Ouarkziz,13,14,60.8
+63269,ltv.wheels,0.365,connecting-ridge,0.143,46.1167,134.667,0.857,true,rough_small,slope_p90;frac_steep,,,46.003,134.5053,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Sikhote Alin,12,14,59.8
+84673,ltv.wheels,0.3637,connecting-ridge,0.071,31.05,36.8,0.929,false,rough_small,slope_p90;frac_steep,,,31.0736,36.8774,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Jebel Waqf As Suwwan,13,14,58.8
+155416,ltv.wheels,0.3608,connecting-ridge,0.071,-17.5333,128.417,0.929,false,slope_p90;frac_steep,rough_small,,,-17.4663,128.5347,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Piccaninny,13,14,57.8
+30008,ltv.wheels,0.3602,connecting-ridge,0.071,69.1,64.15,0.929,false,rough_small,slope_p90;frac_steep,,,69.1687,63.8366,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kara,13,14,56.9
+97612,ltv.wheels,0.3593,connecting-ridge,0.071,22.0167,26.0833,0.929,false,slope_p90;rough_small,frac_steep,,,22.084,26.1063,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kamil,13,14,55.9
+74287,ltv.wheels,0.3546,connecting-ridge,0.071,38.3839,-116.0694,0.929,false,slope_p90;frac_steep;rough_small,,,,38.36,-115.9275,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Lunar Crater Nevada,13,14,54.9
+79328,ltv.wheels,0.3537,connecting-ridge,0.071,34.5448,-115.791,0.929,false,slope_p90;frac_steep,rough_small,,,34.4782,-115.9284,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Amboy,13,14,53.9
+79328,ltv.wheels,0.3537,connecting-ridge,0.071,34.545,-115.7907,0.929,false,slope_p90;frac_steep,rough_small,,,34.4782,-115.9284,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Amboy Crater,13,14,53.9
+41252,ltv.wheels,0.353,connecting-ridge,0.143,61.2833,-73.6667,0.857,true,rough_small,slope_p90;frac_steep,,,61.1718,-73.8121,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",New Quebec Chubb Ungava Pingualuit,12,14,52.0
+86837,ltv.wheels,0.3522,connecting-ridge,0.071,29.5833,38.7,0.929,false,rough_small,slope_p90;frac_steep,,,29.4703,38.8288,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Saqqar,13,14,51.0
+100414,ltv.wheels,0.3493,connecting-ridge,0.071,20.25,-12.6833,0.929,false,rough_small,slope_p90;frac_steep,,,20.1822,-12.7083,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Aouelloul,13,14,50.0
+176808,ltv.wheels,0.3454,connecting-ridge,0.143,-32.7167,24.4333,0.857,false,slope_p90;rough_small,frac_steep,,,-32.831,24.5098,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kalkkop,12,14,49.0
+104803,ltv.wheels,0.3439,connecting-ridge,0.143,17.4167,21.75,0.857,false,slope_p90;frac_steep,rough_small,,,17.4843,21.7733,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Gweni Fada,12,14,48.0
+169592,ltv.wheels,0.3389,connecting-ridge,0.071,-27.7667,16.3,0.929,false,slope_p90;frac_steep,rough_small,,,-27.6984,16.4249,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Roter Kamm,13,14,47.1
+164064,ltv.wheels,0.3389,connecting-ridge,0.071,-23.8167,132.317,0.929,false,slope_p90;rough_small,frac_steep,,,-23.7944,132.2924,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Gosses Bluff,13,14,46.1
+152542,ltv.wheels,0.3373,connecting-ridge,0.143,-15.5,131.183,0.857,false,slope_p90;frac_steep,rough_small,,,-15.6139,131.1601,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Matt Wilson,12,14,45.1
+165506,ltv.wheels,0.337,connecting-ridge,0.071,-24.5667,133.133,0.929,false,rough_small,slope_p90;frac_steep,,,-24.59,133.1571,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Henbury,13,14,44.1
+140666,ltv.wheels,0.3294,connecting-ridge,0.071,-7.71667,-46.65,0.929,false,rough_small,slope_p90;frac_steep,,,-7.6046,-46.5818,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Riachao Ring,13,14,43.1
+81728,ltv.wheels,0.3292,connecting-ridge,0.143,33.3167,4.03333,0.857,false,rough_small,slope_p90;frac_steep,,,33.2937,4.0053,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Talemzane Maadna,12,14,42.2
+78617,ltv.wheels,0.3289,connecting-ridge,0.071,35.0333,-111.017,0.929,false,rough_small,slope_p90;frac_steep,,,35.0103,-111.1545,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Meteor Crater,13,14,41.2
+176310,ltv.wheels,0.3253,connecting-ridge,0.0,-32.0167,135.45,1.0,false,rough_small,slope_p90;frac_steep,,,-31.9039,135.5277,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Acraman,14,14,39.2
+144269,ltv.wheels,0.3224,connecting-ridge,0.071,-10.1667,-45.25,0.929,false,slope_p90;frac_steep,rough_small,,,-10.2802,-45.2274,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Santa Marta,13,14,38.2
+66099,ltv.wheels,0.3132,connecting-ridge,0.071,44.1167,109.65,0.929,false,rough_small,slope_p90;frac_steep,,,44.0479,109.557,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tabun Khara Obo,13,14,37.3
+55152,ltv.wheels,0.3116,connecting-ridge,0.071,51.7,36.0,0.929,true,rough_small,slope_p90;frac_steep,,,51.6763,35.964,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kursk,13,14,36.3
+60241,ltv.wheels,0.3104,connecting-ridge,0.071,48.4,60.9667,0.929,false,rough_small,slope_p90;frac_steep,,,48.3752,60.8663,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Zhamanshin,13,14,35.3
+27963,ltv.wheels,0.3099,connecting-ridge,0.071,71.0,121.667,0.929,false,rough_small,slope_p90;frac_steep,,,71.0683,121.8677,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Beyenchime Salaaty,13,14,34.3
+153581,ltv.wheels,0.3073,connecting-ridge,0.071,-16.6667,-69.05,0.929,false,slope_p90;frac_steep,rough_small,,,-16.599,-69.1209,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Carancas,13,14,33.3
+166016,ltv.wheels,0.2982,connecting-ridge,0.071,-25.4,28.0833,0.929,false,rough_small,slope_p90;frac_steep,,,-25.5125,28.1583,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tswaing Formerly Pretoria Saltpan,13,14,32.4
+164043,ltv.wheels,0.2981,connecting-ridge,0.071,-23.9833,121.567,0.929,false,rough_small,slope_p90;frac_steep,,,-23.8709,121.5435,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Glikson,13,14,31.4
+162630,ltv.wheels,0.292,connecting-ridge,0.143,-22.6167,135.2,0.857,false,rough_small,slope_p90;frac_steep,,,-22.7303,135.3214,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Boxhole,12,14,30.4
+151827,ltv.wheels,0.2917,connecting-ridge,0.071,-15.2,133.583,0.929,true,rough_small,slope_p90;frac_steep,,,-15.223,133.5587,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Strangways,13,14,29.4
+58795,ltv.wheels,0.2847,connecting-ridge,0.071,49.1667,57.85,0.929,false,rough_small,slope_p90;frac_steep,,,49.28,57.6792,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Chiyli,13,14,28.4
+93288,ltv.wheels,0.283,connecting-ridge,0.0,25.3167,24.3333,1.0,false,rough_small,slope_p90;frac_steep,,,25.2955,24.4575,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",B P Structure,14,14,27.5
+169794,ltv.wheels,0.2826,connecting-ridge,0.0,-27.6333,117.283,1.0,false,rough_small,slope_p90;frac_steep,,,-27.5214,117.1559,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Dalgaranga,14,14,26.5
+166921,ltv.wheels,0.2786,connecting-ridge,0.0,-25.8667,120.883,1.0,false,rough_small,slope_p90;frac_steep,,,-25.7534,120.8096,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Shoemaker Formerly Teague,14,14,25.5
+79343,ltv.wheels,0.278,connecting-ridge,0.143,34.863,-108.098,0.857,true,rough_small,slope_p90;frac_steep,,,34.7503,-108.1303,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",El Malpais,12,14,24.5
+74300,ltv.wheels,0.2709,connecting-ridge,0.143,38.4333,-109.9,0.857,false,slope_p90;frac_steep,rough_small,,,38.3209,-109.9876,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Upheaval Dome,12,14,23.5
+94008,ltv.wheels,0.2706,connecting-ridge,0.0,24.5833,24.4,1.0,false,rough_small,slope_p90;frac_steep,,,24.5603,24.4242,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Oasis,14,14,22.5
+73226,ltv.wheels,0.2692,connecting-ridge,0.214,39.0167,73.45,0.786,false,slope_p90;frac_steep;rough_small,,,,39.1305,73.592,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kara Kul,11,14,21.6
+56306,ltv.wheels,0.2624,connecting-ridge,0.0,50.9833,-106.717,1.0,false,rough_small,slope_p90;frac_steep,,,50.9607,-106.6817,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Elbow,14,14,20.6
+75038,ltv.wheels,0.2582,connecting-ridge,0.143,37.9717,-100.8727,0.857,false,rough_small,slope_p90;frac_steep,,,37.9485,-100.9007,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: negative_control",Garden City Kansas,12,14,19.6
+58025,ltv.wheels,0.2579,connecting-ridge,0.071,49.5833,32.9167,0.929,true,rough_small,slope_p90;frac_steep,,,49.6055,32.7426,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Obolon,13,14,18.6
+77203,ltv.wheels,0.2567,connecting-ridge,0.0,36.25,-98.2,1.0,true,rough_small,slope_p90;frac_steep,,,36.2727,-98.3398,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Ames,14,14,17.6
+169125,ltv.wheels,0.2521,connecting-ridge,0.0,-27.1167,142.833,1.0,false,rough_small,slope_p90;frac_steep,,,-27.0056,142.7043,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tookoonooka,14,14,16.7
+99100,ltv.wheels,0.2512,connecting-ridge,0.071,21.5,50.4667,0.929,false,rough_small,slope_p90;frac_steep,,,21.4311,50.3457,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Wabar,13,14,15.7
+96819,ltv.wheels,0.247,connecting-ridge,0.071,22.9167,-10.4,0.929,false,rough_small,slope_p90;frac_steep,,,22.9383,-10.4249,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Tenoumer,13,14,14.7
+83675,ltv.wheels,0.2452,connecting-ridge,0.071,31.75,-102.483,0.929,false,rough_small,slope_p90;frac_steep,,,31.7283,-102.563,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Odessa,13,14,13.7
+54882,ltv.wheels,0.2391,connecting-ridge,0.071,51.7833,-98.5333,0.929,true,rough_small,slope_p90;frac_steep,,,51.7159,-98.6439,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Saint Martin,13,14,12.7
+161695,ltv.wheels,0.239,connecting-ridge,0.071,-22.4833,27.5833,0.929,false,rough_small,slope_p90;frac_steep,,,-22.5511,27.7051,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kgagodi,13,14,11.8
+83869,ltv.wheels,0.2381,connecting-ridge,0.286,31.9833,-5.5,0.714,false,slope_p90;frac_steep,rough_small,,,32.0062,-5.4751,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Agoudal,10,14,10.8
+162610,ltv.wheels,0.2377,connecting-ridge,0.071,-22.9667,125.367,0.929,false,rough_small,slope_p90;frac_steep,,,-22.855,125.2912,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Veevers,13,14,9.8
+169830,ltv.wheels,0.2358,connecting-ridge,0.071,-27.95,135.367,0.929,false,rough_small,slope_p90;frac_steep,,,-28.0632,135.4946,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Mount Toondina,13,14,8.8
+157575,ltv.wheels,0.2328,connecting-ridge,0.071,-19.1667,127.8,0.929,false,rough_small,slope_p90;frac_steep,,,-19.0999,127.8241,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Wolfe Creek,13,14,7.8
+167629,ltv.wheels,0.2317,connecting-ridge,0.071,-26.05,114.65,0.929,false,rough_small,slope_p90;frac_steep,,,-26.0751,114.7737,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Woodleigh,13,14,6.9
+164049,ltv.wheels,0.2315,connecting-ridge,0.071,-23.5333,124.75,0.929,false,rough_small,slope_p90;frac_steep,,,-23.4652,124.822,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Connolly Basin,13,14,5.9
+167447,ltv.wheels,0.2295,connecting-ridge,0.071,-26.4667,23.5333,0.929,false,rough_small,slope_p90;frac_steep,,,-26.5361,23.4589,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Morokweng,13,14,4.9
+158307,ltv.wheels,0.2244,connecting-ridge,0.071,-19.9333,133.95,0.929,false,rough_small,slope_p90;frac_steep,,,-19.9565,133.9736,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Kelly West,13,14,3.9
+169077,ltv.wheels,0.2239,connecting-ridge,0.071,-27.1667,118.833,0.929,false,rough_small,slope_p90;frac_steep,,,-27.2805,118.8095,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Yarrabubba,13,14,2.9
+169436,ltv.wheels,0.2178,connecting-ridge,0.071,-27.6333,-61.7,0.929,true,rough_small,slope_p90;frac_steep,,,-27.6104,-61.6248,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Campo Del Cielo,13,14,2.0
+42138,ltv.wheels,0.1601,connecting-ridge,0.143,60.65,9.0,0.857,true,slope_p90,frac_steep;rough_small,,,60.762,9.2294,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Gardnos,12,14,1.0
+44292,ltv.wheels,0.1523,connecting-ridge,0.071,59.2333,6.43333,0.929,true,slope_p90,frac_steep;rough_small,,,59.2578,6.562,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: candidate",Ritland,13,14,0.0
+78616,ltv.wheels,0.476,connecting-ridge,0.0,35.2222,-111.6332,1.0,false,slope_p90;frac_steep,rough_small,,tree_frac,35.2891,-111.662,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: baseline",Buffalo Park,14,14,95.1
+68572,ltv.wheels,0.3263,connecting-ridge,0.071,42.0268,-93.617,0.929,false,rough_small,slope_p90;frac_steep,,tree_frac;builtup_frac,42.0488,-93.6477,"Our target is a 40 km box at the south pole (incl. Shackleton walls), mapped to the nearest Atlas target.; role: negative_control",Ames Iowa,13,14,40.2
+78617,ltv.thermal,0.526,connecting-ridge,0.0,35.3315,-111.4834,1.0,false,temp_range_mean,slope_p90,,,35.3544,-111.3467,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Cinder Lake Crater Field,14,14,100.0
+77896,ltv.thermal,0.5046,connecting-ridge,0.0,35.5824,-111.6319,1.0,false,slope_p90;temp_range_mean,,,,35.5599,-111.6047,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Sp Crater Jett3,14,14,88.9
+76447,ltv.thermal,0.4297,connecting-ridge,0.0,36.9476,-116.0253,1.0,false,temp_range_mean,slope_p90,,,37.0605,-116.0529,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Yucca Flat,14,14,66.7
+78617,ltv.thermal,0.3962,connecting-ridge,0.0,35.0333,-111.017,1.0,false,temp_range_mean,slope_p90,,,34.9203,-110.9901,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Meteor Crater,14,14,55.6
+75038,ltv.thermal,0.2308,connecting-ridge,0.0,37.9717,-100.8727,1.0,false,,slope_p90;temp_range_mean,,,37.9485,-100.9007,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: negative_control",Garden City Kansas,14,14,33.3
+176310,ltv.thermal,0.2025,connecting-ridge,0.0,-32.0167,135.45,1.0,false,,slope_p90;temp_range_mean,,,-32.1292,135.582,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Acraman,14,14,22.2
+77203,ltv.thermal,0.1968,connecting-ridge,0.0,36.25,-98.2,1.0,true,,slope_p90;temp_range_mean,,,36.2727,-98.3398,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Ames,14,14,11.1
+153614,ltv.thermal,0.1056,connecting-ridge,0.0,-16.7833,-52.9833,1.0,false,,slope_p90;temp_range_mean,,,-16.7615,-52.9598,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: candidate",Araguainha,14,14,0.0
+78616,ltv.thermal,0.4301,connecting-ridge,0.0,35.2222,-111.6332,1.0,false,slope_p90;temp_range_mean,,,tree_frac;water_frac,35.3349,-111.4974,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: baseline",Buffalo Park,14,14,77.8
+68572,ltv.thermal,0.3471,connecting-ridge,0.0,42.0268,-93.617,1.0,false,temp_range_mean,slope_p90,,cropland_frac,42.1395,-93.5276,"Our ltv.thermal score is terrain + yearly temperature range (closest achievable to the Moon), not thermal only.; role: negative_control",Ames Iowa,14,14,44.4
+163663,land.hazards,0.339,connecting-ridge,0.0,-23.9333,-68.2833,1.0,false,pit_density,relief,,,-23.911,-68.2101,role: candidate,Monturaqui,12,12,99.2
+92599,land.hazards,0.3373,connecting-ridge,0.0,25.72,39.9433,1.0,false,pit_density,relief,,,25.7426,39.9183,role: candidate,Jabal Qidr Harrat Khaybar,12,12,98.4
+78617,land.hazards,0.3369,connecting-ridge,0.0,35.3315,-111.4834,1.0,false,pit_density,relief,,,35.4444,-111.4022,role: baseline,Cinder Lake Crater Field,12,12,97.6
+77896,land.hazards,0.3282,connecting-ridge,0.0,35.5824,-111.6319,1.0,false,pit_density,relief,,,35.4697,-111.604,role: baseline,Sp Crater Jett3,12,12,96.8
+34886,land.hazards,0.2991,connecting-ridge,0.083,65.6051,-16.874,0.917,false,pit_density,relief,,,65.7196,-16.6107,role: candidate,Hverfjall,11,12,96.0
+76447,land.hazards,0.2985,connecting-ridge,0.0,36.9476,-116.0253,1.0,false,pit_density,relief,,,36.9261,-116.1669,role: baseline,Yucca Flat,12,12,95.2
+79327,land.hazards,0.2965,connecting-ridge,0.0,34.7464,-116.3756,1.0,false,pit_density,relief,,,34.6783,-116.4586,role: candidate,Pisgah Crater,12,12,94.4
+77908,land.hazards,0.296,connecting-ridge,0.0,35.75,-105.933,1.0,false,pit_density,relief,,,35.7717,-106.0167,role: candidate,Santa Fe,12,12,93.7
+74287,land.hazards,0.2948,connecting-ridge,0.0,38.3839,-116.0694,1.0,false,pit_density,relief,,,38.3149,-115.9282,role: candidate,Lunar Crater Nevada,12,12,92.9
+36326,land.hazards,0.2924,connecting-ridge,0.083,64.8709,-16.8348,0.917,false,pit_density,relief,,,64.9834,-16.791,role: candidate,Holuhraun,11,12,92.1
+79328,land.hazards,0.2908,connecting-ridge,0.083,34.5448,-115.791,0.917,false,pit_density,relief,,,34.6558,-115.6534,role: candidate,Amboy,11,12,91.3
+79328,land.hazards,0.2908,connecting-ridge,0.083,34.545,-115.7907,0.917,false,pit_density,relief,,,34.6558,-115.6534,role: candidate,Amboy Crater,11,12,91.3
+57739,land.hazards,0.285,connecting-ridge,0.0,49.7,-110.5,1.0,false,pit_density,relief,,,49.6771,-110.605,role: candidate,Eagle Butte,12,12,89.7
+64934,land.hazards,0.2832,connecting-ridge,0.083,44.6,-113.0,0.917,false,pit_density,relief,,,44.5775,-112.9687,role: candidate,Beaverhead,11,12,88.9
+61705,land.hazards,0.2568,connecting-ridge,0.0,47.2,72.7,1.0,false,pit_density,relief,,,47.2199,72.5988,role: candidate,Shunak,12,12,88.1
+67106,land.hazards,0.2551,connecting-ridge,0.167,43.1167,-106.75,0.833,false,pit_density,relief,,,43.0012,-106.9004,role: candidate,Cloud Creek,10,12,87.3
+80788,land.hazards,0.2539,connecting-ridge,0.0,33.6832,-105.9275,1.0,false,pit_density,relief,,,33.5709,-105.8458,role: candidate,Valley Of Fires Carrizozo,12,12,86.5
+179918,land.hazards,0.2533,connecting-ridge,0.0,-34.7167,139.033,1.0,false,pit_density,relief,,,-34.829,139.0021,role: candidate,Flaxman,12,12,85.7
+176808,land.hazards,0.2528,connecting-ridge,0.0,-32.7167,24.4333,1.0,false,pit_density,relief,,,-32.7849,24.4577,role: candidate,Kalkkop,12,12,84.9
+179918,land.hazards,0.2478,connecting-ridge,0.0,-34.6167,139.067,1.0,false,pit_density,relief,,,-34.7312,139.1454,role: candidate,Flaxman 2,12,12,84.1
+57741,land.hazards,0.2458,connecting-ridge,0.083,49.8,-109.1,0.917,false,pit_density,relief,,,49.8217,-109.0648,role: candidate,Maple Creek White Valley,11,12,83.3
+20715,land.hazards,0.2393,connecting-ridge,0.0,75.7,97.8,1.0,false,pit_density,relief,,,75.588,97.8985,role: candidate,Chukcha,12,12,82.5
+21060,land.hazards,0.2373,connecting-ridge,0.0,75.3667,-89.6833,1.0,false,pit_density,relief,,,75.3385,-90.1231,role: candidate,Haughton,12,12,81.7
+156133,land.hazards,0.2316,connecting-ridge,0.083,-18.3333,126.667,0.917,false,pit_density,relief,,,-18.4024,126.7367,role: candidate,Goat Paddock,11,12,81.0
+91808,land.hazards,0.2301,connecting-ridge,0.083,26.0833,4.38333,0.917,false,pit_density,relief,,,26.196,4.3591,role: candidate,Amguid,11,12,80.2
+33104,land.hazards,0.23,connecting-ridge,0.167,67.5,172.083,0.833,false,pit_density,relief,,,67.3888,171.902,role: candidate,El Gygytgyn,10,12,79.4
+101918,land.hazards,0.2293,connecting-ridge,0.083,19.1,19.25,0.917,false,pit_density,relief,,,19.1683,19.3206,role: candidate,Aorounga,11,12,78.6
+85114,land.hazards,0.2285,connecting-ridge,0.0,30.6,-102.917,1.0,false,pit_density,relief,,,30.6219,-102.8905,role: candidate,Sierra Madera,12,12,77.8
+88184,land.hazards,0.2242,connecting-ridge,0.0,29.0,-7.55,1.0,false,pit_density,relief,,,29.0234,-7.6784,role: candidate,Ouarkziz,12,12,77.0
+60632,land.hazards,0.2234,connecting-ridge,0.0,47.6,-103.55,1.0,false,pit_density,relief,,,47.6647,-103.383,role: candidate,Red Wing,12,12,76.2
+59564,land.hazards,0.2208,connecting-ridge,0.0,48.5667,82.0167,1.0,false,pit_density,relief,,,48.5892,81.9154,role: candidate,Bigach,12,12,75.4
+144269,land.hazards,0.2203,connecting-ridge,0.083,-10.1667,-45.25,0.917,false,pit_density,relief,,,-10.0993,-45.136,role: candidate,Santa Marta,11,12,74.6
+73226,land.hazards,0.2201,connecting-ridge,0.0,39.0167,73.45,1.0,false,pit_density,relief,,,39.1305,73.592,role: candidate,Kara Kul,12,12,73.8
+169592,land.hazards,0.2183,connecting-ridge,0.083,-27.7667,16.3,0.917,false,pit_density,relief,,,-27.7886,16.4261,role: candidate,Roter Kamm,11,12,73.0
+59420,land.hazards,0.2162,connecting-ridge,0.083,48.6833,10.0667,0.917,true,pit_density,relief,,,48.6608,9.9642,role: candidate,Steinheim,11,12,72.2
+89650,land.hazards,0.2149,connecting-ridge,0.083,27.6,5.11667,0.917,false,pit_density,relief,,,27.71,5.2455,role: candidate,Tin Bider,11,12,71.4
+153972,land.hazards,0.213,connecting-ridge,0.0,-16.7333,126.083,1.0,false,pit_density,relief,,,-16.7123,126.1531,role: candidate,Spider,12,12,70.6
+104803,land.hazards,0.2125,connecting-ridge,0.167,17.4167,21.75,0.833,false,pit_density,relief,,,17.4396,21.6319,role: candidate,Gweni Fada,10,12,69.8
+153993,land.hazards,0.2122,connecting-ridge,0.083,-16.6667,136.783,0.917,true,pit_density,relief,,,-16.6901,136.7593,role: candidate,Foelsche,11,12,69.0
+168015,land.hazards,0.2097,connecting-ridge,0.167,-26.8333,-52.1167,0.833,true,pit_density,relief,,,-26.7198,-52.2416,role: candidate,Vargeao Dome,10,12,68.3
+156877,land.hazards,0.2096,connecting-ridge,0.083,-18.6667,138.65,0.917,false,pit_density,relief,,,-18.7343,138.6252,role: candidate,Lawn Hill,11,12,67.5
+155416,land.hazards,0.2094,connecting-ridge,0.0,-17.5333,128.417,1.0,false,pit_density,relief,,,-17.4656,128.2993,role: candidate,Piccaninny,12,12,66.7
+78617,land.hazards,0.2087,connecting-ridge,0.167,35.0333,-111.017,0.833,false,pit_density,relief,,,35.0103,-111.1545,role: baseline,Meteor Crater,10,12,65.9
+166574,land.hazards,0.2072,connecting-ridge,0.083,-25.95,-52.6833,0.917,true,pit_density,relief,,,-25.9729,-52.7091,role: candidate,Vista Alegre,11,12,65.1
+159749,land.hazards,0.2047,connecting-ridge,0.0,-20.9167,134.833,1.0,false,pit_density,relief,,,-20.9398,134.8086,role: candidate,Amelia Creek,12,12,64.3
+58018,land.hazards,0.2018,connecting-ridge,0.167,49.7333,29.0,0.833,false,pit_density,relief,,,49.6656,28.9623,role: candidate,Zapadnaya,10,12,63.5
+59421,land.hazards,0.2012,connecting-ridge,0.0,48.8833,10.6167,1.0,false,pit_density,relief,,,48.9948,10.6542,role: candidate,Ries,12,12,62.7
+101313,land.hazards,0.1997,connecting-ridge,0.0,19.9667,76.5167,1.0,false,pit_density,relief,,,19.9901,76.3974,role: candidate,Lonar,12,12,61.9
+97612,land.hazards,0.1995,connecting-ridge,0.083,22.0167,26.0833,0.917,false,pit_density,relief,,,22.0391,26.155,role: candidate,Kamil,11,12,61.1
+84673,land.hazards,0.1987,connecting-ridge,0.167,31.05,36.8,0.833,false,pit_density,relief,,,31.0736,36.8774,role: candidate,Jebel Waqf As Suwwan,10,12,60.3
+59464,land.hazards,0.1986,connecting-ridge,0.083,49.0,32.0,0.917,false,pit_density,relief,,,49.0224,32.033,role: candidate,Boltysh 2,11,12,59.5
+75041,land.hazards,0.1981,connecting-ridge,0.167,37.5833,-99.1667,0.833,false,pit_density,relief,,,37.4698,-99.1391,role: candidate,Haviland,10,12,58.7
+41252,land.hazards,0.1978,connecting-ridge,0.083,61.2833,-73.6667,0.917,true,pit_density,relief,,,61.1718,-73.8121,role: candidate,New Quebec Chubb Ungava Pingualuit,11,12,57.9
+100414,land.hazards,0.1966,connecting-ridge,0.167,20.25,-12.6833,0.833,false,pit_density,relief,,,20.228,-12.7554,role: candidate,Aouelloul,10,12,57.1
+164064,land.hazards,0.1937,connecting-ridge,0.167,-23.8167,132.317,0.833,false,pit_density,relief,,,-23.751,132.3913,role: candidate,Gosses Bluff,10,12,56.3
+60201,land.hazards,0.1912,connecting-ridge,0.083,48.35,40.5,0.917,false,pit_density,relief,,,48.2388,40.3279,role: candidate,Kamensk 2,11,12,55.6
+51552,land.hazards,0.1912,connecting-ridge,0.083,54.5,36.2,0.917,true,pit_density,relief,,,54.4742,36.0846,role: candidate,Kaluga,11,12,54.8
+60187,land.hazards,0.1887,connecting-ridge,0.083,48.1333,33.5167,0.917,false,pit_density,relief,,,48.1995,33.685,role: candidate,Ternovka,11,12,54.0
+49193,land.hazards,0.1886,connecting-ridge,0.333,55.8833,-63.3,0.667,true,pit_density,relief,,,55.7709,-63.1801,role: candidate,Mistastin,8,12,53.2
+60201,land.hazards,0.1883,connecting-ridge,0.0,48.4333,40.5333,1.0,false,pit_density,relief,,,48.5003,40.5013,role: candidate,Kamensk,12,12,52.4
+51535,land.hazards,0.1868,connecting-ridge,0.083,54.2,27.8,0.917,true,pit_density,relief,,,54.0862,27.9111,role: candidate,Logoisk,11,12,51.6
+58738,land.hazards,0.1868,connecting-ridge,0.0,49.1167,29.1,1.0,false,pit_density,relief,,,49.0931,29.1328,role: candidate,Ilyinets,12,12,50.8
+55152,land.hazards,0.1866,connecting-ridge,0.167,51.7,36.0,0.833,false,pit_density,relief,,,51.6332,36.0391,role: candidate,Kursk,10,12,50.0
+93396,land.hazards,0.1861,connecting-ridge,0.083,25.3,78.1333,0.917,false,pit_density,relief,,,25.2774,78.1581,role: candidate,Dhala,11,12,49.2
+59464,land.hazards,0.1842,connecting-ridge,0.167,48.75,32.1667,0.833,false,pit_density,relief,,,48.6378,32.3376,role: candidate,Boltysh,10,12,48.4
+30008,land.hazards,0.1826,connecting-ridge,0.083,69.1,64.15,0.917,false,pit_density,relief,,,69.1687,63.8366,role: candidate,Kara,11,12,47.6
+86837,land.hazards,0.1816,connecting-ridge,0.167,29.5833,38.7,0.833,false,pit_density,relief,,,29.4703,38.8288,role: candidate,Saqqar,10,12,46.8
+141386,land.hazards,0.1798,connecting-ridge,0.083,-8.08333,-46.8667,0.917,true,pit_density,relief,,,-8.0162,-46.7539,role: candidate,Serra Da Cangalha,11,12,46.0
+68572,land.hazards,0.1762,connecting-ridge,0.167,42.0268,-93.617,0.833,false,pit_density,relief,,,41.9591,-93.5865,role: negative_control,Ames Iowa,10,12,45.2
+60185,land.hazards,0.1759,connecting-ridge,0.0,48.0667,32.75,1.0,false,pit_density,relief,,,48.0441,32.9168,role: candidate,Zeleny Gai,12,12,44.4
+64975,land.hazards,0.1737,connecting-ridge,0.167,44.7167,-92.2333,0.833,true,,pit_density;relief,,,44.6488,-92.266,role: candidate,Rock Elm,10,12,43.7
+81728,land.hazards,0.173,connecting-ridge,0.0,33.3167,4.03333,1.0,false,pit_density,relief,,,33.204,3.9506,role: candidate,Talemzane Maadna,12,12,42.9
+66099,land.hazards,0.1722,connecting-ridge,0.083,44.1167,109.65,0.917,false,pit_density,relief,,,44.0479,109.557,role: candidate,Tabun Khara Obo,11,12,42.1
+70740,land.hazards,0.1714,connecting-ridge,0.083,40.6,-89.7833,0.917,false,pit_density,relief,,,40.666,-89.8168,role: candidate,Glasford,11,12,41.3
+168895,land.hazards,0.1712,connecting-ridge,0.167,-27.0,27.5,0.833,false,pit_density,relief,,,-26.888,27.4239,role: candidate,Vredefort,10,12,40.5
+44292,land.hazards,0.1699,connecting-ridge,0.25,59.2333,6.43333,0.75,true,pit_density,relief,,,59.2578,6.562,role: candidate,Ritland,9,12,39.7
+50856,land.hazards,0.1697,connecting-ridge,0.083,54.9167,48.0333,0.917,false,pit_density,relief,,,54.9826,47.9884,role: candidate,Karla,11,12,38.9
+165506,land.hazards,0.1693,connecting-ridge,0.0,-24.5667,133.133,1.0,false,pit_density,relief,,,-24.543,133.0097,role: candidate,Henbury,12,12,38.1
+27963,land.hazards,0.1681,connecting-ridge,0.083,71.0,121.667,0.917,false,pit_density,relief,,,71.0683,121.8677,role: candidate,Beyenchime Salaaty,11,12,37.3
+60241,land.hazards,0.1657,connecting-ridge,0.0,48.4,60.9667,1.0,false,pit_density,relief,,,48.4214,60.932,role: candidate,Zhamanshin,12,12,36.5
+166016,land.hazards,0.1648,connecting-ridge,0.083,-25.4,28.0833,0.917,false,pit_density,relief,,,-25.5125,28.1583,role: candidate,Tswaing Formerly Pretoria Saltpan,11,12,35.7
+176310,land.hazards,0.1632,connecting-ridge,0.083,-32.0167,135.45,0.917,false,pit_density,relief,,,-31.9036,135.5806,role: candidate,Acraman,11,12,34.9
+152542,land.hazards,0.163,connecting-ridge,0.25,-15.5,131.183,0.75,false,pit_density,relief,,,-15.4327,131.2048,role: candidate,Matt Wilson,9,12,34.1
+79343,land.hazards,0.1545,connecting-ridge,0.083,34.863,-108.098,0.917,true,pit_density,relief,,,34.7503,-108.1303,role: candidate,El Malpais,11,12,33.3
+140666,land.hazards,0.1541,connecting-ridge,0.167,-7.71667,-46.65,0.833,true,pit_density,relief,,,-7.8303,-46.6733,role: candidate,Riachao Ring,10,12,32.5
+50089,land.hazards,0.1527,connecting-ridge,0.167,55.0833,24.5833,0.833,true,pit_density,relief,,,55.1912,24.3797,role: candidate,Vepriai,10,12,31.7
+54393,land.hazards,0.1525,connecting-ridge,0.083,52.4833,16.9,0.917,true,pit_density,relief,,,52.593,17.0152,role: candidate,Morasko,11,12,31.0
+164043,land.hazards,0.1521,connecting-ridge,0.0,-23.9833,121.567,1.0,false,pit_density,relief,,,-23.8709,121.5435,role: candidate,Glikson,12,12,30.2
+169794,land.hazards,0.1482,connecting-ridge,0.0,-27.6333,117.283,1.0,false,pit_density,relief,,,-27.5214,117.1559,role: candidate,Dalgaranga,12,12,29.4
+47926,land.hazards,0.147,connecting-ridge,0.083,56.5833,23.25,0.917,false,pit_density,relief,,,56.5131,23.3662,role: candidate,Dobele,11,12,28.6
+45749,land.hazards,0.1462,connecting-ridge,0.083,58.4167,14.9333,0.917,false,pit_density,relief,,,58.484,15.0617,role: candidate,Granby,11,12,27.8
+58795,land.hazards,0.1461,connecting-ridge,0.0,49.1667,57.85,1.0,false,pit_density,relief,,,49.1886,57.8838,role: candidate,Chiyli,12,12,27.0
+93288,land.hazards,0.1431,connecting-ridge,0.0,25.3167,24.3333,1.0,false,pit_density,relief,,,25.2955,24.4575,role: candidate,B P Structure,12,12,26.2
+66420,land.hazards,0.1409,connecting-ridge,0.167,43.9667,-89.5333,0.833,true,pit_density,relief,,,44.0776,-89.5702,role: candidate,Glover Bluff,10,12,25.4
+59196,land.hazards,0.1407,connecting-ridge,0.0,48.9667,-101.967,1.0,false,pit_density,relief,,,48.8561,-101.8589,role: candidate,Newporte,12,12,24.6
+162630,land.hazards,0.1407,connecting-ridge,0.0,-22.6167,135.2,1.0,false,pit_density,relief,,,-22.7303,135.3214,role: candidate,Boxhole,12,12,23.8
+69308,land.hazards,0.1404,connecting-ridge,0.083,41.8333,-85.95,0.917,true,pit_density,relief,,,41.7649,-85.8619,role: candidate,Calvin,11,12,23.0
+94008,land.hazards,0.1362,connecting-ridge,0.0,24.5833,24.4,1.0,false,pit_density,relief,,,24.5603,24.4242,role: candidate,Oasis,12,12,22.2
+56306,land.hazards,0.1341,connecting-ridge,0.0,50.9833,-106.717,1.0,false,pit_density,relief,,,51.0046,-106.7546,role: candidate,Elbow,12,12,21.4
+153581,land.hazards,0.1327,connecting-ridge,0.167,-16.6667,-69.05,0.833,false,pit_density,relief,,,-16.599,-69.0741,role: candidate,Carancas,10,12,20.6
+74300,land.hazards,0.1305,connecting-ridge,0.167,38.4333,-109.9,0.833,false,pit_density,relief,,,38.5445,-109.8123,role: candidate,Upheaval Dome,10,12,19.8
+166921,land.hazards,0.1288,connecting-ridge,0.0,-25.8667,120.883,1.0,false,pit_density,relief,,,-25.7534,120.8096,role: candidate,Shoemaker Formerly Teague,12,12,19.0
+75038,land.hazards,0.1281,connecting-ridge,0.0,37.9717,-100.8727,1.0,false,pit_density,relief,,,37.906,-100.729,role: negative_control,Garden City Kansas,12,12,18.3
+176631,land.hazards,0.1266,connecting-ridge,0.0,-32.8667,-64.2333,1.0,false,pit_density,relief,,,-32.888,-64.3674,role: candidate,Rio Cuarto,12,12,17.5
+151827,land.hazards,0.1254,connecting-ridge,0.083,-15.2,133.583,0.917,true,,pit_density;relief,,,-15.1778,133.559,role: candidate,Strangways,11,12,16.7
+161695,land.hazards,0.1246,connecting-ridge,0.0,-22.4833,27.5833,1.0,false,pit_density,relief,,,-22.5511,27.7051,role: candidate,Kgagodi,12,12,15.9
+169125,land.hazards,0.1222,connecting-ridge,0.0,-27.1167,142.833,1.0,false,pit_density,relief,,,-27.0056,142.7043,role: candidate,Tookoonooka,12,12,15.1
+67850,land.hazards,0.1209,connecting-ridge,0.0,42.5833,-94.55,1.0,false,pit_density,relief,,,42.6512,-94.5213,role: candidate,Manson,12,12,14.3
+83675,land.hazards,0.1206,connecting-ridge,0.0,31.75,-102.483,1.0,false,,pit_density;relief,,,31.7283,-102.563,role: candidate,Odessa,12,12,13.5
+77203,land.hazards,0.12,connecting-ridge,0.0,36.25,-98.2,1.0,false,pit_density,relief,,,36.3614,-98.1161,role: candidate,Ames,12,12,12.7
+99100,land.hazards,0.1199,connecting-ridge,0.083,21.5,50.4667,0.917,false,,pit_density;relief,,,21.6126,50.5865,role: candidate,Wabar,11,12,11.9
+83869,land.hazards,0.1199,connecting-ridge,0.417,31.9833,-5.5,0.583,false,pit_density;relief,,,,31.871,-5.4714,role: candidate,Agoudal,7,12,11.1
+70745,land.hazards,0.1175,connecting-ridge,0.0,40.75,-87.4,1.0,false,pit_density,relief,,,40.8162,-87.549,role: candidate,Kentland,12,12,10.3
+96819,land.hazards,0.1155,connecting-ridge,0.0,22.9167,-10.4,1.0,false,,pit_density;relief,,,22.9383,-10.4249,role: candidate,Tenoumer,12,12,9.5
+162610,land.hazards,0.1135,connecting-ridge,0.0,-22.9667,125.367,1.0,false,,pit_density;relief,,,-22.855,125.2912,role: candidate,Veevers,12,12,8.7
+58025,land.hazards,0.1128,connecting-ridge,0.0,49.5833,32.9167,1.0,false,pit_density,relief,,,49.6954,32.7421,role: candidate,Obolon,12,12,7.9
+169830,land.hazards,0.1126,connecting-ridge,0.0,-27.95,135.367,1.0,false,,pit_density;relief,,,-28.0632,135.4946,role: candidate,Mount Toondina,12,12,7.1
+157575,land.hazards,0.112,connecting-ridge,0.083,-19.1667,127.8,0.917,false,,pit_density;relief,,,-19.0999,127.8241,role: candidate,Wolfe Creek,11,12,6.3
+167629,land.hazards,0.1119,connecting-ridge,0.0,-26.05,114.65,1.0,false,,pit_density;relief,,,-26.0751,114.7737,role: candidate,Woodleigh,12,12,5.6
+167447,land.hazards,0.1116,connecting-ridge,0.0,-26.4667,23.5333,1.0,false,pit_density,relief,,,-26.5361,23.4589,role: candidate,Morokweng,12,12,4.8
+164049,land.hazards,0.111,connecting-ridge,0.0,-23.5333,124.75,1.0,false,,pit_density;relief,,,-23.6012,124.7749,role: candidate,Connolly Basin,12,12,4.0
+158307,land.hazards,0.1083,connecting-ridge,0.0,-19.9333,133.95,1.0,false,,pit_density;relief,,,-19.9565,133.9736,role: candidate,Kelly West,12,12,3.2
+57753,land.hazards,0.1082,connecting-ridge,0.0,49.5833,-103.067,1.0,false,,pit_density;relief,,,49.693,-102.959,role: candidate,Viewfield,12,12,2.4
+169436,land.hazards,0.1082,connecting-ridge,0.0,-27.6333,-61.7,1.0,false,,pit_density;relief,,,-27.7463,-61.6739,role: candidate,Campo Del Cielo,12,12,1.6
+169077,land.hazards,0.1074,connecting-ridge,0.0,-27.1667,118.833,1.0,false,,pit_density;relief,,,-27.2805,118.8095,role: candidate,Yarrabubba,12,12,0.8
+54882,land.hazards,0.1051,connecting-ridge,0.0,51.7833,-98.5333,1.0,true,,pit_density;relief,,,51.7159,-98.6439,role: candidate,Saint Martin,12,12,0.0
+78616,land.hazards,0.3491,connecting-ridge,0.0,35.2222,-111.6332,1.0,false,pit_density;relief,,,tree_frac,35.3338,-111.7174,role: baseline,Buffalo Park,12,12,100.0
+78609,land.hazards,0.6415,jezero,0.083,35.0472,-115.394,0.917,false,,,,,35.2203,-115.1761,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Hole In The Wall,11,12,100.0
+169592,land.hazards,0.6147,jezero,0.0,-27.7667,16.3,1.0,false,,,,,-27.5904,16.2969,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Roter Kamm,12,12,99.0
+78617,land.hazards,0.6085,jezero,0.0,35.49,-111.164,1.0,false,,,,,35.6662,-111.3867,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Grand Falls Dunes,12,12,98.1
+78617,land.hazards,0.6017,jezero,0.083,35.0333,-111.017,0.917,false,,,,,35.0309,-111.2412,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Barringer Meteor,11,12,97.1
+57739,land.hazards,0.5666,jezero,0.0,49.7,-110.5,1.0,false,,,,,49.6973,-110.7781,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Eagle Butte,12,12,96.2
+100414,land.hazards,0.5511,jezero,0.083,20.25,-12.6833,0.917,false,,,,,20.2493,-12.8747,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Aouelloul,11,12,95.2
+57741,land.hazards,0.5506,jezero,0.167,49.8,-109.1,0.833,false,,,,,49.7989,-109.1032,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Maple Creek White Valley,10,12,94.2
+20715,land.hazards,0.5438,jezero,0.167,75.7,97.8,0.833,false,,,,,75.5156,97.0835,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Chukcha,10,12,93.3
+85114,land.hazards,0.5385,jezero,0.083,30.6,-102.917,0.917,false,,,,,30.5989,-102.9191,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Sierra Madera,11,12,92.3
+79328,land.hazards,0.5346,jezero,0.083,34.9342,-115.7196,0.917,false,,,,,34.7516,-115.9457,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Kelso Dunes,11,12,91.3
+176808,land.hazards,0.5311,jezero,0.0,-32.7167,24.4333,1.0,false,,,,,-32.7185,24.4286,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kalkkop,12,12,90.4
+77908,land.hazards,0.5264,jezero,0.167,35.75,-105.933,0.833,true,,,,,35.5667,-106.1532,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Santa Fe,10,12,89.4
+179918,land.hazards,0.5198,jezero,0.083,-34.6167,139.067,0.917,false,,,,,-34.8026,139.2782,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Flaxman 2,11,12,88.5
+79328,land.hazards,0.5146,jezero,0.167,34.5448,-115.791,0.833,false,,,,,34.3601,-115.5809,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Amboy,10,12,87.5
+179918,land.hazards,0.5024,jezero,0.083,-34.7167,139.033,0.917,false,,,,,-34.5407,139.2509,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Flaxman,11,12,86.5
+88184,land.hazards,0.4826,jezero,0.0,29.0,-7.55,1.0,false,,,,,28.9989,-7.7578,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ouarkziz,12,12,85.6
+164064,land.hazards,0.4785,jezero,0.0,-23.8167,132.317,1.0,false,,,,,-24.0015,132.3116,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Gosses Bluff,12,12,84.6
+61705,land.hazards,0.4666,jezero,0.083,47.2,72.7,0.917,false,,,,,47.1902,72.4325,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Shunak,11,12,83.7
+97612,land.hazards,0.4641,jezero,0.083,22.0167,26.0833,0.917,false,,,,,22.1942,26.2724,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kamil,11,12,82.7
+59564,land.hazards,0.455,jezero,0.083,48.5667,82.0167,0.917,false,,,,,48.3863,81.7429,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Bigach,11,12,81.7
+60201,land.hazards,0.4525,jezero,0.25,48.35,40.5,0.75,false,,,,,48.1675,40.4929,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kamensk 2,9,12,80.8
+84673,land.hazards,0.4524,jezero,0.167,31.05,36.8,0.833,false,,,,,31.2245,36.5854,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Jebel Waqf As Suwwan,10,12,79.8
+67106,land.hazards,0.4523,jezero,0.083,43.1167,-106.75,0.917,false,,,,,42.9343,-106.7464,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Cloud Creek,11,12,78.8
+60201,land.hazards,0.4519,jezero,0.083,48.4333,40.5333,0.917,false,,,,,48.2559,40.2529,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kamensk,11,12,77.9
+155416,land.hazards,0.4513,jezero,0.0,-17.5333,128.417,1.0,false,,,,,-17.5369,128.6043,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Piccaninny,12,12,76.9
+156877,land.hazards,0.4489,jezero,0.083,-18.6667,138.65,0.917,false,,,,,-18.6705,138.6488,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Lawn Hill,11,12,76.0
+144269,land.hazards,0.4432,jezero,0.167,-10.1667,-45.25,0.833,true,,,,,-10.1678,-45.4336,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Santa Marta,10,12,75.0
+166016,land.hazards,0.4427,jezero,0.167,-25.4,28.0833,0.833,true,,,,,-25.5819,28.2794,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Tswaing Formerly Pretoria Saltpan,10,12,74.0
+36326,land.hazards,0.4387,jezero,0.25,64.9321,-16.5217,0.75,true,,,,,64.9249,-16.9457,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ritland 2,9,12,73.1
+86837,land.hazards,0.4369,jezero,0.083,29.5833,38.7,0.917,false,,,,,29.4017,38.9021,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Saqqar,11,12,72.1
+168895,land.hazards,0.4356,jezero,0.083,-27.0,27.5,0.917,false,,,,,-27.0048,27.2973,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Vredefort,11,12,71.2
+161695,land.hazards,0.4349,jezero,0.167,-22.4833,27.5833,0.833,false,,,,,-22.6637,27.7787,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kgagodi,10,12,70.2
+156133,land.hazards,0.4343,jezero,0.083,-18.3333,126.667,0.917,false,,,,,-18.3387,126.852,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Goat Paddock,11,12,69.2
+89650,land.hazards,0.4322,jezero,0.167,27.6,5.11667,0.833,false,,,,,27.5984,5.1125,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Tin Bider,10,12,68.3
+101313,land.hazards,0.43,jezero,0.083,19.9667,76.5167,0.917,false,,,,,19.7874,76.3222,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Lonar,11,12,67.3
+163663,land.hazards,0.4259,jezero,0.083,-23.9333,-68.2833,0.917,false,,,,,-24.1182,-68.2866,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Monturaqui,11,12,66.3
+176631,land.hazards,0.4197,jezero,0.167,-32.8667,-64.2333,0.833,false,,,,,-32.6892,-64.2321,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Rio Cuarto,10,12,65.4
+153972,land.hazards,0.4189,jezero,0.083,-16.7333,126.083,0.917,true,,,,,-16.7373,126.2661,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Spider,11,12,64.4
+60241,land.hazards,0.4182,jezero,0.167,48.4,60.9667,0.833,false,,,,,48.3977,60.9667,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Zhamanshin,10,12,63.5
+93396,land.hazards,0.4155,jezero,0.167,25.3,78.1333,0.833,false,,,,,25.2936,77.9315,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Dhala,10,12,62.5
+50856,land.hazards,0.4146,jezero,0.0,54.9167,48.0333,1.0,false,,,,,55.1029,48.3275,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Karla,12,12,61.5
+153581,land.hazards,0.4146,jezero,0.333,-16.6667,-69.05,0.667,false,,,,,-16.8502,-69.2394,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Carancas,8,12,60.6
+165506,land.hazards,0.412,jezero,0.083,-24.5667,133.133,0.917,false,,,,,-24.3884,133.1314,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Henbury,11,12,59.6
+66099,land.hazards,0.4103,jezero,0.167,44.1167,109.65,0.833,false,,,,,44.1146,109.6441,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Tabun Khara Obo,10,12,58.7
+30008,land.hazards,0.4086,jezero,0.167,69.1,64.15,0.833,true,,,,,68.9193,63.6353,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kara,10,12,57.7
+104803,land.hazards,0.4084,jezero,0.333,17.4167,21.75,0.667,false,,,,,17.2337,21.5597,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Gweni Fada,8,12,56.7
+176310,land.hazards,0.407,jezero,0.167,-32.0167,135.45,0.833,false,,,,,-32.0184,135.233,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Acraman,10,12,55.8
+91808,land.hazards,0.4046,jezero,0.167,26.0833,4.38333,0.833,false,,,,,26.0838,4.1799,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Amguid,10,12,54.8
+141386,land.hazards,0.404,jezero,0.083,-8.08333,-46.8667,0.917,true,,,,,-8.2651,-46.6887,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Serra Da Cangalha,11,12,53.8
+56306,land.hazards,0.4022,jezero,0.167,50.9833,-106.717,0.833,true,,,,,51.1551,-107.0162,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Elbow,10,12,52.9
+159749,land.hazards,0.4017,jezero,0.083,-20.9167,134.833,0.917,false,,,,,-20.7366,135.024,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Amelia Creek,11,12,51.9
+81728,land.hazards,0.398,jezero,0.167,33.3167,4.03333,0.833,false,,,,,33.1346,3.8148,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Talemzane Maadna,10,12,51.0
+75041,land.hazards,0.3937,jezero,0.167,37.5833,-99.1667,0.833,false,,,,,37.4022,-99.1695,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Haviland,10,12,50.0
+58795,land.hazards,0.3892,jezero,0.167,49.1667,57.85,0.833,false,,,,,48.9815,58.1139,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Chiyli,10,12,49.0
+21060,land.hazards,0.3887,jezero,0.167,75.3667,-89.6833,0.833,false,,,,,75.1763,-90.3632,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Haughton,10,12,48.1
+101918,land.hazards,0.3881,jezero,0.167,19.1,19.25,0.833,false,,,,,19.2795,19.4346,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Aorounga,10,12,47.1
+60185,land.hazards,0.3861,jezero,0.083,48.0667,32.75,0.917,false,,,,,48.2435,32.4747,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Zeleny Gai,11,12,46.2
+60187,land.hazards,0.3859,jezero,0.167,48.1333,33.5167,0.833,false,,,,,48.1296,33.7795,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ternovka,10,12,45.2
+162630,land.hazards,0.3787,jezero,0.167,-22.6167,135.2,0.833,false,,,,,-22.4392,135.3936,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Boxhole,10,12,44.2
+153993,land.hazards,0.3762,jezero,0.167,-16.6667,136.783,0.833,true,,,,,-16.8532,136.5957,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Foelsche,10,12,43.3
+93288,land.hazards,0.3748,jezero,0.167,25.3167,24.3333,0.833,false,,,,,25.4916,24.1302,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",B P Structure,10,12,42.3
+76445,land.hazards,0.3738,jezero,0.167,36.6619,-117.0962,0.833,false,,,,,36.8388,-116.8766,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Mesquite Flat Dunes,10,12,41.3
+59421,land.hazards,0.3723,jezero,0.167,48.8833,10.6167,0.833,true,,,,,48.8811,10.6163,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ries,10,12,40.4
+94008,land.hazards,0.3704,jezero,0.083,24.5833,24.4,0.917,false,,,,,24.5806,24.3981,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Oasis,11,12,39.4
+59464,land.hazards,0.3703,jezero,0.083,48.75,32.1667,0.917,true,,,,,48.5672,32.4375,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Boltysh,11,12,38.5
+169794,land.hazards,0.3692,jezero,0.167,-27.6333,117.283,0.833,false,,,,,-27.6362,117.4815,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Dalgaranga,10,12,37.5
+58738,land.hazards,0.3646,jezero,0.083,49.1167,29.1,0.917,false,,,,,49.1163,29.0968,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ilyinets,11,12,36.5
+68572,land.hazards,0.3617,jezero,0.167,42.0268,-93.617,0.833,false,,,,,41.8412,-93.8612,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: negative_control",Ames Iowa,10,12,35.6
+77203,land.hazards,0.3606,jezero,0.167,36.25,-98.2,0.833,false,,,,,36.0667,-98.4281,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Ames,10,12,34.6
+58018,land.hazards,0.3594,jezero,0.0,49.7333,29.0,1.0,false,,,,,49.7246,29.2755,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Zapadnaya,12,12,33.7
+59464,land.hazards,0.3578,jezero,0.083,49.0,32.0,0.917,true,,,,,48.8134,31.7264,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Boltysh 2,11,12,32.7
+164043,land.hazards,0.3566,jezero,0.083,-23.9833,121.567,0.917,false,,,,,-23.8061,121.5668,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Glikson,11,12,31.7
+70740,land.hazards,0.3496,jezero,0.083,40.6,-89.7833,0.917,true,,,,,40.4246,-89.5462,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Glasford,11,12,30.8
+59196,land.hazards,0.3417,jezero,0.167,48.9667,-101.967,0.833,false,,,,,48.7751,-102.2328,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Newporte,10,12,29.8
+55152,land.hazards,0.3409,jezero,0.167,51.7,36.0,0.833,true,,,,,51.5088,35.7215,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kursk,10,12,28.8
+60632,land.hazards,0.3402,jezero,0.167,47.6,-103.55,0.833,false,,,,,47.5968,-103.5567,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Red Wing,10,12,27.9
+57753,land.hazards,0.3385,jezero,0.083,49.5833,-103.067,0.917,false,,,,,49.7573,-102.7855,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Viewfield,11,12,26.9
+169125,land.hazards,0.3345,jezero,0.083,-27.1167,142.833,0.917,false,,,,,-26.9415,142.6268,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Tookoonooka,11,12,26.0
+157575,land.hazards,0.3345,jezero,0.083,-19.1667,127.8,0.917,false,,,,,-18.9873,127.6083,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Wolfe Creek,11,12,25.0
+58025,land.hazards,0.3319,jezero,0.083,49.5833,32.9167,0.917,false,,,,,49.7603,33.1874,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Obolon,11,12,24.0
+83675,land.hazards,0.3303,jezero,0.083,31.75,-102.483,0.917,false,,,,,31.7497,-102.6985,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Odessa,11,12,23.1
+169077,land.hazards,0.3302,jezero,0.0,-27.1667,118.833,1.0,false,,,,,-26.986,119.0304,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Yarrabubba,12,12,22.1
+166921,land.hazards,0.3269,jezero,0.0,-25.8667,120.883,1.0,false,,,,,-25.6865,120.6833,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Shoemaker Formerly Teague,12,12,21.2
+33104,land.hazards,0.3263,jezero,0.333,67.5,172.083,0.667,false,,,,,67.3167,172.5338,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",El Gygytgyn,8,12,20.2
+169830,land.hazards,0.3261,jezero,0.083,-27.95,135.367,0.917,false,,,,,-27.7713,135.5684,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Mount Toondina,11,12,19.2
+152542,land.hazards,0.3257,jezero,0.167,-15.5,131.183,0.833,true,,,,,-15.4997,131.3676,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Matt Wilson,10,12,18.3
+54393,land.hazards,0.3253,jezero,0.083,52.4833,16.9,0.917,true,,,,,52.2941,17.1849,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Morasko,11,12,17.3
+167629,land.hazards,0.3224,jezero,0.083,-26.05,114.65,0.917,false,,,,,-26.2318,114.6426,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Woodleigh,11,12,16.3
+75038,land.hazards,0.3223,jezero,0.083,37.9717,-100.8727,0.917,false,,,,,37.9649,-101.1003,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: negative_control",Garden City Kansas,11,12,15.4
+167447,land.hazards,0.3209,jezero,0.167,-26.4667,23.5333,0.833,false,,,,,-26.6447,23.7374,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Morokweng,10,12,14.4
+162610,land.hazards,0.3188,jezero,0.083,-22.9667,125.367,0.917,false,,,,,-23.1461,125.5636,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Veevers,11,12,13.5
+164049,land.hazards,0.3155,jezero,0.083,-23.5333,124.75,0.917,false,,,,,-23.5365,124.7486,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Connolly Basin,11,12,12.5
+67850,land.hazards,0.3132,jezero,0.083,42.5833,-94.55,0.917,false,,,,,42.5844,-94.3101,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Manson,11,12,11.5
+158307,land.hazards,0.3124,jezero,0.083,-19.9333,133.95,0.917,false,,,,,-19.7541,134.141,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kelly West,11,12,10.6
+70745,land.hazards,0.3101,jezero,0.083,40.75,-87.4,0.917,false,,,,,40.5691,-87.4017,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kentland,11,12,9.6
+96819,land.hazards,0.3099,jezero,0.083,22.9167,-10.4,0.917,false,,,,,23.0911,-10.6012,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Tenoumer,11,12,8.7
+99100,land.hazards,0.2986,jezero,0.083,21.5,50.4667,0.917,false,,,,,21.3178,50.272,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Wabar,11,12,7.7
+169436,land.hazards,0.2935,jezero,0.083,-27.6333,-61.7,0.917,true,,,,,-27.455,-61.7047,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Campo Del Cielo,11,12,6.7
+64934,land.hazards,0.2513,jezero,0.0,44.6,-113.0,1.0,true,,,,,44.5911,-113.2551,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Beaverhead,12,12,5.8
+77166,land.hazards,0.217,jezero,0.083,36.2303,-116.7674,0.917,false,,,,,36.2295,-116.5493,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Badwater Basin,11,12,4.8
+74300,land.hazards,0.2105,jezero,0.083,38.4333,-109.9,0.917,false,,,,,38.6113,-110.1271,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Upheaval Dome,11,12,3.8
+77165,land.hazards,0.1849,jezero,0.083,36.0759,-117.2544,0.917,false,,,,,36.0723,-117.2554,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: baseline",Panamint Valley,11,12,1.9
+83869,land.hazards,0.0575,jezero,0.0,31.9833,-5.5,1.0,false,,,,,31.9804,-5.5029,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Agoudal,12,12,1.0
+73226,land.hazards,0.0315,jezero,0.083,39.0167,73.45,0.917,true,,,,,38.834,73.4504,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate",Kara Kul,11,12,0.0
+44327,land.hazards,0.2027,jezero,0.083,59.3333,23.6667,0.917,true,,,,,59.3383,23.3119,"Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.; role: candidate; land cover unknown: tree_frac, builtup_frac, snow_ice_frac, water_frac",Neugrund,11,12,2.9
+78609,ltv.wheels,0.8278,jezero,0.1,35.0472,-115.394,0.9,false,,,,,35.2203,-115.1761,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Hole In The Wall,9,10,100.0
+78617,ltv.wheels,0.7743,jezero,0.1,35.49,-111.164,0.9,false,,,,,35.6662,-111.3867,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Grand Falls Dunes,9,10,98.8
+169592,ltv.wheels,0.7723,jezero,0.1,-27.7667,16.3,0.9,false,,,,,-27.5883,16.4995,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Roter Kamm,9,10,97.7
+153972,ltv.wheels,0.7664,jezero,0.0,-16.7333,126.083,1.0,false,,,,,-16.7347,126.0787,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Spider,10,10,96.5
+79328,ltv.wheels,0.7601,jezero,0.0,34.5448,-115.791,1.0,false,,,,,34.3601,-115.5809,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Amboy,10,10,95.3
+88184,ltv.wheels,0.7568,jezero,0.1,29.0,-7.55,0.9,false,,,,,29.1794,-7.7556,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Ouarkziz,9,10,94.2
+100414,ltv.wheels,0.7415,jezero,0.2,20.25,-12.6833,0.8,false,,,,,20.2493,-12.8747,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Aouelloul,8,10,93.0
+61705,ltv.wheels,0.7389,jezero,0.1,47.2,72.7,0.9,false,,,,,47.1902,72.4325,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Shunak,9,10,91.9
+78617,ltv.wheels,0.7381,jezero,0.2,35.0333,-111.017,0.8,false,,,,,34.8508,-111.0219,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Barringer Meteor,8,10,90.7
+20715,ltv.wheels,0.7371,jezero,0.1,75.7,97.8,0.9,false,,,,,75.6995,97.7849,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Chukcha,9,10,89.5
+36326,ltv.wheels,0.7369,jezero,0.1,64.9321,-16.5217,0.9,true,,,,,64.9249,-16.9457,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Ritland 2,9,10,88.4
+176808,ltv.wheels,0.7256,jezero,0.0,-32.7167,24.4333,1.0,false,,,,,-32.7185,24.4286,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kalkkop,10,10,87.2
+155416,ltv.wheels,0.7249,jezero,0.0,-17.5333,128.417,1.0,false,,,,,-17.3562,128.6047,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Piccaninny,10,10,86.0
+153581,ltv.wheels,0.716,jezero,0.2,-16.6667,-69.05,0.8,true,,,,,-16.8502,-69.2394,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Carancas,8,10,84.9
+57741,ltv.wheels,0.7058,jezero,0.2,49.8,-109.1,0.8,false,,,,,49.6143,-108.8335,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Maple Creek White Valley,8,10,83.7
+85114,ltv.wheels,0.7058,jezero,0.1,30.6,-102.917,0.9,false,,,,,30.6021,-103.1276,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Sierra Madera,9,10,82.6
+57739,ltv.wheels,0.704,jezero,0.1,49.7,-110.5,0.9,true,,,,,49.6949,-110.2235,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Eagle Butte,9,10,81.4
+140666,ltv.wheels,0.6965,jezero,0.2,-7.71667,-46.65,0.8,true,,,,,-7.8997,-46.4696,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Riachao Ring,8,10,80.2
+79328,ltv.wheels,0.6919,jezero,0.2,34.9342,-115.7196,0.8,false,,,,,34.9298,-115.7244,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Kelso Dunes,8,10,79.1
+176310,ltv.wheels,0.6906,jezero,0.2,-32.0167,135.45,0.8,false,,,,,-32.0184,135.233,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Acraman,8,10,77.9
+164064,ltv.wheels,0.6855,jezero,0.1,-23.8167,132.317,0.9,false,,,,,-24.0015,132.3116,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Gosses Bluff,9,10,76.7
+156133,ltv.wheels,0.6831,jezero,0.1,-18.3333,126.667,0.9,false,,,,,-18.5147,126.4711,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Goat Paddock,9,10,75.6
+144269,ltv.wheels,0.6792,jezero,0.1,-10.1667,-45.25,0.9,false,,,,,-9.9869,-45.4334,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Santa Marta,9,10,74.4
+97612,ltv.wheels,0.6788,jezero,0.2,22.0167,26.0833,0.8,false,,,,,22.0125,26.0796,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kamil,8,10,73.3
+59564,ltv.wheels,0.6676,jezero,0.2,48.5667,82.0167,0.8,false,,,,,48.5641,82.0166,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Bigach,8,10,72.1
+91808,ltv.wheels,0.6634,jezero,0.2,26.0833,4.38333,0.8,false,,,,,26.0838,4.1799,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Amguid,8,10,70.9
+152542,ltv.wheels,0.6622,jezero,0.1,-15.5,131.183,0.9,false,,,,,-15.3227,130.9932,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Matt Wilson,9,10,69.8
+77908,ltv.wheels,0.6608,jezero,0.1,35.75,-105.933,0.9,true,,,,,35.5667,-106.1532,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Santa Fe,9,10,68.6
+101918,ltv.wheels,0.66,jezero,0.1,19.1,19.25,0.9,false,,,,,19.2795,19.4346,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Aorounga,9,10,67.4
+159749,ltv.wheels,0.6584,jezero,0.1,-20.9167,134.833,0.9,false,,,,,-20.7366,135.024,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Amelia Creek,9,10,66.3
+165506,ltv.wheels,0.6518,jezero,0.2,-24.5667,133.133,0.8,false,,,,,-24.3858,132.9343,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Henbury,8,10,65.1
+163663,ltv.wheels,0.6508,jezero,0.2,-23.9333,-68.2833,0.8,false,,,,,-23.7577,-68.4848,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Monturaqui,8,10,64.0
+104803,ltv.wheels,0.644,jezero,0.1,17.4167,21.75,0.9,false,,,,,17.2337,21.5597,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Gweni Fada,9,10,62.8
+67106,ltv.wheels,0.6432,jezero,0.2,43.1167,-106.75,0.8,false,,,,,42.9343,-106.7464,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Cloud Creek,8,10,61.6
+168895,ltv.wheels,0.6334,jezero,0.2,-27.0,27.5,0.8,true,,,,,-26.8236,27.4981,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Vredefort,8,10,60.5
+21060,ltv.wheels,0.6316,jezero,0.0,75.3667,-89.6833,1.0,false,,,,,75.1763,-90.3632,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Haughton,10,10,59.3
+27963,ltv.wheels,0.6309,jezero,0.2,71.0,121.667,0.8,true,,,,,71.1786,122.2085,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Beyenchime Salaaty,8,10,58.1
+156877,ltv.wheels,0.6281,jezero,0.1,-18.6667,138.65,0.9,false,,,,,-18.4875,138.462,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Lawn Hill,9,10,57.0
+33104,ltv.wheels,0.6242,jezero,0.2,67.5,172.083,0.8,false,,,,,67.3167,172.5338,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",El Gygytgyn,8,10,55.8
+153614,ltv.wheels,0.6222,jezero,0.2,-16.7833,-52.9833,0.8,true,,,,,-16.969,-52.7985,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Araguainha,8,10,54.7
+89650,ltv.wheels,0.615,jezero,0.1,27.6,5.11667,0.9,false,,,,,27.5984,5.1125,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Tin Bider,9,10,53.5
+86837,ltv.wheels,0.6049,jezero,0.1,29.5833,38.7,0.9,false,,,,,29.4017,38.9021,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Saqqar,9,10,52.3
+166016,ltv.wheels,0.592,jezero,0.0,-25.4,28.0833,1.0,true,,,,,-25.5819,28.2794,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Tswaing Formerly Pretoria Saltpan,10,10,51.2
+60632,ltv.wheels,0.5904,jezero,0.1,47.6,-103.55,0.9,false,,,,,47.5968,-103.5567,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Red Wing,9,10,50.0
+161695,ltv.wheels,0.5875,jezero,0.2,-22.4833,27.5833,0.8,false,,,,,-22.6637,27.7787,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kgagodi,8,10,48.8
+60241,ltv.wheels,0.5858,jezero,0.0,48.4,60.9667,1.0,false,,,,,48.3926,60.6967,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Zhamanshin,10,10,47.7
+84673,ltv.wheels,0.5732,jezero,0.1,31.05,36.8,0.9,false,,,,,31.048,36.7994,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Jebel Waqf As Suwwan,9,10,46.5
+30008,ltv.wheels,0.5694,jezero,0.0,69.1,64.15,1.0,true,,,,,68.9193,63.6353,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kara,10,10,45.3
+66099,ltv.wheels,0.5672,jezero,0.1,44.1167,109.65,0.9,false,,,,,44.1146,109.6441,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Tabun Khara Obo,9,10,44.2
+57753,ltv.wheels,0.5585,jezero,0.1,49.5833,-103.067,0.9,true,,,,,49.7573,-102.7855,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Viewfield,9,10,43.0
+179918,ltv.wheels,0.5555,jezero,0.4,-34.7167,139.033,0.6,true,,,,,-34.5374,139.0331,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Flaxman,6,10,41.9
+153993,ltv.wheels,0.5545,jezero,0.2,-16.6667,136.783,0.8,true,,,,,-16.8532,136.5957,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Foelsche,8,10,40.7
+76445,ltv.wheels,0.5505,jezero,0.1,36.6619,-117.0962,0.9,false,,,,,36.4782,-116.8772,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Mesquite Flat Dunes,9,10,39.5
+81728,ltv.wheels,0.5501,jezero,0.0,33.3167,4.03333,1.0,false,,,,,33.1346,3.8148,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Talemzane Maadna,10,10,38.4
+162630,ltv.wheels,0.5471,jezero,0.0,-22.6167,135.2,1.0,false,,,,,-22.6199,135.3941,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Boxhole,10,10,36.0
+179918,ltv.wheels,0.5444,jezero,0.3,-34.6167,139.067,0.7,true,,,,,-34.619,139.0639,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Flaxman 2,7,10,34.9
+75041,ltv.wheels,0.5422,jezero,0.1,37.5833,-99.1667,0.9,true,,,,,37.4022,-99.1695,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Haviland,9,10,33.7
+58795,ltv.wheels,0.5391,jezero,0.1,49.1667,57.85,0.9,false,,,,,49.3436,57.8467,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Chiyli,9,10,32.6
+93288,ltv.wheels,0.531,jezero,0.0,25.3167,24.3333,1.0,false,,,,,25.4916,24.1302,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",B P Structure,10,10,31.4
+169794,ltv.wheels,0.4983,jezero,0.1,-27.6333,117.283,0.9,false,,,,,-27.8176,117.0762,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Dalgaranga,9,10,30.2
+166921,ltv.wheels,0.4929,jezero,0.0,-25.8667,120.883,1.0,false,,,,,-25.6865,120.6833,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Shoemaker Formerly Teague,10,10,29.1
+164043,ltv.wheels,0.4923,jezero,0.1,-23.9833,121.567,0.9,false,,,,,-23.8078,121.7631,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Glikson,9,10,27.9
+157575,ltv.wheels,0.4878,jezero,0.0,-19.1667,127.8,1.0,false,,,,,-18.9873,127.6083,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Wolfe Creek,10,10,26.7
+94008,ltv.wheels,0.4852,jezero,0.1,24.5833,24.4,0.9,false,,,,,24.7575,24.1968,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Oasis,9,10,25.6
+169830,ltv.wheels,0.4648,jezero,0.0,-27.95,135.367,1.0,false,,,,,-27.7713,135.5684,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Mount Toondina,10,10,24.4
+167447,ltv.wheels,0.4613,jezero,0.0,-26.4667,23.5333,1.0,false,,,,,-26.6484,23.5366,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Morokweng,10,10,23.3
+83675,ltv.wheels,0.461,jezero,0.1,31.75,-102.483,0.9,false,,,,,31.7457,-102.4876,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Odessa,9,10,22.1
+169125,ltv.wheels,0.459,jezero,0.1,-27.1167,142.833,0.9,false,,,,,-26.9415,142.6268,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Tookoonooka,9,10,20.9
+162610,ltv.wheels,0.4563,jezero,0.1,-22.9667,125.367,0.9,false,,,,,-23.1461,125.5636,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Veevers,9,10,19.8
+164049,ltv.wheels,0.455,jezero,0.2,-23.5333,124.75,0.8,false,,,,,-23.3536,124.9418,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Connolly Basin,8,10,18.6
+169077,ltv.wheels,0.4507,jezero,0.1,-27.1667,118.833,0.9,false,,,,,-27.3522,118.6328,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Yarrabubba,9,10,17.4
+167629,ltv.wheels,0.4473,jezero,0.1,-26.05,114.65,0.9,false,,,,,-25.874,114.8493,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Woodleigh,9,10,16.3
+96819,ltv.wheels,0.4465,jezero,0.1,22.9167,-10.4,0.9,false,,,,,22.7333,-10.2076,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Tenoumer,9,10,14.0
+158307,ltv.wheels,0.4207,jezero,0.1,-19.9333,133.95,0.9,false,,,,,-20.1155,134.139,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kelly West,9,10,12.8
+49193,ltv.wheels,0.4186,jezero,0.2,55.8833,-63.3,0.8,true,,,,,56.0622,-62.9839,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Mistastin,8,10,11.6
+99100,ltv.wheels,0.4167,jezero,0.1,21.5,50.4667,0.9,false,,,,,21.3178,50.272,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Wabar,9,10,10.5
+169436,ltv.wheels,0.3821,jezero,0.1,-27.6333,-61.7,0.9,true,,,,,-27.814,-61.4974,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Campo Del Cielo,9,10,9.3
+74300,ltv.wheels,0.3809,jezero,0.1,38.4333,-109.9,0.9,false,,,,,38.6113,-110.1271,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Upheaval Dome,9,10,8.1
+77166,ltv.wheels,0.3276,jezero,0.2,36.2303,-116.7674,0.8,false,,,,,36.2295,-116.5493,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Badwater Basin,8,10,4.7
+64934,ltv.wheels,0.2594,jezero,0.1,44.6,-113.0,0.9,true,,,,,44.5911,-113.2551,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Beaverhead,9,10,3.5
+77165,ltv.wheels,0.1771,jezero,0.1,36.0759,-117.2544,0.9,false,,,,,36.2526,-117.256,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: baseline",Panamint Valley,9,10,2.3
+83869,ltv.wheels,0.145,jezero,0.1,31.9833,-5.5,0.9,false,,,,,31.9804,-5.5029,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Agoudal,9,10,1.2
+73226,ltv.wheels,0.0586,jezero,0.1,39.0167,73.45,0.9,true,,,,,38.834,73.4504,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate",Kara Kul,9,10,0.0
+44327,ltv.wheels,0.3778,jezero,0.1,59.3333,23.6667,0.9,true,,,,,59.3383,23.3119,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate; land cover unknown: tree_frac, cropland_frac, builtup_frac, snow_ice_frac, water_frac",Neugrund,9,10,7.0
+26686,ltv.wheels,0.3772,jezero,0.1,71.25,-156.633,0.9,true,,,,,71.4316,-157.185,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: candidate; land cover unknown: tree_frac, cropland_frac, builtup_frac, snow_ice_frac, water_frac",Avak,9,10,5.8
+68572,ltv.wheels,0.5498,jezero,0.1,42.0268,-93.617,0.9,false,,,,cropland_frac,42.0213,-93.8636,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: negative_control",Ames Iowa,9,10,37.2
+75038,ltv.wheels,0.447,jezero,0.1,37.9717,-100.8727,0.9,false,,,,cropland_frac,38.1523,-100.6492,"Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.; role: negative_control",Garden City Kansas,9,10,15.1

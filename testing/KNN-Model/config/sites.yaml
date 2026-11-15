@@ -1,0 +1,145 @@
+# Where every site is, and where that location comes from.
+# Earth points are only used to FIND a site; the engine then analyses a square box
+# around each point (size per world in settings.yaml).
+
+targets:
+  lunar_south_pole:
+    body: moon
+    dataset: lola_south_pole_20m
+    center_xy_m: [0, 0]          # polar stereographic metres; (0, 0) is the south pole itself
+    box_km: 40
+    source: >-
+      LOLA LDEM_80S_20M (20 m/pixel, 80-90 S), streamed from the MIT LOLA archive.
+      Box centred on the pole; it contains several Artemis III candidate regions
+      (e.g. Peak near Shackleton, de Gerlache rim).
+  mons_mouton:
+    body: moon
+    dataset: lola_south_pole_20m
+    center_xy_m: [77100, 138000]  # = 84.7906 S, 29.1957 E in the same polar stereographic grid
+    box_km: 30
+    source: >-
+      Mons Mouton plateau, the gentler ground where rovers are actually meant to drive:
+      NASA's VIPER landing site (selected Sept 2021) and the IM-2 Athena landing point
+      (6 March 2025, 84.7906 S, 29.1957 E), used as the box centre. LOLA LDEM_80S_20M.
+  jezero:
+    body: mars
+    label: Jezero Crater (Mars)
+    dataset: mola_463m
+    lat: 18.4447                  # Perseverance landing point ("Octavia E. Butler Landing"), NASA/JPL
+    lon: 77.4508
+    box_km: 80                    # 4 x 4 tiles of 20 km: the 45 km crater floor, delta, rim and nearby plains
+    source: >-
+      Jezero Crater, Mars 2020 Perseverance landing site (18 Feb 2021). MGS MOLA global DEM 463 m
+      (USGS Astrogeology mosaic), averaged to 500 m on a local equidistant grid centred on the
+      landing point.
+
+earth_sites:
+  # --- Moon baselines: Artemis navigation-training sites (USGS LGRS release, McClernan 2024, doi:10.5066/P14KSANW)
+  - name: meteor_crater
+    role: baseline
+    compare_with: moon
+    lat: 35.0333
+    lon: -111.017
+    source: "USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921), entry 'Barringer (= Meteor)'"
+  - name: cinder_lake_crater_field
+    role: baseline
+    compare_with: moon
+    lat: 35.3315
+    lon: -111.4834
+    source: "OpenStreetMap way 1319347968 'Cinder Hills OHV Area' (Cinder Lake Crater Field 2 lies in this recreation area, per USGS)"
+  - name: sp_crater_jett3
+    role: baseline
+    compare_with: moon
+    lat: 35.5824
+    lon: -111.6319
+    source: "OpenStreetMap node 359272327 'S P Crater' (JETT3 base, NASA NTRS 20230000146)"
+  - name: buffalo_park
+    role: baseline
+    compare_with: moon
+    lat: 35.2222
+    lon: -111.6332
+    source: "OpenStreetMap way 205504372 'Buffalo Park, Flagstaff'"
+  - name: yucca_flat
+    role: baseline
+    compare_with: moon
+    lat: 36.9476
+    lon: -116.0253
+    source: "OpenStreetMap relation 14656758 'Yucca Dry Lake' (southern Yucca Flat)"
+
+  # --- Moon negative controls: flat farmland that SHOULD rank low
+  - name: garden_city_kansas
+    role: negative_control
+    compare_with: moon
+    lat: 37.9717
+    lon: -100.8727
+    source: "OpenStreetMap relation 129924 'Garden City, Kansas' (High Plains farmland)"
+  - name: ames_iowa
+    role: negative_control
+    compare_with: moon
+    lat: 42.0268
+    lon: -93.6170
+    source: "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"
+
+  # --- Moon candidates beyond craters: volcanic cinder / lava fields (the kind of ground
+  #     NASA's own top sites, Cinder Lake and SP Crater, are). Hand-picked, not NASA-used.
+  - {name: lunar_crater_nevada, role: candidate, compare_with: moon, lat: 38.3839, lon: -116.0694,
+     source: "OpenStreetMap way 992237522 'Lunar Crater' (Lunar Crater volcanic field, Nevada)"}
+  - {name: amboy_crater, role: candidate, compare_with: moon, lat: 34.5450, lon: -115.7907,
+     source: "OpenStreetMap node 299496225 'Amboy Crater' (cinder cone + lava field, California)"}
+  - {name: pisgah_crater, role: candidate, compare_with: moon, lat: 34.7464, lon: -116.3756,
+     source: "OpenStreetMap node 358790676 'Pisgah Crater' (cinder cone + lava field, California)"}
+  - {name: valley_of_fires_carrizozo, role: candidate, compare_with: moon, lat: 33.6832, lon: -105.9275,
+     source: "OpenStreetMap way 660866320 'Valley of Fires Recreation Area' (Carrizozo lava flow, New Mexico)"}
+  - {name: el_malpais, role: candidate, compare_with: moon, lat: 34.8630, lon: -108.0980,
+     source: "OpenStreetMap relation 5946885 'El Malpais National Monument' (lava fields, New Mexico)"}
+  - {name: holuhraun, role: candidate, compare_with: moon, lat: 64.8709, lon: -16.8348,
+     source: "OpenStreetMap node 3062325628 'Holuhraun' (2014-15 lava field, Iceland)"}
+  - {name: hverfjall, role: candidate, compare_with: moon, lat: 65.6051, lon: -16.8740,
+     source: "OpenStreetMap node 270956581 'Hverfjall' (tephra cone, Iceland)"}
+  - {name: jabal_qidr_harrat_khaybar, role: candidate, compare_with: moon, lat: 25.7200, lon: 39.9433,
+     source: "OpenStreetMap node 1111949118 'Jabal Qidr' (volcano in Harrat Khaybar lava field, Saudi Arabia)"}
+
+  # --- Mars baselines: Mars 2020 Lander Vision System test spots (JPL PIA23265) + Grand Falls dunes
+  - {name: mesquite_flat_dunes, role: baseline, compare_with: mars, lat: 36.6619, lon: -117.0962,
+     source: "OpenStreetMap way 131820446 'Mesquite Dunes'"}
+  - {name: badwater_basin, role: baseline, compare_with: mars, lat: 36.2303, lon: -116.7674,
+     source: "OpenStreetMap way 96614687 'Badwater Basin'"}
+  - {name: panamint_valley, role: baseline, compare_with: mars, lat: 36.0759, lon: -117.2544,
+     source: "OpenStreetMap way 163728245 'Panamint Valley'"}
+  - {name: kelso_dunes, role: baseline, compare_with: mars, lat: 34.9342, lon: -115.7196,
+     source: "OpenStreetMap way 61011696 'Kelso Dunes'"}
+  - {name: hole_in_the_wall, role: baseline, compare_with: mars, lat: 35.0472, lon: -115.3940,
+     source: "OpenStreetMap way 1449569484 'Hole-in-the-Wall Campground'"}
+  - {name: grand_falls_dunes, role: baseline, compare_with: mars, lat: 35.49, lon: -111.164,
+     source: "USGS Known Terrestrial Analog Sites (Hunter 2020), entry 'Grand Falls' (Dunes, Mars)"}
+
+  # --- Mars negative controls: the same flat farmland (must rank low against Jezero too)
+  - {name: garden_city_kansas, role: negative_control, compare_with: mars, lat: 37.9717, lon: -100.8727,
+     source: "OpenStreetMap relation 129924 'Garden City, Kansas' (High Plains farmland)"}
+  - {name: ames_iowa, role: negative_control, compare_with: mars, lat: 42.0268, lon: -93.6170,
+     source: "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"}
+
+# Extra candidate sites read from the USGS list. Impact craters are compared with BOTH worlds
+# (Jezero is itself an impact crater); the list's two other entries (a dune field and a
+# volcanic eruption site, both tagged Mars) are Mars candidates.
+candidate_lists:
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Impact Crater
+    compare_with: moon
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Impact Crater
+    compare_with: mars
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Dunes
+    compare_with: mars
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Volcanic Eruption
+    compare_with: mars
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"

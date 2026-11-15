@@ -1,0 +1,255 @@
+{
+ "method": "python pipeline/measure_targets.py # measure every target, write target_terrain.json python pipeline/measure_targets.py --check # FIRST: re-measure 12 Earth cells, compare with the # Earth index, save the calibration factors",
+ "calibration": {
+  "slope_deg": {
+   "factor": 0.995,
+   "spread_p10_p90": [
+    0.73,
+    1.73
+   ],
+   "r": 0.763,
+   "n_cells": 12
+  },
+  "rough_m": {
+   "factor": 0.763,
+   "spread_p10_p90": [
+    0.65,
+    0.88
+   ],
+   "r": 0.972,
+   "n_cells": 12
+  }
+ },
+ "cell_km": 55.6,
+ "rough_px_km": 9.266,
+ "targets": {
+  "connecting-ridge": {
+   "body": "moon",
+   "lat": -89.45,
+   "lon": -137.5,
+   "raw": {
+    "slope_deg": 0.96,
+    "rough_m": 438.0,
+    "valid_share": 1.0
+   },
+   "slope_deg": 0.96,
+   "rough_m": 334.2,
+   "temperature": {
+    "lst_dtr_K": 139.1,
+    "t_mean_C": -180.8,
+    "t_range_K": 33.0,
+    "maps_K": {
+     "summer_avg": 108.9,
+     "summer_max": 216.5,
+     "summer_min": 54.7,
+     "winter_avg": 75.9,
+     "winter_max": 163.0,
+     "winter_min": 46.6
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "de-gerlache-rim-2": {
+   "body": "moon",
+   "lat": -88.5,
+   "lon": -87.1,
+   "raw": {
+    "slope_deg": 2.01,
+    "rough_m": 401.9,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.0,
+   "rough_m": 306.6,
+   "temperature": {
+    "lst_dtr_K": 147.3,
+    "t_mean_C": -174.9,
+    "t_range_K": 26.1,
+    "maps_K": {
+     "summer_avg": 111.3,
+     "summer_max": 217.2,
+     "summer_min": 54.8,
+     "winter_avg": 85.2,
+     "winter_max": 181.8,
+     "winter_min": 49.5
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "malapert-massif": {
+   "body": "moon",
+   "lat": -86.0,
+   "lon": 0.0,
+   "raw": {
+    "slope_deg": 2.66,
+    "rough_m": 471.0,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.65,
+   "rough_m": 359.4,
+   "temperature": {
+    "lst_dtr_K": 167.9,
+    "t_mean_C": -165.4,
+    "t_range_K": 20.7,
+    "maps_K": {
+     "summer_avg": 118.1,
+     "summer_max": 245.2,
+     "summer_min": 58.9,
+     "winter_avg": 97.4,
+     "winter_max": 203.9,
+     "winter_min": 54.3
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "mons-mouton-plateau": {
+   "body": "moon",
+   "lat": -84.79,
+   "lon": 29.2,
+   "raw": {
+    "slope_deg": 2.88,
+    "rough_m": 365.9,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.87,
+   "rough_m": 279.2,
+   "temperature": {
+    "lst_dtr_K": 177.7,
+    "t_mean_C": -148.8,
+    "t_range_K": 8.9,
+    "maps_K": {
+     "summer_avg": 128.9,
+     "summer_max": 248.2,
+     "summer_min": 63.8,
+     "winter_avg": 119.9,
+     "winter_max": 232.1,
+     "winter_min": 61.0
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "haworth": {
+   "body": "moon",
+   "lat": -86.9,
+   "lon": -4.0,
+   "raw": {
+    "slope_deg": 2.39,
+    "rough_m": 405.3,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.38,
+   "rough_m": 309.2,
+   "temperature": {
+    "lst_dtr_K": 101.1,
+    "t_mean_C": -205.6,
+    "t_range_K": 32.0,
+    "maps_K": {
+     "summer_avg": 83.5,
+     "summer_max": 171.7,
+     "summer_min": 42.5,
+     "winter_avg": 51.5,
+     "winter_max": 106.3,
+     "winter_min": 33.3
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "nobile-rim-2": {
+   "body": "moon",
+   "lat": -83.9,
+   "lon": 58.7,
+   "raw": {
+    "slope_deg": 2.98,
+    "rough_m": 395.1,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.97,
+   "rough_m": 301.5,
+   "temperature": {
+    "lst_dtr_K": 159.4,
+    "t_mean_C": -164.5,
+    "t_range_K": 1.6,
+    "maps_K": {
+     "summer_avg": 109.5,
+     "summer_max": 227.1,
+     "summer_min": 57.8,
+     "winter_avg": 107.9,
+     "winter_max": 205.2,
+     "winter_min": 55.7
+    },
+    "source": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
+   }
+  },
+  "marius-hills": {
+   "body": "moon",
+   "lat": 14.1,
+   "lon": -56.8,
+   "raw": {
+    "slope_deg": 0.94,
+    "rough_m": 31.3,
+    "valid_share": 1.0
+   },
+   "slope_deg": 0.94,
+   "rough_m": 23.9
+  },
+  "jezero": {
+   "body": "mars",
+   "lat": 18.38,
+   "lon": 77.58,
+   "raw": {
+    "slope_deg": 1.47,
+    "rough_m": 98.7,
+    "valid_share": 1.0
+   },
+   "slope_deg": 1.46,
+   "rough_m": 75.3
+  },
+  "gale": {
+   "body": "mars",
+   "lat": -5.4,
+   "lon": 137.8,
+   "raw": {
+    "slope_deg": 2.06,
+    "rough_m": 256.2,
+    "valid_share": 1.0
+   },
+   "slope_deg": 2.05,
+   "rough_m": 195.5
+  },
+  "arcadia-planitia": {
+   "body": "mars",
+   "lat": 49.02,
+   "lon": -171.85,
+   "raw": {
+    "slope_deg": 0.04,
+    "rough_m": 4.3,
+    "valid_share": 1.0
+   },
+   "slope_deg": 0.04,
+   "rough_m": 3.3
+  },
+  "utopia-planitia": {
+   "body": "mars",
+   "lat": 46.74,
+   "lon": 117.52,
+   "raw": {
+    "slope_deg": 0.09,
+    "rough_m": 8.6,
+    "valid_share": 1.0
+   },
+   "slope_deg": 0.09,
+   "rough_m": 6.6
+  },
+  "deuteronilus-mensae": {
+   "body": "mars",
+   "lat": 42.0,
+   "lon": 27.0,
+   "raw": {
+    "slope_deg": 1.18,
+    "rough_m": 154.5,
+    "valid_share": 1.0
+   },
+   "slope_deg": 1.17,
+   "rough_m": 117.9
+  }
+ }
+}

@@ -1,0 +1,186 @@
+{
+  "site": "ouarkziz",
+  "role": "candidate",
+  "rank": 29,
+  "score": 0.2242250369355053,
+  "location": {
+    "lat": 29.0,
+    "lon": -7.55,
+    "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Ouarkziz'"
+  },
+  "covers": {
+    "target_coverage": 0.03125
+  },
+  "test_tile": {
+    "tile_id": "r02c00",
+    "lat": 29.023414823443073,
+    "lon": -7.678408366539146,
+    "similarity": 0.44018609175231527
+  },
+  "requirements": [
+    {
+      "requirement": "pit_density within 0.5 per_km2 of the target",
+      "status": "met",
+      "value": 1.1999999999999997,
+      "target": 0.7999999999999999,
+      "met_somewhere_on_site": true
+    },
+    {
+      "requirement": "relief within 150 m of the target",
+      "status": "not_met",
+      "value": 142.826416015625,
+      "target": 1005.6599807739258,
+      "met_somewhere_on_site": false
+    }
+  ],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 11.691177839896522,
+      "test_tile": 2.4378696589662185,
+      "site_median": 2.1704900539000604,
+      "difference": -9.253308180930304,
+      "statement": "Average slope is 9.25\u00b0 gentler than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 4.35791507472881,
+      "test_tile": 2.17018891606849,
+      "site_median": 2.2248419254755176,
+      "difference": -2.18772615866032,
+      "statement": "Slope variability is 2.19\u00b0 lower than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 18.806584481402048,
+      "test_tile": 4.745661385347279,
+      "site_median": 4.672393500830712,
+      "difference": -14.060923096054768,
+      "statement": "Steepest-10% slope is 14.1\u00b0 gentler than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "ignored",
+      "target": 0.2486,
+      "test_tile": 0.0024,
+      "site_median": 0.004200000000000001,
+      "difference": -0.24619999999999997,
+      "statement": "Share of steep ground is 0.246 lower than the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 1005.6599807739258,
+      "test_tile": 142.826416015625,
+      "site_median": 127.29550170898438,
+      "difference": -862.8335647583008,
+      "statement": "Relief (highest minus lowest) is 863 m smaller than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "target",
+      "target": 0.49959563105715865,
+      "test_tile": 0.32825291726565203,
+      "site_median": 0.3513517336486656,
+      "difference": -0.17134271379150662,
+      "statement": "Hypsometric integral is 0.171 lower than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": 3.2322887241050373,
+      "test_tile": 2.786412087281381,
+      "site_median": 2.700895723442807,
+      "difference": -0.4458766368236562,
+      "statement": "Small-scale bumpiness is 0.446 m smoother than the target"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 36.3784061016397,
+      "test_tile": 9.087424713020772,
+      "site_median": 9.74333591169744,
+      "difference": -27.290981388618924,
+      "statement": "Large-scale bumpiness is 27.3 m smoother than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "target",
+      "target": 0.2852543664550781,
+      "test_tile": 0.25126211853027347,
+      "site_median": 0.24921198348999027,
+      "difference": -0.03399224792480465,
+      "statement": "Curvature is 0.034 /km less curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "target",
+      "target": 0.7999999999999999,
+      "test_tile": 1.1999999999999997,
+      "site_median": 0.37999999999999995,
+      "difference": 0.3999999999999998,
+      "statement": "Density of crater-like dips is 0.4 per km\u00b2 higher than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.0,
+      "builtup_frac": 0.0,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.0
+    }
+  },
+  "baselines": {
+    "nearest": "yucca_flat",
+    "closer_than": "meteor_crater"
+  },
+  "confidence": {
+    "value": 1.0,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ.",
+    "Vacuum: no atmosphere; Earth sites have air, wind and weathering.",
+    "Radiation: no magnetic field or atmosphere shielding the lunar surface.",
+    "Temperatures: lunar day/night and permanently shadowed temperatures need thermal-vacuum chambers.",
+    "Regolith: lunar soil grains, cohesion and electrostatic dust differ from Earth soils.",
+    "Lighting: very low sun angles and long shadows at the lunar poles."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

@@ -1,0 +1,237 @@
+# Mission profiles (step 1 of the pipeline). Every condition is sorted into:
+#   target       - must match the Moon/Mars target; the weight says how much it matters
+#   ignored      - doesn't matter for this test
+#   interference - would ruin the test (Earth land cover); share of a tile, 0-1, with a limit
+# mandatory: pass/fail rules set BEFORE ranking. max_abs_diff = "within X of the target";
+#            max / min = fixed limits. Unknown (no data) is never a pass.
+#
+# All weights and limits are EXAMPLE values chosen by the engine team,
+# not official NASA requirements.
+
+# --- Rover weights (moon_rover_south_pole, moon_rover_mons_mouton) -------------------
+# No published source gives "weights"; they rank measurements by how directly they tie
+# to a published rover limit. The limits:
+#   - VIPER generally drives slopes up to 15 deg; 25-30 deg possible but slip increases
+#     (NASA, science.nasa.gov/mission/viper/lunar-operations)
+#   - Apollo LRV could "climb and descend slopes above 25" deg
+#     (NASA SP-350 "Apollo Expeditions to the Moon", ch. 14.8) and "clamber over obstacles
+#     30 centimeters (1 foot) high" (NASA SP-4214 "Where No Man Has Gone Before", ch. 13-3)
+#   - Apollo 15/16 traverses: max slope 22.1 / 24.7 deg, mean 5.6 / 4.5 deg (Jacob et al.,
+#     "Apollo Lunar Roving Vehicle as Traversed Performance Metrics", LPSC 2026, Table 1;
+#     ntrs.nasa.gov/citations/20250011301)
+# frac_steep (share of ground over 15 deg) = VIPER's normal driving limit  -> 2.0, highest
+# slope_p90  (steepest 10%), vs the 22-25 deg Apollo/VIPER maximum          -> 1.5
+# slope_mean, vs the 4.5-5.6 deg mean of real driven traverses             -> 1.0
+# pit_density: craters were driven around, but no published limit         -> 0.5
+# rough_small / rough_large: 500 m / 2.5 km bumpiness; no rover limit at
+#   these scales (30 cm rocks are invisible at 100 m pixels)                -> 0.5 / 0.3
+# Caveat: slopes from 100 m pixels are gentler than what a wheel feels at 1 m.
+#
+# --- Where the interference limits come from -----------------------------------------
+# Land cover is measured with ESA WorldCover 2021 (share of each 5 km tile). The class
+# boundaries are checked against NASA's MODIS land-cover legend:
+#   [IGBP] Sulla-Menashe & Friedl, MODIS Collection 6.1 Land Cover Type (MCD12Q1) Product
+#          User Guide, Table 3 (IGBP legend), NASA LP DAAC,
+#          https://lpdaac.usgs.gov/documents/1409/MCD12_User_Guide_V61.pdf
+#          - Savannas: tree cover 10-30%; Woody Savannas: 30-60%; forests: >60%
+#          - Croplands: at least 60% cultivated; Cropland/Natural Vegetation Mosaics: 40-60%
+#          - Urban and Built-up: at least 30% impervious surface
+#          - Permanent Snow and Ice: at least 60% snow/ice for at least 10 months a year
+#          - Water Bodies: at least 60% permanent water; Barren: less than 10% vegetation
+#   tree_frac 0.3     = the IGBP Savanna / Woody Savanna boundary (more trees = wooded land).
+#   tree_frac 0.2     (landing) team value, stricter than 0.3: cameras must see bare ground.
+#   cropland_frac 0.2, builtup_frac 0.1, snow_ice_frac 0.1, water_frac 0.05: team values,
+#                     well below the IGBP class lines (60% / 30% / 60% / 60%), so a tile
+#                     passes only when that cover is a minor part of it. No NASA dataset
+#                     gives a "ruins the test" threshold for these.
+# --- Where the mandatory rules come from ------------------------------------------------
+#   slope_p90 within 5 deg, frac_steep within 0.10, rough_small within 3 m, pit_density
+#   within 0.5 /km2, relief within 150 m: NO NASA SOURCE. Added as example values in
+#   commits cfd0298 / c47f29e; never sourced. Checked against NASA's own baselines (nearest
+#   tile to the official coordinates): relief within 150 m fails all 5 NASA sites; slope_p90
+#   within 5 deg fails 4 of 5 for the south pole; see README "Origin of the tolerances".
+#   They pick the recommended tile and fill met/not-met; they do not change the ranking.
+#   temp_range_mean >= 60 K: NO NASA SOURCE (commit 21ff392); 3 of 5 NASA sites read below it.
+#   Context only, NOT verified against NASA documents: the Moon's equatorial day-night swing
+#   is roughly 300 K, and Earth's widest MODIS land-surface swings are reported near 80 K
+#   (secondary sources).
+moon_rover_south_pole:
+  description: >-
+    Rover wheels / astronaut surface mobility at the lunar south pole. Weighted toward
+    published rover slope limits (VIPER 15 deg normal, ~25 deg maximum). Rocks the size a
+    wheel must cross (~30 cm) are NOT measured: they are invisible at 100 m pixels.
+  body: moon
+  target: lunar_south_pole
+  features:
+    target:
+      frac_steep: 2.0
+      slope_p90: 1.5
+      slope_mean: 1.0
+      pit_density: 0.5
+      rough_small: 0.5
+      rough_large: 0.3
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
+              grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
+    - {feature: rough_small, max_abs_diff: 3.0, unit: m}
+
+moon_rover_mons_mouton:
+  description: >-
+    Same rover-wheel test as moon_rover_south_pole, but the target is the Mons Mouton
+    plateau (VIPER / IM-2 landing area): the gentler ground a rover would really drive on,
+    instead of a box round the pole that includes Shackleton crater's steep walls.
+    Weights as moon_rover_south_pole (published rover slope limits); ~30 cm rocks NOT measured.
+  body: moon
+  target: mons_mouton
+  features:
+    target:
+      frac_steep: 2.0
+      slope_p90: 1.5
+      slope_mean: 1.0
+      pit_density: 0.5
+      rough_small: 0.5
+      rough_large: 0.3
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
+              grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
+    - {feature: rough_small, max_abs_diff: 3.0, unit: m}
+
+moon_landing_hazards_south_pole:
+  description: >-
+    Lander hazard-detection cameras / landing-site survey: crater-like dips,
+    curvature and overall relief matter most; fine slope detail matters less.
+  body: moon
+  target: lunar_south_pole
+  features:
+    target:
+      pit_density: 2.0
+      curvature_abs_mean: 1.5
+      relief: 1.0
+      hypsometric_integral: 1.0
+      rough_large: 0.5
+    ignored: [slope_mean, slope_std, slope_p90, frac_steep, rough_small,
+              grass_shrub_frac, bare_frac, cropland_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.2}        # team value, stricter than [IGBP] 30% for cameras
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
+  mandatory:
+    - {feature: pit_density, max_abs_diff: 0.5, unit: per_km2}
+    - {feature: relief, max_abs_diff: 150, unit: m}
+
+moon_rover_thermal_south_pole:
+  description: >-
+    Rover field test needing BOTH a strong terrain match and the widest temperature
+    swings Earth can offer (thermal cycling of wheels, motors and batteries).
+    Terrain counts about twice as much as temperature.
+  body: moon
+  target: lunar_south_pole
+  features:
+    target:
+      slope_mean: 1.0
+      slope_p90: 1.0
+      frac_steep: 0.5
+      rough_small: 1.0
+      rough_large: 0.5
+      temp_range_mean: 2.0
+    ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean, pit_density,
+              temp_range_std, grass_shrub_frac, bare_frac, minerals]
+    interference:
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
+  mandatory:
+    - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
+    - {feature: temp_range_mean, min: 60, unit: K}
+
+# --- Mars missions (target: Jezero Crater, MOLA 463 m -> 500 m pixels, 20 km tiles) ------------
+# Sources (quotes verified Nov 2026):
+#   [LVS-19] JPL News, "A Neil Armstrong for Mars: Landing the Mars 2020 Rover" (2019):
+#            "Over three weeks in April and May of 2019, LVS flew 17 flights attached to the front of a
+#            helicopter, taking and processing image after image over the Mars-like terrain of Kelso
+#            Dunes, Hole-in-the-Wall, Lava Tube, Badwater, Panamint Valley and Mesquite Flat Dunes."
+#            https://www.jpl.nasa.gov/news/a-neil-armstrong-for-mars-landing-the-mars-2020-rover/
+#            -> 5 of these 6 places are our Mars baselines (Lava Tube is not yet in sites.yaml).
+#            NASA gives no numeric terrain criterion for picking them, only "Mars-like terrain".
+#   [PIA23265] NASA Photojournal, "NASA's Mars 2020 Mission Drops in on Death Valley" (2019): LVS
+#            "collected and analyzed imagery of the barren, mountainous terrain below".
+#   [M2020-EDL] Golombek, Grant, Farley & Chen (2015), LPSC 46 abstract 1653: "Less than ~100 m of relief
+#            at baseline lengths of 1-1,000 m ... Less than 25-30 deg slopes at length scales of 2-5 m";
+#            rocks "about 12% rock abundance"; with terrain-relative navigation, small areas that break
+#            these are allowed. https://www.hou.usra.edu/meetings/lpsc2015/pdf/1653.pdf
+#   [M2020-ROVER] NASA Science, Mars 2020 rover components: "designed to withstand a 45-degree tilt";
+#            "rover drivers avoid terrains that would tilt the rover more than 30 degrees".
+#            https://science.nasa.gov/mission/mars-2020-perseverance/rover-components/
+#   [ONO] Ono et al. (JPL, (c) 2015), "Data-Driven Surface Traversability Analysis for Mars 2020 Landing
+#            Site Selection": "climb slopes up to approximately 20 degrees" on bedrock, "approximately
+#            10 degrees" on large sand dunes.
+#   [MOLA-SLOPES] Aharonson, Zuber & Rothman (2001), JGR 106(E10): northern plains "slopes are typically
+#            <0.5 deg" at MOLA spacing: km-scale Mars slopes are far gentler than the rover limits.
+# No mandatory (pass/fail) rules on Mars: every NASA number above is set at 2 m - 1 km, and
+# our pixels are 500 m, so checking them here would compare different things. Weights are
+# team judgement (same reasoning and order as the lunar missions); no NASA dataset publishes
+# analog weights.
+mars_landing_jezero:
+  description: >-
+    Lander Vision System / terrain-relative navigation and landing-hazard survey for Jezero
+    Crater. Same weights as the lunar landing mission: crater-like dips, curvature and overall
+    relief matter most. NASA's own baselines here are the Mars 2020 Lander Vision System test
+    spots in Death Valley and the Mojave, so the held-out check asks whether the engine finds them.
+  body: mars
+  target: jezero
+  features:
+    target:
+      pit_density: 2.0
+      curvature_abs_mean: 1.5
+      relief: 1.0
+      hypsometric_integral: 1.0
+      rough_large: 0.5
+    ignored: [slope_mean, slope_std, slope_p90, frac_steep, rough_small,
+              grass_shrub_frac, bare_frac, cropland_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.2}        # team value, stricter than [IGBP] 30% for cameras
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
+
+mars_rover_jezero:
+  description: >-
+    Rover wheels / mobility at Jezero Crater. Weighted toward slope, as the lunar rover
+    missions. At 500 m pixels this compares landforms (crater floor, delta, rim), not the
+    rocks and ripples a wheel meets; rough_small (500 m scale) cannot be measured and frac_steep
+    uses VIPER's 15 deg line, which 500 m Mars slopes almost never reach, so both are ignored.
+  body: mars
+  target: jezero
+  features:
+    target:
+      slope_p90: 1.5
+      slope_mean: 1.0
+      rough_large: 0.5
+      pit_density: 0.5
+    ignored: [slope_std, frac_steep, relief, hypsometric_integral, curvature_abs_mean, rough_small,
+              grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
+    interference:
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%

@@ -1,0 +1,171 @@
+{
+  "site": "panamint_valley",
+  "role": "baseline",
+  "rank": 102,
+  "score": 0.18487224362908833,
+  "location": {
+    "lat": 36.0759,
+    "lon": -117.2544,
+    "source": "OpenStreetMap way 163728245 'Panamint Valley'"
+  },
+  "covers": {
+    "target_coverage": 0.0625
+  },
+  "test_tile": {
+    "tile_id": "r01c01",
+    "lat": 36.07231969697047,
+    "lon": -117.2554268381225,
+    "similarity": 0.2252717739700895
+  },
+  "requirements": [],
+  "differences_from_target": [
+    {
+      "feature": "slope_mean",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 2.1997243158032846,
+      "test_tile": 5.97683917980764,
+      "site_median": 7.951257426494415,
+      "difference": 3.7771148640043553,
+      "statement": "Average slope is 3.78\u00b0 steeper than the target"
+    },
+    {
+      "feature": "slope_std",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 1.4220616497765244,
+      "test_tile": 6.719038154450993,
+      "site_median": 5.4538016727266605,
+      "difference": 5.296976504674468,
+      "statement": "Slope variability is 5.3\u00b0 higher than the target"
+    },
+    {
+      "feature": "slope_p90",
+      "unit": "deg",
+      "mission_role": "ignored",
+      "target": 3.9677540290508317,
+      "test_tile": 17.126858986193945,
+      "site_median": 16.635136996970715,
+      "difference": 13.159104957143112,
+      "statement": "Steepest-10% slope is 13.2\u00b0 steeper than the target"
+    },
+    {
+      "feature": "frac_steep",
+      "unit": "fraction",
+      "mission_role": "ignored",
+      "target": 0.0,
+      "test_tile": 0.156875,
+      "site_median": 0.1425,
+      "difference": 0.156875,
+      "statement": "Share of steep ground is 0.157 higher than the target"
+    },
+    {
+      "feature": "relief",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 612.906005859375,
+      "test_tile": 1858.5009765625,
+      "site_median": 1858.5009765625,
+      "difference": 1245.594970703125,
+      "statement": "Relief (highest minus lowest) is 1.25e+03 m greater than the target"
+    },
+    {
+      "feature": "hypsometric_integral",
+      "unit": "unitless",
+      "mission_role": "target",
+      "target": 0.46363525587709187,
+      "test_tile": 0.16349623927698093,
+      "site_median": 0.4021749848269823,
+      "difference": -0.30013901660011094,
+      "statement": "Hypsometric integral is 0.3 lower than the target"
+    },
+    {
+      "feature": "rough_small",
+      "unit": "m",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Small-scale bumpiness: unknown (no data)"
+    },
+    {
+      "feature": "rough_large",
+      "unit": "m",
+      "mission_role": "target",
+      "target": 10.365266855530383,
+      "test_tile": 23.390872016473676,
+      "site_median": 40.701960866298066,
+      "difference": 13.025605160943293,
+      "statement": "Large-scale bumpiness is 13 m rougher than the target"
+    },
+    {
+      "feature": "curvature_abs_mean",
+      "unit": "1/km",
+      "mission_role": "target",
+      "target": 0.033445126075744624,
+      "test_tile": 0.0863643540763855,
+      "site_median": 0.15306811588287353,
+      "difference": 0.052919228000640875,
+      "statement": "Curvature is 0.0529 /km more curved than the target"
+    },
+    {
+      "feature": "pit_density",
+      "unit": "per_km2",
+      "mission_role": "target",
+      "target": 0.08625,
+      "test_tile": 0.0575,
+      "site_median": 0.095,
+      "difference": -0.02874999999999999,
+      "statement": "Density of crater-like dips is 0.0287 per km\u00b2 lower than the target"
+    },
+    {
+      "feature": "temp_range_mean",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
+    },
+    {
+      "feature": "temp_range_std",
+      "unit": "K",
+      "mission_role": "ignored",
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
+    }
+  ],
+  "interference": {
+    "flagged": [],
+    "unknown": [],
+    "level": 0,
+    "values": {
+      "tree_frac": 0.003136,
+      "builtup_frac": 0.000108,
+      "snow_ice_frac": 0.0,
+      "water_frac": 0.000344
+    }
+  },
+  "baselines": {
+    "nearest": "badwater_basin",
+    "closer_than": ""
+  },
+  "confidence": {
+    "value": 0.9166666666666666,
+    "label": "high"
+  },
+  "cannot_reproduce_on_earth": [
+    "Gravity: about 38% of Earth's (3.73 vs 9.81 m/s^2), so wheel loads, sinkage, dust and landing loads differ.",
+    "Atmosphere: thin CO2 air, 6.36 mb at mean radius (4.0-8.7 mb by season) vs ~1013 mb on Earth: parachutes, heat flow, dust lifting and drills behave differently.",
+    "Radiation: no global magnetic field and a thin atmosphere let more radiation reach the surface.",
+    "Temperatures: ~214 K average; 184-242 K daily range at Viking 1. Earth deserts are far warmer: needs thermal chambers.",
+    "Regolith chemistry: oxidising, perchlorate-bearing Martian soil has no natural Earth equivalent at scale.",
+    "Scale of the comparison: 500 m pixels and 20 km tiles see landforms, not the rocks a wheel or lander foot meets."
+  ],
+  "disclaimer": "A terrain match does not validate hardware. It only shows the ground shape resembles the target at this scale. Subsystem performance (e.g. wheel slip and sinkage) needs separate soil, load and environmental testing."
+}

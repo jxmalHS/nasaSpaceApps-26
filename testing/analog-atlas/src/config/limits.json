@@ -1,0 +1,18 @@
+{
+ "moon": [
+  {"id": "gravity", "title": "Gravity", "earth": "no", "text": "The Moon pulls at 0.17 g. Walking gait, wheel loads, sinkage and dust flight all change.", "lab": "Gravity offload (NASA JSC ARGOS), parabolic flights"},
+  {"id": "vacuum", "title": "Hard vacuum", "earth": "no", "text": "No air means no convection and no wind. Heat moves only by radiation and contact.", "lab": "Thermal-vacuum chambers (NASA JSC Chamber A, GRC)"},
+  {"id": "radiation", "title": "Radiation", "earth": "no", "text": "No magnetic field or atmosphere. Solar particles and cosmic rays reach the ground.", "lab": "Beam facilities (NASA Space Radiation Lab, Brookhaven)"},
+  {"id": "psr", "title": "Permanently shadowed cold", "earth": "no", "text": "Crater floors stay below ~100 K. Earth's coldest ground is ~180 K.", "lab": "Cryogenic test chambers"},
+  {"id": "light", "title": "Grazing light", "earth": "partly", "text": "At the south pole the Sun never climbs above ~2°. High-latitude Earth gives low sun for part of the year, with a blue sky that fills shadows.", "lab": "Collimated-light test bays"},
+  {"id": "regolith", "title": "Regolith and dust", "earth": "partly", "text": "Lunar dust is sharp, glassy and electrostatically charged. Earth soils are weathered and damp; volcanic ash is the closest match.", "lab": "Simulant bins (LHS-1, LMS-1) with UV charging"}
+ ],
+ "mars": [
+  {"id": "gravity", "title": "Gravity", "earth": "no", "text": "Mars pulls at 0.38 g.", "lab": "Gravity offload, parabolic flights"},
+  {"id": "atmosphere", "title": "Thin CO₂ air", "earth": "no", "text": "Surface pressure is ~0.6 kPa of CO₂. Earth's highest ground is still ~50 kPa of nitrogen and oxygen.", "lab": "Mars environment chambers (NASA Ames Mars Wind Tunnel, Aarhus)"},
+  {"id": "radiation", "title": "Radiation and UV", "earth": "no", "text": "No global magnetic field and no ozone. Ultraviolet sterilises the surface.", "lab": "UV and particle beam facilities"},
+  {"id": "cold", "title": "Cold and swing", "earth": "partly", "text": "Ground swings ~90 K a day around a mean near −60 °C. Earth's cold deserts match the mean, not the swing.", "lab": "Thermal cycling chambers"},
+  {"id": "chemistry", "title": "Oxidising soil", "earth": "partly", "text": "Perchlorate-rich, oxidising soils. Atacama and the Dry Valleys hold perchlorate at lower levels.", "lab": "Simulant chemistry (MGS-1 with perchlorate)"},
+  {"id": "dust", "title": "Global dust", "earth": "partly", "text": "Planet-wide dust storms coat panels and optics for weeks.", "lab": "Dust deposition chambers"}
+ ]
+}

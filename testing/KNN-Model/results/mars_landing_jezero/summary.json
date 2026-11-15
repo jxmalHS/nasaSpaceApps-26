@@ -1,0 +1,401 @@
+{
+  "mission": "mars_landing_jezero",
+  "description": "Lander Vision System / terrain-relative navigation and landing-hazard survey for Jezero Crater. Same weights as the lunar landing mission: crater-like dips, curvature and overall relief matter most. NASA's own baselines here are the Mars 2020 Lander Vision System test spots in Death Valley and the Mojave, so the held-out check asks whether the engine finds them.",
+  "body": "mars",
+  "target": "jezero",
+  "target_tiles": 16,
+  "target_profile": {
+    "slope_mean": 2.1997243158032846,
+    "slope_std": 1.4220616497765244,
+    "slope_p90": 3.9677540290508317,
+    "frac_steep": 0.0,
+    "relief": 612.906005859375,
+    "hypsometric_integral": 0.46363525587709187,
+    "rough_small": NaN,
+    "rough_large": 10.365266855530383,
+    "curvature_abs_mean": 0.033445126075744624,
+    "pit_density": 0.08625,
+    "temp_range_mean": NaN,
+    "temp_range_std": NaN
+  },
+  "weights_used": {
+    "pit_density": 0.3333333333333333,
+    "curvature_abs_mean": 0.25,
+    "relief": 0.16666666666666666,
+    "hypsometric_integral": 0.16666666666666666,
+    "rough_large": 0.08333333333333333
+  },
+  "features_skipped_no_data": [],
+  "closest_achievable": {},
+  "ignored": [
+    "slope_mean",
+    "slope_std",
+    "slope_p90",
+    "frac_steep",
+    "rough_small",
+    "grass_shrub_frac",
+    "bare_frac",
+    "cropland_frac",
+    "temp_range_mean",
+    "temp_range_std",
+    "minerals"
+  ],
+  "interference_limits": {
+    "tree_frac": {
+      "max": 0.2
+    },
+    "builtup_frac": {
+      "max": 0.1
+    },
+    "snow_ice_frac": {
+      "max": 0.1
+    },
+    "water_frac": {
+      "max": 0.05
+    }
+  },
+  "mandatory": [],
+  "earth_sites_ranked": 105,
+  "earth_sites_failed": [],
+  "earth_sites_incomplete": [
+    {
+      "site": "avak",
+      "missing": [
+        "hypsometric_integral"
+      ]
+    }
+  ],
+  "candidate_tiles_blocked_by_interference": 986,
+  "candidates_blocked_everywhere": [
+    "araguainha",
+    "beyenchime_salaaty",
+    "bosumtwi_ashanti",
+    "brent",
+    "calvin",
+    "carswell",
+    "charlevoix_la_malbaie",
+    "chesapeake_bay",
+    "chicxulub",
+    "clearwater_east",
+    "clearwater_east_2",
+    "colonia",
+    "couture_lac_couture",
+    "crooked_creek",
+    "decaturville",
+    "deep_bay",
+    "dellen",
+    "des_plaines",
+    "dobele",
+    "flynn_creek",
+    "gardnos",
+    "glover_bluff",
+    "gow",
+    "goyder",
+    "granby",
+    "holleford",
+    "hummeln",
+    "ile_rouleau",
+    "ilumetsa",
+    "iso_naakkima",
+    "janisjarvi",
+    "kaalijarv",
+    "kaluga",
+    "kardla",
+    "karikkoselka",
+    "keurusselka",
+    "la_moinerie",
+    "lappajarvi",
+    "liverpool",
+    "lockne",
+    "lockne_2",
+    "logancha",
+    "logoisk",
+    "luizi",
+    "lumparn",
+    "macha",
+    "manicouagan",
+    "marquez",
+    "middlesboro",
+    "mien",
+    "mishina_gora",
+    "mistastin",
+    "mizarai",
+    "new_quebec_chubb_ungava_pingualuit",
+    "nicholson",
+    "paasselka",
+    "pilot",
+    "popigai",
+    "presqu_ile",
+    "puchezh_katunki",
+    "ragozinka",
+    "riachao_ring",
+    "ritland",
+    "rochechouart",
+    "rock_elm",
+    "saaksjarvi",
+    "saarijarvi",
+    "saint_martin",
+    "serpent_mound",
+    "sikhote_alin",
+    "siljan",
+    "slate_islands",
+    "sobolev",
+    "soderfjarden",
+    "steen_river",
+    "steinheim",
+    "strangways",
+    "suavjarvi",
+    "sudbury",
+    "suvasvesi_n",
+    "suvasvesi_s",
+    "tvaren",
+    "vargeao_dome",
+    "vepriai",
+    "vista_alegre",
+    "wanapitei",
+    "wells_creek",
+    "west_hawk",
+    "wetumpka",
+    "whitecourt",
+    "xiuyan"
+  ],
+  "min_usable_tiles": 6,
+  "tile_km": 20,
+  "low_evidence_sites": [
+    "santa_fe",
+    "santa_marta",
+    "tswaing_formerly_pretoria_saltpan",
+    "ritland_2",
+    "spider",
+    "kara",
+    "serra_da_cangalha",
+    "elbow",
+    "foelsche",
+    "ries",
+    "boltysh",
+    "boltysh_2",
+    "glasford",
+    "kursk",
+    "matt_wilson",
+    "morasko",
+    "campo_del_cielo",
+    "beaverhead",
+    "kara_kul",
+    "neugrund"
+  ],
+  "earth_sites_no_usable_tiles": [
+    "mjolnir",
+    "montagnais"
+  ],
+  "checks": {
+    "negative_controls": {
+      "status": "PASS",
+      "controls": [
+        {
+          "site": "ames_iowa",
+          "rank": 68,
+          "bottom_half": true
+        },
+        {
+          "site": "garden_city_kansas",
+          "rank": 89,
+          "bottom_half": true
+        }
+      ]
+    },
+    "stability": {
+      "n_variants": 12,
+      "rank_tolerance": 5,
+      "top1_unchanged_share": 0.9166666666666666,
+      "mean_top5_survivors": 4.75,
+      "variants": [
+        {
+          "variant": "weight pit_density +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight pit_density -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight curvature_abs_mean +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight curvature_abs_mean -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight relief +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight relief -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight hypsometric_integral +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight hypsometric_integral -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large +20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "weight rough_large -20%",
+          "top1_same": true,
+          "top5_survivors": 5
+        },
+        {
+          "variant": "pixels x2",
+          "top1_same": false,
+          "top5_survivors": 3
+        },
+        {
+          "variant": "tiles shifted half a tile",
+          "top1_same": true,
+          "top5_survivors": 4
+        }
+      ]
+    },
+    "held_out_nasa_sites": {
+      "status": "INFO",
+      "n_sites_ranked": 105,
+      "held_out": [
+        {
+          "site": "badwater_basin",
+          "rank": 100
+        },
+        {
+          "site": "grand_falls_dunes",
+          "rank": 3
+        },
+        {
+          "site": "hole_in_the_wall",
+          "rank": 1
+        },
+        {
+          "site": "kelso_dunes",
+          "rank": 10
+        },
+        {
+          "site": "mesquite_flat_dunes",
+          "rank": 63
+        },
+        {
+          "site": "panamint_valley",
+          "rank": 103
+        }
+      ],
+      "skipped_incomplete": [],
+      "recall_at_5": 0.3333333333333333,
+      "recall_at_10": 0.5,
+      "random_guess_recall_at_5": 0.05
+    },
+    "simple_method_agreement": {
+      "status": "INFO",
+      "label": "agreement \u2260 accuracy",
+      "top5_overlap": 4,
+      "spearman": 0.9653224134356211,
+      "note": "Two methods agreeing shows consistency, not that either is right."
+    },
+    "mission_sensitivity": {
+      "status": "PASS",
+      "warn_at": 0.95,
+      "comparisons": [
+        {
+          "mission": "mars_rover_jezero",
+          "spearman": 0.9014617458013684,
+          "too_similar": false
+        }
+      ]
+    }
+  },
+  "multi_site_coverage": {
+    "requirements": [
+      {
+        "id": "pit_density_in_target_range",
+        "kind": "target_range",
+        "feature": "pit_density",
+        "low": 0.045,
+        "high": 0.10625,
+        "text": "Density of crater-like dips inside the target's range (0.045\u20130.106 per km\u00b2)"
+      },
+      {
+        "id": "curvature_abs_mean_in_target_range",
+        "kind": "target_range",
+        "feature": "curvature_abs_mean",
+        "low": 0.020671397323608398,
+        "high": 0.05337790275573731,
+        "text": "Curvature inside the target's range (0.0207\u20130.0534 /km)"
+      },
+      {
+        "id": "relief_in_target_range",
+        "kind": "target_range",
+        "feature": "relief",
+        "low": 431.31494140625,
+        "high": 1572.4677124023438,
+        "text": "Relief (highest minus lowest) inside the target's range (431\u20131.57e+03 m)"
+      },
+      {
+        "id": "hypsometric_integral_in_target_range",
+        "kind": "target_range",
+        "feature": "hypsometric_integral",
+        "low": 0.22591759392346775,
+        "high": 0.5793580350470451,
+        "text": "Hypsometric integral inside the target's range (0.226\u20130.579)"
+      },
+      {
+        "id": "rough_large_in_target_range",
+        "kind": "target_range",
+        "feature": "rough_large",
+        "low": 6.780014326306234,
+        "high": 16.030457526344428,
+        "text": "Large-scale bumpiness inside the target's range (6.78\u201316 m)"
+      }
+    ],
+    "n_requirements": 5,
+    "steps": [
+      {
+        "site": "hole_in_the_wall",
+        "role": "baseline",
+        "rank": 1,
+        "tile_id": "r00c00",
+        "lat": 35.2261,
+        "lon": -115.6154,
+        "adds": [
+          "Density of crater-like dips inside the target's range (0.045\u20130.106 per km\u00b2)",
+          "Curvature inside the target's range (0.0207\u20130.0534 /km)",
+          "Relief (highest minus lowest) inside the target's range (431\u20131.57e+03 m)",
+          "Hypsometric integral inside the target's range (0.226\u20130.579)",
+          "Large-scale bumpiness inside the target's range (6.78\u201316 m)"
+        ],
+        "covered_so_far": 5
+      }
+    ],
+    "not_covered_by_any_site": [],
+    "best_single_site": [
+      "hole_in_the_wall",
+      5
+    ],
+    "rule": "A site covers a requirement only if one interference-free tile meets it; requirements met together must be met on the same tile. Target range = 10%-90% of the target's tiles. Greedy: each step adds the site covering the most new requirements."
+  },
+  "attribution": [
+    "Produced using Copernicus WorldDEM-30 \u00a9 DLR e.V. 2010-2014 and \u00a9 Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+    "\u00a9 ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium (CC-BY 4.0)",
+    "Mars MGS MOLA DEM 463 m: Smith et al. (2001), Mars Orbiter Laser Altimeter: experiment summary after the first year of global mapping of Mars, JGR 106(E10); mosaic by USGS Astrogeology"
+  ]
+}
