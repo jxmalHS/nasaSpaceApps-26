@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Upload, Download, Activity, Pin, X } from 'lucide-react';
-import { tests, F, features } from '../lib/catalog.js';
+import { tests, F, features, T } from '../lib/catalog.js';
+import { useLocalChecks, LOCAL_CHECK_TOP } from '../lib/localCheck.js';
 import { useStore, setState, scoringConfig, getState, togglePin } from '../lib/store.js';
 import { useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
@@ -19,6 +20,8 @@ export default function Results({ onOpen }) {
   const d = r.data;
   const list = d ? (filters.beatsBaseline ? d.list.filter((x) => x.beatsBaseline) : d.list) : [];
   const listRef = useRef(null);
+  const targetId = useStore((s) => s.targetId);
+  const checks = useLocalChecks(list.slice(0, LOCAL_CHECK_TOP), T[targetId]);
 
   const onKey = (e) => {
     if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return;
@@ -65,6 +68,7 @@ export default function Results({ onOpen }) {
                 <span className="tiny faint ellipsis">{x.country} · {latlon(x.lat, x.lon)}{rankBy === 'blend' && x.mlScored === false ? ' · rules only' : ''}{rankBy !== 'rules' && x.mlScored ? ' · model-analysed' : ''}</span>
                 <span className="row site-badges">
                   <SiteStatus status={x.status} warn={x.warn} />{x.beatsBaseline && <Status kind="beats">Beats NASA site</Status>}
+                  {checks[x.id] && <span title="Mean slope of a 2 × 2 km patch here vs the same patch at the target (as on the Compare page). The rank uses one 55 km cell, which can average out mountains or hide flat ground."><Status kind={checks[x.id].ok ? 'met' : 'warn'}>{checks[x.id].text}</Status></span>}
                 </span>
               </span>
               <span className="site-score">
