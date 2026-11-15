@@ -107,6 +107,78 @@ mosaic.
 
 ---
 
+## Limits and their sources
+
+**Full threshold table:** [`docs/THRESHOLDS.md`](docs/THRESHOLDS.md) (also `docs/thresholds.csv` for
+Excel): every website and engine limit, its NASA reference and its tagged NASA-site exceptions.
+It is generated (`npm run thresholds`) and `npm test` fails if it is out of date.
+**Tests:** `tests/limits.test.mjs` pins every threshold, checks each one cites its NASA source
+(with the verified quotes), checks the scorer's boundaries (at the limit passes, just over fails,
+soft = ×0.75), and checks that every NASA-site disagreement is listed with the right tag.
+If you change a limit on purpose: update `PINNED` in that test, run `python ml/validate_limits.py`
+and `npm run thresholds`.
+
+Each test's hard limits (fail) and soft limits (score × 0.75 and a warning) live in
+`src/config/missions.json`. Every limit carries `src` (source ids) and `basis` (why this
+number), and the `sources` block holds the full citations. The Trust page renders the same
+table ("Where the limits come from"), so the docs and the scorer cannot disagree.
+
+| Limit | Used as | Basis | Source |
+|---|---|---|---|
+| Vegetation (NDVI) ≤ 0.30 | wheels, boots, comms, lights, regolith, ice digging, solar, fission | Top of NASA's shrub/grassland range (0.2–0.3). Solar and fission were 0.35, now 0.30 | [1] |
+| Vegetation (NDVI) ≤ 0.25 | navigation, dust, suit dust, intake, water, spectrometers, landing | Inside the 0.2–0.3 range. Not 0.2: the layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave site (0.22 on its cell; 0.28 at the field site, listed as an exception) | [1] |
+| Rain/snow ≤ 250 mm/yr | thermal, dust, suit dust, intake, regolith, habitat thermal (strict); wheels, boots, drills, fission (soft) | NASA's desert figure (about 250 mm). **Conflict:** the same NASA page also says most deserts get less than 300 mm; 250 is the stricter of the two. Wheels, boots, drills and fission were 300 mm, now 250 | [2], [5] |
+| Rain/snow ≤ 400 / 500 mm/yr | ice digging, foundations / solar, spectrometers (soft) | No NASA number exists. Checked against NASA sites: McMurdo and Haughton pass; HI-SEAS, Svalbard, Mauna Kea and Holuhraun break it on their 55 km cells (exceptions listed on the Trust page) | [5], [9] |
+| Snow ≤ 9 months | wheels, boots, regolith, landing (strict) | MODIS land cover counts snow on ≥ 60% of the area for 10+ months as *permanent* snow and ice. NASA campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough | [3], [4], [6] |
+| Snow ≤ 6 months | navigation, thermal, habitat thermal, foundations (soft) | No NASA number exists. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at the field site, so 6 matches them. Exception: McMurdo (thermal tests) | [4], [9] |
+| Airborne dust ≤ 60 µg/m³ | navigation (soft) | No NASA number exists. Checked against NASA sites: every NASA field site reads 51 µg/m³ or less in MERRA-2, so 60 rejects none | [7], [9] |
+
+Weights (`w`) are team judgement: no NASA dataset publishes analog weights. The rover slope
+reasoning follows VIPER's 15° normal / 25–30° maximum slopes [8].
+
+1. NASA Earth Observatory, "Measuring Vegetation (NDVI & EVI)", 30 Aug 2000. https://science.nasa.gov/earth/earth-observatory/measuring-vegetation-ndvi-evi . Quote: "Very low values of NDVI (0.1 and below) correspond to barren areas of rock, sand, or snow. Moderate values represent shrub and grassland (0.2 to 0.3)". Caveat on the same page: the values "are representative of actual values, but real vegetation is much more varied."
+2. NASA Science, "Mission: Biomes – Desert". https://science.nasa.gov/kids/earth/mission-biomes/biodesert . Quotes: "Deserts get about 250 millimeters (10 inches) of rain per year" and "Most deserts receive less than 300 mm a year".
+3. Sulla-Menashe & Friedl, MODIS Collection 6.1 Land Cover Type (MCD12Q1) Product User Guide, Table 3 (IGBP legend), NASA LP DAAC. https://lpdaac.usgs.gov/documents/1409/MCD12_User_Guide_V61.pdf
+4. Hall & Riggs (2021), MODIS/Terra Snow Cover Daily L3 Global 500m SIN Grid, Version 61 (MOD10A1), NASA NSIDC DAAC. https://doi.org/10.5067/MODIS/MOD10A1.061 . Riggs, Hall & Román (2019), MODIS Snow Products Collection 6.1 User Guide v1.0.
+5. Reichle & Liu (2014), "Observation-Corrected Precipitation Estimates in GEOS-5", NASA/TM-2014-104606 Vol. 35, §3.1.4 and §4. https://gmao.gsfc.nasa.gov/pubs/docs/Reichle734.pdf . Quote: "MERRA-2 is forced with its own, model-generated precipitation at high latitudes, with the corrected precipitation data over low latitudes, and with a combination of the two between 42.5º and 62.5º latitude." NASA POWER (https://power.larc.nasa.gov/docs/methodology/): "Meteorological parameters continue to be based upon MERRA-2".
+6. NASA D-RATS 2022 Test Report (NTRS 20230017073, XM-23-003), p. 6: October 2022, Black Point Lava Flow, "plan and execute 2 weeks of consecutive field-testing". https://ntrs.nasa.gov/citations/20230017073 . NASA SVS 14583: JETT5 was "a week-long moonwalk simulation in the San Francisco Volcanic Field" (13–17 May 2024). https://svs.gsfc.nasa.gov/14583
+7. NASA GMAO MERRA-2 aerosol diagnostics M2TMNXAER v5.12.4 (DUSMASS), NASA GES DISC. https://www.earthdata.nasa.gov/data/catalog/ges-disc-m2tmnxaer-5.12.4
+8. NASA, VIPER Lunar Operations. https://science.nasa.gov/mission/viper/lunar-operations/
+9. Precedent-site check, `ml/validate_limits.py`: NASA GIBS, MOD13A3 v6.1 monthly NDVI, 1 km (https://doi.org/10.5067/MODIS/MOD13A3.061) and MOD10CM v6.1 monthly snow cover, 0.05° (https://doi.org/10.5067/MODIS/MOD10CM.061), 2023, ~5 km box at each NASA field site.
+
+### Checked against the places NASA actually tested
+
+`python ml/validate_limits.py` (needs `pillow`) checks every limit against each test's NASA
+precedent sites and writes `src/config/limit_checks.json`, which the Trust page shows.
+Vegetation and snow are re-measured at the field coordinates from NASA GIBS (MOD13A3, MOD10CM; a
+snow month = mean cover ≥ 60%, the IGBP permanent-snow line);
+rain uses the 55 km cell, because no finer NASA rain product is available without a login.
+
+Result (Nov 2026): 14 of 38 limit checks agree with every NASA site. The limits are kept
+strict on purpose, and all 32 disagreements are listed as tagged exceptions (Trust page,
+"Where the limits come from", and the site panel of each NASA site):
+
+| Tag | Meaning | Count |
+|---|---|---|
+| EXCEPTION · field site | breaks the limit at the field site itself (NASA site-scale data) | 10 |
+| EXCEPTION · 55 km cell only | the cell breaks it, the field site passes | 6 |
+| EXCEPTION · cell, unverified | the cell breaks it; no finer NASA data to check (rain) | 16 |
+
+Main ones:
+
+- **San Francisco Volcanic Field** reads NDVI 0.43 even at 1 km: NASA works on bare cinder
+  patches smaller than a MODIS pixel inside a pine-covered field.
+- **Mojave** reads NDVI 0.28 at the field site, above the 0.25 limit for navigation and landing.
+- **Rain at high latitude** (Haughton, Holuhraun, Svalbard): NASA's MERRA-2 rain is model-only
+  poleward of 62.5° (NASA/TM-2014-104606 Vol. 35), and those cells include wetter terrain.
+- **Holuhraun** fails snow on its 55 km cell (10 months, glacier included) but passes at the
+  lava field itself (6 months), so it is tagged EXCEPTION · 55 km cell only.
+
+**Known conflicts in the sources themselves:** NASA gives two desert rain figures (about 250 mm and
+under 300 mm); NASA's NDVI ranges are "representative" values, while this layer is the yearly
+maximum; the engine's tree limit uses ESA WorldCover's tree class, not the IGBP canopy-cover
+definition it is compared with.
+
 ## What the honest numbers say (see the Trust page)
 
 * Rules place NASA precedent sites at a median **74th percentile** of Earth (43 site–test pairs),

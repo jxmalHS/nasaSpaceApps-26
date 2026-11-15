@@ -1,11 +1,78 @@
 import { useEffect, useState } from 'react';
-import { tests, A, T, features, F } from '../lib/catalog.js';
+import { tests, A, T, features, F, systems } from '../lib/catalog.js';
+import missionsJson from '../config/missions.json';
+import { limitChecks as checks, exceptionsFor, ExceptionTag, exceptionText } from '../lib/limitChecks.jsx';
+
+/** Precedent-site checks from ml/validate_limits.py, keyed "testId|featureId". */
+const CHECK = Object.fromEntries((checks.checks || []).map((c) => [`${c.test_id}|${c.feature}`, c]));
 import { distanceKm } from '../lib/geo.js';
 import { isNum, pct } from '../lib/format.js';
 import { useResult, useScoring } from '../lib/results.js';
 import { call, ready } from '../lib/engine.js';
 import { Status, Term } from '../components/ui.jsx';
 import { Link } from '../lib/router.jsx';
+
+/**
+ * Every pass/fail limit, grouped by variable and value, with the NASA source behind it.
+ * Read from src/config/missions.json (each limit's `src` and `basis`, and the `sources` catalogue),
+ * so this table cannot drift from the numbers the scorer uses.
+ */
+function LimitSources() {
+  const S = missionsJson.sources || {};
+  const groups = new Map();
+  for (const s of systems) for (const t of s.tests) for (const [fid, c] of Object.entries(t.interference || {})) {
+    const key = `${fid}|${c.op}|${c.v}`;
+    if (!groups.has(key)) groups.set(key, { fid, c, hard: [], soft: [], changed: [], exceptions: [], checked: 0 });
+    const g = groups.get(key);
+    g[c.hard ? 'hard' : 'soft'].push(t.label);
+    const chk = CHECK[`${t.id}|${fid}`];
+    if (chk) {
+      g.checked += chk.precedents.filter((p) => p.representative).length;
+      for (const e of chk.exceptions) g.exceptions.push({ ...e, test: t.label, hard: chk.hard });
+    }
+    if (c.was != null) g.changed.push({ label: t.label, was: c.was });
+    else if (g.c.was != null) g.c = c; // explain the row with an unchanged limit's basis when there is one
+  }
+  const rows = [...groups.values()].sort((a, b) => a.fid.localeCompare(b.fid) || a.c.v - b.c.v);
+  if (!rows.length) return null;
+  const used = [...new Set(rows.flatMap((r) => r.c.src || []))].filter((id) => S[id]);
+  return (
+    <section aria-labelledby="t-lim">
+      <h2 id="t-lim">Where the limits come from</h2>
+      <p>Each test has a few strict (hard) or soft limits. Breaking a hard limit marks the site “Fails a limit”; breaking a soft one multiplies its score by 0.75 and shows a warning. Where a NASA dataset or mission document gives a number, the limit uses it. Every limit is also checked against the places NASA actually used for that test, re-measured at the field site with NASA data where possible. The limits stay strict: a site NASA used that breaks one is tagged <ExceptionTag kind="field-site" /> when it breaks it at the field site itself, <ExceptionTag kind="cell-only" /> when only the 55 km cell breaks it, and <ExceptionTag kind="cell" /> when no finer NASA data exists to check. Weights are team judgement: no NASA dataset publishes analog weights.</p>
+      {checks.method && <p className="small faint">How the check works: {checks.method}</p>}
+      <div className="table-scroll"><table className="dt">
+        <thead><tr><th>Limit</th><th>Used by</th><th>Why this number</th><th>Checked against NASA sites</th><th>Sources</th></tr></thead>
+        <tbody>{rows.map(({ fid, c, hard, soft, changed, exceptions, checked }) => (
+          <tr key={`${fid}${c.op}${c.v}`}>
+            <td style={{ whiteSpace: 'nowrap' }}><Term id={fid}>{F[fid]?.label || fid}</Term> {c.op === '<=' ? '≤' : '≥'} {c.v}{F[fid]?.unit && F[fid].unit !== 'NDVI' ? ` ${F[fid].unit}` : ''}</td>
+            <td className="small">{hard.length > 0 && <div><b>Strict:</b> {hard.join(', ')}</div>}{soft.length > 0 && <div><b>Soft:</b> {soft.join(', ')}</div>}</td>
+            <td className="small">{c.basis || '—'}{changed.length > 0 && <div className="tiny" style={{ color: 'var(--warn)' }}>{c.was == null ? 'Changed' : 'All changed'} from {[...new Set(changed.map((x) => x.was))].join(' / ')}{c.was == null ? `: ${changed.map((x) => x.label).join(', ')}` : ''}</div>}</td>
+            <td className="small">
+              {checked === 0 ? <span className="faint">No NASA site uses this test yet</span>
+                : exceptions.length === 0 ? <Status kind="met" size={11}>All {checked} NASA site checks pass</Status>
+                : <>
+                    <Status kind="warn" size={11}>{exceptions.length} of {checked} NASA site checks are exceptions</Status>
+                    {exceptions.map((e, k) => (
+                      <div key={k} className="tiny" style={{ marginTop: 6 }}>
+                        <ExceptionTag kind={e.kind} /> <b>{A[e.site]?.name || e.site}</b> ({e.test}{e.hard ? ', strict' : ', soft'}): {exceptionText({ ...e, feature: fid })}{e.reason ? `. ${e.reason}` : ''}
+                      </div>
+                    ))}
+                  </>}
+            </td>
+            <td className="small">{(c.src || []).map((id) => <div key={id}><a href={`#src-${id}`}>{S[id] ? id : `${id}?`}</a></div>)}</td>
+          </tr>
+        ))}</tbody>
+      </table></div>
+      <h3 className="small">Sources</h3>
+      <ol className="small stack" style={{ paddingLeft: 18 }}>
+        {used.map((id) => (
+          <li key={id} id={`src-${id}`}><b>{id}</b>: {S[id].cite}. <a href={S[id].url} target="_blank" rel="noreferrer">{S[id].url}</a><div className="faint">{S[id].says}</div></li>
+        ))}
+      </ol>
+    </section>
+  );
+}
 
 /** Validation shown plainly: what holds, what does not, and why. */
 export default function Trust() {
@@ -61,7 +128,11 @@ export default function Trust() {
                     <td className="num">{x.percentile == null ? '—' : x.percentile.toFixed(0)}</td>
                     <td className="num">{mv?.percentile == null ? '—' : mv.percentile.toFixed(0)}</td>
                     <td><div className="dotplot">{[25, 50, 75].map((g) => <i key={g} className="gl" style={{ left: g + '%' }} />)}{x.percentile != null && <i className="d rules" style={{ left: x.percentile + '%' }} title="Rules" />}{mv?.percentile != null && <i className="d" style={{ left: mv.percentile + '%' }} title="Model" />}</div></td>
-                    <td>{x.status === 0 ? <Status kind="met">Passes</Status> : x.status === 2 ? <Status kind="notmet">Fails a limit</Status> : <Status kind="unknown">Unverified</Status>}</td>
+                    <td>{x.status === 0 ? <Status kind="met">Passes</Status> : x.status === 2 ? <Status kind="notmet">Fails a limit</Status> : <Status kind="unknown">Unverified</Status>}
+                      {x.representative && exceptionsFor(t.testId, x.id).map((e) => (
+                        <div key={e.feature} className="tiny" style={{ marginTop: 4 }}><ExceptionTag kind={e.kind} /> {F[e.feature]?.short || e.feature}{e.hard ? '' : ' (soft)'}: {exceptionText(e)}</div>
+                      ))}
+                    </td>
                   </tr>
                 );
               }))}
@@ -103,6 +174,8 @@ export default function Trust() {
           ))}
         </section>
       )}
+
+      <LimitSources />
 
       <section aria-labelledby="t-why">
         <h2 id="t-why">Where it falls short, and why</h2>

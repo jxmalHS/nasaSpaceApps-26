@@ -1,6 +1,54 @@
 {
  "schema_version": 1,
  "_comment": "Missions are data. Every feature in a test plays one role. target: w = default weight (0-100), dir = match | high | low (used in Stress mode; Realism mode always matches). interference: the site must stay on the right side of v; hard = strict pass/fail, soft = penalty plus warning. Features not listed are ignored for this test. 'baseline' = precedent field sites (analogs.json). 'lab' = what to pair the field test with.",
+ "_sources_comment": "Every interference limit carries src (ids below) and basis (why this number). Weights (w) are team judgement: no NASA dataset publishes analog weights; rover slope reasoning follows viper-ops.",
+ "sources": {
+  "nasa-eo-ndvi": {
+   "cite": "NASA Earth Observatory, \"Measuring Vegetation (NDVI & EVI)\", 30 Aug 2000",
+   "url": "https://science.nasa.gov/earth/earth-observatory/measuring-vegetation-ndvi-evi",
+   "says": "\"Very low values of NDVI (0.1 and below) correspond to barren areas of rock, sand, or snow. Moderate values represent shrub and grassland (0.2 to 0.3), while high values indicate temperate and tropical rainforests (0.6 to 0.8).\" Caveat on the same page: \"The numbers on the figure above are representative of actual values, but real vegetation is much more varied.\""
+  },
+  "nasa-biome-desert": {
+   "cite": "NASA Science, \"Mission: Biomes - Desert\" (page updated 5 Dec 2025)",
+   "url": "https://science.nasa.gov/kids/earth/mission-biomes/biodesert",
+   "says": "\"Deserts get about 250 millimeters (10 inches) of rain per year—the least amount of rain of all of the biomes.\" The same page also says: \"Most deserts receive less than 300 mm a year compared to rainforests, which receive over 2,000 mm.\""
+  },
+  "mcd12q1-igbp": {
+   "cite": "Sulla-Menashe & Friedl, MODIS Collection 6.1 Land Cover Type (MCD12Q1) Product User Guide, Table 3 (IGBP legend). NASA LP DAAC",
+   "url": "https://lpdaac.usgs.gov/documents/1409/MCD12_User_Guide_V61.pdf",
+   "says": "Table 3 (IGBP legend): \"Permanent Snow and Ice ... At least 60% of area is covered by snow and ice for at least 10 months of the year.\" \"Savannas ... Tree cover 10-30% (canopy >2m).\" \"Woody Savannas ... Tree cover 30-60% (canopy >2m).\" \"Barren ... At least 60% of area is non-vegetated barren (sand, rock, soil) areas with less than 10% vegetation.\""
+  },
+  "mod10-snow": {
+   "cite": "Hall & Riggs (2021), MODIS/Terra Snow Cover Daily L3 Global 500m SIN Grid, Version 61 (MOD10A1), NASA NSIDC DAAC, doi:10.5067/MODIS/MOD10A1.061; Riggs, Hall & Román (2019), MODIS Snow Products Collection 6.1 User Guide v1.0",
+   "url": "https://doi.org/10.5067/MODIS/MOD10A1.061",
+   "says": "C6.1 user guide: \"snow cover always has an NDSI > 0 but not all features with NDSI > 0 are snow.\" NSIDC MOD10A1 page: \"The biggest limitation to the use of the MODIS snow-cover products is cloud cover\"; \"Polar darkness prevents snow-cover mapping in polar regions during the winter\"; \"Areas of ephemeral snow cover and very thin snow cover may not be mapped by MODIS\"."
+  },
+  "nasa-field-seasons": {
+   "cite": "NASA SVS 14583, \"Artemis & JETT5 Interview with Kelsey Young\" (May 2024); USGS Astrogeology, \"Artemis III mission tests San Francisco Volcanic Field\" (11 Jul 2024); NASA D-RATS 2022 Test Report (NTRS 20230017073, XM-23-003), p. 6",
+   "url": "https://svs.gsfc.nasa.gov/14583",
+   "says": "JETT5: \"NASA conducted a week-long moonwalk simulation in the San Francisco Volcanic Field\" (\"May 13 to 17, 2024\", USGS). D-RATS 2022 (October 2022, Black Point Lava Flow): \"plan and execute 2 weeks of consecutive field-testing with little to no breaks between crews\"."
+  },
+  "nasa-power-merra2": {
+   "cite": "Reichle & Liu (2014), \"Observation-Corrected Precipitation Estimates in GEOS-5\", NASA/TM-2014-104606 Vol. 35, sections 3.1.4 and 4; NASA POWER methodology",
+   "url": "https://gmao.gsfc.nasa.gov/pubs/docs/Reichle734.pdf",
+   "says": "\"MERRA-2 is forced with its own, model-generated precipitation at high latitudes, with the corrected precipitation data over low latitudes, and with a combination of the two between 42.5º and 62.5º latitude.\" NASA POWER: \"Meteorological parameters continue to be based upon MERRA-2 and GEOS FP-IT assimilation models.\""
+  },
+  "merra2-dust": {
+   "cite": "NASA GMAO MERRA-2 aerosol diagnostics M2TMNXAER v5.12.4 (DUSMASS), NASA GES DISC",
+   "url": "https://www.earthdata.nasa.gov/data/catalog/ges-disc-m2tmnxaer-5.12.4",
+   "says": "Source of the dust layer. The dataset documentation gives no suitability threshold."
+  },
+  "viper-ops": {
+   "cite": "NASA, VIPER Lunar Operations",
+   "url": "https://science.nasa.gov/mission/viper/lunar-operations/",
+   "says": "\"VIPER can generally drive on a slope of up to 15 degrees.\" \"It can tackle a slope of 25 or 30 degrees when necessary, but the likelihood of slipping increases and slows the rover down.\" (page updated 21 Sep 2023)"
+  },
+  "nasa-precedent-check": {
+   "cite": "Precedent-site check (ml/validate_limits.py): NASA GIBS, MOD13A3 v6.1 monthly NDVI 1 km (doi:10.5067/MODIS/MOD13A3.061) and MOD10CM v6.1 monthly snow cover 0.05 deg, a snow month = mean cover >= 60% (the IGBP permanent-snow line) (doi:10.5067/MODIS/MOD10CM.061), 2023, ~5 km box at each NASA field site",
+   "url": "https://gibs.earthdata.nasa.gov/",
+   "says": "Every limit is checked against the sites NASA actually used for that test, at the field coordinates where NASA data allow. Results and exceptions are in src/config/limit_checks.json and on this page."
+  }
+ },
  "systems": [
   {
    "id": "ltv",
@@ -43,19 +91,38 @@
        "op": "<=",
        "v": 9,
        "hard": true,
-       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it.",
+       "src": [
+        "mcd12q1-igbp",
+        "mod10-snow",
+        "nasa-field-seasons",
+        "nasa-precedent-check"
+       ],
+       "basis": "MODIS land cover counts snow on at least 60% of the area for 10+ months as permanent snow and ice, so 9 or fewer is seasonal. NASA field campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.3,
        "hard": true,
-       "why": "Roots and plants bind the soil and hide obstacles."
+       "why": "Roots and plants bind the soil and hide obstacles.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       },
       "precip_mm": {
        "op": "<=",
-       "v": 300,
+       "v": 250,
        "hard": false,
-       "why": "Wet soil is cohesive; lunar soil is bone dry."
+       "why": "Wet soil is cohesive; lunar soil is bone dry.",
+       "was": 300,
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 300 (the other NASA figure); set to NASA's stricter desert figure, about 250 mm a year. Conflict: the same NASA page also says most deserts get less than 300 mm."
       }
      },
      "ignore": {
@@ -109,19 +176,34 @@
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Plants move in wind and confuse stereo matching."
+       "why": "Plants move in wind and confuse stereo matching.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       },
       "snow_mo": {
        "op": "<=",
        "v": 6,
        "hard": false,
-       "why": "Long snow seasons shorten the usable field window and flatten contrast."
+       "why": "Long snow seasons shorten the usable field window and flatten contrast.",
+       "src": [
+        "mod10-snow",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at site scale (MODIS MOD10CM), so 6 matches the snowiest place NASA has used. Soft limit only."
       },
       "dust_ug": {
        "op": "<=",
        "v": 60,
        "hard": false,
-       "why": "Airborne haze scatters lidar; the Moon has none."
+       "why": "Airborne haze scatters lidar; the Moon has none.",
+       "src": [
+        "merra2-dust",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: every NASA field site reads 51 ug/m3 or less in MERRA-2 (Lanzarote is highest), so the limit rejects none of them. Soft limit only."
       }
      },
      "ignore": {
@@ -169,7 +251,12 @@
        "op": "<=",
        "v": 0.3,
        "hard": false,
-       "why": "Foliage absorbs radio signals in ways regolith does not."
+       "why": "Foliage absorbs radio signals in ways regolith does not.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       }
      },
      "ignore": {
@@ -219,13 +306,24 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Liquid water freeze–thaw is a failure mode the Moon never sees."
+       "why": "Liquid water freeze–thaw is a failure mode the Moon never sees.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "snow_mo": {
        "op": "<=",
        "v": 6,
        "hard": false,
-       "why": "Snow insulates hardware and blunts the cycle."
+       "why": "Snow insulates hardware and blunts the cycle.",
+       "src": [
+        "mod10-snow",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at site scale (MODIS MOD10CM), so 6 matches the snowiest place NASA has used. Soft limit only."
       }
      },
      "ignore": {
@@ -273,13 +371,24 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Moisture clumps dust and stops it migrating."
+       "why": "Moisture clumps dust and stops it migrating.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Plant cover keeps dust on the ground."
+       "why": "Plant cover keeps dust on the ground.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -335,19 +444,38 @@
        "op": "<=",
        "v": 9,
        "hard": true,
-       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it.",
+       "src": [
+        "mcd12q1-igbp",
+        "mod10-snow",
+        "nasa-field-seasons",
+        "nasa-precedent-check"
+       ],
+       "basis": "MODIS land cover counts snow on at least 60% of the area for 10+ months as permanent snow and ice, so 9 or fewer is seasonal. NASA field campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.3,
        "hard": true,
-       "why": "Vegetation softens and hides the ground."
+       "why": "Vegetation softens and hides the ground.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       },
       "precip_mm": {
        "op": "<=",
-       "v": 300,
+       "v": 250,
        "hard": false,
-       "why": "Mud and wet rock are slippery in a way regolith is not."
+       "why": "Mud and wet rock are slippery in a way regolith is not.",
+       "was": 300,
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 300 (the other NASA figure); set to NASA's stricter desert figure, about 250 mm a year. Conflict: the same NASA page also says most deserts get less than 300 mm."
       }
      },
      "ignore": {
@@ -394,7 +522,12 @@
        "op": "<=",
        "v": 0.3,
        "hard": true,
-       "why": "Vegetation changes surface brightness and texture."
+       "why": "Vegetation changes surface brightness and texture.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       }
      },
      "ignore": {
@@ -440,13 +573,24 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Damp dust sticks rather than migrates."
+       "why": "Damp dust sticks rather than migrates.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Plants keep dust down."
+       "why": "Plants keep dust down.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -546,13 +690,24 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Humidity makes dust cake on filters in an un-Martian way."
+       "why": "Humidity makes dust cake on filters in an un-Martian way.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.25,
        "hard": false,
-       "why": "Pollen and organic aerosols contaminate the test."
+       "why": "Pollen and organic aerosols contaminate the test.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -603,13 +758,23 @@
        "op": "<=",
        "v": 400,
        "hard": false,
-       "why": "Surface meltwater makes mud, not ice-cemented regolith."
+       "why": "Surface meltwater makes mud, not ice-cemented regolith.",
+       "src": [
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: McMurdo (103 mm) and Haughton Crater (341 mm) pass; see exceptions. Soft limit only."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.3,
        "hard": false,
-       "why": "Vegetated permafrost has an organic layer Mars lacks."
+       "why": "Vegetated permafrost has an organic layer Mars lacks.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       }
      },
      "ignore": {
@@ -659,9 +824,16 @@
      "interference": {
       "precip_mm": {
        "op": "<=",
-       "v": 300,
+       "v": 250,
        "hard": false,
-       "why": "Groundwater and meltwater flood holes."
+       "why": "Groundwater and meltwater flood holes.",
+       "was": 300,
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 300 (the other NASA figure); set to NASA's stricter desert figure, about 250 mm a year. Conflict: the same NASA page also says most deserts get less than 300 mm."
       }
      },
      "ignore": {
@@ -708,7 +880,12 @@
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Organic matter changes the chemistry."
+       "why": "Organic matter changes the chemistry.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -763,19 +940,37 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Wet feedstock behaves nothing like regolith."
+       "why": "Wet feedstock behaves nothing like regolith.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "ndvi": {
        "op": "<=",
        "v": 0.3,
        "hard": true,
-       "why": "Organic soil contaminates feedstock."
+       "why": "Organic soil contaminates feedstock.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Top of NASA's shrub/grassland NDVI range (0.2-0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum, which reads higher than typical values."
       },
       "snow_mo": {
        "op": "<=",
        "v": 9,
        "hard": true,
-       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it."
+       "why": "Needs a snow-free field season of at least three months; schedule the campaign inside it.",
+       "src": [
+        "mcd12q1-igbp",
+        "mod10-snow",
+        "nasa-field-seasons",
+        "nasa-precedent-check"
+       ],
+       "basis": "MODIS land cover counts snow on at least 60% of the area for 10+ months as permanent snow and ice, so 9 or fewer is seasonal. NASA field campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough."
       }
      },
      "ignore": {
@@ -835,13 +1030,24 @@
        "op": "<=",
        "v": 250,
        "hard": true,
-       "why": "Rain and freeze–thaw add failures that space never causes."
+       "why": "Rain and freeze–thaw add failures that space never causes.",
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "NASA's desert figure: about 250 mm of rain a year. Conflict: the same NASA page also says most deserts get less than 300 mm, so 250 is the stricter of NASA's two numbers."
       },
       "snow_mo": {
        "op": "<=",
        "v": 6,
        "hard": false,
-       "why": "Snow loads and insulation distort the test."
+       "why": "Snow loads and insulation distort the test.",
+       "src": [
+        "mod10-snow",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at site scale (MODIS MOD10CM), so 6 matches the snowiest place NASA has used. Soft limit only."
       }
      },
      "ignore": {
@@ -893,13 +1099,23 @@
        "op": "<=",
        "v": 6,
        "hard": false,
-       "why": "Long snow seasons shorten the usable field window and flatten contrast."
+       "why": "Long snow seasons shorten the usable field window and flatten contrast.",
+       "src": [
+        "mod10-snow",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at site scale (MODIS MOD10CM), so 6 matches the snowiest place NASA has used. Soft limit only."
       },
       "precip_mm": {
        "op": "<=",
        "v": 400,
        "hard": false,
-       "why": "Wet ground loses bearing strength."
+       "why": "Wet ground loses bearing strength.",
+       "src": [
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: McMurdo (103 mm) and Haughton Crater (341 mm) pass; see exceptions. Soft limit only."
       }
      },
      "ignore": {
@@ -947,13 +1163,24 @@
        "op": "<=",
        "v": 500,
        "hard": false,
-       "why": "Cloudy, wet climates cut irradiance unpredictably."
+       "why": "Cloudy, wet climates cut irradiance unpredictably.",
+       "src": [
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: Haughton Crater (341 mm) passes; see exceptions. Soft limit only."
       },
       "ndvi": {
        "op": "<=",
-       "v": 0.35,
+       "v": 0.3,
        "hard": false,
-       "why": "Vegetation shades low arrays."
+       "why": "Vegetation shades low arrays.",
+       "was": 0.35,
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 0.35, above NASA's shrub/grassland range; set to its top (0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -1002,15 +1229,28 @@
      "interference": {
       "precip_mm": {
        "op": "<=",
-       "v": 300,
+       "v": 250,
        "hard": false,
-       "why": "Rain cools radiators in ways vacuum never will."
+       "why": "Rain cools radiators in ways vacuum never will.",
+       "was": 300,
+       "src": [
+        "nasa-biome-desert",
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 300 (the other NASA figure); set to NASA's stricter desert figure, about 250 mm a year. Conflict: the same NASA page also says most deserts get less than 300 mm."
       },
       "ndvi": {
        "op": "<=",
-       "v": 0.35,
+       "v": 0.3,
        "hard": false,
-       "why": "Vegetated ground is not regolith."
+       "why": "Vegetated ground is not regolith.",
+       "was": 0.35,
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Was 0.35, above NASA's shrub/grassland range; set to its top (0.3). Caveat: NASA calls these values representative; this layer is the yearly maximum."
       }
      },
      "ignore": {
@@ -1061,13 +1301,23 @@
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Plants mask rock spectra."
+       "why": "Plants mask rock spectra.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       },
       "precip_mm": {
        "op": "<=",
        "v": 500,
        "hard": false,
-       "why": "Weathering coats rocks with clays."
+       "why": "Weathering coats rocks with clays.",
+       "src": [
+        "nasa-power-merra2",
+        "nasa-precedent-check"
+       ],
+       "basis": "No NASA dataset sets this number. Checked against NASA sites: Haughton Crater (341 mm) passes; see exceptions. Soft limit only."
       }
      },
      "ignore": {
@@ -1171,13 +1421,25 @@
        "op": "<=",
        "v": 0.25,
        "hard": true,
-       "why": "Vegetation hides the ground from lidar and cameras."
+       "why": "Vegetation hides the ground from lidar and cameras.",
+       "src": [
+        "nasa-eo-ndvi",
+        "nasa-precedent-check"
+       ],
+       "basis": "Inside NASA's shrub/grassland NDVI range (0.2-0.3). Not lowered to 0.2: this layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave precedent (0.22 on its cell). At the field site Mojave reads 0.28, so it is listed as an exception. Caveat: NASA calls these values representative; this layer is the yearly maximum."
       },
       "snow_mo": {
        "op": "<=",
        "v": 9,
        "hard": true,
-       "why": "Needs a snow-free season: snow erases rocks and shadows."
+       "why": "Needs a snow-free season: snow erases rocks and shadows.",
+       "src": [
+        "mcd12q1-igbp",
+        "mod10-snow",
+        "nasa-field-seasons",
+        "nasa-precedent-check"
+       ],
+       "basis": "MODIS land cover counts snow on at least 60% of the area for 10+ months as permanent snow and ice, so 9 or fewer is seasonal. NASA field campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough."
       }
      },
      "ignore": {

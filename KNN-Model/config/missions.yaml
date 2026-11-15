@@ -13,10 +13,12 @@
 # to a published rover limit. The limits:
 #   - VIPER generally drives slopes up to 15 deg; 25-30 deg possible but slip increases
 #     (NASA, science.nasa.gov/mission/viper/lunar-operations)
-#   - Apollo LRV climbed/descended slopes of ~25 deg, crossed 30 cm obstacles
-#     (NASA SP-350 "Apollo Expeditions to the Moon", ch. 14.8)
-#   - Apollo 15/16 traverses: max slope 22.1 / 24.7 deg, mean 5.6 / 4.5 deg
-#     (NASA LPSC abstract, ntrs.nasa.gov/citations/20250011301)
+#   - Apollo LRV could "climb and descend slopes above 25" deg
+#     (NASA SP-350 "Apollo Expeditions to the Moon", ch. 14.8) and "clamber over obstacles
+#     30 centimeters (1 foot) high" (NASA SP-4214 "Where No Man Has Gone Before", ch. 13-3)
+#   - Apollo 15/16 traverses: max slope 22.1 / 24.7 deg, mean 5.6 / 4.5 deg (Jacob et al.,
+#     "Apollo Lunar Roving Vehicle as Traversed Performance Metrics", LPSC 2026, Table 1;
+#     ntrs.nasa.gov/citations/20250011301)
 # frac_steep (share of ground over 15 deg) = VIPER's normal driving limit  -> 2.0, highest
 # slope_p90  (steepest 10%), vs the 22-25 deg Apollo/VIPER maximum          -> 1.5
 # slope_mean, vs the 4.5-5.6 deg mean of real driven traverses             -> 1.0
@@ -24,6 +26,35 @@
 # rough_small / rough_large: 500 m / 2.5 km bumpiness; no rover limit at
 #   these scales (30 cm rocks are invisible at 100 m pixels)                -> 0.5 / 0.3
 # Caveat: slopes from 100 m pixels are gentler than what a wheel feels at 1 m.
+#
+# --- Where the interference limits come from -----------------------------------------
+# Land cover is measured with ESA WorldCover 2021 (share of each 5 km tile). The class
+# boundaries are checked against NASA's MODIS land-cover legend:
+#   [IGBP] Sulla-Menashe & Friedl, MODIS Collection 6.1 Land Cover Type (MCD12Q1) Product
+#          User Guide, Table 3 (IGBP legend), NASA LP DAAC,
+#          https://lpdaac.usgs.gov/documents/1409/MCD12_User_Guide_V61.pdf
+#          - Savannas: tree cover 10-30%; Woody Savannas: 30-60%; forests: >60%
+#          - Croplands: at least 60% cultivated; Cropland/Natural Vegetation Mosaics: 40-60%
+#          - Urban and Built-up: at least 30% impervious surface
+#          - Permanent Snow and Ice: at least 60% snow/ice for at least 10 months a year
+#          - Water Bodies: at least 60% permanent water; Barren: less than 10% vegetation
+#   tree_frac 0.3     = the IGBP Savanna / Woody Savanna boundary (more trees = wooded land).
+#   tree_frac 0.2     (landing) team value, stricter than 0.3: cameras must see bare ground.
+#   cropland_frac 0.2, builtup_frac 0.1, snow_ice_frac 0.1, water_frac 0.05: team values,
+#                     well below the IGBP class lines (60% / 30% / 60% / 60%), so a tile
+#                     passes only when that cover is a minor part of it. No NASA dataset
+#                     gives a "ruins the test" threshold for these.
+# --- Where the mandatory rules come from ------------------------------------------------
+#   slope_p90 within 5 deg, frac_steep within 0.10, rough_small within 3 m, pit_density
+#   within 0.5 /km2, relief within 150 m: NO NASA SOURCE. Added as example values in
+#   commits cfd0298 / c47f29e; never sourced. Checked against NASA's own baselines (nearest
+#   tile to the official coordinates): relief within 150 m fails all 5 NASA sites; slope_p90
+#   within 5 deg fails 4 of 5 for the south pole; see README "Origin of the tolerances".
+#   They pick the recommended tile and fill met/not-met; they do not change the ranking.
+#   temp_range_mean >= 60 K: NO NASA SOURCE (commit 21ff392); 3 of 5 NASA sites read below it.
+#   Context only, NOT verified against NASA documents: the Moon's equatorial day-night swing
+#   is roughly 300 K, and Earth's widest MODIS land-surface swings are reported near 80 K
+#   (secondary sources).
 moon_rover_south_pole:
   description: >-
     Rover wheels / astronaut surface mobility at the lunar south pole. Weighted toward
@@ -42,11 +73,11 @@ moon_rover_south_pole:
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
               grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
     interference:
-      tree_frac: {max: 0.3}
-      cropland_frac: {max: 0.2}
-      builtup_frac: {max: 0.1}
-      snow_ice_frac: {max: 0.1}
-      water_frac: {max: 0.05}
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
   mandatory:
     - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
@@ -71,11 +102,11 @@ moon_rover_mons_mouton:
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean,
               grass_shrub_frac, bare_frac, temp_range_mean, temp_range_std, minerals]
     interference:
-      tree_frac: {max: 0.3}
-      cropland_frac: {max: 0.2}
-      builtup_frac: {max: 0.1}
-      snow_ice_frac: {max: 0.1}
-      water_frac: {max: 0.05}
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
   mandatory:
     - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
     - {feature: frac_steep, max_abs_diff: 0.10, unit: fraction}
@@ -97,10 +128,10 @@ moon_landing_hazards_south_pole:
     ignored: [slope_mean, slope_std, slope_p90, frac_steep, rough_small,
               grass_shrub_frac, bare_frac, cropland_frac, temp_range_mean, temp_range_std, minerals]
     interference:
-      tree_frac: {max: 0.2}
-      builtup_frac: {max: 0.1}
-      snow_ice_frac: {max: 0.1}
-      water_frac: {max: 0.05}
+      tree_frac: {max: 0.2}        # team value, stricter than [IGBP] 30% for cameras
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
   mandatory:
     - {feature: pit_density, max_abs_diff: 0.5, unit: per_km2}
     - {feature: relief, max_abs_diff: 150, unit: m}
@@ -123,11 +154,11 @@ moon_rover_thermal_south_pole:
     ignored: [slope_std, relief, hypsometric_integral, curvature_abs_mean, pit_density,
               temp_range_std, grass_shrub_frac, bare_frac, minerals]
     interference:
-      tree_frac: {max: 0.3}
-      cropland_frac: {max: 0.2}
-      builtup_frac: {max: 0.1}
-      snow_ice_frac: {max: 0.1}
-      water_frac: {max: 0.05}
+      tree_frac: {max: 0.3}        # [IGBP] Savanna / Woody Savanna line (30% trees)
+      cropland_frac: {max: 0.2}    # team value; [IGBP] cropland >= 60%, mosaic 40-60%
+      builtup_frac: {max: 0.1}     # team value; [IGBP] urban >= 30% impervious
+      snow_ice_frac: {max: 0.1}    # team value; [IGBP] permanent snow >= 60%, 10+ months
+      water_frac: {max: 0.05}      # team value; [IGBP] water bodies >= 60%
   mandatory:
     - {feature: slope_p90, max_abs_diff: 5.0, unit: deg}
     - {feature: temp_range_mean, min: 60, unit: K}

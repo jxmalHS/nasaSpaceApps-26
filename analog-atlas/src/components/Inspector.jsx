@@ -7,6 +7,7 @@ import { fmt, fmtDiff, latlon, score100, pct, isNum } from '../lib/format.js';
 import { toCsv, download } from '../lib/csv.js';
 import { Bullet, SiteStatus, Status, Term } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
+import { exceptionFor, ExceptionTag, exceptionText } from '../lib/limitChecks.jsx';
 
 /** One-glance verdict for a site, used by the inspector and the report. */
 export function verdict(d) {
@@ -29,6 +30,8 @@ export default function Inspector({ d, loading, onBack }) {
   const test = tests[s.testId], tg = T[s.targetId];
   if (loading && !d) return <div className="inspector"><button className="btn btn-ghost btn-sm" onClick={onBack}><ArrowLeft size={14} /> All results</button><div className="skeleton" style={{ height: 300, marginTop: 12 }} /></div>;
   if (!d) return null;
+  // Is this cell the index cell of a NASA field site used for the current test?
+  const nasaSite = (d.baselineAll || []).find((b) => b.representative && b.index === d.i) || null;
   const v = verdict(d);
   const pinned = s.pins.includes(d.id);
   const envOf = (fid) => env?.find((e) => e.fid === fid);
@@ -99,13 +102,19 @@ export default function Inspector({ d, loading, onBack }) {
       {d.checks.length > 0 && (
         <section aria-labelledby="ins-c">
           <h3 id="ins-c" className="ins-h3">Limits and interference</h3>
+          {nasaSite && <p className="tiny faint" style={{ margin: '0 0 6px' }}>NASA field site for this test: <b>{nasaSite.name}</b>. Limits stay strict; where NASA's own site breaks one, it is tagged as an exception (see the Trust page).</p>}
           <ul className="checks">
-            {d.checks.map((c) => (
-              <li key={c.fid}>
-                <Status kind={c.ok === null ? 'unknown' : c.ok ? 'met' : c.hard ? 'notmet' : 'warn'}>{c.ok === null ? 'Unknown' : c.ok ? 'Met' : c.hard ? 'Not met' : 'Warning'}</Status>
-                <span className="grow small"><Term id={c.fid}>{F[c.fid].short}</Term> <span className="num">{fmt(c.x, c.fid)}</span> <span className="faint">must be {c.op === '<=' ? '≤' : '≥'} {fmt(c.v, c.fid)}{c.hard ? '' : ' (soft)'}</span></span>
-              </li>
-            ))}
+            {d.checks.map((c) => {
+              const ex = nasaSite ? exceptionFor(s.testId, c.fid, nasaSite.id) : null;
+              return (
+                <li key={c.fid}>
+                  <Status kind={c.ok === null ? 'unknown' : c.ok ? 'met' : c.hard ? 'notmet' : 'warn'}>{c.ok === null ? 'Unknown' : c.ok ? 'Met' : c.hard ? 'Not met' : 'Warning'}</Status>
+                  <span className="grow small"><Term id={c.fid}>{F[c.fid].short}</Term> <span className="num">{fmt(c.x, c.fid)}</span> <span className="faint">must be {c.op === '<=' ? '≤' : '≥'} {fmt(c.v, c.fid)}{c.hard ? '' : ' (soft)'}</span>
+                    {ex && <div className="tiny" style={{ marginTop: 2 }}><ExceptionTag kind={ex.kind} /> {exceptionText(ex)}{ex.reason ? `. ${ex.reason}` : ''}</div>}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}
