@@ -23,10 +23,11 @@ const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) 
 const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
 export class HomeScene {
-  constructor(canvas, { pairs, onPair, reduced = false, base = '/' }) {
+  constructor(canvas, { pairs, onPair, onSlowFrames, reduced = false, base = '/' }) {
     this.canvas = canvas;
     this.pairs = pairs;
     this.onPair = onPair;
+    this.onSlowFrames=onSlowFrames;
     this.reduced = reduced;
     this.running = false;
     this.visible = true;
@@ -255,11 +256,14 @@ export class HomeScene {
   adapt(dt) {
     const ft = this.frameTimes;
     ft.push(dt);
-    if (ft.length < 90) return;
+    if (ft.length < 30) return;
     const avg = ft.reduce((x, y) => x + y, 0) / ft.length;
     ft.length = 0;
+    if(this.running && this.dpr<=0.5 && avg>1/35 && this.onSlowFrames){
+      const pause=this.onSlowFrames;this.onSlowFrames=null;pause();return;
+    }
     let next = this.dpr;
-    if (avg > 1 / 45) next = Math.max(0.6, this.dpr - 0.25);
+    if (avg > 1 / 45) next = Math.max(0.5, this.dpr - 0.25);
     else if (avg < 1 / 58 && this.dpr < this.dprCap) next = Math.min(this.dprCap, this.dpr + 0.25);
     if (next !== this.dpr) { this.dpr = next; this.renderer.setPixelRatio(next); this.resize(); }
   }

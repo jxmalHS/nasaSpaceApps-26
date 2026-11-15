@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useRef, useLayoutEffect, useState } from 'react';
 import { X, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useStore, setState, selectTest, getState } from '../lib/store.js';
 import { getResult } from '../lib/results.js';
@@ -13,7 +13,7 @@ const STEPS = [
     run: () => { selectTest('ltv.wheels'); setState({ targetId: 'mons-mouton-plateau', view: 'earth', sel: null }); } },
   { sel: '[data-tour="weights"]', title: 'Defaults you can override', body: 'Defaults are already set. Open this panel only if you want to: each feature is matched, used as a limit, or ignored, with a reason. We raised roughness so bumpy ground counts more.',
     run: () => setState((s) => ({ openPanels: [...new Set([...(s.openPanels || []), 'adv-weights'])], weights: { ...s.weights, rough_m: 55 } })) },
-  { sel: '[data-tour="map"]', title: 'Every land cell, scored', body: 'White is the top 1% for this test. Hatching means unverified, never a pass. White rings are NASA’s documented field sites. We opened the best site.',
+  { sel: '[data-tour="map"]', title: 'Every land cell, scored', body: 'White is the top 1% for this test. Hatching means unverified, never a pass. We opened the best site.',
     run: () => { const l = getResult().data?.list?.[0]; if (l) setState({ sel: l.id }); } },
   { sel: '.col-right, .sheet', title: 'Answer first, evidence on demand', body: 'The verdict comes first, then each condition in real units against the target and NASA’s usual site. From here: compare side by side, or export a report with sources and limits.', run: () => {} },
 ];
@@ -24,7 +24,10 @@ export default function Tour() {
   const [rect, setRect] = useState(null);
   const st = STEPS[step];
 
-  useEffect(() => { st?.run(); }, [step]);
+  const original=useRef(null);
+  const restore=()=>{if(original.current){const snap=original.current;original.current=null;setState({...snap,tourStep:null})}};
+  useEffect(()=>{if(!st){restore();return}if(!original.current){const {testId,targetId,view,sel,weights,roles,thresholds,openPanels}=getState();original.current={testId,targetId,view,sel,weights,roles,thresholds,openPanels}}st.run()},[step]);
+  useEffect(()=>()=>restore(),[]);
   useLayoutEffect(() => {
     if (!st) return;
     let raf, n = 0;
@@ -37,7 +40,9 @@ export default function Tour() {
     return () => clearTimeout(raf);
   }, [step]);
   useEffect(() => {
+    if (!st) return;
     const k = (e) => {
+      if (e.key !== "Escape" && e.target.closest?.("input,select,textarea,[role=radio]")) return;
       if (e.key === 'Escape') setState({ tourStep: null });
       if (e.key === 'ArrowRight') next(1);
       if (e.key === 'ArrowLeft') next(-1);

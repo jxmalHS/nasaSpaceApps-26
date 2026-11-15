@@ -1,3 +1,4 @@
+import GlobePair from '../components/GlobePair.jsx';
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Download, Repeat, Box, Sun, ArrowLeft } from 'lucide-react';
 import { T, F, targets, tests } from '../lib/catalog.js';
@@ -11,7 +12,9 @@ import { toCsv, download } from '../lib/csv.js';
 import { Term, Bullet, useReducedMotion } from '../components/ui.jsx';
 import Relief3D from '../components/Relief3D.jsx';
 
-const REGIONAL = ['slope_deg', 'rough_m', 'lst_dtr_K', 't_mean_C', 'low_sun_pct', 'dark_d', 'pressure_kPa', 'precip_mm', 'basalt'];
+import SiteEvidence from '../components/SiteEvidence.jsx';
+
+
 
 export default function Compare() {
   useScoring();
@@ -23,16 +26,19 @@ export default function Compare() {
   const [pa, setPa] = useState(null);
   const [pb, setPb] = useState(null);
   const [hover, setHover] = useState(null);
-  const [line, setLine] = useState([[0.08, 0.5], [0.92, 0.5]]);
-  const [flick, setFlick] = useState(false);
-  const [flickSide, setFlickSide] = useState(0);
-  const [show3d, setShow3d] = useState(false);
-  const [sun, setSun] = useState(30);
-  const [exag, setExag] = useState(2);
+  const line=s.profileLine, setLine=value=>setState(st=>({profileLine:typeof value==="function"?value(st.profileLine):value}));
+  const flick=s.flick, setFlick=value=>setState(st=>({flick:typeof value==="function"?value(st.flick):value}));
+  const flickSide=s.flickSide,setFlickSide=fn=>setState(st=>({flickSide:fn(st.flickSide)}));
+  const show3d=s.relief, setShow3d=value=>setState(st=>({relief:typeof value==="function"?value(st.relief):value}));
+  const layer=s.patchLayer, setLayer=patchLayer=>setState({patchLayer});
+  const globes=s.globePair,setGlobes=globePair=>setState({globePair});
+  const sun=s.sun, setSun=value=>setState(st=>({sun:typeof value==="function"?value(st.sun):value}));
+  const exag=s.exaggeration, setExag=value=>setState(st=>({exaggeration:typeof value==="function"?value(st.exaggeration):value}));
 
   const earthId = s.compareId ?? s.sel ?? r.data?.list?.[0]?.id ?? null;
 
   useEffect(() => {
+    setEarth(null);setPa(null);
     if (earthId == null) return;
     let alive = true;
     (async () => {
@@ -41,13 +47,16 @@ export default function Compare() {
       const d = await call('detail', { cfg: scoringConfig(getState()), i });
       if (!alive) return;
       setEarth(d);
-      setPa(await loadPatch({ body: 'earth', key: String(d.id), seed: d.id, slopeDeg: d.values.slope_deg, roughM: d.values.rough_m }));
+      const patch=await loadPatch({ body: 'earth', key: String(d.id), seed: d.id, slopeDeg: d.values.slope_deg, roughM: d.values.rough_m });
+      if(alive)setPa(patch);
     })();
     return () => { alive = false; };
   }, [earthId, r.data]);
 
   useEffect(() => {
-    loadPatch({ body: tg.body, key: tg.id, seed: hashStr(tg.id), slopeDeg: tg.f.slope_deg?.v, roughM: tg.f.rough_m?.v }).then(setPb);
+    let alive=true;setPb(null);
+    loadPatch({ body: tg.body, key: tg.id, seed: hashStr(tg.id), slopeDeg: tg.f.slope_deg?.v, roughM: tg.f.rough_m?.v }).then(p=>{if(alive)setPb(p)});
+    return ()=>{alive=false};
   }, [tg.id]);
 
   // Flicker: alternate A/B at the same frame. Manual (space/button) when reduced motion is on.
@@ -98,7 +107,7 @@ export default function Compare() {
             {targets.filter((t) => tests[s.testId].bodies.includes(t.body)).map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
           </select>
         </label>
-        <span className="grow" />
+        <label>Dimension <select className="select sm" value={layer} onChange={e=>setLayer(e.target.value)}><option value="height">Relative height (m)</option><option value="slope">Slope (0–90°)</option></select></label><span className="grow" />
         <button className={'btn btn-sm'} aria-pressed={flick} onClick={() => setFlick((v) => !v)} title="Show A and B alternately in the same frame (Space to switch)"><Repeat size={14} /> Flicker</button>
         <button className="btn btn-sm" aria-pressed={show3d} onClick={() => setShow3d((v) => !v)}><Box size={14} /> 3D</button>
         <label className="row small" title="Sun elevation for the hillshade. Drop it to see the lunar south pole’s grazing light.">
@@ -111,14 +120,18 @@ export default function Compare() {
 
       <div className="cmp-body">
         <div className="cmp-stage">
-          <p className="small dim">Both patches are {PATCH_M / 1000} × {PATCH_M / 1000} km, north up, sampled the same way, on one colour scale of height relative to each patch’s mean (±{fmt(domain[1], 'rough_m')}). Drag across either patch to draw the profile line.</p>
+          <SiteEvidence earth={earth?.id===earthId?earth:null} target={tg} state={s}
+            viewerControl={<button className="btn btn-sm" aria-expanded={globes} onClick={()=>setGlobes(!globes)}>{globes?'Close':'Open'} linked planetary viewers</button>}
+            viewer={globes&&<GlobePair earth={earth?.id===earthId?earth:null} target={tg}/>}/>
+          <h2 className="terrain-heading">Matched terrain patches</h2>
+          <p className="small dim">Both patches are {PATCH_M / 1000} × {PATCH_M / 1000} km, north up, sampled the same way, on one colour scale: {layer==="slope"?"slope from 0° to 90°":"height relative to each patch mean (±"+fmt(domain[1],"rough_m")+")"}. Drag across either patch to draw the profile line.</p>
           <div className={'cmp-pair' + (flick ? ' flicker' : '')}>
             {visible.map((v) => (
-              <PatchView key={flick ? 'f' : v.side} {...v} domain={domain} sun={sun} hover={hover} setHover={setHover} line={line} setLine={setLine} exag={1} />
+              <PatchView key={flick ? 'f' : v.side} {...v} domain={domain} layer={layer} sun={sun} hover={hover} setHover={setHover} line={line} setLine={setLine} exag={1} />
             ))}
           </div>
           <Readout hover={hover} pa={pa} pb={pb} earthElev={earth?.values?.elev_m} />
-          {prof && <Profile a={prof[0]} b={prof[1]} />}
+          {prof && <Profile a={prof[0]} b={prof[1]} body={tg.body} length={PATCH_M*Math.hypot(line[1][0]-line[0][0],line[1][1]-line[0][1])} />}
           {show3d && pa && pb && (
             <div className="stack">
               <div className="row small"><span className="dim">Vertical exaggeration (same for both)</span>
@@ -130,35 +143,16 @@ export default function Compare() {
         </div>
         <aside className="cmp-side" aria-label="Comparison numbers">
           <section>
-            <h2 className="ins-h3">Patch terrain</h2>
+            <h2 className="terrain-heading">Terrain measurements</h2><p className="small dim">2 × 2 km at each location</p>
             <table className="stats-t">
-              <thead><tr><th scope="col">2 km patch</th><th scope="col" className="earth-c">A</th><th scope="col" className="target-c">B</th></tr></thead>
+              <thead><tr><th scope="col">Metric</th><th scope="col" className="earth-c">A · Earth<small>{pa?.synthetic?"Illustrative":pa?"Measured":"Loading"}</small></th><th scope="col" className="target-c">B · {tg.body==="moon"?"Moon":"Mars"}<small>{pb?.synthetic?"Illustrative":pb?"Measured":"Loading"}</small></th></tr></thead>
               <tbody>
                 {[['Mean slope', 'slopeMean', 'slope_deg'], ['Slope, 90th pct', 'slopeP90', 'slope_deg'], ['RMS roughness', 'rms', 'rough_m'], ['Relief', 'relief', 'rough_m']].map(([l, k, fid]) => (
                   <tr key={k}><td>{l}</td><td className="num">{fmt(pa?.stats[k], fid, { dp: 1 })}</td><td className="num">{fmt(pb?.stats[k], fid, { dp: 1 })}</td></tr>
                 ))}
               </tbody>
             </table>
-            {(pa?.synthetic || pb?.synthetic) && <p className="tiny" style={{ color: 'var(--warn)', marginTop: 8 }}>Illustrative patches: synthesized from each site’s regional slope and roughness. Add measured DEM patches with pipeline/make_patches.py to replace them.</p>}
-          </section>
-          <section>
-            <h2 className="ins-h3">Regional conditions</h2>
-            <table className="stats-t">
-              <thead><tr><th scope="col">55 km cell</th><th scope="col" className="earth-c">A</th><th scope="col" className="target-c">B</th><th scope="col">A − B</th></tr></thead>
-              <tbody>
-                {REGIONAL.map((fid) => {
-                  const a = earth?.values?.[fid], b = tg.f[fid]?.v;
-                  return (
-                    <tr key={fid}>
-                      <td><Term id={fid}>{F[fid].short}</Term></td>
-                      <td className="num">{fmt(a, fid)}</td>
-                      <td className="num">{b == null ? <span className="status unknown" style={{ padding: '0 6px' }}>?</span> : fmt(b, fid)}</td>
-                      <td className="num dim">{b == null ? '—' : fmtDiff(a - b, fid)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            {(pa?.synthetic || pb?.synthetic) && <p className="tiny" style={{ color: 'var(--warn)', marginTop: 8 }}>Illustrative terrain · Values marked illustrative are calculated from a surface generated using regional slope and roughness.</p>}
           </section>
           {earth && (
             <button className="btn btn-sm" onClick={() => { setState({ sel: earth.id }); go('/report'); }}>Open the site report</button>
@@ -169,15 +163,18 @@ export default function Compare() {
   );
 }
 
-function PatchView({ side, p, title, sub, cls, domain, sun, hover, setHover, line, setLine }) {
+function PatchView({ side, p, title, sub, cls, domain, layer, sun, hover, setHover, line, setLine }) {
   const canvas = useRef(null);
   const drag = useRef(null);
-  useEffect(() => { if (p) renderPatch(canvas.current, p, domain, { sunAlt: sun }); }, [p, domain, sun]);
+  useEffect(() => { if (p) renderPatch(canvas.current, p, domain, { sunAlt: sun, layer }); }, [p, domain, sun, layer]);
   const pos = (e) => { const b = e.currentTarget.getBoundingClientRect(); return [Math.min(1, Math.max(0, (e.clientX - b.left) / b.width)), Math.min(1, Math.max(0, (e.clientY - b.top) / b.height))]; };
   return (
     <div className={'patch side-' + (cls === 'a' ? 'earth' : 'target')}>
       <div className="patch-h"><span className={'tag-ab ' + cls}>{cls.toUpperCase()}</span><span className="grow ellipsis">{title}</span><span className="tiny faint">{sub}</span></div>
-      <div className="patch-canvas"
+      <div className="patch-canvas" tabIndex={0} role="group" aria-label={title+". Arrow keys inspect terrain. Shift and arrows move the end of the elevation profile."} onKeyDown={e=>{
+          const move={ArrowLeft:[-.025,0],ArrowRight:[.025,0],ArrowUp:[0,-.025],ArrowDown:[0,.025]}[e.key];if(!move)return;e.preventDefault();
+          const pos=e.shiftKey?line[1]:(hover||[.5,.5]);const next=pos.map((v,i)=>Math.max(0,Math.min(1,v+move[i])));setHover(next);if(e.shiftKey)setLine([line[0],next]);
+        }}
         onPointerDown={(e) => { drag.current = pos(e); e.currentTarget.setPointerCapture(e.pointerId); }}
         onPointerMove={(e) => { const q = pos(e); setHover(q); if (drag.current && Math.hypot(q[0] - drag.current[0], q[1] - drag.current[1]) > 0.03) setLine([drag.current, q]); }}
         onPointerUp={() => { drag.current = null; }} onPointerLeave={() => setHover(null)}>
@@ -220,25 +217,25 @@ function Readout({ hover, pa, pb, earthElev }) {
   );
 }
 
-function Profile({ a, b }) {
+function Profile({ a, b, body, length }) {
   const all = [...a, ...b];
   let lo = Math.min(...all), hi = Math.max(...all);
   if (hi - lo < 1) { hi += 0.5; lo -= 0.5; }
-  const W = 600, H = 160, P = 28;
-  const path = (arr) => arr.map((v, k) => `${k ? 'L' : 'M'}${P + (k / (arr.length - 1)) * (W - P - 6)},${6 + (1 - (v - lo) / (hi - lo)) * (H - 26)}`).join('');
+  const W = 600, H = 160, P = 42;
+  const path = (arr) => arr.map((v, k) => `${k ? 'L' : 'M'}${P + (k / (arr.length - 1)) * (W - P - 6)},${6 + (1 - (v - lo) / (hi - lo)) * (H - 36)}`).join('');
   return (
     <figure className="profile panel" style={{ margin: 0, padding: 12 }}>
-      <figcaption className="row small"><b>Elevation profile</b><span className="dim">relative to the line’s start, same vertical scale</span><span className="grow" />
-        <span className="row tiny"><i style={{ width: 14, height: 2, background: 'var(--earth-2)', display: 'inline-block' }} /> A</span>
-        <span className="row tiny"><i style={{ width: 14, height: 2, background: 'var(--target)', display: 'inline-block' }} /> B</span></figcaption>
+      <figcaption className="row small"><b>Elevation profile</b><span className="dim">Height change from start (m)</span><span className="grow" />
+        <span className="row tiny"><i style={{ width: 14, height: 2, background: 'var(--earth-2)', display: 'inline-block' }} /> A · Earth</span>
+        <span className="row tiny"><i style={{ width: 14, height: 2, borderTop: '2px dashed var(--target-2)', display: 'inline-block' }} /> B · {body==='moon'?'Moon':'Mars'}</span></figcaption>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Profile: A spans ${fmt(Math.max(...a) - Math.min(...a), 'rough_m')}, B spans ${fmt(Math.max(...b) - Math.min(...b), 'rough_m')}`}>
         {[lo, (lo + hi) / 2, hi].map((v, k) => {
-          const y = 6 + (1 - (v - lo) / (hi - lo)) * (H - 26);
-          return <g key={k}><line x1={P} x2={W - 6} y1={y} y2={y} stroke="rgba(160,188,255,0.12)" /><text x={P - 4} y={y + 3} fontSize="10" textAnchor="end" fill="#8795b1">{Math.round(v)}</text></g>;
+          const y = 6 + (1 - (v - lo) / (hi - lo)) * (H - 36);
+          return <g key={k}><line x1={P} x2={W - 6} y1={y} y2={y} stroke="rgba(160,188,255,0.12)" /><text x={P - 4} y={y + 3} fontSize="12" textAnchor="end" fill="#8795b1">{Math.round(v)}</text></g>;
         })}
-        <text x={P} y={H - 4} fontSize="10" fill="#8795b1">m</text>
+        <text x={P} y={H-4} fontSize="12" fill="#b3c0d8">0 m</text><text x={W/2} y={H-4} fontSize="12" textAnchor="middle" fill="#b3c0d8">Distance along profile</text><text x={W-6} y={H-4} fontSize="12" textAnchor="end" fill="#b3c0d8">{Math.round(length)} m</text>
         <path d={path(a)} fill="none" stroke="#9cc2ff" strokeWidth="2" />
-        <path d={path(b)} fill="none" stroke="#fc3d21" strokeWidth="2" />
+        <path d={path(b)} fill="none" stroke="#ff8a73" strokeDasharray="6 3" strokeWidth="2" />
       </svg>
     </figure>
   );

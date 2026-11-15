@@ -16,11 +16,12 @@ const NAV = [['/explore', 'Explore'], ['/compare', 'Compare'], ['/trust', 'Trust
 
 export default function App() {
   const path = usePath();
+  const needsCsv=useStore(s=>s.needsUpload&&!s.uploadRows.length);
   const tourStep = useStore((s) => s.tourStep);
   const page = path.startsWith('/explore') ? <Explore /> : path.startsWith('/compare') ? <Compare /> : path.startsWith('/report') ? <Report />
     : path.startsWith('/trust') ? <Trust /> : path === '/' ? <Home /> : <NotFound />;
   const appMode = path !== '/';
-  useEffect(() => { document.body.classList.toggle('app-mode', appMode && !path.startsWith('/report') && !path.startsWith('/trust')); }, [appMode, path]);
+  useEffect(() => { document.body.classList.toggle('app-mode', path.startsWith('/explore')); }, [appMode, path]);
 
   return (
     <>
@@ -31,15 +32,16 @@ export default function App() {
         </nav>
         <div className="spacer" />
         {path.startsWith('/explore') && (
-          <button className="btn btn-ghost btn-sm" onClick={() => setState({ tourStep: 0 })} data-tour-anchor="tour"><Compass size={15} /> <span className="hide-sm">Tour</span></button>
+          <button className="btn btn-ghost btn-sm" onClick={() => setState({ tourStep: 0 })} aria-label="Tour" data-tour-anchor="tour"><Compass size={15} /> <span className="hide-sm">Tour</span></button>
         )}
         {appMode && (
-          <button className="btn btn-sm" onClick={async () => {
+          <button className="btn btn-sm" aria-label="Share view" onClick={async () => {
             const url = shareUrl();
-            try { await navigator.clipboard.writeText(url); toast('Link copied: it restores this exact view'); } catch { prompt('Copy this link', url); }
+            try { await navigator.clipboard.writeText(url); toast(url.includes('csv=local')?'Mission link copied. The recipient must import the original CSV.':'Mission link copied'); } catch { prompt('Copy this link', url); }
           }}><Share2 size={15} /> <span className="hide-sm">Share view</span></button>
         )}
       </header>
+      {needsCsv && path!=='/explore' && <p className="small" role="status">This link used local site data. <Link to="/explore">Import the original CSV in Explorer.</Link></p>}
       <ErrorBoundary key={path}><Suspense fallback={<div className="page-loading" role="status"><span className="spinner" /> Loading…</div>}>{page}</Suspense></ErrorBoundary>
       {tourStep != null && path.startsWith('/explore') && <Tour />}
       <Toaster />

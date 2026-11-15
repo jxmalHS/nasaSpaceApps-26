@@ -107,7 +107,7 @@ export function rampColor(t) {
 }
 
 /** Hillshade × height colour into a canvas. `sunAlt` in degrees lets you view under grazing light. */
-export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exaggerate = 1 } = {}) {
+export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exaggerate = 1, layer = "height" } = {}) {
   const n = p.n, dx = p.size_m / (n - 1);
   canvas.width = n; canvas.height = n;
   const ctx = canvas.getContext('2d');
@@ -120,7 +120,7 @@ export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exagg
     const sl = Math.atan(Math.hypot(dzdx, dzdy)), asp = Math.atan2(dzdy, -dzdx);
     const shade = Math.max(0, Math.cos(zen) * Math.cos(sl) + Math.sin(zen) * Math.sin(sl) * Math.cos(az - asp));
     const t = (p.z[y * n + x] - p.stats.mean - domain[0]) / (domain[1] - domain[0]);
-    const c = rampColor(t), k = 0.25 + 0.95 * shade, o = (y * n + x) * 4;
+    const c = rampColor(layer==="slope"?sl/(Math.PI/2):t), k = layer==="slope"?1:0.25 + 0.95 * shade, o = (y * n + x) * 4;
     img.data[o] = Math.min(255, c[0] * k); img.data[o + 1] = Math.min(255, c[1] * k); img.data[o + 2] = Math.min(255, c[2] * k); img.data[o + 3] = 255;
   }
   ctx.putImageData(img, 0, 0);

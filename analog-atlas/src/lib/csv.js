@@ -25,7 +25,7 @@ export function parseCsv(text) {
 
 const esc = (v) => {
   if (v == null || (typeof v === 'number' && !Number.isFinite(v))) return '';
-  const s = String(v);
+  const s = typeof v === 'string' && /^[\s]*[=+@-]/.test(v) && !Number.isFinite(Number(v)) ? "'" + v : String(v);
   return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
 };
 

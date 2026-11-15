@@ -2,7 +2,7 @@
  "schema_version": 1,
  "index_fingerprint": "b44c7bb32714ae6a",
  "index_rows": 78993,
- "created": "2026-11-15T00:48:28+00:00",
+ "created": "2026-11-15T07:59:49+00:00",
  "model": {
   "name": "Two-way weighted kNN (analog engine)",
   "version": "1.1.0",
@@ -128,6 +128,9 @@
    ],
    "median_percentile": 80.4,
    "median_over": "all 5 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.0565,
+   "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 80% of the other sites; 5 sites picked at random do this well 5.7% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 0.0,
    "random_top5_rate": 0.05,
    "population": "the 103 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -182,7 +185,8 @@
      "percentile": 89.2,
      "website_id": null
     }
-   ]
+   ],
+   "warning": "Note on agreement with NASA: weak. The typical NASA site beats 80% of the other sites; 5 sites picked at random do this well 5.7% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
    "name": "Held-out NASA sites (ltv.wheels / connecting-ridge)",
@@ -198,6 +202,9 @@
    ],
    "median_percentile": 73.5,
    "median_over": "all 5 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.1226,
+   "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 74% of the other sites; 5 sites picked at random do this well 12.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 0.0,
    "random_top5_rate": 0.05,
    "population": "the 103 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -252,7 +259,8 @@
      "percentile": 72.5,
      "website_id": null
     }
-   ]
+   ],
+   "warning": "Note on agreement with NASA: weak. The typical NASA site beats 74% of the other sites; 5 sites picked at random do this well 12.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
    "name": "Held-out NASA sites (ltv.thermal / connecting-ridge)",
@@ -268,6 +276,9 @@
    ],
    "median_percentile": 77.8,
    "median_over": "all 5 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.0828,
+   "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 78% of the other sites; 5 sites picked at random do this well 8.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 1.0,
    "random_top5_rate": 0.5,
    "population": "the 10 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -323,7 +334,7 @@
      "website_id": null
     }
    ],
-   "warning": "Only 10 sites ranked: a random order would put 50% of them in the top 5. Weak evidence."
+   "warning": "Only 10 sites ranked: a random order would put 50% of them in the top 5. Weak evidence. Note on agreement with NASA: weak. The typical NASA site beats 78% of the other sites; 5 sites picked at random do this well 8.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
    "name": "Held-out NASA sites (land.hazards / connecting-ridge)",
@@ -339,6 +350,9 @@
    ],
    "median_percentile": 96.8,
    "median_over": "all 5 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.0003,
+   "agreement_note": "Note on agreement with NASA: strong. The typical NASA site beats 97% of the other sites; 5 sites picked at random do this well 0.0% of the time. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 0.6,
    "random_top5_rate": 0.04,
    "population": "the 127 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -414,6 +428,9 @@
    ],
    "median_percentile": 65.8,
    "median_over": "all 6 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.1816,
+   "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 66% of the other sites; 5 sites picked at random do this well 18.2% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 0.3333333333333333,
    "random_top5_rate": 0.05,
    "population": "the 105 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -478,7 +495,8 @@
      "percentile": 1.9,
      "website_id": "death-valley"
     }
-   ]
+   ],
+   "warning": "Note on agreement with NASA: weak. The typical NASA site beats 66% of the other sites; 5 sites picked at random do this well 18.2% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
    "name": "Held-out NASA sites (ltv.wheels / jezero)",
@@ -499,6 +517,9 @@
    ],
    "median_percentile": 57.0,
    "median_over": "all 6 engine held-out sites",
+   "random_median_percentile": 50.0,
+   "chance_random_does_as_well": 0.3532,
+   "agreement_note": "Note on agreement with NASA: weak. The typical NASA site beats 57% of the other sites; 5 sites picked at random do this well 35.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.",
    "top5_rate": 0.3333333333333333,
    "random_top5_rate": 0.06,
    "population": "the 87 Earth sites the engine ranked for this set (not the 78,993 website cells); percentile = share of the other ranked sites the held-out site beats (100 = first); rank on similarity alone, before the land-cover ordering",
@@ -563,7 +584,8 @@
      "percentile": 2.3,
      "website_id": "death-valley"
     }
-   ]
+   ],
+   "warning": "Note on agreement with NASA: weak. The typical NASA site beats 57% of the other sites; 5 sites picked at random do this well 35.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs."
   },
   {
    "name": "Farmland negative controls (ltv.wheels / mons-mouton-plateau)",

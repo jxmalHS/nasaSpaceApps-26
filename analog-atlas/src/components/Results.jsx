@@ -5,7 +5,7 @@ import { useStore, setState, scoringConfig, getState, togglePin } from '../lib/s
 import { useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
 import { parseCsv, toCsv, download } from '../lib/csv.js';
-import { latlon, score100, pct } from '../lib/format.js';
+import { latlon, score100, pct, fmt } from '../lib/format.js';
 import { ScoreBar, SiteStatus, Status, Term, toast } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
 
@@ -33,7 +33,9 @@ export default function Results({ onOpen }) {
       <div className="res-head" data-tour="results">
         <div>
           <h2 className="res-title">{tests[testId].label}</h2>
-          <div className="small dim" aria-live="polite">
+          {d && r.status === 'ready' && <p className="small"><b>{rankBy === 'rules' || !d.mlAvailable ? 'Mission rules' : rankBy === 'ml' ? 'Model ranking' : 'Blended ranking'}</b> · {d.mlAvailable ? `${d.mlCount.toLocaleString()} Earth cells have a model score for this target and test.` : 'This target and test have no model scores.'}</p>}
+            <p className="small dim">Match is scored out of 100. Higher scores mean a closer match for this test. Pass or fail shows whether the site meets the strict limits.</p>
+            <div className="small dim" aria-live="polite">
             {r.status === 'loading' && 'Loading 78,993 Earth cells…'}
             {d && <>{d.counts[0].toLocaleString()} pass · {d.counts[1].toLocaleString()} unverified · {d.counts[2].toLocaleString()} fail{r.status === 'updating' ? ' · updating' : ''}</>}
             {r.status === 'error' && <span className="target-c">Could not score: {r.error}</span>}
@@ -62,11 +64,11 @@ export default function Results({ onOpen }) {
                 <span className="site-name ellipsis">{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}</span>
                 <span className="tiny faint ellipsis">{x.country} · {latlon(x.lat, x.lon)}{rankBy === 'blend' && x.mlScored === false ? ' · rules only' : ''}{rankBy !== 'rules' && x.mlScored ? ' · model-analysed' : ''}</span>
                 <span className="row site-badges">
-                  {x.beatsBaseline ? <Status kind="beats">Beats NASA site</Status> : <SiteStatus status={x.status} warn={x.warn} />}
+                  <SiteStatus status={x.status} warn={x.warn} />{x.beatsBaseline && <Status kind="beats">Beats NASA site</Status>}
                 </span>
               </span>
               <span className="site-score">
-                <b className="num">{score100(x.score)}</b>
+                <b className="num">{score100(x.score)}<small>/100</small></b>
                 <ScoreBar v={x.score} ml={rankBy === 'ml'} />
               </span>
             </button>
@@ -75,6 +77,7 @@ export default function Results({ onOpen }) {
       </ol>
       <Shortlist onOpen={onOpen} />
       <Uploads uploads={uploads} onOpen={onOpen} />
+      <ImportStatus/>
       <div className="res-actions">
         <ExportTop list={list} />
         <ImportCsv />
@@ -93,7 +96,7 @@ function ModelAnalysed({ rows, onOpen }) {
         <div key={x.id} className="sl-row">
           <button className="link-btn grow ellipsis" onClick={() => onOpen(x)}>{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}, {x.country}</button>
           <SiteStatus status={x.status} warn={x.warn} />
-          <b className="num small" title="Model score">{score100(x.ml)}</b>
+          <b className="num small" title="Model score">{score100(x.ml)}/100</b>
         </div>
       ))}
       {rows.length > 5 && <button className="btn btn-ghost btn-sm" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? 'Show fewer' : `Show all ${rows.length}`}</button>}
@@ -110,12 +113,12 @@ function Baseline({ d, onOpen }) {
       {base.map((b) => (
         <button key={b.id} className="base-row" onClick={() => onOpen({ i: b.index, id: null, lat: null })} disabled={b.index == null}>
           <span className="grow ellipsis"><b>{b.name}</b> <span className="faint small">{b.place}</span></span>
-          <span className="small num">{Number.isNaN(b.score) || b.score == null ? '—' : score100(b.score)}</span>
+          <span className="small num">{Number.isNaN(b.score) || b.score == null ? '—' : score100(b.score) + '/100'}</span>
           <span className="tiny faint num">{b.rank ? `#${b.rank.toLocaleString()}` : b.status === STATUS.FAIL ? 'fails' : 'unranked'}</span>
           {!b.representative && <span className="tiny" title={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
         </button>
       ))}
-      <p className="tiny faint">Scored on the same 55 km cells as every candidate. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
+      <p className="tiny faint">The score is similarity out of 100. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
     </div>
   );
 }
@@ -220,24 +223,22 @@ function Shortlist({ onOpen }) {
   );
 }
 
-function Uploads({ uploads, onOpen }) {
-  if (!uploads.length) return null;
-  return (
-    <section className="shortlist" aria-labelledby="up-h">
-      <div className="row"><h3 id="up-h" className="label grow">Your sites · {uploads.length}</h3>
-        <button className="btn btn-ghost btn-sm" onClick={() => setState({ uploads: [] })}>Clear</button></div>
-      {uploads.map((u, k) => (
-        <div key={k} className="sl-row">
-          <span className="up-dot" aria-hidden="true" />
-          <button className="link-btn grow ellipsis" onClick={() => u.cell != null && onOpen({ i: u.cell })}>{u.name}</button>
-          <SiteStatus status={u.status} warn={u.warn} />
-          <b className="num small">{score100(u.score)}</b>
-        </div>
-      ))}
-    </section>
-  );
+function ImportStatus(){
+  const message=useStore(s=>s.uploadMessage),needs=useStore(s=>s.needsUpload&&!s.uploadRows.length);
+  return <p className="small dim" role="status">{needs?'This shared mission used local data. Import the original CSV to view those sites.':message}</p>;
 }
-
+function Uploads({uploads}){
+  const rows=useStore(s=>s.uploadRows),key=useStore(s=>s.uploadKey),cfg=useStore(s=>JSON.stringify(scoringConfig(s))),selected=useStore(s=>s.selectedUpload);
+  if(!rows.length)return null;
+  const current=cfg===key;
+  const u=current&&selected!=null?uploads[selected]:null;
+  return <section className="shortlist"><h3>Your sites · {rows.length}</h3><p className="small dim">Rules-based scores for this mission.</p>
+  <button className="btn btn-sm" onClick={()=>setState({uploads:[],uploadRows:[],selectedUpload:null,uploadKey:null,uploadMessage:'',needsUpload:false})}>Clear import</button>
+  {current?uploads.map((site,i)=><div className="sl-row" key={i}><button className="link-btn grow" aria-expanded={i===selected} onClick={()=>setState({selectedUpload:i===selected?null:i})}>{site.name}</button><SiteStatus status={site.status} warn={site.warn}/><b>{site.score == null ? '—' : score100(site.score) + '/100'}</b></div>):<p role="status">Recalculating uploaded sites…</p>}
+  {u&&<article aria-label="Uploaded site evidence"><h3>{u.name}</h3><p>Uploaded coordinates · {u.lat}, {u.lon} (lat, lon)</p><p>Nearest index cell · {Number.isFinite(u.cellKm)?u.cellKm.toFixed(1)+' km':'Unavailable'}</p>
+  <table className="stats-t"><thead><tr><th>Feature</th><th>Value</th><th>Source</th></tr></thead><tbody>{features.map(f=><tr key={f.id}><th>{f.label}</th><td>{fmt(u.values[f.id]??u.resolvedValues[f.id],f.id)}</td><td>{Object.hasOwn(u.values,f.id)?'Uploaded':u.resolvedValues[f.id]!=null?'Nearest cell':'Unknown'}</td></tr>)}</tbody></table>
+  <button className="btn btn-sm" onClick={()=>{const ctx=scoringConfig(getState()),header=['name','lat','lon','test','target','rules_score','verdict','mission_json','feature','unit','value','source','nearest_cell_km'];download('uploaded-site.csv',toCsv(header,features.map(f=>({name:u.name,lat:u.lat,lon:u.lon,test:ctx.testId,target:ctx.targetId,rules_score:u.score,verdict:['pass','unverified','fail'][u.status],mission_json:JSON.stringify(ctx),feature:f.id,unit:f.unit,value:u.values[f.id]??u.resolvedValues[f.id],source:Object.hasOwn(u.values,f.id)?'uploaded':u.resolvedValues[f.id]!=null?'nearest cell':'unknown',nearest_cell_km:u.cellKm}))))}}>Export uploaded site</button></article>}</section>;
+}
 function ExportTop({ list }) {
   return (
     <button className="btn btn-sm" disabled={!list.length} onClick={async () => {
@@ -263,13 +264,20 @@ function ImportCsv() {
         const { header, records } = parseCsv(await file.text());
         const latK = header.find((h) => ['lat', 'latitude'].includes(h)), lonK = header.find((h) => ['lon', 'lng', 'long', 'longitude'].includes(h));
         if (!latK || !lonK) { toast('The CSV needs lat and lon columns'); return; }
-        const sites = records.slice(0, 500).map((r, k) => ({
+        if(records.length>500){toast('Import up to 500 rows at a time.');return}
+        const sites=[],rejected=[];
+        records.forEach((r,k)=>{
+          const lat=Number(r[latK]),lon=Number(r[lonK]);
+          if(!r[latK]?.trim()||!r[lonK]?.trim()||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>90||Math.abs(lon)>180){rejected.push((k+2)+' (invalid coordinates)');return}
+          const values={};
+          for(const f of features){const raw=r[f.id.toLowerCase()];if(raw==null||raw==='')continue;
+            if(!Number.isFinite(Number(raw))){rejected.push((k+2)+' (invalid '+f.label+')');return}values[f.id]=Number(raw)}
+          sites.push({
           name: r.name || r.site || `Site ${k + 1}`, lat: Number(r[latK]), lon: Number(r[lonK]),
-          values: Object.fromEntries(features.filter((f) => r[f.id] !== undefined && r[f.id] !== '').map((f) => [f.id, Number(r[f.id])])),
-        })).filter((s) => Number.isFinite(s.lat) && Number.isFinite(s.lon));
-        const scored = await call('scoreSites', { cfg: scoringConfig(getState()), sites });
-        setState({ uploads: scored });
-        toast(`Scored ${scored.length} of your sites. Missing columns were filled from the nearest index cell.`);
+          values,
+        });});
+        const message='Accepted '+sites.length+' rows.'+(rejected.length?' Rejected CSV rows: '+rejected.join(', '):'');
+        setState({uploadMessage:message,...(sites.length?{uploadRows:sites,uploads:[],selectedUpload:null,uploadKey:null,needsUpload:false}:{})});toast(message);
       }} />
     </>
   );

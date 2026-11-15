@@ -233,3 +233,45 @@ body.app-mode { overflow: hidden; }
 .welcome { margin: 12px; padding: 12px; border-radius: 12px; border: 1px solid rgba(76,141,255,0.4); background: var(--earth-wash); display: grid; gap: 8px; }
 .sw { width: 14px; height: 10px; border-radius: 3px; display: inline-block; margin-left: 6px; }
 .readout { grid-template-columns: minmax(150px, auto) 1fr 1fr; }
+/* Paired survey imagery and terrain measurements */
+.compare .cmp-stage{padding:clamp(16px,2.4vw,36px);gap:16px}
+.compare .site-evidence{margin:0;border:0;padding:0}
+.survey-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.survey-heading h1{font-size:clamp(28px,3vw,44px);line-height:1.05;letter-spacing:-.035em;margin:0}
+.site-evidence>p,.cmp-side section>p{color:var(--text-2);font-size:14px;line-height:1.5}
+.site-evidence>.site-images{margin:20px 0 28px;gap:16px;align-items:stretch}
+.survey-figure{display:grid;grid-template-rows:auto 1fr auto;align-content:start;min-width:0;margin:0;border:1px solid var(--line-2);background:var(--bg-1)}
+.survey-figure header{display:flex;align-items:center;gap:10px;padding:12px 14px;min-height:70px}
+.survey-body{font-size:13px;color:var(--text-2)}.survey-figure header h3{font-size:clamp(17px,1.55vw,22px);margin:2px 0 0;line-height:1.2}
+.survey-image{position:relative;align-self:center;background:#000;width:100%}
+.survey-figure figcaption{border-top:1px solid var(--line-2);padding:12px 14px;font-size:13px;line-height:1.5;color:var(--text-2);align-self:end}
+.survey-figure .coord-row{font-size:14px;margin-bottom:6px}.coord-row b,.criteria-table td,.cmp-side .num{font-variant-numeric:tabular-nums}
+.survey-missing{padding:24px;align-self:center;color:var(--text-2);line-height:1.6}
+.criteria-heading,.terrain-heading{font-size:23px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+.criteria-table{margin:12px 0 20px}.criteria-table th,.criteria-table td{padding:12px 8px;text-align:left;vertical-align:top}
+.criteria-table th:first-child{width:29%}.criteria-table td{font-size:16px}.criteria-table td small,.cmp-side th small{display:block;font-size:12px;font-weight:400;color:var(--text-2);line-height:1.4;margin-top:3px}.criteria-table td .estimate-label{color:var(--warn)}
+.cmp-side .stats-t{margin:14px 0}.cmp-side .stats-t td{padding:11px 4px}.cmp-side .tiny{font-size:13px;line-height:1.5}
+.profile figcaption{flex-wrap:wrap;gap:8px 14px}.profile figcaption b{font-size:18px}
+@media(max-width:640px){.compare .cmp-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;padding:12px;gap:10px}.cmp-bar label.row:has(select){grid-column:1/-1}.cmp-bar .select{max-width:100%;min-width:0}.cmp-bar>.grow{display:none}.cmp-stage .site-images{grid-template-columns:1fr}.criteria-table th,.criteria-table td{padding:8px 4px}.survey-heading h1{font-size:32px}.survey-figure header{min-height:55px}.compare .cmp-stage{padding:14px}}
+@media(max-width:640px){.cmp-bar>button:first-child{grid-column:1/-1;justify-self:start}.cmp-bar label.row:has(select) select{flex:1;width:100%}.cmp-bar>button:last-child{grid-column:1/-1}.cmp-bar button,.survey-heading button,.survey-figure .coord-row button{min-height:36px}}
+
+.earth-layer-picker { position:absolute; z-index:8; top:10px; right:52px; max-width:calc(100% - 60px); width:220px; padding:10px; border:1px solid var(--line-2); border-radius:8px; background:var(--bg-1); }
+.earth-layer-picker label { display:grid; gap:6px; }
+.col-left, .col-right, .sheet-body { min-height:0; min-width:0; }
+.baseline-card { grid-template-columns:minmax(0,1fr); }
+.base-row { flex-wrap:wrap; min-width:0; }
+.base-row .grow { flex:1 0 100%; white-space:normal; }
+.col-right .sl-row { flex-wrap:wrap; }
+.legend { max-width:calc(100% - 20px); }
+.view-bar .seg { max-width:100%; flex-wrap:wrap; }
+.view-bar .row { min-width:0; max-width:100%; }
+.view-bar .row > span { white-space:nowrap; }
+.site-score small { font-size:12px; font-weight:400; }
+@media (max-height:600px) {
+  body.app-mode { overflow-y:auto; }
+  .explore, .explore.mobile { min-height:600px; }
+}
+.results, .shortlist { grid-template-columns: minmax(0, 1fr); }
+.results > *, .site-row > .grow { min-width: 0; }
+.sl-row { flex-wrap: wrap; }
+.sl-row > .grow { min-width: 0; white-space: normal; overflow-wrap: anywhere; }

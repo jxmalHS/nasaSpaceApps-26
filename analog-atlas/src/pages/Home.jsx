@@ -38,22 +38,24 @@ function Hero() {
   const scene = useRef(null);
   const reduced = useReducedMotion();
   const [pair, setPair] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(reduced);
+  const [lightOrbit, setLightOrbit] = useState(LITE);
 
   useEffect(() => {
+    if (lightOrbit) return;
     let s;
     try {
-      s = scene.current = new HomeScene(canvas.current, { pairs: PAIRS, onPair: setPair, reduced: reduced || LITE, base: import.meta.env.BASE_URL });
+      s = scene.current = new HomeScene(canvas.current, { pairs: PAIRS, onPair: setPair, onSlowFrames:()=>setLightOrbit(true), reduced: reduced || LITE, base: import.meta.env.BASE_URL });
       s.resize();
       if (!(reduced || LITE)) s.start();
       setPaused(reduced || LITE);
     } catch (e) {
-      canvas.current?.parentElement?.classList.add('no-webgl');
+      setLightOrbit(true);
     }
     const ro = new ResizeObserver(() => s?.resize());
     ro.observe(canvas.current);
-    return () => { ro.disconnect(); s?.dispose(); };
-  }, [reduced]);
+    return () => { ro.disconnect(); s?.dispose(); scene.current = null; };
+  }, [reduced, lightOrbit]);
 
   useEffect(() => {
     const s = scene.current;
@@ -66,7 +68,7 @@ function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-h">
       <div className="hero-scene" aria-hidden="true">
-        <canvas ref={canvas} />
+        {lightOrbit ? <div className="light-orbit" data-paused={paused || reduced}><i className="lite-earth" /><i className="lite-moon" /></div> : <canvas ref={canvas} />}
       </div>
       <div className="hero-copy">
         <h1 id="hero-h">Every analog is partial.<br /><span className="earth-c">Find the part</span> your hardware needs.</h1>
@@ -87,9 +89,9 @@ function Hero() {
         </div>
         <figcaption className="small dim">{tests[p.test].label}. {p.note}.</figcaption>
         <div className="row hero-ctrl">
-          <button className="btn btn-ghost btn-sm icon-btn" onClick={() => scene.current?.next(-1)} aria-label="Previous pairing"><ChevronLeft size={16} /></button>
-          <button className="btn btn-ghost btn-sm icon-btn" onClick={() => setPaused((v) => !v)} aria-label={paused ? 'Play animation' : 'Pause animation'}>{paused ? <Play size={15} /> : <Pause size={15} />}</button>
-          <button className="btn btn-ghost btn-sm icon-btn" onClick={() => scene.current?.next(1)} aria-label="Next pairing"><ChevronRight size={16} /></button>
+          <button className="btn btn-ghost btn-sm icon-btn" onClick={() => lightOrbit ? setPair(i => (i + PAIRS.length - 1) % PAIRS.length) : scene.current?.next(-1)} aria-label="Previous pairing"><ChevronLeft size={16} /></button>
+          <button className="btn btn-ghost btn-sm icon-btn" disabled={reduced} onClick={() => setPaused((v) => !v)} aria-label={paused ? 'Play animation' : 'Pause animation'}>{paused ? <Play size={15} /> : <Pause size={15} />}</button>
+          <button className="btn btn-ghost btn-sm icon-btn" onClick={() => lightOrbit ? setPair(i => (i + 1) % PAIRS.length) : scene.current?.next(1)} aria-label="Next pairing"><ChevronRight size={16} /></button>
           <span className="tiny faint">Orbit not to scale</span>
         </div>
       </figure>

@@ -1,3 +1,5 @@
+import { recommendation } from '../lib/recommendation.js';
+import Coordinates from './Coordinates.jsx';
 import { ArrowLeft, Columns2, FileText, Pin, PinOff, Download } from 'lucide-react';
 import { tests, T, F, limits } from '../lib/catalog.js';
 import { useStore, setState, togglePin } from '../lib/store.js';
@@ -18,9 +20,9 @@ export function verdict(d) {
   let head, tone;
   if (d.status === STATUS.FAIL) { head = `Not suitable: fails ${failed.map((c) => F[c.fid].short.toLowerCase()).join(', ')}`; tone = 'fail'; }
   else if (d.status === STATUS.UNKNOWN) { head = unknownHard.length ? `Unverified: no data for ${unknownHard.map((c) => F[c.fid].short.toLowerCase()).join(', ')}` : `Unverified: only ${pct(d.evidence)} of the target weight has Earth data`; tone = 'unknown'; }
-  else if (d.score >= 0.85) { head = 'Strong analog for this test'; tone = 'pass'; }
-  else if (d.score >= 0.65) { head = 'Useful partial analog'; tone = 'pass'; }
-  else { head = 'Weak analog for this test'; tone = 'warn'; }
+  else if (d.rules >= 0.85) { head = 'Strong rules match'; tone = 'pass'; }
+  else if (d.rules >= 0.65) { head = 'Partial rules match'; tone = 'pass'; }
+  else { head = 'Weak rules match'; tone = 'warn'; }
   return { head, tone, closer, of: scored.length };
 }
 
@@ -46,11 +48,12 @@ export default function Inspector({ d, loading, onBack }) {
       </div>
       <header className="ins-head">
         <div className="row"><span className="tag-ab a">A</span><h2 id="ins-h">{d.place ? `Near ${d.place}` : 'Earth cell'}, {d.country}</h2></div>
-        <div className="small faint">{latlon(d.lat, d.lon)} · 0.5° cell {d.id} · {d.continent}</div>
+        <div className="small faint"><Coordinates key={d.id} lat={d.lat} lon={d.lon} label="Selected Earth index cell center"/>0.5° cell {d.id} · {d.continent}</div>
         <div className={'verdict v-' + v.tone}>
-          <div className="verdict-score"><b className="num">{score100(d.score)}</b><span className="tiny">score</span></div>
+          <div className="verdict-score"><b className="num">{score100(d.score)}</b><span className="tiny">match out of 100</span></div>
           <div className="grow">
             <div className="verdict-head">{v.head}</div>
+            <p className="small"><b>Recommendation</b> · {recommendation(d)}</p>
             <div className="small dim">
               {d.rankFiltered ? `Rank ${d.rankFiltered.toLocaleString()} of ${d.scoredTotal.toLocaleString()} listed cells` : d.rankAll ? `Would rank ${d.rankAll.toLocaleString()} overall` : 'Not ranked'}
               {v.closer != null && d.baseline ? ` · closer than ${d.baseline.name.split(',')[0]} on ${v.closer} of ${v.of} targets` : ''}
@@ -105,7 +108,9 @@ export default function Inspector({ d, loading, onBack }) {
           {nasaSite && <p className="tiny faint" style={{ margin: '0 0 6px' }}>NASA field site for this test: <b>{nasaSite.name}</b>. Limits stay strict; where NASA's own site breaks one, it is tagged as an exception (see the Trust page).</p>}
           <ul className="checks">
             {d.checks.map((c) => {
-              const ex = nasaSite ? exceptionFor(s.testId, c.fid, nasaSite.id) : null;
+              const preset = test.interference?.[c.fid];
+              const matchesPreset = preset && preset.op === c.op && preset.v === c.v && Boolean(preset.hard) === c.hard;
+              const ex = nasaSite && matchesPreset ? exceptionFor(s.testId, c.fid, nasaSite.id) : null;
               return (
                 <li key={c.fid}>
                   <Status kind={c.ok === null ? 'unknown' : c.ok ? 'met' : c.hard ? 'notmet' : 'warn'}>{c.ok === null ? 'Unknown' : c.ok ? 'Met' : c.hard ? 'Not met' : 'Warning'}</Status>
@@ -155,9 +160,9 @@ function ModelSection({ d }) {
   return (
     <section className="ins-ml small" aria-label="Model">
       <div className="row wrap" style={{ width: '100%' }}>
-        <span className="label">Model</span> <Term text={card?.score_definition}><b className="num">{score100(d.ml)}</b></Term>
+        <span className="label">Model</span> <Term text={card?.score_definition}><b className="num">{score100(d.ml)}/100</b></Term>
         {isNum(m.score_percentile) && <Term text={card?.score_comparability}><span className="dim">better than {m.score_percentile.toFixed(0)}% of analysed sites</span></Term>}
-        <span className="faint">vs rules {score100(d.rules)}</span>
+        <span className="faint">vs rules {score100(d.rules)}/100</span>
         {m.low_evidence && <Term text={card?.low_evidence_rule}><Status kind="warn">Low evidence</Status></Term>}
       </div>
       {m.site_name && <div className="tiny">Analysed site: <b>{m.site_name}</b>{m.sites_in_cell ? ` (+${m.sites_in_cell - 1} more in this cell, ${m.aggregation === 'mean' ? 'averaged' : 'best kept'})` : ''}</div>}
@@ -166,7 +171,7 @@ function ModelSection({ d }) {
       {list('req_not_met') && <div className="tiny"><Status kind="notmet" size={11}>Not met</Status> {list('req_not_met')}</div>}
       {list('req_unknown') && <div className="tiny"><Status kind="unknown" size={11}>Unknown</Status> {list('req_unknown')}</div>}
       {list('flags') && <div className="tiny"><Status kind="warn" size={11}>Flags</Status> {list('flags')}</div>}
-      {isNum(m.spot_lat) && isNum(m.spot_lon) && <div className="tiny">Recommended 5 km test spot: <b className="num">{latlon(m.spot_lat, m.spot_lon)}</b></div>}
+      {isNum(m.spot_lat) && isNum(m.spot_lon) && <div className="tiny">Recommended 5 km test spot: <Coordinates key={m.spot_lat+","+m.spot_lon} lat={m.spot_lat} lon={m.spot_lon} label="Model test spot"/></div>}
       {m.note && <div className="tiny dim">{m.note}</div>}
       <span className="tiny faint">Strict limits above still come from the rules; the model never overrides them.</span>
     </section>
