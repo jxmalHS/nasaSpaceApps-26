@@ -13,10 +13,16 @@ import { call, ready } from '../lib/engine.js';
 import { Status, Term } from '../components/ui.jsx';
 import { Link } from '../lib/router.jsx';
 
+const OP = { '<=': '≤', '>=': '≥', '<': '<', '>': '>' };
+const unitOf = (fid) => (F[fid]?.unit && F[fid].unit !== 'NDVI' ? ` ${F[fid].unit}` : '');
+/** "NASA Earth Observatory" from 'NASA Earth Observatory, "Measuring Vegetation…", 30 Aug 2000'. */
+const shortCite = (cite = '') => { const t = cite.split(/[,:;]/)[0].trim(); return t.length > 48 ? t.slice(0, 46) + '…' : t; };
+const firstSentence = (txt = '') => { const m = txt.match(/^.*?[.!?](\s|$)/); return m ? m[0].trim() : txt; };
+
 /**
- * Every pass/fail limit, grouped by variable and value, with the NASA source behind it.
+ * Every pass/fail limit, one row per distinct rule, with its source and the NASA-site check.
  * Read from src/config/missions.json (each limit's `src` and `basis`, and the `sources` catalogue),
- * so this table cannot drift from the numbers the scorer uses.
+ * so this table cannot drift from the numbers the scorer uses. Details fold away for a clean read.
  */
 function LimitSources() {
   const S = missionsJson.sources || {};
@@ -37,40 +43,75 @@ function LimitSources() {
   const rows = [...groups.values()].sort((a, b) => a.fid.localeCompare(b.fid) || a.c.v - b.c.v);
   if (!rows.length) return null;
   const used = [...new Set(rows.flatMap((r) => r.c.src || []))].filter((id) => S[id]);
+  const isTeam = (c) => (c.basis || '').startsWith('No NASA dataset sets this number.');
+  const nNasa = rows.filter((r) => !isTeam(r.c)).length;
+  // the precedent-site check is how a limit is tested, not where its number comes from: it has its own column
+  const srcOf = (c) => (c.src || []).filter((id) => S[id] && id !== 'nasa-precedent-check');
+  const why = (c) => { const b = (c.basis || '').replace('No NASA dataset sets this number.', '').trim(); return firstSentence(b) || '—'; };
+  const typeBadge = (c) => (c.hard ? <Status kind="fail" size={11}>Strict</Status> : <Status kind="warn" size={11}>Soft</Status>);
   return (
     <section aria-labelledby="t-lim">
-      <h2 id="t-lim">Where the limits come from</h2>
-      <p>Each test has a few strict (hard) or soft limits. Breaking a hard limit marks the site “Fails a limit”; breaking a soft one multiplies its score by 0.75 and shows a warning. Where a NASA dataset or mission document gives a number, the limit uses it. Every limit is also checked against the places NASA actually used for that test, re-measured at the field site with NASA data where possible. The limits stay strict: a site NASA used that breaks one is tagged <ExceptionTag kind="field-site" /> when it breaks it at the field site itself, <ExceptionTag kind="cell-only" /> when only the 55 km cell breaks it, and <ExceptionTag kind="cell" /> when no finer NASA data exists to check. Weights are team judgement: no NASA dataset publishes analog weights.</p>
-      {checks.method && <p className="small faint">How the check works: {checks.method}</p>}
+      <h2 id="t-lim">Limits and their sources</h2>
+      <p>Limits are pass/fail rules about things that would <b>spoil a test</b>, such as snow, plants or rain. They do not measure how Moon- or Mars-like a place is: the ranking does that.
+        A site that breaks a <Status kind="fail" size={11}>Strict</Status> limit is left out of the ranking. Breaking a <Status kind="warn" size={11}>Soft</Status> limit cuts its score by 25% and shows a warning.</p>
+      <p className="small"><b>{nNasa} of {rows.length}</b> limits use a number NASA publishes. The other {rows.length - nNasa} are <b>team values</b>, marked below. Every limit is checked against the places NASA actually used for that kind of test.
+        If a NASA site breaks a limit, the limit stays as it is and the site is tagged as an exception: nothing is tuned to make NASA’s sites pass.</p>
       <div className="table-scroll"><table className="dt">
-        <thead><tr><th>Limit</th><th>Used by</th><th>Why this number</th><th>Checked against NASA sites</th><th>Sources</th></tr></thead>
+        <thead><tr><th>Limit</th><th>Applies to</th><th>Where the number comes from</th><th>Source</th><th>Checked on NASA field sites</th></tr></thead>
         <tbody>{rows.map(({ fid, c, hard, soft, changed, exceptions, checked }) => (
           <tr key={`${fid}${c.op}${c.v}`}>
-            <td style={{ whiteSpace: 'nowrap' }}><Term id={fid}>{F[fid]?.label || fid}</Term> {c.op === '<=' ? '≤' : '≥'} {c.v}{F[fid]?.unit && F[fid].unit !== 'NDVI' ? ` ${F[fid].unit}` : ''}</td>
-            <td className="small">{hard.length > 0 && <div><b>Strict:</b> {hard.join(', ')}</div>}{soft.length > 0 && <div><b>Soft:</b> {soft.join(', ')}</div>}</td>
-            <td className="small">{c.basis || '—'}{changed.length > 0 && <div className="tiny" style={{ color: 'var(--warn)' }}>{c.was == null ? 'Changed' : 'All changed'} from {[...new Set(changed.map((x) => x.was))].join(' / ')}{c.was == null ? `: ${changed.map((x) => x.label).join(', ')}` : ''}</div>}</td>
+            <td style={{ whiteSpace: 'nowrap' }}><b><Term id={fid}>{F[fid]?.label || fid}</Term></b><div className="num">{OP[c.op] || c.op} {c.v}{unitOf(fid)}</div></td>
+            <td className="small" style={{ whiteSpace: 'nowrap' }}>
+              {hard.length > 0 && <div title={hard.join(', ')}><Status kind="fail" size={11}>Strict</Status> {hard.length} test{hard.length > 1 ? 's' : ''}</div>}
+              {soft.length > 0 && <div title={soft.join(', ')} style={{ marginTop: 4 }}><Status kind="warn" size={11}>Soft</Status> {soft.length} test{soft.length > 1 ? 's' : ''}</div>}
+            </td>
+            <td className="small"><div style={{ marginBottom: 4 }}>{isTeam(c) ? <Status kind="unknown" size={11}>Team value</Status> : <Status kind="met" size={11}>NASA number</Status>}</div>{why(c)}
+              {(c.basis && c.basis.length > why(c).length + 40) || changed.length > 0 ? (
+                <details><summary className="tiny faint">More</summary>
+                  <div className="tiny">{c.basis}</div>
+                  {changed.length > 0 && <div className="tiny" style={{ color: 'var(--warn)' }}>Changed from {[...new Set(changed.map((x) => x.was))].join(' / ')}.</div>}
+                  <div className="tiny faint">Tests: {[...hard, ...soft].join(', ')}</div>
+                </details>) : null}
+            </td>
+            <td className="small">{srcOf(c).length
+              ? srcOf(c).map((id) => <div key={id} style={{ marginBottom: 4 }}><a href={S[id].url} target="_blank" rel="noreferrer" title={S[id].cite}>{shortCite(S[id].cite)}</a></div>)
+              : <span className="faint">—</span>}</td>
             <td className="small">
-              {checked === 0 ? <span className="faint">No NASA site uses this test yet</span>
-                : exceptions.length === 0 ? <Status kind="met" size={11}>All {checked} NASA site checks pass</Status>
-                : <>
-                    <Status kind="warn" size={11}>{exceptions.length} of {checked} NASA site checks are exceptions</Status>
+              {checked === 0 ? <span className="faint">No NASA site for this test yet</span>
+                : exceptions.length === 0 ? <Status kind="met" size={11}>All {checked} pass</Status>
+                : <details><summary style={{ listStyle: 'none', cursor: 'pointer' }} title="Click to see which NASA sites"><Status kind="warn" size={11}>{exceptions.length} of {checked} exceptions ▾</Status></summary>
                     {exceptions.map((e, k) => (
                       <div key={k} className="tiny" style={{ marginTop: 6 }}>
-                        <ExceptionTag kind={e.kind} /> <b>{A[e.site]?.name || e.site}</b> ({e.test}{e.hard ? ', strict' : ', soft'}): {exceptionText({ ...e, feature: fid })}{e.reason ? `. ${e.reason}` : ''}
+                        <ExceptionTag kind={e.kind} /> <b>{A[e.site]?.name || e.site}</b> ({e.test}): {exceptionText({ ...e, feature: fid })}{e.reason ? `. ${e.reason}` : ''}
                       </div>
                     ))}
-                  </>}
+                  </details>}
             </td>
-            <td className="small">{(c.src || []).map((id) => <div key={id}><a href={`#src-${id}`}>{S[id] ? id : `${id}?`}</a></div>)}</td>
           </tr>
         ))}</tbody>
       </table></div>
-      <h3 className="small">Sources</h3>
-      <ol className="small stack" style={{ paddingLeft: 18 }}>
-        {used.map((id) => (
-          <li key={id} id={`src-${id}`}><b>{id}</b>: {S[id].cite}. <a href={S[id].url} target="_blank" rel="noreferrer">{S[id].url}</a><div className="faint">{S[id].says}</div></li>
-        ))}
-      </ol>
+      <details>
+        <summary className="small"><b>Limits test by test</b></summary>
+        <div className="table-scroll"><table className="dt">
+          <thead><tr><th>Test</th><th>Limits</th></tr></thead>
+          <tbody>{systems.flatMap((sys) => sys.tests.map((t) => (
+            <tr key={t.id}><td><b>{t.label}</b> <span className="tiny faint">{sys.label}</span></td>
+              <td className="small">{Object.entries(t.interference || {}).length
+                ? Object.entries(t.interference).map(([fid, c]) => <div key={fid} style={{ marginBottom: 4 }}>{typeBadge(c)} {F[fid]?.label || fid} {OP[c.op] || c.op} {c.v}{unitOf(fid)}</div>)
+                : <span className="faint">No limits</span>}</td></tr>)))}</tbody>
+        </table></div>
+      </details>
+      <details>
+        <summary className="small"><b>All sources, with the quoted text</b></summary>
+        <ol className="small stack" style={{ paddingLeft: 18 }}>
+          {used.map((id) => (
+            <li key={id} id={`src-${id}`}><a href={S[id].url} target="_blank" rel="noreferrer">{S[id].cite}</a><div className="faint">{S[id].says}</div></li>
+          ))}
+        </ol>
+        {checks.method && <p className="small faint">How the NASA-site check works: {checks.method}</p>}
+        <p className="small faint">Exception tags: <ExceptionTag kind="field-site" /> breaks it at the field site itself, <ExceptionTag kind="cell-only" /> only the 55 km cell breaks it, <ExceptionTag kind="cell" /> no finer NASA data exists to check. Weights are team judgement: no NASA dataset publishes analog weights.</p>
+      </details>
+      <p className="small faint">The detailed model has its own land-cover limits (most trees, crops, water and buildings allowed per 5 km square): team values based on the IGBP land-cover classes, in KNN-Model/config/missions.yaml.</p>
     </section>
   );
 }
@@ -229,9 +270,9 @@ export default function Trust() {
         </section>
       )}
 
-      <TargetSources />
-
       <LimitSources />
+
+      <TargetSources />
 
       <section aria-labelledby="t-why">
         <h2 id="t-why">Where it falls short, and why</h2>
