@@ -122,7 +122,7 @@ function Baseline({ d, onOpen }) {
           {!b.representative && <span className="tiny" title={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
         </button>
       ))}
-      <p className="tiny faint">“Top X%” is the share of ranked Earth places at or above this one, on what we measure. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
+      <p className="tiny faint">“Top X%” is the share of ranked Earth places at or above this one, on what we measure. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see References.</p>
     </div>
   );
 }

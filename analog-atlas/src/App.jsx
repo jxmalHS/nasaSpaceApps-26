@@ -12,14 +12,14 @@ const Compare = lazy(() => import('./pages/Compare.jsx'));
 const Report = lazy(() => import('./pages/Report.jsx'));
 const Trust = lazy(() => import('./pages/Trust.jsx'));
 
-const NAV = [['/explore', 'Explore'], ['/compare', 'Compare'], ['/trust', 'Trust']];
+const NAV = [['/explore', 'Explore'], ['/compare', 'Compare'], ['/references', 'References']];
 
 export default function App() {
   const path = usePath();
   const needsCsv=useStore(s=>s.needsUpload&&!s.uploadRows.length);
   const tourStep = useStore((s) => s.tourStep);
   const page = path.startsWith('/explore') ? <Explore /> : path.startsWith('/compare') ? <Compare /> : path.startsWith('/report') ? <Report />
-    : path.startsWith('/trust') ? <Trust /> : path === '/' ? <Home /> : <NotFound />;
+    : path.startsWith('/references') || path.startsWith('/trust') ? <Trust /> : path === '/' ? <Home /> : <NotFound />;
   const appMode = path !== '/';
   useEffect(() => { document.body.classList.toggle('app-mode', path.startsWith('/explore')); }, [appMode, path]);
 

@@ -161,7 +161,7 @@ export default function Inspector({ d, loading, onBack }) {
       {d.checks.length > 0 && (
         <section aria-labelledby="ins-c">
           <h3 id="ins-c" className="ins-h3">Limits and interference</h3>
-          {nasaSite && <p className="tiny faint" style={{ margin: '0 0 6px' }}>NASA field site for this test: <b>{nasaSite.name}</b>. Limits stay strict; where NASA's own site breaks one, it is tagged as an exception (see the Trust page).</p>}
+          {nasaSite && <p className="tiny faint" style={{ margin: '0 0 6px' }}>NASA field site for this test: <b>{nasaSite.name}</b>. Limits stay strict; where NASA's own site breaks one, it is tagged as an exception (see the References page).</p>}
           <ul className="checks">
             {d.checks.map((c) => {
               const preset = test.interference?.[c.fid];

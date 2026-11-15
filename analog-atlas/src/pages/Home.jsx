@@ -285,7 +285,7 @@ function Flow() {
         </ol>
         <div className="row wrap" style={{ gap: 12 }}>
           <button className="btn btn-primary" onClick={() => { go('/explore'); setTimeout(() => setState({ tourStep: 0 }), 300); }}>Take the 4-step tour <ArrowRight size={16} /></button>
-          <Link className="btn btn-ghost" to="/trust">How we validate</Link>
+          <Link className="btn btn-ghost" to="/references">How we validate</Link>
         </div>
       </div>
     </section>
@@ -329,7 +329,7 @@ function Close() {
       <footer className="foot wrap small faint">
         <span>Analog Atlas · NASA Space Apps Challenge 2026</span>
         <span>Data: NASA MODIS, NASA POWER (MERRA-2), MERRA-2 dust, AWS Terrarium DEM, GLiM, Natural Earth. Textures: NASA Blue Marble, LRO, Viking.</span>
-        <Link to="/trust">Validation and sources</Link>
+        <Link to="/references">Validation and sources</Link>
       </footer>
     </section>
   );

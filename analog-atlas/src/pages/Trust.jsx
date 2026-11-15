@@ -12,6 +12,7 @@ import { useResult, useScoring } from '../lib/results.js';
 import { call, ready } from '../lib/engine.js';
 import { Status, Term } from '../components/ui.jsx';
 import { Link } from '../lib/router.jsx';
+import { VERDICT_KIND, strengthFromChance, chanceRandomMedian, topFromPercentile, stabilityStrength, median } from '../lib/verdict.js';
 
 const OP = { '<=': '≤', '>=': '≥', '<': '<', '>': '>' };
 const unitOf = (fid) => (F[fid]?.unit && F[fid].unit !== 'NDVI' ? ` ${F[fid].unit}` : '');
@@ -51,7 +52,7 @@ function LimitSources() {
   const typeBadge = (c) => (c.hard ? <Status kind="fail" size={11}>Strict</Status> : <Status kind="warn" size={11}>Soft</Status>);
   return (
     <section aria-labelledby="t-lim">
-      <h2 id="t-lim">Limits and their sources</h2>
+      <h3 id="t-lim">Limits and their sources</h3>
       <p>Limits are pass/fail rules about things that would <b>spoil a test</b>, such as snow, plants or rain. They do not measure how Moon- or Mars-like a place is: the ranking does that.
         A site that breaks a <Status kind="fail" size={11}>Strict</Status> limit is left out of the ranking. Breaking a <Status kind="warn" size={11}>Soft</Status> limit cuts its score by 25% and shows a warning.</p>
       <p className="small"><b>{nNasa} of {rows.length}</b> limits use a number NASA publishes. The other {rows.length - nNasa} are <b>team values</b>, marked below. Every limit is checked against the places NASA actually used for that kind of test.
@@ -164,158 +165,186 @@ export default function Trust() {
   const covs = (ml?.validation || []).filter((v) => v.status === 'coverage');
   const mlVal = Object.fromEntries(loo.map((v) => [`${v.test_id}/${v.target_id}`, v]));
 
-  const allRules = rules?.flatMap((t) => t.sites.filter((x) => x.representative && x.percentile != null).map((x) => x.percentile)) || [];
-  const median = (a) => (a.length ? [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)] : null);
-  const mlP = loo.filter((v) => v.median_percentile != null).map((v) => v.median_percentile);
-  const ranked = [...new Set(loo.map((v) => v.engine_held_out?.[0]?.of).filter(isNum))].sort((x, y) => x - y);
-  const warned = loo.filter((v) => v.warning).length;
   const setLabel = (v) => `${tests[v.test_id]?.label || v.test_id} · ${T[v.target_id]?.name || v.target_id}`;
+
+  // ---- one verdict scale for every check (src/lib/verdict.js) ----
+  const ruleRows = (rules || []).map((t) => {
+    const ps = t.sites.filter((x) => x.representative && x.percentile != null).map((x) => x.percentile);
+    const med = median(ps);
+    return { t, n: ps.length, med, strength: med == null ? null : strengthFromChance(chanceRandomMedian(med, ps.length)) };
+  });
+  const engineRows = loo.filter((v) => isNum(v.median_percentile)).map((v) => ({ v, strength: strengthFromChance(v.chance_random_does_as_well) }));
+  const stab = (ml?.validation || []).filter((v) => /stability/i.test(v.name || '')).map((v) => {
+    const m = /unchanged in (\d+) of (\d+)/.exec(v.result || '');
+    return m ? { v, kept: +m[1], total: +m[2], strength: stabilityStrength(+m[1], +m[2]) } : null;
+  }).filter(Boolean);
+  const Badge = ({ s }) => (s ? <Status kind={VERDICT_KIND[s]}>{s}</Status> : <span className="faint">—</span>);
+  const count = (rows, s) => rows.filter((r) => r.strength === s).length;
 
   return (
     <main id="main" className="doc trust">
       <header className="stack">
-        <h1>Can you trust the ranking?</h1>
-        <p>Partly, and this page shows exactly how far. The data are real, the method is open, and missing evidence is never counted as a pass. The tests below measure whether the scorer recognises the places NASA has already used for each kind of test.</p>
+        <h1>References</h1>
+        <p>How far you can trust the ranking, and where every number comes from. Each check gets the same verdict:
+          <Status kind="met">Strong</Status> <Status kind="warn">Moderate</Status> <Status kind="notmet">Weak</Status>.
+          The data are real, the method is open, and missing data is never counted as a pass.</p>
       </header>
 
-      <section aria-labelledby="t-sum">
-        <h2 id="t-sum">At a glance</h2>
-        <table className="dt">
+      <section aria-labelledby="t-r">
+        <h2 id="t-r">1. Does it find NASA’s own test sites?</h2>
+        <p>The system is never told where NASA tests. We then check where NASA’s own field sites land among all {summary ? summary.n.toLocaleString() : '~79,000'} places on Earth.
+          The verdict asks how often places picked at random would do as well: rarely means <b>Strong</b>.</p>
+        <div className="table-scroll"><table className="dt">
+          <thead><tr><th>Test</th><th className="num">NASA sites</th><th>NASA’s sites land in</th><th>Verdict</th></tr></thead>
           <tbody>
-            <tr><th>Earth index</th><td>{summary ? `${summary.n.toLocaleString()} land cells at 0.5°, 15 measured layers, build ${summary.fingerprint}` : '…'}</td></tr>
-            <tr><th>Rules: precedent sites</th><td>{rules ? `Median percentile ${median(allRules)?.toFixed(0)} across ${allRules.length} site–test pairs (100 = ranked first on Earth)` : 'Computing on all 20 tests…'}</td></tr>
-            <tr><th>Model</th><td>{ml?.model ? <>{`${ml.model.name} ${ml.model.version}${ml.model.demo ? ' (demo stand-in)' : ''}. Held-out NASA sites: median percentile ${median(mlP)?.toFixed(0) ?? '—'} across ${mlP.length} test–target sets`}{ranked.length > 0 && <>, ranked among only the {ranked.length > 1 ? `${ranked[0]}–${ranked[ranked.length - 1]}` : ranked[0]} Earth sites the model analysed per set (not all {summary?.n?.toLocaleString() ?? ''} land cells)</>}.{warned > 0 && <span style={{ color: 'var(--warn)' }}> {warned} set{warned > 1 ? 's have' : ' has'} too few sites to be strong evidence.</span>}</> : ml?.reason || '…'}</td></tr>
-            <tr><th>Stability</th><td>Run it live for any configuration from the Stability button in <Link to="/explore">Explore</Link>: weights are jittered ±30% thirty times and the winner’s survival rate is reported.</td></tr>
+            {!rules && <tr><td colSpan={4}><div className="skeleton" style={{ height: 120 }} /></td></tr>}
+            {ruleRows.map(({ t, n, med, strength }) => (
+              <tr key={t.testId}>
+                <td><b>{tests[t.testId].label}</b> <span className="tiny faint">{T[t.targetId]?.body === 'mars' ? 'Mars' : 'Moon'}</span></td>
+                <td className="num">{n || '—'}</td>
+                <td>{med == null ? <span className="faint">No usable NASA site for this test</span> : <b className="num">{topFromPercentile(med)}</b>}{med != null && <span className="tiny faint"> of Earth (typical site)</span>}</td>
+                <td><Badge s={strength} /></td>
+              </tr>
+            ))}
           </tbody>
-        </table>
+        </table></div>
+        {rules && <p className="small">{count(ruleRows, 'Strong')} strong, {count(ruleRows, 'Moderate')} moderate, {count(ruleRows, 'Weak')} weak. Most tests have only a few NASA sites, so even a good result rarely reaches “Strong”: there are too few sites to prove more.</p>}
+
+        {engineRows.length > 0 && (<>
+          <h3 className="small" style={{ marginTop: 12 }}>Checked again by the detailed model</h3>
+          <p className="small">The model looks closer (5 km squares on the Moon, 20 km on Mars) but at fewer places: the {(() => { const ns = engineRows.map(({ v }) => v.engine_held_out?.[0]?.of).filter(isNum); return ns.length ? `${Math.min(...ns)} to ${Math.max(...ns)}` : 'few'; })()} sites it analysed for each test, not all of Earth.</p>
+          <div className="table-scroll"><table className="dt">
+            <thead><tr><th>Test</th><th className="num">NASA sites</th><th>NASA’s sites beat</th><th>Verdict</th></tr></thead>
+            <tbody>{engineRows.map(({ v, strength }) => (
+              <tr key={`${v.test_id}/${v.target_id}`}>
+                <td><b>{tests[v.test_id]?.label || v.test_id}</b> <span className="tiny faint">{T[v.target_id]?.name || v.target_id}</span></td>
+                <td className="num">{v.engine_held_out?.length || '—'}</td>
+                <td><b className="num">{v.median_percentile.toFixed(0)}%</b><span className="tiny faint"> of the {v.engine_held_out?.[0]?.of ?? ''} sites analysed (typical site)</span></td>
+                <td><Badge s={strength} /></td>
+              </tr>))}</tbody>
+          </table></div>
+          <p className="small faint">Where it is weak: NASA chooses field sites for road access, safety and nearness to its teams as well as terrain. The model measures terrain only, and we did not tune it to push NASA’s sites up.</p>
+        </>)}
       </section>
 
-      <section aria-labelledby="t-r">
-        <h2 id="t-r">Do known NASA field sites score well?</h2>
-        <p>For each test, every documented precedent site is scored against a reference target (Shackleton connecting ridge for Moon tests, Jezero for Mars) in Stress mode. A percentile of 90 means the site beats 90% of Earth’s land cells. Rules are not trained on these sites, so this is an independent check. The model column holds each site out and gives its percentile among the few dozen Earth sites the model ranked for the same test and target, a much smaller population than the rules column, so the two are not directly comparable.</p>
-        <div className="table-scroll">
-          <table className="dt">
-            <thead><tr><th>Test</th><th>Precedent site</th><th className="num">Rules</th><th className="num">Model (held out)</th><th style={{ width: 200 }}>0 ─ percentile ─ 100</th><th>Status at cell scale</th></tr></thead>
-            <tbody>
-              {!rules && <tr><td colSpan={6}><div className="skeleton" style={{ height: 120 }} /></td></tr>}
-              {rules?.flatMap((t) => t.sites.map((x, k) => {
+      {stab.length > 0 && (
+        <section aria-labelledby="t-st">
+          <h2 id="t-st">2. Is the ranking stable?</h2>
+          <p>We nudge the inputs (weights ±20%, coarser pixels, shifted squares) and see whether the #1 site stays #1.</p>
+          <div className="table-scroll"><table className="dt">
+            <thead><tr><th>Test</th><th>#1 site stays #1</th><th>Verdict</th></tr></thead>
+            <tbody>{stab.map(({ v, kept, total, strength }) => (
+              <tr key={`${v.test_id}/${v.target_id}`}>
+                <td><b>{tests[v.test_id]?.label || v.test_id}</b> <span className="tiny faint">{T[v.target_id]?.name || v.target_id}</span></td>
+                <td><b className="num">{kept} of {total}</b> <span className="tiny faint">small changes</span></td>
+                <td><Badge s={strength} /></td>
+              </tr>))}</tbody>
+          </table></div>
+          <p className="small faint">For the website’s own ranking, use the Stability button in <Link to="/explore">Explore</Link>: it re-runs any setup with jittered weights.</p>
+        </section>
+      )}
+
+      <div className="stack">
+        <h2 style={{ marginBottom: 0 }}>3. Where do the numbers come from?</h2>
+        <LimitSources />
+        <details>
+          <summary><b>Moon and Mars target values</b> <span className="small faint">(measured, published or estimated)</span></summary>
+          <TargetSources />
+        </details>
+      </div>
+
+      <section aria-labelledby="t-why">
+        <h2 id="t-why">4. What it cannot do</h2>
+        <ul className="stack">
+          <li><b>Big squares hide small sites.</b> Rankings use 55 km squares; the 2 km check in Explore catches the worst cases.</li>
+          <li><b>Rocks, soil strength, ground ice and salts have no Earth map yet.</b> They show as unknown, never as a pass.</li>
+          <li><b>Some Moon and Mars conditions exceed anything on Earth</b> (gravity, vacuum, the lunar day–night swing). The ranking finds Earth’s closest, and the site report says what needs a lab or chamber.</li>
+          <li><b>Terrain is not the only reason NASA picks a site.</b> Roads, safety and permits are not measured.</li>
+        </ul>
+      </section>
+
+      <details>
+        <summary><h2 style={{ display: 'inline' }}>Technical details</h2> <span className="small faint">every NASA site, model card, data sources</span></summary>
+        <div className="stack" style={{ marginTop: 16 }}>
+          <section aria-labelledby="t-sites">
+            <h3 id="t-sites">Every NASA site, test by test</h3>
+            <div className="table-scroll"><table className="dt">
+              <thead><tr><th>Test</th><th>NASA site</th><th>Website rank</th><th>Model</th><th>Limits at 55 km</th></tr></thead>
+              <tbody>{(rules || []).flatMap((t) => t.sites.map((x, k) => {
                 const mv = mlVal[`${t.testId}/${t.targetId}`]?.held_out?.find((h) => h.site === x.id);
                 return (
                   <tr key={t.testId + x.id}>
                     <td>{k === 0 ? <b>{tests[t.testId].label}</b> : ''}</td>
-                    <td>{x.name}{!x.representative && <div className="tiny" style={{ color: 'var(--warn)' }}>index cell {Math.round(x.offsetKm)} km away: not representative</div>}</td>
-                    <td className="num">{x.percentile == null ? '—' : x.percentile.toFixed(0)}</td>
-                    <td className="num">{mv?.percentile == null ? '—' : mv.percentile.toFixed(0)}</td>
-                    <td><div className="dotplot">{[25, 50, 75].map((g) => <i key={g} className="gl" style={{ left: g + '%' }} />)}{x.percentile != null && <i className="d rules" style={{ left: x.percentile + '%' }} title="Rules" />}{mv?.percentile != null && <i className="d" style={{ left: mv.percentile + '%' }} title="Model" />}</div></td>
+                    <td>{x.name}{!x.representative && <div className="tiny" style={{ color: 'var(--warn)' }}>nearest square is {Math.round(x.offsetKm)} km away: not counted</div>}</td>
+                    <td className="num">{x.percentile == null ? '—' : topFromPercentile(x.percentile)}</td>
+                    <td className="num">{mv?.percentile == null ? '—' : `beats ${mv.percentile.toFixed(0)}%`}</td>
                     <td>{x.status === 0 ? <Status kind="met">Passes</Status> : x.status === 2 ? <Status kind="notmet">Fails a limit</Status> : <Status kind="unknown">Unverified</Status>}
                       {x.representative && exceptionsFor(t.testId, x.id).map((e) => (
-                        <div key={e.feature} className="tiny" style={{ marginTop: 4 }}><ExceptionTag kind={e.kind} /> {F[e.feature]?.short || e.feature}{e.hard ? '' : ' (soft)'}: {exceptionText(e)}</div>
+                        <div key={e.feature} className="tiny" style={{ marginTop: 4 }}><ExceptionTag kind={e.kind} /> {F[e.feature]?.short || e.feature}: {exceptionText(e)}</div>
                       ))}
                     </td>
                   </tr>
                 );
-              }))}
-            </tbody>
-          </table>
-        </div>
-        <div className="row tiny faint"><i className="d-key" style={{ width: 10, height: 10, background: 'var(--text)', borderRadius: 2, display: 'inline-block' }} /> Rules <i style={{ width: 10, height: 10, background: 'var(--earth-2)', borderRadius: '50%', display: 'inline-block', marginLeft: 10 }} /> Model</div>
-      </section>
-
-      {loo.some((v) => v.engine_held_out?.length) && (
-        <section aria-labelledby="t-ml">
-          <h2 id="t-ml">Engine held-out sites</h2>
-          <p>The model was checked on the NASA field sites in its own site list, each held out in turn. Most of them are not Atlas precedent sites, so they are listed here rather than in the table above. Ranks use similarity alone, before the model’s land-cover ordering, so a site can rank high here yet last in the final list (Buffalo Park’s test spot sits in Flagstaff forest and town).</p>
-          {loo.filter((v) => v.engine_held_out?.length).map((v) => (
-            <div key={`${v.test_id}/${v.target_id}`} className="stack" style={{ marginTop: 16 }}>
-              <h3 className="small" style={{ margin: 0 }}>{setLabel(v)}</h3>
-              <p className="small" style={{ margin: 0 }}>
-                Median percentile <b className="num">{isNum(v.median_percentile) ? v.median_percentile.toFixed(0) : '—'}</b>{v.median_over ? ` over ${v.median_over}` : ''}
-                {isNum(v.top5_rate) && <> · {pct(v.top5_rate)} in the top 5{isNum(v.random_top5_rate) ? ` (random order: ${pct(v.random_top5_rate)})` : ''}</>}
-              </p>
-              {v.population && <p className="tiny faint" style={{ margin: 0 }}>Population: {v.population}.</p>}
-              {v.warning && <p className="tiny" style={{ margin: 0, color: 'var(--warn)' }}>{v.warning}</p>}
-              <div className="table-scroll"><table className="dt">
-                <thead><tr><th>Engine site</th><th className="num">Rank</th><th className="num">Percentile</th><th>Atlas precedent site</th></tr></thead>
-                <tbody>{v.engine_held_out.map((h) => {
-                  const a = h.website_id ? A[h.website_id] : null;
-                  const km = a && isNum(h.lat) && isNum(h.lon) ? distanceKm(h.lat, h.lon, a.lat, a.lon) : null;
-                  return (
-                    <tr key={h.site}>
-                      <td>{h.name || h.site}</td>
-                      <td className="num">{isNum(h.rank) ? `${h.rank} of ${h.of}` : '—'}</td>
-                      <td className="num">{isNum(h.percentile) ? h.percentile.toFixed(0) : '—'}</td>
-                      <td className="small">{a ? <>{a.name}{km != null && <span className="faint"> · {km.toFixed(0)} km away</span>}</> : h.website_id ? h.website_id : <span className="faint">No Atlas match</span>}</td>
-                    </tr>
-                  );
-                })}</tbody>
-              </table></div>
-            </div>
-          ))}
-        </section>
-      )}
-
-      {covs.length > 0 && (
-        <section aria-labelledby="t-cov">
-          <h2 id="t-cov">Engine multi-site coverage</h2>
-          <p>One Earth site rarely reproduces everything a mission needs. The engine picks sites one at a time: each step adds the site that covers the most requirements still open. A site counts only if a single square free of interference meets them, so conditions needed together are present together. Requirements are the mission’s pass/fail rules plus every weighted measurement inside the target’s own 10–90% range. Whatever no site covers needs a lab, a chamber or an engineered test bed. The same check runs live on the website from <b>Multi-site coverage</b> in <Link to="/explore">Explore</Link>.</p>
-          {covs.map((v) => (
-            <div key={`${v.test_id}/${v.target_id}`} className="stack" style={{ marginTop: 12 }}>
-              <h3 className="small" style={{ margin: 0 }}>{setLabel(v)} <span className="faint">· {v.result}</span></h3>
-              <ol className="small" style={{ margin: 0 }}>
-                {v.steps.map((s) => <li key={s.site}><b>{s.site}</b> <span className="faint">({s.role === 'baseline' ? 'NASA site' : 'candidate'}, rank {s.rank})</span> adds {s.adds.join('; ')} <span className="faint num">→ {s.covered_so_far}/{v.n_requirements}</span></li>)}
-              </ol>
-              {v.not_covered?.length > 0 && <p className="tiny" style={{ margin: 0, color: 'var(--warn)' }}>No site covers: {v.not_covered.join('; ')}.</p>}
-            </div>
-          ))}
-        </section>
-      )}
-
-      <LimitSources />
-
-      <TargetSources />
-
-      <section aria-labelledby="t-why">
-        <h2 id="t-why">Where it falls short, and why</h2>
-        <div className="callout stack small">
-          <p><b>Cell scale hides field sites.</b> A 55 km cell around McMurdo’s Dry Valleys is mostly ice sheet (12 snow months), and Mauna Kea’s cell includes the wet windward island (over 1,800 mm of rain). The small, dry field site inside fails a limit its surroundings fail. Measured 2 km patches and site-scale overrides are the fix.</p>
-          <p><b>Precedent sites disagree.</b> The Dry Valleys and the Atacama were both chosen for cold-and-dry testing, but they share almost nothing numerically. A model that learns from one cannot find the other: the thermal test’s held-out percentile is low for that reason.</p>
-          <p><b>Some targets are beyond Earth.</b> No Earth surface reaches the lunar south pole’s day–night swing or its permanent low sun (Earth tops out near 39% of daylight hours under 10°). The ranking then finds Earth’s extreme and the report says to add a chamber test.</p>
-          <p><b>Four features have no Earth layer yet</b> (rock abundance, soil strength, ice depth, salts). They count against evidence and show as Unknown everywhere until the planned layers are added. No global NASA Earth dataset measures them directly; they need site surveys.</p>
-          <p><b>Target values are only as good as their source.</b> Slope and roughness for all 12 targets, and the Moon south-pole temperatures, are now measured from LOLA, MOLA and Diviner at the Earth cells’ scale. The rest are published mission values or estimates; the table above says which. Target slopes carry about ±40% uncertainty from the cross-check against Earth.</p>
-          <p><b>The website and the engine see different scales.</b> The website compares 55 km cells; the engine compares 5 km squares (Moon) or 20 km squares (Mars). NASA’s own Mars landing and rover limits are set at 2 m to 1 km, finer than either, so no Earth map here can check them: that needs a site survey.</p>
-        </div>
-      </section>
-
-      {ml?.model && (
-        <section aria-labelledby="t-m">
-          <h2 id="t-m">Model card</h2>
-          <table className="dt"><tbody>
-            {['name', 'version', 'kind', 'trained_on', 'inputs', 'limits'].map((k) => <tr key={k}><th style={{ width: 160, textTransform: 'capitalize' }}>{k.replace(/_/g, ' ')}</th><td>{String(ml.model[k] ?? '—')}</td></tr>)}
-            {['score_definition', 'score_comparability', 'confidence_definition', 'small_change_definition', 'low_evidence_rule', 'aggregation'].filter((k) => ml.model[k] != null).map((k) => <tr key={k}><th style={{ width: 160, textTransform: 'capitalize' }}>{k.replace(/_/g, ' ')}</th><td>{String(ml.model[k])}</td></tr>)}
-            {ml.model.metrics && Object.entries(ml.model.metrics).map(([k, v]) => <tr key={k}><th style={{ width: 160 }}>{k.replace(/_/g, ' ')}</th><td>{typeof v === 'object' ? JSON.stringify(v) : String(v)}</td></tr>)}
-            <tr><th>Score sets</th><td>{ml.sets.length} sets{ml.created ? ` · built ${ml.created.slice(0, 10)}` : ''}</td></tr>
-          </tbody></table>
-          {ml.validation?.some((v) => !v.held_out && v.status !== 'coverage') && (
-            <div className="table-scroll"><table className="dt">
-              <thead><tr><th>Validation reported by the model</th><th>Result</th></tr></thead>
-              <tbody>{ml.validation.filter((v) => !v.held_out && v.status !== 'coverage').map((v, k) => (
-                <tr key={k}><td>{v.name || v.test_id || `check ${k + 1}`}</td>
-                  <td className="small">{Object.entries(v).filter(([key]) => !['name', 'test_id'].includes(key)).map(([key, val]) => `${key.replace(/_/g, ' ')}: ${typeof val === 'object' ? JSON.stringify(val) : val}`).join(' · ')}</td></tr>
-              ))}</tbody>
+              }))}</tbody>
             </table></div>
-          )}
-          <p className="small">Swap in the model trained on the separate laptop with <code>python ml/run_model.py --card model_card.json</code>. The site refuses a bundle built for a different index build.</p>
-        </section>
-      )}
+          </section>
 
-      <section aria-labelledby="t-d">
-        <h2 id="t-d">Data provenance</h2>
-        <div className="table-scroll"><table className="dt">
-          <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Status</th></tr></thead>
-          <tbody>{features.map((f) => <tr key={f.id}><td><Term id={f.id}>{f.label}</Term>{f.caveat && <div className="tiny" style={{ color: 'var(--warn)' }}>{f.caveat}</div>}</td><td className="small">{f.source}</td><td className="small">{f.res}</td><td>{f.pending ? <Status kind="unknown">Planned</Status> : <Status kind="met">Live</Status>}</td></tr>)}</tbody>
-        </table></div>
-        <p className="small">Precedent sites: {Object.values(A).map((a) => `${a.name} (${a.campaigns})`).join('; ')}.</p>
-      </section>
+          {loo.some((v) => v.engine_held_out?.length) && (
+            <section aria-labelledby="t-ml">
+              <h3 id="t-ml">Detailed model: each NASA site</h3>
+              {loo.filter((v) => v.engine_held_out?.length).map((v) => (
+                <div key={`${v.test_id}/${v.target_id}`} className="stack" style={{ marginTop: 12 }}>
+                  <h4 className="small" style={{ margin: 0 }}>{setLabel(v)}</h4>
+                  <div className="table-scroll"><table className="dt">
+                    <thead><tr><th>NASA site</th><th className="num">Rank</th><th className="num">Beats</th></tr></thead>
+                    <tbody>{v.engine_held_out.map((h) => (
+                      <tr key={h.site}><td>{h.name || h.site}</td><td className="num">{isNum(h.rank) ? `${h.rank} of ${h.of}` : '—'}</td><td className="num">{isNum(h.percentile) ? `${h.percentile.toFixed(0)}%` : '—'}</td></tr>
+                    ))}</tbody>
+                  </table></div>
+                  {v.agreement_note && <p className="tiny faint" style={{ margin: 0 }}>{v.agreement_note}</p>}
+                </div>
+              ))}
+            </section>
+          )}
+
+          {covs.length > 0 && (
+            <section aria-labelledby="t-cov">
+              <h3 id="t-cov">Detailed model: which sites cover which requirements</h3>
+              <p className="small">One site rarely covers everything. Sites are added one at a time, each covering the most requirements still open; whatever no site covers needs a lab or a chamber.</p>
+              {covs.map((v) => (
+                <div key={`${v.test_id}/${v.target_id}`} className="stack" style={{ marginTop: 8 }}>
+                  <h4 className="small" style={{ margin: 0 }}>{setLabel(v)} <span className="faint">· {v.result}</span></h4>
+                  <ol className="small" style={{ margin: 0 }}>
+                    {v.steps.map((s) => <li key={s.site}><b>{s.site}</b> <span className="faint">({s.role === 'baseline' ? 'NASA site' : 'candidate'})</span> adds {s.adds.join('; ')}</li>)}
+                  </ol>
+                  {v.not_covered?.length > 0 && <p className="tiny" style={{ margin: 0, color: 'var(--warn)' }}>No site covers: {v.not_covered.join('; ')}.</p>}
+                </div>
+              ))}
+            </section>
+          )}
+
+          {ml?.model && (
+            <section aria-labelledby="t-m">
+              <h3 id="t-m">Model card</h3>
+              <table className="dt"><tbody>
+                {['name', 'version', 'kind', 'trained_on', 'inputs', 'limits', 'score_definition', 'confidence_definition', 'small_change_definition', 'low_evidence_rule']
+                  .filter((k) => ml.model[k] != null)
+                  .map((k) => <tr key={k}><th style={{ width: 170, textTransform: 'capitalize' }}>{k.replace(/_/g, ' ')}</th><td className="small">{String(ml.model[k])}</td></tr>)}
+                <tr><th>Score sets</th><td className="small">{ml.sets.length} sets{ml.created ? ` · built ${ml.created.slice(0, 10)}` : ''}</td></tr>
+              </tbody></table>
+            </section>
+          )}
+
+          <section aria-labelledby="t-d">
+            <h3 id="t-d">Data sources for each map layer</h3>
+            <div className="table-scroll"><table className="dt">
+              <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Status</th></tr></thead>
+              <tbody>{features.map((f) => <tr key={f.id}><td><Term id={f.id}>{f.label}</Term></td><td className="small">{f.source}</td><td className="small">{f.res}</td><td>{f.pending ? <Status kind="unknown">Planned</Status> : <Status kind="met">Live</Status>}</td></tr>)}</tbody>
+            </table></div>
+            <p className="small faint">Earth index: {summary ? `${summary.n.toLocaleString()} land squares at 0.5°, build ${summary.fingerprint}` : '…'}. NASA field sites: {Object.values(A).map((a) => `${a.name} (${a.campaigns})`).join('; ')}.</p>
+          </section>
+        </div>
+      </details>
     </main>
   );
 }
