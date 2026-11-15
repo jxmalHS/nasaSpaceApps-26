@@ -28,6 +28,23 @@ from analog_knn import (ROLE_COL, SITE_COL, cap_target_to_earth, drop_incomplete
 SMALL_SAMPLE = 20   # below this many ranked sites, recall@k says little - we warn
 
 
+def rank_percentile(rank: int, n: int) -> float:
+    """Share of the other sites this rank beats, 0-100 (#1 of n = 100, last = 0)."""
+    return 100.0 if n <= 1 else round(100 * (n - rank) / (n - 1), 1)
+
+
+def chance_random_median_at_least(median_pct: float, k: int, n: int,
+                                  draws: int = 20000, seed: int = 0) -> float:
+    """How often k sites picked at random (no repeats) from n get a median percentile at
+    least this high: a small number means the NASA sites rank high for a reason."""
+    if n < 2 or k < 1 or k > n:
+        return float("nan")
+    rng = np.random.default_rng(seed)
+    ranks = np.argsort(rng.random((draws, n)), axis=1)[:, :k] + 1
+    pct = 100 * (n - ranks) / (n - 1)
+    return round(float((np.median(pct, axis=1) >= median_pct - 1e-9).mean()), 4)
+
+
 def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float,
                   cap_to_earth: tuple[str, ...] = ()) -> dict:
     """Leave each NASA baseline out of the fitting, one at a time, and record its rank."""
@@ -50,9 +67,16 @@ def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float,
                 "skipped_incomplete": skipped}
     ranks = np.array([r["rank"] for r in rows])
     n = len(sites)
+    for r in rows:
+        r["percentile"] = rank_percentile(r["rank"], n)
+    median_pct = float(np.median([r["percentile"] for r in rows]))
     out = {"status": "INFO", "n_sites_ranked": n, "held_out": rows, "skipped_incomplete": skipped,
            "recall_at_5": float((ranks <= 5).mean()), "recall_at_10": float((ranks <= 10).mean()),
-           "random_guess_recall_at_5": round(min(5, n) / n, 2)}
+           "random_guess_recall_at_5": round(min(5, n) / n, 2),
+           # top-5 gets stricter as more sites are added; percentiles don't
+           "median_percentile": round(median_pct, 1), "random_median_percentile": 50.0,
+           "top_10pct_share": float((ranks <= max(1, round(n / 10))).mean()),
+           "chance_random_does_as_well": chance_random_median_at_least(median_pct, len(rows), n)}
     if n < SMALL_SAMPLE:
         out["status"] = "WARN"
         out["warning"] = (f"Only {n} sites ranked: even a random ranking would put "

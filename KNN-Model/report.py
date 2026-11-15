@@ -151,6 +151,24 @@ def _low_evidence_line(summary: dict) -> str:
             f"recommendation. Here: {', '.join(sites) or 'none'}.")
 
 
+def nasa_agreement_note(ho: dict) -> str:
+    """Plain-English note on how well the ranking agrees with NASA's own site choices."""
+    p, med = ho.get("chance_random_does_as_well"), ho.get("median_percentile")
+    if p is None or med is None or not np.isfinite(p):
+        return ""
+    strength = "strong" if p <= 0.01 else "moderate" if p <= 0.05 else "weak"
+    text = (f"**Note on agreement with NASA:** {strength}. The typical NASA site beats {med:.0f}% of the "
+            f"other sites; 5 sites picked at random do this well {p:.1%} of the time. ")
+    if strength != "strong":
+        text += ("NASA chooses field sites for more than terrain: road access, safety, permits and "
+                 "nearness to its teams (most are around Flagstaff, Arizona). This model measures terrain "
+                 "only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the "
+                 "weights to push NASA's sites up: that would fit the model to the answer and make this "
+                 "check meaningless. ")
+    return text + ("Top-5 counts get stricter as more sites are added (5 of 103 is the top 5%); the "
+                   "percentile does not, so it is the fairer comparison between runs.")
+
+
 def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], disclaimer: str,
                     top: int = 15, extra: list[str] | None = None) -> str:
     """A short human-readable report (e.g. for the pitch)."""
@@ -182,8 +200,11 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
           + (f"each NASA site left out of fitting in turn: ranks "
              f"{', '.join(f'{h['site']} #{h['rank']}' for h in ho['held_out'])}; "
              f"recall@5 = {ho['recall_at_5']:.0%} (random guess: {ho['random_guess_recall_at_5']:.0%})"
+             + (f"; typical NASA site beats {ho['median_percentile']:.0f}% of the other sites "
+                f"(random: 50%)" if ho.get("median_percentile") is not None else "")
              + (f". ⚠️ {ho['warning']}" if ho.get("warning") else "")
              if ho["status"] != "NOT RUN" else ho["reason"]),
+          *([f"  - {nasa_agreement_note(ho)}"] if nasa_agreement_note(ho) else []),
           f"- **Negative controls** (farmland must rank in the bottom half on similarity alone, "
           f"ignoring its crops): **{nc['status']}**",
           f"- **Stability:** #1 site unchanged in {st['top1_unchanged_share']:.0%} of {st['n_variants']} "

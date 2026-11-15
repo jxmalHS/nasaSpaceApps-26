@@ -132,6 +132,8 @@ def _held_out_entry(m: str, s: dict, coords: dict) -> dict:
              "target_id": target_id, "status": "loo", "held_out": held_out,
              "median_percentile": round(statistics.median(e["percentile"] for e in engine), 1) if engine else None,
              "median_over": f"all {len(engine)} engine held-out sites",
+             "random_median_percentile": 50.0,
+             "chance_random_does_as_well": ho.get("chance_random_does_as_well"),
              "top5_rate": ho.get("recall_at_5"), "random_top5_rate": ho.get("random_guess_recall_at_5"),
              "population": POPULATION.format(n=n), "engine_held_out": engine}
     if ho.get("status") == "WARN" or n < 20:
@@ -186,6 +188,10 @@ def _card(summaries: dict, n_sites: int, settings: dict) -> dict:
             metrics[f"held-out NASA sites in top 5 ({test_id} / {target_id})"] = (
                 f"{ho['recall_at_5']:.0%} (random order: {ho['random_guess_recall_at_5']:.0%}; "
                 f"{ho['n_sites_ranked']} sites ranked)")
+        if ho.get("median_percentile") is not None:
+            metrics[f"held-out NASA sites, median percentile ({test_id} / {target_id})"] = (
+                f"{ho['median_percentile']:.0f} (random: 50; a random pick does this well "
+                f"{ho['chance_random_does_as_well']:.1%} of the time)")
         if st.get("n_variants"):
             metrics[f"stability ({test_id} / {target_id})"] = _stability_text(st)
     metrics["nasa_sites_for_validation"] = "5 for the Moon (Artemis training sites), 6 for Mars (Mars 2020 Lander Vision System test spots + Grand Falls dunes)"

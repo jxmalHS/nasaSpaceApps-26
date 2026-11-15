@@ -89,3 +89,12 @@ def test_test_tile_avoids_interference_first():
     assert report.interference_level({"tree_frac": 0.9}, m.interference) == report.INTERFERED
     assert report.interference_level({"tree_frac": np.nan}, m.interference) == report.INTERFERENCE_UNKNOWN
     assert report.interference_level({"tree_frac": 0.1}, m.interference) == report.CLEAN
+
+
+def test_nasa_agreement_note_is_honest_about_strength():
+    import report
+    weak = report.nasa_agreement_note({"chance_random_does_as_well": 0.12, "median_percentile": 74})
+    strong = report.nasa_agreement_note({"chance_random_does_as_well": 0.0003, "median_percentile": 97})
+    assert weak.startswith("**Note on agreement with NASA:** weak") and "road access" in weak
+    assert "strong" in strong and "road access" not in strong
+    assert report.nasa_agreement_note({}) == ""

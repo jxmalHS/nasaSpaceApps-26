@@ -37,6 +37,21 @@ def test_held_out_nasa_sites_rank_high(table):
     assert {h["site"] for h in out["held_out"]} == {"nasa_a", "nasa_b"}
     assert out["recall_at_5"] == 1.0
     assert out["status"] == "WARN"                             # only 9 sites: says so loudly
+    assert out["median_percentile"] > 50                       # beats a random pick
+    assert all(0 <= h["percentile"] <= 100 for h in out["held_out"])
+
+
+def test_percentile_does_not_shrink_when_sites_are_added():
+    """Same relative place (top ~10%) gives the same percentile at 32 or 103 sites."""
+    assert validation.rank_percentile(1, 103) == 100.0
+    assert validation.rank_percentile(103, 103) == 0.0
+    assert abs(validation.rank_percentile(4, 32) - validation.rank_percentile(12, 103)) < 2
+
+
+def test_chance_random_does_as_well():
+    assert validation.chance_random_median_at_least(0, 5, 100) == 1.0      # any pick reaches 0
+    assert validation.chance_random_median_at_least(95, 5, 100) < 0.001    # top 5% median: very rare
+    assert 0.4 < validation.chance_random_median_at_least(50, 5, 101) < 0.6
 
 
 def test_held_out_skips_incomplete_nasa_sites(table):
