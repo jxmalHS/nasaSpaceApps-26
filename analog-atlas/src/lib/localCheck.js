@@ -76,7 +76,7 @@ export function useLocalChecks(rows, target) {
       const worker = async () => {                      // 12 fetches at a time
         while (next < jobs.length && !ctrl.signal.aborted) {
           const { x, s, lat, lon } = jobs[next++];
-          const key = s === 0 ? String(x.id) : null;      // only the centre has a pre-built patch file
+          const key = null;   // pre-built Earth patch files are rare: go straight to /api/terrain (no 404s)
           const p = await loadPatch({ body: 'earth', key, lat, lon, signal: ctrl.signal });
           stats[x.id][s] = p?.stats || null;
           if (--left[x.id] === 0 && !ctrl.signal.aborted) {
