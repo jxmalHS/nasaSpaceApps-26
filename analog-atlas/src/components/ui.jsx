@@ -5,14 +5,9 @@ import { fmt, isNum } from '../lib/format.js';
 import { STATUS } from '../lib/scoring.js';
 
 /** Brand mark: Earth (blue disc) meeting its target world (red ring) on one axis. */
-export function Mark({ size = 22 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="9" cy="12" r="7" fill="#4c8dff" />
-      <circle cx="17.5" cy="12" r="4.6" fill="none" stroke="#fc3d21" strokeWidth="2.2" />
-      <path d="M2 12h20" stroke="#03060d" strokeWidth="1.2" />
-    </svg>
-  );
+/** Analog Atlas logo: Earth matched against a target world (public/logo.png, transparent background). */
+export function Mark({ size = 30 }) {
+  return <img src={`${import.meta.env.BASE_URL}logo.png`} height={size} width={Math.round(size * 1.114)} alt="" aria-hidden="true" style={{ display: 'block' }} />;
 }
 
 /** Plain-language tooltip on a technical term. Hover or keyboard focus. */
