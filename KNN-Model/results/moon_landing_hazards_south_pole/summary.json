@@ -15,8 +15,8 @@
     "rough_large": 36.3784061016397,
     "curvature_abs_mean": 0.2852543664550781,
     "pit_density": 0.7999999999999999,
-    "temp_range_mean": NaN,
-    "temp_range_std": NaN
+    "temp_range_mean": 176.91690826416016,
+    "temp_range_std": 17.52491283416748
   },
   "weights_used": {
     "pit_density": 0.3333333333333333,
@@ -256,29 +256,38 @@
       "held_out": [
         {
           "site": "buffalo_park",
-          "rank": 1
+          "rank": 1,
+          "percentile": 100.0
         },
         {
           "site": "cinder_lake_crater_field",
-          "rank": 3
+          "rank": 3,
+          "percentile": 98.4
         },
         {
           "site": "meteor_crater",
-          "rank": 44
+          "rank": 44,
+          "percentile": 65.9
         },
         {
           "site": "sp_crater_jett3",
-          "rank": 5
+          "rank": 5,
+          "percentile": 96.8
         },
         {
           "site": "yucca_flat",
-          "rank": 7
+          "rank": 7,
+          "percentile": 95.2
         }
       ],
       "skipped_incomplete": [],
       "recall_at_5": 0.6,
       "recall_at_10": 0.8,
-      "random_guess_recall_at_5": 0.04
+      "random_guess_recall_at_5": 0.04,
+      "median_percentile": 96.8,
+      "random_median_percentile": 50.0,
+      "top_10pct_share": 0.8,
+      "chance_random_does_as_well": 0.0003
     },
     "simple_method_agreement": {
       "status": "INFO",
@@ -298,7 +307,7 @@
         },
         {
           "mission": "moon_rover_thermal_south_pole",
-          "spearman": 0.5610060461192351,
+          "spearman": 0.8424242424242423,
           "too_similar": false
         }
       ]

@@ -38,11 +38,12 @@ Interference (trees, crops, water... over the mission's limits) would ruin the t
 
 The model is unsupervised (no training labels), so these checks are how it is tested.
 
-- **Held-out NASA sites** (INFO): each NASA site left out of fitting in turn: ranks buffalo_park #1, cinder_lake_crater_field #3, meteor_crater #44, sp_crater_jett3 #5, yucca_flat #7; recall@5 = 60% (random guess: 4%)
+- **Held-out NASA sites** (INFO): each NASA site left out of fitting in turn: ranks buffalo_park #1, cinder_lake_crater_field #3, meteor_crater #44, sp_crater_jett3 #5, yucca_flat #7; recall@5 = 60% (random guess: 4%); typical NASA site beats 97% of the other sites (random: 50%)
+  - **Note on agreement with NASA:** strong. The typical NASA site beats 97% of the other sites; 5 sites picked at random do this well 0.0% of the time. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.
 - **Negative controls** (farmland must rank in the bottom half on similarity alone, ignoring its crops): **PASS**
 - **Stability:** #1 site unchanged in 83% of 12 small changes; on average 4.9 of the top 5 stay in the top 5
 - **Simple-method comparison** (agreement ≠ accuracy): top-5 overlap 2/5, Spearman 0.88
-- **Mission sensitivity** (PASS): vs moon_rover_south_pole Spearman 0.54; vs moon_rover_thermal_south_pole Spearman 0.56
+- **Mission sensitivity** (PASS): vs moon_rover_south_pole Spearman 0.54; vs moon_rover_thermal_south_pole Spearman 0.84
 - Features skipped (no data at this pixel size): none
 - Sites not ranked because a needed measurement is missing (incomplete): none
 

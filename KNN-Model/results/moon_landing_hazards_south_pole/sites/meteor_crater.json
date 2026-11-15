@@ -138,21 +138,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": null,
-      "test_tile": null,
-      "site_median": null,
-      "difference": null,
-      "statement": "Annual temperature range: unknown (no data)"
+      "target": 176.91690826416016,
+      "test_tile": 57.38527297973633,
+      "site_median": 61.41387939453125,
+      "difference": -119.53163528442383,
+      "statement": "Annual temperature range is 120 K narrower than the target"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": null,
-      "test_tile": null,
-      "site_median": null,
-      "difference": null,
-      "statement": "Variation of temperature range: unknown (no data)"
+      "target": 17.52491283416748,
+      "test_tile": 1.8986916542053223,
+      "site_median": 0.8953279852867126,
+      "difference": -15.626221179962158,
+      "statement": "Variation of temperature range is 15.6 K lower than the target"
     }
   ],
   "interference": {

@@ -38,11 +38,12 @@ Interference (trees, crops, water... over the mission's limits) would ruin the t
 
 The model is unsupervised (no training labels), so these checks are how it is tested.
 
-- **Held-out NASA sites** (INFO): each NASA site left out of fitting in turn: ranks buffalo_park #6, cinder_lake_crater_field #28, meteor_crater #61, sp_crater_jett3 #15, yucca_flat #29; recall@5 = 0% (random guess: 5%)
+- **Held-out NASA sites** (INFO): each NASA site left out of fitting in turn: ranks buffalo_park #6, cinder_lake_crater_field #28, meteor_crater #61, sp_crater_jett3 #15, yucca_flat #29; recall@5 = 0% (random guess: 5%); typical NASA site beats 74% of the other sites (random: 50%)
+  - **Note on agreement with NASA:** weak. The typical NASA site beats 74% of the other sites; 5 sites picked at random do this well 12.3% of the time. NASA chooses field sites for more than terrain: road access, safety, permits and nearness to its teams and towns. This model measures terrain only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the weights to push NASA's sites up: that would fit the model to the answer and make this check meaningless. Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); the percentile does not, so it is the fairer comparison between runs.
 - **Negative controls** (farmland must rank in the bottom half on similarity alone, ignoring its crops): **PASS**
 - **Stability:** #1 site unchanged in 86% of 14 small changes; on average 4.3 of the top 5 stay in the top 5
 - **Simple-method comparison** (agreement ≠ accuracy): top-5 overlap 0/5, Spearman 0.56
-- **Mission sensitivity** (PASS): vs moon_landing_hazards_south_pole Spearman 0.86; vs moon_rover_thermal_south_pole Spearman 0.95
+- **Mission sensitivity** (PASS): vs moon_landing_hazards_south_pole Spearman 0.86; vs moon_rover_thermal_south_pole Spearman 0.50
 - Features skipped (no data at this pixel size): none
 - Sites not ranked because a needed measurement is missing (incomplete): none
 
