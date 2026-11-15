@@ -126,7 +126,7 @@ function Summary() {
     <section className="m-summary" aria-label="What this test scores">
       <p className="small">{test.question}</p>
       <div className="sum-row"><span className="tiny faint">Matches on</span>
-        <span className="small">{tgt.map((f) => `${F[f].short} ${Math.round(((weights[f] ?? test.target[f]?.w ?? 20) / total) * 100)}%`).join(' · ')}</span></div>
+        <ul className="weights-summary">{tgt.map(f=><li key={f}><span>{F[f].short}</span><b>{Math.round(100*(weights[f]??test.target[f]?.w??20)/total)}%</b></li>)}</ul></div>
       {lims.length > 0 && <div className="sum-row"><span className="tiny faint">Rules out</span>
         <span className="small">{lims.map((f) => { const t = { ...test.interference[f], ...thresholds[f] }; return `${F[f].short} ${t.op === '<=' ? 'over' : 'under'} ${fmt(t.v, f)}`; }).join(' · ')}</span></div>}
     </section>
@@ -172,7 +172,7 @@ function Weights() {
         {r === 'target' && (
           <>
             <div className="w-ctl">
-              <input className="range" type="range" min="0" max="100" step="5" value={w} aria-label={`Importance of ${f.label}`}
+              <input className="range" type="range" min="0" max="100" step="5" value={w} title={why || f.tip} aria-label={`Importance of ${f.label}`}
                 style={{ '--fill': `${w}%`, '--c': 'var(--earth)' }}
                 onChange={(e) => setState((st) => ({ weights: { ...st.weights, [fid]: Number(e.target.value) } }))} />
               <span className="num w-val">{totalW ? Math.round((w / totalW) * 100) : 0}%</span>
@@ -274,6 +274,7 @@ function Filters() {
         <input className="range" type="range" min="0" max="1" step="0.05" value={f.minEvidence} style={{ '--fill': `${f.minEvidence * 100}%`, '--c': 'var(--text-2)' }}
           onChange={(e) => set({ minEvidence: Number(e.target.value) })} aria-label="Minimum evidence" />
       </label>
+      <label className="field">Minimum ranking score · {Math.round((f.minMatch||0)*100)} / 100<input type="range" className="range" min="0" max="1" step="0.01" value={f.minMatch||0} onChange={e=>set({minMatch:Number(e.target.value)})}/></label>
       <label className="check"><input type="checkbox" checked={f.includeUnknown} onChange={(e) => set({ includeUnknown: e.target.checked })} /> Show unverified sites</label>
       <label className="check"><input type="checkbox" checked={f.beatsBaseline} onChange={(e) => set({ beatsBaseline: e.target.checked })} /> Only sites that beat NASA’s usual site</label>
       <div className="field">

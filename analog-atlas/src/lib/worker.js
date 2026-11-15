@@ -104,7 +104,7 @@ function sortedCandidates(final, status, cfg) {
   const rf = regionOk(cfg);
   const idx = [];
   for (let i = 0; i < G.n; i++) {
-    if (Number.isNaN(final[i]) || !allow[status[i]]) continue;
+    if (Number.isNaN(final[i]) || final[i] < (cfg.filters?.minMatch || 0) || !allow[status[i]]) continue;
     if (rf && !rf(i)) continue;
     idx.push(i);
   }
@@ -152,6 +152,7 @@ function paintScore(final, status, cfg) {
       if (i < 0) continue;
       const o = (y * W + x) * 4;
       if (rf && !rf(i)) { img[o] = 6; img[o + 1] = 10; img[o + 2] = 20; img[o + 3] = 120; continue; }
+      if (final[i] < (cfg.filters?.minMatch || 0)) continue;
       const st = status[i];
       if (st === STATUS.FAIL) { img[o] = 6; img[o + 1] = 9; img[o + 2] = 18; img[o + 3] = 95; continue; }
       if (st === STATUS.UNKNOWN || Number.isNaN(rankPct[i])) {
@@ -246,7 +247,7 @@ async function score(cfg) {
   const mlIdx = [];
   if (mlArr) for (let i = 0; i < G.n; i++) if (!Number.isNaN(mlArr[i])) { mlCount++; mlIdx.push(i); }
   // Sparse models get their own list, ranked by the model score, whatever the ranking mode.
-  const mlTop = mlCount && mlCount < G.n / 2 ? mlIdx.sort((a, b) => mlArr[b] - mlArr[a]).slice(0, 40).map((i) => siteRow(i, final, res, mlArr, rankMap, baseBest)) : [];
+  const mlTop = mlCount && mlCount < G.n / 2 ? mlIdx.sort((a, b) => mlArr[b] - mlArr[a]).map((i) => siteRow(i, final, res, mlArr, rankMap, baseBest)) : [];
   const raster = paintScore(final, res.status, cfg);
   G.last = { cfg, plan, res, final, mlArr, rankMap, baseBest, base };
   return {
@@ -402,7 +403,7 @@ async function scoreSites({ cfg, sites }) {
   const res = scoreAll(plan, X, QX, m);
   return {
     value: sites.map((s, k) => ({ ...s, score: res.score[k], evidence: res.evidence[k], status: res.status[k], warn: res.warn[k], cell: meta[k].cell, cellKm: meta[k].km,
-      ex: explain(plan, X, QX, k, catalog) })),
+      resolvedValues:Object.fromEntries(G.meta.columns.map((col,j)=>[col.id,Number.isFinite(X[j][k])?X[j][k]:null])), ex: explain(plan, X, QX, k, catalog) })),
   };
 }
 

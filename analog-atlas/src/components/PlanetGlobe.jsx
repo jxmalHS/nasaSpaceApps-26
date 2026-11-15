@@ -120,6 +120,7 @@ function Globe3D({ body, targets, selected, onSelect, valueOf, height = 320 }) {
     const onWheel = (e) => { e.preventDefault(); dist = Math.min(7, Math.max(2.2, dist + e.deltaY * 0.002)); draw(); };
     const onKey = (e) => {
       const k = { ArrowLeft: [0, -0.15], ArrowRight: [0, 0.15], ArrowUp: [-0.15, 0], ArrowDown: [0.15, 0] }[e.key];
+      if(e.key==='+'||e.key==='='||e.key==='-'){e.preventDefault();dist=Math.max(2.2,Math.min(7,dist+(e.key==='-'?.4:-.4)));draw();return}
       if (!k) return;
       e.preventDefault();
       q.premultiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(k[0], k[1], 0))); draw();
@@ -140,7 +141,7 @@ function Globe3D({ body, targets, selected, onSelect, valueOf, height = 320 }) {
       face(lat, lon) { dist = Math.abs(lat) > 70 ? 2.35 : 4.4; animateTo(faceQuat(lat, lon)); },
       draw,
     };
-    return () => { cancelAnimationFrame(anim); ro.disconnect(); el.removeEventListener('wheel', onWheel); renderer.dispose(); scene.traverse((o) => { o.geometry?.dispose?.(); o.material?.map?.dispose?.(); o.material?.dispose?.(); }); renderer.domElement.remove(); };
+    return () => { cancelAnimationFrame(anim); ro.disconnect(); el.removeEventListener('pointerdown', onDown);el.removeEventListener('pointermove', onMove);el.removeEventListener('pointerup', onUp);el.removeEventListener('keydown',onKey);el.removeEventListener('wheel', onWheel); renderer.dispose(); scene.traverse((o) => { o.geometry?.dispose?.(); o.material?.map?.dispose?.(); o.material?.dispose?.(); }); renderer.domElement.remove(); };
   }, [body]);
 
   useEffect(() => {
@@ -151,7 +152,7 @@ function Globe3D({ body, targets, selected, onSelect, valueOf, height = 320 }) {
 
   return (
     <div className="planet-globe" ref={box} style={{ height }} tabIndex={0} role="application"
-      aria-label={`${BODY[body].label} globe. Drag or use arrow keys to rotate. Targets are also listed as buttons.`}>
+      aria-label={`${BODY[body].label} globe. Drag or use arrow keys to rotate. Plus and minus zoom. Targets are also listed as buttons.`}>
       <div className="pg-labels">
         {targets.map((t) => (
           <button key={t.id} data-id={t.id} className={'pg-label' + (t.id === selected ? ' on' : '')} onClick={() => selRef.current?.(t.id)} aria-pressed={t.id === selected}>

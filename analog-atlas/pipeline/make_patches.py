@@ -1,8 +1,8 @@
 """Cut measured 2 x 2 km terrain patches for the Compare page.
 
     pip install rasterio numpy
-    python pipeline/make_patches.py earth --dem NASADEM_HGT_n24w070.tif --cell 252029 --lat -24.08 --lon -70.01
-    python pipeline/make_patches.py moon  --dem LOLA_SPole_20m.tif      --key connecting-ridge --lat -89.45 --lon -137.5
+    python pipeline/make_patches.py earth --dem NASADEM_HGT_n24w070.tif --cell 252029 --lat -24.08 --lon -70.01 --source-spacing 30 --source-url <dataset-url>
+    python pipeline/make_patches.py moon  --dem LOLA_SPole_20m.tif      --key connecting-ridge --lat -89.45 --lon -137.5 --source-spacing 20 --source-url <dataset-url>
 
 Writes public/data/patches/{body}/{key}.json:
     {"size_m": 2000, "n": 128, "z": [...], "source": "..."}
@@ -35,7 +35,11 @@ def main() -> None:
     ap.add_argument("--key", help="target id (Moon/Mars)")
     ap.add_argument("--size", type=float, default=2000.0)
     ap.add_argument("--n", type=int, default=128)
+    ap.add_argument("--source-url", required=True, help="Public product or dataset URL")
+    ap.add_argument("--source-spacing", type=float, required=True, help="Native DEM grid spacing in metres")
     a = ap.parse_args()
+    if a.n != 128 or a.size != 2000 or a.source_spacing <= 0:
+        ap.error("Compare uses a 128 x 128 grid over 2000 m; provide positive source spacing.")
     import rasterio
     from rasterio.warp import transform
 
@@ -61,12 +65,12 @@ def main() -> None:
         if ds.nodata is not None:
             z[z == ds.nodata] = np.nan
         source = Path(a.dem).name
-    if np.isnan(z).mean() > 0.02:
-        raise SystemExit("More than 2% of the window has no data; choose another DEM or site.")
+    if not np.isfinite(z).all():
+        raise SystemExit("The footprint contains missing elevation; choose another DEM or site.")
     z = np.where(np.isnan(z), np.nanmean(z), z).reshape(a.n, a.n)
     out = OUT / a.body / f"{key}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps({"size_m": a.size, "n": a.n, "z": np.round(z, 2).ravel().tolist(), "source": source}))
+    out.write_text(json.dumps({"body": a.body, "lat": a.lat, "lon": a.lon, "sampleSpacingM": a.source_spacing, "sourceUrl": a.source_url, "size_m": a.size, "n": a.n, "z": np.round(z, 2).ravel().tolist(), "source": source}))
     print("wrote", out)
 
 

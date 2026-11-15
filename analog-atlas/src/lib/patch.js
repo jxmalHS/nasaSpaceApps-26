@@ -1,68 +1,26 @@
-/**
- * 2 × 2 km terrain patches for Compare. Both sides always share size, sampling, colour scale and units.
- *
- * Source order:
- *   1. Measured patch  public/data/patches/{earth|moon|mars}/{key}.json
- *      { size_m: 2000, n: 128, z: [n*n heights in metres, row-major, north up], source: "NASADEM 30 m" }
- *      (cut them with pipeline/make_patches.py from NASADEM / LOLA / HiRISE DTMs)
- *   2. Synthesized from the site's regional statistics (roughness, slope), clearly labelled
- *      "illustrative". It conveys texture scale, not real landforms.
- */
+/** Compare uses measured elevations on a north-up metric grid. */
 export const PATCH_M = 2000;
 export const PATCH_N = 128;
-
 const cache = new Map();
-
-export async function loadPatch({ body, key, seed, slopeDeg, roughM }) {
-  const k = `${body}/${key}`;
-  if (cache.has(k)) return cache.get(k);
-  let p = null;
-  try {
-    const r = await fetch(`${import.meta.env.BASE_URL}data/patches/${k}.json`);
-    if (r.ok && r.headers.get('content-type')?.includes('json')) {
-      const j = await r.json();
-      if (j.n && j.z?.length === j.n * j.n) p = { ...j, z: Float32Array.from(j.z), synthetic: false };
-    }
-  } catch { /* fall back */ }
-  if (!p) p = synthesize({ body, seed, slopeDeg, roughM });
-  p.stats = patchStats(p);
-  cache.set(k, p);
-  return p;
-}
-
-/** Fractal terrain with RMS roughness scaled from the ~9 km regional value to 2 km (Hurst 0.8). */
-export function synthesize({ body, seed = 1, slopeDeg = 1, roughM = 20 }) {
-  const n = PATCH_N, dx = PATCH_M / (n - 1);
-  const rnd = mulberry(seed >>> 0 || 1);
-  const z = new Float32Array(n * n);
-  const lattice = (f) => { const g = new Float32Array((f + 1) * (f + 1)); for (let i = 0; i < g.length; i++) g[i] = rnd() * 2 - 1; return g; };
-  const H = 0.8;
-  for (let o = 0; o < 6; o++) {
-    const f = 2 << o, g = lattice(f), amp = Math.pow(f, -H);
-    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-      const gx = (x / (n - 1)) * f, gy = (y / (n - 1)) * f, ix = Math.min(f - 1, Math.floor(gx)), iy = Math.min(f - 1, Math.floor(gy));
-      const tx = smooth(gx - ix), ty = smooth(gy - iy), w = f + 1;
-      const a = g[iy * w + ix], b = g[iy * w + ix + 1], c = g[(iy + 1) * w + ix], d = g[(iy + 1) * w + ix + 1];
-      z[y * n + x] += amp * (a + (b - a) * tx + (c - a) * ty + (a - b - c + d) * tx * ty);
-    }
+export async function loadPatch({body, key, lat, lon, signal}) {
+  const coordinates = new URLSearchParams({body,lat,lon});
+  const id = coordinates.toString();
+  if (cache.has(id)) return cache.get(id);
+  const urls = [key && import.meta.env.BASE_URL+'data/patches/'+body+'/'+key+'.json', import.meta.env.BASE_URL+'api/terrain?'+id].filter(Boolean);
+  for (const url of urls) {
+    try {
+      const res = await fetch(url,{signal});
+      if (!res.ok || !res.headers.get('content-type')?.includes('json')) continue;
+      const p = await res.json();
+      if (p.body !== body || p.lat !== lat || p.lon !== lon || p.n !== PATCH_N || p.size_m !== PATCH_M || p.z?.length !== p.n*p.n || !p.z.every(Number.isFinite)) continue;
+      p.z = Float32Array.from(p.z);
+      p.stats = patchStats(p);
+      if (cache.size >= 32) cache.delete(cache.keys().next().value);
+      cache.set(id,p);
+      return p;
+    } catch { if(signal?.aborted) break; }
   }
-  // Craters: dense on the Moon, sparse on Mars, none on Earth.
-  const craters = body === 'moon' ? 70 : body === 'mars' ? 14 : 0;
-  for (let k = 0; k < craters; k++) {
-    const cx = rnd() * n, cy = rnd() * n, D = (12 + 260 * Math.pow(rnd(), 3)) / dx, R = D / 2, depth = 0.2 * D * dx;
-    for (let y = Math.max(0, Math.floor(cy - R * 1.6)); y < Math.min(n, cy + R * 1.6); y++)
-      for (let x = Math.max(0, Math.floor(cx - R * 1.6)); x < Math.min(n, cx + R * 1.6); x++) {
-        const r = Math.hypot(x - cx, y - cy) / R;
-        z[y * n + x] += r < 1 ? depth * (r * r - 1) * 0.0035 : r < 1.6 ? depth * 0.0012 * Math.cos(((r - 1) / 0.6) * Math.PI / 2) ** 2 : 0;
-      }
-  }
-  // normalise to target RMS, then add the regional tilt
-  let m = 0; for (const v of z) m += v; m /= z.length;
-  let s = 0; for (const v of z) s += (v - m) ** 2; s = Math.sqrt(s / z.length) || 1;
-  const rms = Math.max(0.3, (Number.isFinite(roughM) ? roughM : 20) * Math.pow(2 / 9, H));
-  const tilt = Math.tan(((Number.isFinite(slopeDeg) ? slopeDeg : 1) * Math.PI) / 180);
-  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) z[y * n + x] = ((z[y * n + x] - m) / s) * rms + tilt * x * dx;
-  return { n, size_m: PATCH_M, z, synthetic: true, source: 'Synthesized from regional slope and roughness (illustrative)' };
+  return null;
 }
 
 export function slopeAt(p, x, y) {
@@ -107,7 +65,7 @@ export function rampColor(t) {
 }
 
 /** Hillshade × height colour into a canvas. `sunAlt` in degrees lets you view under grazing light. */
-export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exaggerate = 1 } = {}) {
+export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exaggerate = 1, layer = "height" } = {}) {
   const n = p.n, dx = p.size_m / (n - 1);
   canvas.width = n; canvas.height = n;
   const ctx = canvas.getContext('2d');
@@ -120,7 +78,7 @@ export function renderPatch(canvas, p, domain, { sunAlt = 30, sunAz = 315, exagg
     const sl = Math.atan(Math.hypot(dzdx, dzdy)), asp = Math.atan2(dzdy, -dzdx);
     const shade = Math.max(0, Math.cos(zen) * Math.cos(sl) + Math.sin(zen) * Math.sin(sl) * Math.cos(az - asp));
     const t = (p.z[y * n + x] - p.stats.mean - domain[0]) / (domain[1] - domain[0]);
-    const c = rampColor(t), k = 0.25 + 0.95 * shade, o = (y * n + x) * 4;
+    const c = rampColor(layer==="slope"?sl/(Math.PI/2):t), k = layer==="slope"?1:0.25 + 0.95 * shade, o = (y * n + x) * 4;
     img.data[o] = Math.min(255, c[0] * k); img.data[o + 1] = Math.min(255, c[1] * k); img.data[o + 2] = Math.min(255, c[2] * k); img.data[o + 3] = 255;
   }
   ctx.putImageData(img, 0, 0);
@@ -134,10 +92,6 @@ export function profile(p, a, b, samples = 120) {
   for (let k = 0; k <= samples; k++) { const t = k / samples; out.push(at(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t) - z0); }
   return out;
 }
-
-const smooth = (t) => t * t * (3 - 2 * t);
-function mulberry(seed) { let a = seed; return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-export const hashStr = (s) => { let h = 2166136261; for (const c of String(s)) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 
 /** Downhill direction as a compass bearing (degrees from north). */
 export function aspectAt(p, x, y) {

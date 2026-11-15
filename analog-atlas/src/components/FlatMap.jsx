@@ -6,7 +6,7 @@ import { WEBGL_HELP } from '../lib/webgl.js';
  * No-WebGL fallback for the Earth map: a flat Mercator canvas with the bundled Blue Marble,
  * the same suitability raster, top candidates and the selection. Click anywhere to inspect.
  */
-export default function FlatMap({ result, layerImage, sel, onPick }) {
+export default function FlatMap({ imageryOnly, result, layerImage, sel, onPick }) {
   const wrap = useRef(null);
   const canvas = useRef(null);
   const [bg, setBg] = useState(null);
@@ -27,22 +27,22 @@ export default function FlatMap({ result, layerImage, sel, onPick }) {
       const ctx = c.getContext('2d');
       ctx.fillStyle = '#03060d'; ctx.fillRect(0, 0, W, H);
       const s = Math.min(W, H) * 1.0, ox = (W - s) / 2, oy = (H - s) / 2;
-      if (bg) { ctx.globalAlpha = 0.55; ctx.drawImage(bg, ox, oy, s, s); ctx.globalAlpha = 1; }
+      if (bg) { ctx.globalAlpha = imageryOnly ? 1 : 0.55; ctx.drawImage(bg, ox, oy, s, s); ctx.globalAlpha = 1; }
       const img = layerImage || result?.raster;
-      if (img) {
+      if (!imageryOnly && img) {
         const off = document.createElement('canvas'); off.width = img.width; off.height = img.height;
         off.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(img.data), img.width, img.height), 0, 0);
         ctx.imageSmoothingEnabled = false; ctx.drawImage(off, ox, oy, s, s);
       }
       const px = (lat, lon) => [ox + ((lon + 180) / 360) * s, oy + ((yMax - mercY(lat)) / (2 * yMax)) * s];
-      if (result?.points) {
+      if (!imageryOnly && result?.points) {
         const p = result.points;
         for (let k = 0; k < Math.min(400, p.length / 4); k++) {
           const [x, y] = px(p[k * 4 + 1], p[k * 4]);
           ctx.fillStyle = k < 20 ? '#ffffff' : '#9cc2ff'; ctx.beginPath(); ctx.arc(x, y, k < 20 ? 3 : 2, 0, 7); ctx.fill();
         }
       }
-      if (sel != null) {
+      if (!imageryOnly && sel != null) {
         const [la, lo] = cellLatLon(sel); const [x, y] = px(la, lo);
         ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(x - 6, y - 6, 12, 12);
       }
@@ -52,7 +52,7 @@ export default function FlatMap({ result, layerImage, sel, onPick }) {
     draw();
     const ro = new ResizeObserver(draw); ro.observe(w);
     return () => ro.disconnect();
-  }, [bg, result, layerImage, sel]);
+  }, [bg, result, layerImage, sel, imageryOnly]);
 
   const click = (e) => {
     const r = canvas.current.getBoundingClientRect();

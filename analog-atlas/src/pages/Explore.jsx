@@ -1,3 +1,4 @@
+import EarthLayerSelect from '../components/EarthLayerSelect.jsx';
 import { useEffect, useMemo, useState } from 'react';
 import { SlidersHorizontal, ListOrdered } from 'lucide-react';
 import { T, targets, F, features, tests } from '../lib/catalog.js';
@@ -23,6 +24,15 @@ export default function Explore() {
     targetId: useStore((x) => x.targetId), pins: useStore((x) => x.pins), uploads: useStore((x) => x.uploads),
   };
   const cfgKey = useStore((x) => JSON.stringify(scoringConfig(x)));
+  const rows=useStore(st=>st.uploadRows);
+  useEffect(()=>{
+    if(!rows.length||getState().uploadKey===cfgKey)return;
+    let active=true;
+    call('scoreSites',{cfg:JSON.parse(cfgKey),sites:rows}).then(uploads=>{
+      if(active&&getState().uploadRows===rows&&JSON.stringify(scoringConfig(getState()))===cfgKey)setState({uploads,uploadKey:cfgKey});
+    }).catch(()=>{if(active)setState({uploadMessage:'Uploaded sites could not be scored. Re-import the CSV to retry.'})});
+    return ()=>{active=false};
+  },[cfgKey,rows]);
   const r = useResult((x) => x);
   const mobile = useMedia('(max-width: 1023px)');
   const [sheet, setSheet] = useState('results');
@@ -70,19 +80,20 @@ export default function Explore() {
     if (mobile) setSheet('results');
   };
   const pick = async (p) => {
+    if(p.uploadIndex!=null){setState({sel:null,selectedUpload:p.uploadIndex});if(mobile)setSheet('results');return}
     if (p.i != null) return open({ i: p.i });
     const nn = await call('nearest', { lat: p.lat, lon: p.lon });
     if (nn && nn.km < 80) open({ i: nn.i });
   };
 
   const bodyTargets = useMemo(() => targets.filter((t) => t.body === tg.body), [tg.body]);
-  const dimFid = s.layer !== 'suit' && s.layer !== 'mask' ? s.layer : null;
+  const dimFid = F[s.layer] ? s.layer : null;
   const layerQ = layerImg?.q;
 
   const earth = (
     <div className="map-wrap side-earth" data-tour="map">
       <div className="map-label"><span className="tag-ab a">A</span> Earth</div>
-      <ErrorBoundary><EarthMap result={r.data} layerImage={layerImg} sel={s.sel} pins={pinGeo} uploads={s.uploads} onPick={pick} flyTo={fly} /></ErrorBoundary>
+      <ErrorBoundary><EarthMap key={s.view==='linked'?'linked':'single'} paired={s.view==='linked'} defaultProjection={s.view==='linked'?'globe':undefined} result={r.data} imageryOnly={s.layer === 'imagery'} layerImage={layerImg} sel={s.sel} pins={pinGeo} uploads={s.uploads} onPick={pick} flyTo={fly} /></ErrorBoundary>
       <Legend layer={s.layer} q={layerQ} />
     </div>
   );
@@ -102,7 +113,7 @@ export default function Explore() {
   const toolbar = (
     <div className="view-bar" role="toolbar" aria-label="Map view">
       <div className="seg" role="radiogroup" aria-label="View">
-        {[['earth', 'Earth map'], ['split', 'Side by side'], ['target', tg.body === 'moon' ? 'Moon globe' : 'Mars globe']].map(([k, l]) => (
+        {[['earth', 'Earth map'], ['split', 'Side by side'],['linked','Linked Earth views'], ['target', tg.body === 'moon' ? 'Moon globe' : 'Mars globe']].map(([k, l]) => (
           <button key={k} role="radio" aria-checked={s.view === k} onClick={() => setState({ view: k })}>{l}</button>
         ))}
       </div>
@@ -110,23 +121,18 @@ export default function Explore() {
         title={LITE ? 'Lite mode is on: flat map, still homepage. Click to turn it off.' : 'Turn on lite mode for slower computers: flat map, still homepage.'}>
         <Feather size={14} aria-hidden="true" /> Lite {LITE ? 'on' : 'off'}
       </button>
-      <label className="row small dim">
-        <span className="hide-sm">Show</span>
-        <select className="select sm" value={s.layer} onChange={(e) => setState({ layer: e.target.value })} aria-label="Map layer">
-          <option value="suit">Suitability for this test</option>
-          <option value="mask">Pass / fail on strict limits</option>
-          {features.filter((f) => !f.pending).map((f) => <option key={f.id} value={f.id}>{f.label}</option>)}
-        </select>
-      </label>
+      <div className="row small dim">
+        <span>Earth layer</span><EarthLayerSelect />
+      </div>
     </div>
   );
 
   const stage = (
-    <div className={'stage view-' + s.view}>
+    <div className={'stage view-' + (s.view==='linked'?'split':s.view)}>
       {toolbar}
       <div className="stage-maps">
         {s.view !== 'target' && earth}
-        {s.view !== 'earth' && planet}
+        {s.view==='linked'?<div className="map-wrap side-target"><div className="map-label">Earth · flat map</div><ErrorBoundary><EarthMap paired defaultProjection="mercator" result={r.data} imageryOnly={s.layer === 'imagery'} layerImage={layerImg} sel={s.sel} pins={pinGeo} uploads={s.uploads} onPick={pick} flyTo={fly}/></ErrorBoundary></div>:s.view !== 'earth' && planet}
       </div>
     </div>
   );
@@ -168,6 +174,7 @@ export default function Explore() {
 }
 
 function Legend({ layer, q }) {
+  if (layer === 'imagery') return null;
   if (layer === 'mask') {
     return (
       <div className="legend">

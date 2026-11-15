@@ -1,3 +1,4 @@
+import { recommendation } from '../lib/recommendation.js';
 import { useEffect, useState } from 'react';
 import { Printer, ArrowLeft, Link2 } from 'lucide-react';
 import { tests, T, F, limits, A } from '../lib/catalog.js';
@@ -55,6 +56,7 @@ export default function Report() {
         <div className="verdict-score"><b className="num">{score100(d.score)}</b><span className="tiny">of 100</span></div>
         <div className="grow">
           <h2 id="r-v" className="verdict-head" style={{ fontSize: 22, margin: 0 }}>{v.head}</h2>
+          <p><b>Recommendation</b> · {recommendation(d)}</p>
           <p className="small">{d.rankFiltered ? `Rank ${d.rankFiltered.toLocaleString()} of ${d.scoredTotal.toLocaleString()} listed Earth cells.` : 'Not in the ranking.'}
             {d.baseline ? ` Closer to the target than ${d.baseline.name} on ${v.closer} of ${v.of} measured target features (baseline score ${score100(d.baseline.score)}).` : ' No documented NASA field site exists for this test.'}
             {stab ? ` Ranking stability: the winner held in ${Math.round(stab.winnerKept * 100)}% of 24 runs with weights jittered ±30%${inTop ? `; this site stayed in the top 5 in ${Math.round(inTop.freq * 100)}% of runs` : ''}.` : ''}</p>

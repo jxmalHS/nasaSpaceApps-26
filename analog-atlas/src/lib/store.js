@@ -12,13 +12,17 @@ const initial = () => ({
   weights: {},               // overrides of test defaults: fid → 0..100
   roles: {},                 // overrides: fid → 'target' | 'ignore' | 'interference'
   thresholds: {},            // overrides / user requirements: fid → { op, v, hard, user?, off? }
-  filters: { minEvidence: 0.5, region: 'all', includeUnknown: true, beatsBaseline: false },
+  filters: { minMatch: 0, minEvidence: 0.5, region: 'all', includeUnknown: true, beatsBaseline: false },
   rankBy: 'rules',           // 'rules' | 'ml' | 'blend'
   sel: null,                 // selected Earth cell id
   pins: [],                  // shortlisted cell ids
   layer: 'suit',             // map layer: 'suit' or a feature id
   view: 'earth',             // 'earth' | 'split' | 'target'
+  inspectionPatch:null, globePair:false, patchLayer: 'height',
   compareId: null,           // Earth cell in Compare
+  uploadRows: [], uploadKey:null, selectedUpload:null, needsUpload:false,
+  cameraOffset:[0,0],cameraHeight:500000,cameraFlat:false,flickSide:0,
+  flick:false, relief:false, sun:30, exaggeration:2, profileLine:[[0.08,.5],[.92,.5]],
   uploads: [],               // user CSV sites (not in URL; too big)
   tourStep: null,
   openPanels: [],            // which advanced panels are open (not in URL)
@@ -102,6 +106,19 @@ export function encodeState(s = state) {
   if (s.pins.length) p.set('pins', s.pins.join('.'));
   if (s.layer !== 'suit') p.set('layer', s.layer);
   if (s.view !== 'earth') p.set('view', s.view);
+  if(s.uploadRows.length||s.needsUpload)p.set('csv','local');
+  if(s.cameraFlat)p.set('flat','1');
+  if(s.cameraHeight!==500000)p.set('alt',s.cameraHeight);
+  if(s.cameraOffset.some(v=>v!==0))p.set('pan',s.cameraOffset.join(','));
+  if(s.flick&&s.flickSide)p.set('side','B');
+  if(s.flick)p.set('flick','1');
+  if(s.relief)p.set('relief','1');
+  if(s.sun!==30)p.set('sun',s.sun);
+  if(s.exaggeration!==2)p.set('exag',s.exaggeration);
+  if(JSON.stringify(s.profileLine)!==JSON.stringify([[0.08,.5],[.92,.5]]))p.set('line',s.profileLine.flat().join(','));
+  if(s.globePair)p.set('globes','1');
+  if(s.inspectionPatch?.targetId===s.targetId)p.set('patch',[s.inspectionPatch.lat,s.inspectionPatch.lon].join(','));
+  if (s.patchLayer==='slope') p.set('dimension','slope');
   if (s.compareId != null) p.set('cmp', String(s.compareId));
   return p.toString();
 }
@@ -123,15 +140,24 @@ export function decodeState(search) {
   } catch { /* a mangled link falls back to defaults */ }
   const num = (k) => (p.get(k) && /^\d+$/.test(p.get(k)) ? Number(p.get(k)) : null);
   s.sel = num('site');
-  s.compareId = num('cmp');
+  s.cameraFlat=p.get('flat')==='1';s.flickSide=p.get('side')==='B'?1:0;
+  const height=Number(p.get('alt'));if(height>=3000&&height<=4500000)s.cameraHeight=height;
+  const pan=p.get('pan')?.split(',');if(pan?.length===2&&pan.every(v=>v.trim()!==''&&Number.isFinite(+v)))s.cameraOffset=pan.map(Number);
+  s.needsUpload=p.get('csv')==='local';s.flick=p.get('flick')==='1';s.relief=p.get('relief')==='1';
+  for(const [key,param,min,max] of [['sun','sun',2,60],['exaggeration','exag',1,5]]){const v=Number(p.get(param));if(Number.isFinite(v)&&v>=min&&v<=max)s[key]=v}
+  const line=p.get('line')?.split(',');if(line?.length===4&&line.every(v=>v!==''&&Number.isFinite(+v)&&+v>=0&&+v<=1))s.profileLine=[line.slice(0,2).map(Number),line.slice(2).map(Number)];
+  s.compareId = num('cmp');s.globePair=p.get('globes')==='1';
+  const vals=p.get('patch')?.split(',');
+  if(vals?.length===2&&vals.every(v=>v.trim()!==''&&Number.isFinite(Number(v)))&&Math.abs(Number(vals[0]))<=90&&Math.abs(Number(vals[1]))<=180)s.inspectionPatch={targetId:s.targetId,body:T[s.targetId].body,lat:Number(vals[0]),lon:Number(vals[1])};
+  if(p.get('dimension')==='slope')s.patchLayer='slope';
   if (p.get('pins')) s.pins = p.get('pins').split('.').filter((x) => /^\d+$/.test(x)).map(Number).slice(0, 12);
   if (p.get('layer')) s.layer = p.get('layer');
-  if (['split', 'target'].includes(p.get('view'))) s.view = p.get('view');
+  if (['split', 'target','linked'].includes(p.get('view'))) s.view = p.get('view');
   return s;
 }
 
 export function hydrateFromUrl() {
-  state = { ...decodeState(location.search), uploads: state.uploads };
+  state = { ...decodeState(location.search), uploads: state.uploads, uploadRows:state.uploadRows,uploadKey:state.uploadKey };
   emit();
 }
 
