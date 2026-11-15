@@ -1,3 +1,4 @@
+import { services } from '../lib/siteEvidence.js';
 import {useStore,setState} from '../lib/store.js';
 import {useEffect,useRef,useState} from 'react';
 let engine;
@@ -18,9 +19,11 @@ function Globe({body,lat,lon,height,flat,offset,onChoose}){
     setReady(false);setFailed(false);
     (async()=>{
       const C=await loadCesium();if(!active)return;
-      const [a,b]=body==='earth'?[6378137,6356752.314245]:body==='moon'?[1737400,1737400]:[3396190,3376200];
+      const [a,b]=body==='earth'?[6378137,6356752.314245]:body==='moon'?[1737400,1737400]:[3396190,3396190];
       const ellipsoid=new C.Ellipsoid(a,a,b);
-      const provider=await C.SingleTileImageryProvider.fromUrl(import.meta.env.BASE_URL+'textures/'+body+'.jpg',{ellipsoid});
+      const tilingScheme=body==='earth' ? new C.WebMercatorTilingScheme({ellipsoid}) : new C.GeographicTilingScheme({ellipsoid});
+      const provider=new C.UrlTemplateImageryProvider({url:services[body]+'/tile/{z}/{y}/{x}',tilingScheme,tileWidth:body==='earth'?256:512,tileHeight:body==='earth'?256:512,maximumLevel:body==='earth'?18:8,credit:body==='earth'?'Esri World Imagery':'NASA / USGS / Esri'});
+      provider.errorEvent.addEventListener(()=>{if(active)setFailed(true)});
       if(!active)return;
       viewer=new C.Viewer(el.current,{ellipsoid,globe:new C.Globe(ellipsoid),mapProjection:new C.GeographicProjection(ellipsoid),baseLayer:new C.ImageryLayer(provider),terrainProvider:new C.EllipsoidTerrainProvider({ellipsoid}),sceneMode:flat?C.SceneMode.SCENE2D:C.SceneMode.SCENE3D,requestRenderMode:true,maximumRenderTimeChange:Infinity,animation:false,timeline:false,baseLayerPicker:false,geocoder:false,homeButton:false,sceneModePicker:false,navigationHelpButton:false,infoBox:false,selectionIndicator:false,fullscreenButton:false,skyBox:false,skyAtmosphere:false});
       viewer.scene.screenSpaceCameraController.enableInputs=false;
@@ -61,5 +64,5 @@ export default function GlobePair({earth,target}){
  <label>Patch latitude (°) <input className="input num" type="number" name="latitude" min="-90" max="90" step="any" required defaultValue={patch.lat}/></label>
  <label>Longitude (°) <input className="input num" type="number" name="longitude" min="-180" max="180" step="any" required defaultValue={patch.lon}/></label>
  <button className="btn btn-sm">Set inspection patch</button><button type="button" className="btn btn-sm" onClick={()=>{setState({inspectionPatch:null});setOffset([0,0])}}>Reset to target</button></form>
- <p className="small dim">Click the planetary globe or enter coordinates to place a fixed 2 × 2 km inspection footprint. Rankings and terrain measurements below use the catalogued target until measured data exist for the new center.</p></section>
+ <p className="small dim">Click the planetary globe or enter coordinates to place a fixed 2 × 2 km inspection footprint. Terrain and imagery follow the selected footprint. Mission rankings use the catalogued target.</p></section>
 }

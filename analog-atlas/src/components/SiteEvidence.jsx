@@ -21,7 +21,7 @@ function SiteImage({body,lat,lon,name}) {
     </div> : <p className="survey-missing">Visualization unavailable. The source data or rendering process could not be verified.</p>}
     <figcaption><Coordinates key={lat+","+lon} lat={lat} lon={lon} label={body==="earth"?"Index cell center":"Planetary target"}/> {usePolar?<><a href="https://imbrium.mit.edu/DATA/LOLA_GDR/POLAR/" target="_blank" rel="noreferrer">LRO LOLA south-polar relief</a> · regional elevation mosaic, displayed in polar projection.</>:tile?<a href={tile.source} target="_blank" rel="noreferrer">{credit}</a>:credit}</figcaption></figure>;
 }
-export default function SiteEvidence({earth,target,state,viewerControl,viewer}){
+export default function SiteEvidence({earth,target,imageTarget=target,state,viewerControl,viewer}){
   const t=tests[state.testId];
   const ids=Object.keys(F).filter(id=>{
     const role=state.roles[id]??baseRole(t,id);
@@ -42,8 +42,8 @@ export default function SiteEvidence({earth,target,state,viewerControl,viewer}){
   return <section className="site-evidence"><header className="survey-heading"><h1>Site comparison</h1>{viewerControl}</header>{viewer}
     <p>The ring marks the coordinate used for each image. These regional views have different scales. The terrain comparison below uses matched 2 km patches.</p>
     <div className="site-images">{earth?<SiteImage body="earth" {...earth} name={earth.place+', '+earth.country}/>:<p>Choose an Earth site.</p>}
-      <SiteImage {...target}/></div>
-    <h2 className="criteria-heading">Mission evidence</h2><p>{t.label}</p>
+      <SiteImage {...imageTarget}/></div>
+    <h2 className="criteria-heading">Mission evidence</h2><p>{t.label} · Regional criteria for {target.name}. Terrain measurements below use the inspection footprint.</p>
     <div style={{overflowX:'auto'}}><table className="stats-t criteria-table"><thead><tr><th>Mission feature</th><th>A · Earth index</th><th>B · Target catalogue</th></tr></thead><tbody>{ids.map(id=>{
       const b=target.f[id];return <tr key={id}><th scope="row">{F[id].label}</th><td>{Number.isFinite(earth?.values[id])?fmt(earth.values[id],id):'Unavailable'}<small>{F[id].source}</small></td><td>{Number.isFinite(b?.v)?fmt(b.v,id):'Unavailable'}<small className={b?.s==='estimate'?'estimate-label':''}>{Number.isFinite(b?.v)?(b.s==='estimate'?'Estimate':b.s==='verify'?'Requires local verification':b.s):''}</small></td></tr>
     })}</tbody></table></div>

@@ -6,7 +6,7 @@ import { useStore, setState, scoringConfig, getState } from '../lib/store.js';
 import { useScoring, useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
 import { go } from '../lib/router.jsx';
-import { loadPatch, sharedDomain, renderPatch, profile, slopeAt, hashStr, PATCH_M, aspectAt, localRms, compass } from '../lib/patch.js';
+import { loadPatch, sharedDomain, renderPatch, profile, slopeAt, PATCH_M, aspectAt, localRms, compass } from '../lib/patch.js';
 import { fmt, fmtDiff, latlon } from '../lib/format.js';
 import { toCsv, download } from '../lib/csv.js';
 import { Term, Bullet, useReducedMotion } from '../components/ui.jsx';
@@ -22,6 +22,10 @@ export default function Compare() {
   const r = useResult((x) => x);
   const tg = T[s.targetId];
   const reduced = useReducedMotion();
+  const inspected = s.inspectionPatch?.targetId === tg.id ? s.inspectionPatch : tg;
+  const regionalTarget = inspected === tg ? tg : {...tg, lat:inspected.lat, lon:inspected.lon, name:'Inspection footprint near '+tg.name};
+  const [earthDone,earthFinished] = useState(false);
+  const [targetDone,targetFinished] = useState(false);
   const [earth, setEarth] = useState(null);
   const [pa, setPa] = useState(null);
   const [pb, setPb] = useState(null);
@@ -38,26 +42,29 @@ export default function Compare() {
   const earthId = s.compareId ?? s.sel ?? r.data?.list?.[0]?.id ?? null;
 
   useEffect(() => {
-    setEarth(null);setPa(null);
+    setEarth(null);setPa(null);earthFinished(false);
     if (earthId == null) return;
-    let alive = true;
+    let alive = true; const ctrl=new AbortController();
     (async () => {
       const i = await call('byId', { id: earthId });
       if (i < 0) return;
       const d = await call('detail', { cfg: scoringConfig(getState()), i });
       if (!alive) return;
       setEarth(d);
-      const patch=await loadPatch({ body: 'earth', key: String(d.id), seed: d.id, slopeDeg: d.values.slope_deg, roughM: d.values.rough_m });
-      if(alive)setPa(patch);
+      const patch=await loadPatch({ body: 'earth', key: String(d.id), lat:d.lat,lon:d.lon,signal:ctrl.signal });
+      if(alive){setPa(patch);earthFinished(true);}
     })();
-    return () => { alive = false; };
+    return () => { alive = false; ctrl.abort(); };
   }, [earthId, r.data]);
 
   useEffect(() => {
-    let alive=true;setPb(null);
-    loadPatch({ body: tg.body, key: tg.id, seed: hashStr(tg.id), slopeDeg: tg.f.slope_deg?.v, roughM: tg.f.rough_m?.v }).then(p=>{if(alive)setPb(p)});
-    return ()=>{alive=false};
-  }, [tg.id]);
+    const ctrl=new AbortController();
+    setPb(null);targetFinished(false);
+    loadPatch({body:tg.body, key:inspected===tg?tg.id:null, lat:inspected.lat,lon:inspected.lon,signal:ctrl.signal}).then(p=>{
+      if(!ctrl.signal.aborted){setPb(p);targetFinished(true);}
+    });
+    return ()=>ctrl.abort();
+  }, [tg.id, inspected.lat, inspected.lon]);
 
   // Flicker: alternate A/B at the same frame. Manual (space/button) when reduced motion is on.
   useEffect(() => {
@@ -72,7 +79,7 @@ export default function Compare() {
     return () => removeEventListener('keydown', k);
   }, [flick]);
 
-  const domain = useMemo(() => (pa && pb ? sharedDomain(pa, pb) : [-1, 1]), [pa, pb]);
+  const domain = useMemo(() => sharedDomain(pa, pb), [pa, pb]);
   const options = useMemo(() => {
     const o = new Map();
     for (const x of r.data?.list?.slice(0, 12) || []) o.set(x.id, `#${x.rank} · Near ${x.place || '—'}, ${x.country}`);
@@ -82,14 +89,14 @@ export default function Compare() {
 
   const exportCsv = () => {
     const rows = [['Mean slope', 'slopeMean', '°'], ['90th pct slope', 'slopeP90', '°'], ['RMS roughness (detrended)', 'rms', 'm'], ['Relief (2–98%)', 'relief', 'm'], ['Share steeper than 15°', 'steepShare', '']]
-      .map(([label, k, u]) => ({ metric: label, unit: u, earth_A: pa?.stats[k]?.toFixed(3), target_B: pb?.stats[k]?.toFixed(3), A_source: pa?.source, B_source: pb?.source }));
-    download(`patch-${earth?.id}-vs-${tg.id}.csv`, toCsv(['metric', 'unit', 'earth_A', 'target_B', 'A_source', 'B_source'], rows));
+      .map(([label, k, u]) => ({ metric: label, unit: u, earth_A: pa?.stats[k]?.toFixed(3), target_B: pb?.stats[k]?.toFixed(3), A_source:pa.source, B_source:pb.source, A_lat:pa.lat, A_lon:pa.lon, B_lat:pb.lat, B_lon:pb.lon, A_grid_m:pa.sampleSpacingM, B_grid_m:pb.sampleSpacingM, A_source_url:pa.sourceUrl, B_source_url:pb.sourceUrl }));
+    download(`patch-${earth?.id}-vs-${tg.id}.csv`, toCsv(['metric', 'unit', 'earth_A', 'target_B', 'A_source', 'B_source','A_lat','A_lon','B_lat','B_lon','A_grid_m','B_grid_m','A_source_url','B_source_url'], rows));
   };
 
   const prof = pa && pb ? [profile(pa, line[0], line[1]), profile(pb, line[0], line[1])] : null;
   const panels = [
-    { side: 0, p: pa, title: earth ? `Near ${earth.place}, ${earth.country}` : 'Loading…', sub: earth ? latlon(earth.lat, earth.lon) : '', cls: 'a' },
-    { side: 1, p: pb, title: tg.name, sub: `${tg.region} · ${tg.body === 'moon' ? 'Moon' : 'Mars'}`, cls: 'b' },
+    { side: 0, p: pa, done:earthDone, title: earth ? `Near ${earth.place}, ${earth.country}` : 'Loading…', sub: earth ? latlon(earth.lat, earth.lon) : '', cls: 'a' },
+    { side: 1, p: pb, done:targetDone, title: regionalTarget.name, sub: `${tg.region} · ${tg.body === 'moon' ? 'Moon' : 'Mars'}`, cls: 'b' },
   ];
   const visible = flick ? [panels[flickSide]] : panels;
 
@@ -120,7 +127,7 @@ export default function Compare() {
 
       <div className="cmp-body">
         <div className="cmp-stage">
-          <SiteEvidence earth={earth?.id===earthId?earth:null} target={tg} state={s}
+          <SiteEvidence earth={earth?.id===earthId?earth:null} target={tg} imageTarget={regionalTarget} state={s}
             viewerControl={<button className="btn btn-sm" aria-expanded={globes} onClick={()=>setGlobes(!globes)}>{globes?'Close':'Open'} linked planetary viewers</button>}
             viewer={globes&&<GlobePair earth={earth?.id===earthId?earth:null} target={tg}/>}/>
           <h2 className="terrain-heading">Matched terrain patches</h2>
@@ -130,7 +137,7 @@ export default function Compare() {
               <PatchView key={flick ? 'f' : v.side} {...v} domain={domain} layer={layer} sun={sun} hover={hover} setHover={setHover} line={line} setLine={setLine} exag={1} />
             ))}
           </div>
-          <Readout hover={hover} pa={pa} pb={pb} earthElev={earth?.values?.elev_m} />
+          <Readout hover={hover} pa={pa} pb={pb} earthElev={pa?.stats.mean} />
           {prof && <Profile a={prof[0]} b={prof[1]} body={tg.body} length={PATCH_M*Math.hypot(line[1][0]-line[0][0],line[1][1]-line[0][1])} />}
           {show3d && pa && pb && (
             <div className="stack">
@@ -145,14 +152,14 @@ export default function Compare() {
           <section>
             <h2 className="terrain-heading">Terrain measurements</h2><p className="small dim">2 × 2 km at each location</p>
             <table className="stats-t">
-              <thead><tr><th scope="col">Metric</th><th scope="col" className="earth-c">A · Earth<small>{pa?.synthetic?"Illustrative":pa?"Measured":"Loading"}</small></th><th scope="col" className="target-c">B · {tg.body==="moon"?"Moon":"Mars"}<small>{pb?.synthetic?"Illustrative":pb?"Measured":"Loading"}</small></th></tr></thead>
+              <thead><tr><th scope="col">Metric</th><th scope="col" className="earth-c">A · Earth<small>{pa?"Measured":earthDone?"Unavailable":"Loading"}</small></th><th scope="col" className="target-c">B · {tg.body==="moon"?"Moon":"Mars"}<small>{pb?"Measured":targetDone?"Unavailable":"Loading"}</small></th></tr></thead>
               <tbody>
                 {[['Mean slope', 'slopeMean', 'slope_deg'], ['Slope, 90th pct', 'slopeP90', 'slope_deg'], ['RMS roughness', 'rms', 'rough_m'], ['Relief', 'relief', 'rough_m']].map(([l, k, fid]) => (
                   <tr key={k}><td>{l}</td><td className="num">{fmt(pa?.stats[k], fid, { dp: 1 })}</td><td className="num">{fmt(pb?.stats[k], fid, { dp: 1 })}</td></tr>
                 ))}
               </tbody>
             </table>
-            {(pa?.synthetic || pb?.synthetic) && <p className="tiny" style={{ color: 'var(--warn)', marginTop: 8 }}>Illustrative terrain · Values marked illustrative are calculated from a surface generated using regional slope and roughness.</p>}
+            {pa && pb && <p className="small dim">Earth tile sampling ≈{pa.sampleSpacingM} m · {tg.body === 'moon' ? 'Moon' : 'Mars'} ≈{pb.sampleSpacingM} m. Coarser grids can smooth out slopes and small obstacles.</p>}
           </section>
           {earth && (
             <button className="btn btn-sm" onClick={() => { setState({ sel: earth.id }); go('/report'); }}>Open the site report</button>
@@ -163,7 +170,7 @@ export default function Compare() {
   );
 }
 
-function PatchView({ side, p, title, sub, cls, domain, layer, sun, hover, setHover, line, setLine }) {
+function PatchView({ side, p, done, title, sub, cls, domain, layer, sun, hover, setHover, line, setLine }) {
   const canvas = useRef(null);
   const drag = useRef(null);
   useEffect(() => { if (p) renderPatch(canvas.current, p, domain, { sunAlt: sun, layer }); }, [p, domain, sun, layer]);
@@ -171,7 +178,7 @@ function PatchView({ side, p, title, sub, cls, domain, layer, sun, hover, setHov
   return (
     <div className={'patch side-' + (cls === 'a' ? 'earth' : 'target')}>
       <div className="patch-h"><span className={'tag-ab ' + cls}>{cls.toUpperCase()}</span><span className="grow ellipsis">{title}</span><span className="tiny faint">{sub}</span></div>
-      <div className="patch-canvas" tabIndex={0} role="group" aria-label={title+". Arrow keys inspect terrain. Shift and arrows move the end of the elevation profile."} onKeyDown={e=>{
+      {!p ? <p role="status" className="survey-missing">{done ? "Measured terrain unavailable for these coordinates." : "Loading measured terrain…"}</p> : <><div className="patch-canvas" tabIndex={0} role="group" aria-label={title+". Arrow keys inspect terrain. Shift and arrows move the end of the elevation profile."} onKeyDown={e=>{
           const move={ArrowLeft:[-.025,0],ArrowRight:[.025,0],ArrowUp:[0,-.025],ArrowDown:[0,.025]}[e.key];if(!move)return;e.preventDefault();
           const pos=e.shiftKey?line[1]:(hover||[.5,.5]);const next=pos.map((v,i)=>Math.max(0,Math.min(1,v+move[i])));setHover(next);if(e.shiftKey)setLine([line[0],next]);
         }}
@@ -184,8 +191,8 @@ function PatchView({ side, p, title, sub, cls, domain, layer, sun, hover, setHov
           {hover && <><line x1={hover[0] * 100} x2={hover[0] * 100} y1="0" y2="100" stroke="#fff" strokeOpacity="0.5" strokeWidth="1" vectorEffect="non-scaling-stroke" /><line y1={hover[1] * 100} y2={hover[1] * 100} x1="0" x2="100" stroke="#fff" strokeOpacity="0.5" strokeWidth="1" vectorEffect="non-scaling-stroke" /></>}
         </svg>
         <div className="scale-bar"><i /><span>500 m</span></div>
-        {p?.synthetic && <span className="synth-note">illustrative</span>}
-      </div>
+
+      </div><p className="small dim"><a href={p.sourceUrl} target="_blank" rel="noreferrer">{p.source}</a> · grid spacing about {p.sampleSpacingM} m. Display pixels interpolate the source grid.</p></>}
     </div>
   );
 }
@@ -196,7 +203,7 @@ function Readout({ hover, pa, pb, earthElev }) {
     if (!hover) return null;
     const x = Math.round(hover[0] * (p.n - 1)), y = Math.round(hover[1] * (p.n - 1));
     const asp = aspectAt(p, x, y);
-    return { h: p.z[y * p.n + x] - p.stats.mean, s: slopeAt(p, x, y), a: asp, r: localRms(p, x, y) };
+    return { h: p.z[y * p.n + x] - p.stats.mean, s: slopeAt(p, x, y), a: asp, r: localRms(p, x, y), coarse:p.sampleSpacingM>80 };
   };
   const a = at(pa), b = at(pb);
   const rows = [

@@ -1,4 +1,4 @@
-const services = {
+export const services = {
   earth: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
   moon: 'https://astro.arcgis.com/arcgis/rest/services/OnMoon/LRO_WAC/MapServer',
   mars: 'https://astro.arcgis.com/arcgis/rest/services/OnMars/MDIM/MapServer',

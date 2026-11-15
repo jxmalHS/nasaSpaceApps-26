@@ -118,9 +118,7 @@ cells), so rugged mountain cells now rank higher for wheel tests there. The old 
 range" was really the day–night extreme; the measured seasonal range is 2–33 K (the Moon's axis
 tilts only 1.5°).
 
-**Terrain patches** in Compare are synthesized from each site's regional slope and roughness
-and labelled *illustrative* until measured DEM windows are added with
-`pipeline/make_patches.py` (NASADEM / ASTER / LOLA / HiRISE; body radius passed explicitly).
+**Measured terrain in Compare.** A 2 × 2 km footprint is sampled from AWS Terrarium (Earth), LRO LOLA (Moon) or MGS MOLA (Mars). The 128 × 128 display grid uses bilinear interpolation. Each panel lists its source and native grid spacing. The 12 catalogue targets and the Hami example ship with measured patches. Other coordinates use `GET /api/terrain?body=earth&lat=44.25&lon=92.75`, served by Vite in development and preview, and a Node function on Vercel. Use `analog-atlas` as the Vercel project root. Plain static hosting serves bundled patches only. Run `node scripts/cache-terrain.mjs` to refresh them. When terrain acquisition fails, the affected panel shows unavailable and paired export is disabled.
 
 Imagery: NASA GIBS Blue Marble and ASTER relief tiles, with a bundled Blue Marble copy
 when tiles fail. Globe textures: NASA Blue Marble, LRO WAC/LOLA, Viking MDIM, LOLA south polar
