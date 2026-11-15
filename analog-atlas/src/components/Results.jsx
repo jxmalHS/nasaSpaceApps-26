@@ -37,7 +37,7 @@ export default function Results({ onOpen }) {
         <div>
           <h2 className="res-title">{tests[testId].label}</h2>
           {d && r.status === 'ready' && <p className="small"><b>{rankBy === 'rules' || !d.mlAvailable ? 'Mission rules' : rankBy === 'ml' ? 'Model ranking' : 'Blended ranking'}</b> · {d.mlAvailable ? `${d.mlCount.toLocaleString()} Earth cells have a model score for this target and test.` : 'This target and test have no model scores.'}</p>}
-            <p className="small dim">Match is scored out of 100. Higher scores mean a closer match for this test. Pass or fail shows whether the site meets the strict limits.</p>
+            <p className="small dim">100 = the closest Earth gets on the features measured for this test (55 km cells), not a perfect copy of the target. Higher is closer. Pass or fail shows whether the site meets the strict limits.</p>
             <div className="small dim" aria-live="polite">
             {r.status === 'loading' && 'Loading 78,993 Earth cells…'}
             {d && <>{d.counts[0].toLocaleString()} pass · {d.counts[1].toLocaleString()} unverified · {d.counts[2].toLocaleString()} fail{r.status === 'updating' ? ' · updating' : ''}</>}
@@ -122,7 +122,7 @@ function Baseline({ d, onOpen }) {
           {!b.representative && <span className="tiny" title={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
         </button>
       ))}
-      <p className="tiny faint">The score is similarity out of 100. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
+      <p className="tiny faint">The score is the Earth-relative match (100 = the closest Earth gets). # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
     </div>
   );
 }
