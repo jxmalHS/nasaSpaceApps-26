@@ -42,7 +42,7 @@ def chance_random_median_at_least(median_pct: float, k: int, n: int,
     rng = np.random.default_rng(seed)
     ranks = np.argsort(rng.random((draws, n)), axis=1)[:, :k] + 1
     pct = 100 * (n - ranks) / (n - 1)
-    return round(float((np.median(pct, axis=1) >= median_pct - 1e-9).mean()), 4)
+    return round(float((np.median(pct, axis=1) >= median_pct - 0.05).mean()), 4)   # inputs are rounded to 0.1
 
 
 def held_out_test(table: pd.DataFrame, weights: dict, k: int, quantile: float,
