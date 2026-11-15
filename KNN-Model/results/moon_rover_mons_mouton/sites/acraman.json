@@ -1,21 +1,21 @@
 {
   "site": "acraman",
   "role": "candidate",
-  "rank": 18,
-  "score": 0.45254540832218515,
+  "rank": 52,
+  "score": 0.4157088075533452,
   "location": {
     "lat": -32.0167,
     "lon": 135.45,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Acraman'"
   },
   "covers": {
-    "target_coverage": 0.1388888888888889
+    "target_coverage": 0.1111111111111111
   },
   "test_tile": {
     "tile_id": "r00c05",
     "lat": -31.903621877349572,
     "lon": 135.5806160899408,
-    "similarity": 0.6542663553559965
+    "similarity": 0.6027207772770842
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 40.25224304199219,
-      "site_median": 40.22930717468262,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 0.7238369584083557,
-      "site_median": 0.965509682893753,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }

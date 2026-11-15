@@ -21,6 +21,17 @@ targets:
       Mons Mouton plateau, the gentler ground where rovers are actually meant to drive:
       NASA's VIPER landing site (selected Sept 2021) and the IM-2 Athena landing point
       (6 March 2025, 84.7906 S, 29.1957 E), used as the box centre. LOLA LDEM_80S_20M.
+  jezero:
+    body: mars
+    label: Jezero Crater (Mars)
+    dataset: mola_463m
+    lat: 18.4447                  # Perseverance landing point ("Octavia E. Butler Landing"), NASA/JPL
+    lon: 77.4508
+    box_km: 80                    # 4 x 4 tiles of 20 km: the 45 km crater floor, delta, rim and nearby plains
+    source: >-
+      Jezero Crater, Mars 2020 Perseverance landing site (18 Feb 2021). MGS MOLA global DEM 463 m
+      (USGS Astrogeology mosaic), averaged to 500 m on a local equidistant grid centred on the
+      landing point.
 
 earth_sites:
   # --- Moon baselines: Artemis navigation-training sites (USGS LGRS release, McClernan 2024, doi:10.5066/P14KSANW)
@@ -102,10 +113,33 @@ earth_sites:
   - {name: grand_falls_dunes, role: baseline, compare_with: mars, lat: 35.49, lon: -111.164,
      source: "USGS Known Terrestrial Analog Sites (Hunter 2020), entry 'Grand Falls' (Dunes, Mars)"}
 
-# Extra candidate sites read from the USGS list (impact craters -> compared with the Moon).
+  # --- Mars negative controls: the same flat farmland (must rank low against Jezero too)
+  - {name: garden_city_kansas, role: negative_control, compare_with: mars, lat: 37.9717, lon: -100.8727,
+     source: "OpenStreetMap relation 129924 'Garden City, Kansas' (High Plains farmland)"}
+  - {name: ames_iowa, role: negative_control, compare_with: mars, lat: 42.0268, lon: -93.6170,
+     source: "OpenStreetMap relation 128947 'Ames, Iowa' (Corn Belt farmland)"}
+
+# Extra candidate sites read from the USGS list. Impact craters are compared with BOTH worlds
+# (Jezero is itself an impact crater); the list's two other entries (a dune field and a
+# volcanic eruption site, both tagged Mars) are Mars candidates.
 candidate_lists:
   - file: data/site_lists/usgs_known_terrestrial_analogs.zip
     analog_type: Impact Crater
     compare_with: moon
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Impact Crater
+    compare_with: mars
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Dunes
+    compare_with: mars
+    role: candidate
+    source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"
+  - file: data/site_lists/usgs_known_terrestrial_analogs.zip
+    analog_type: Volcanic Eruption
+    compare_with: mars
     role: candidate
     source: "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921)"

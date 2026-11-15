@@ -1,21 +1,21 @@
 {
   "site": "amboy_crater",
   "role": "candidate",
-  "rank": 14,
-  "score": 0.54755490505522,
+  "rank": 37,
+  "score": 0.4986867023764244,
   "location": {
     "lat": 34.545,
     "lon": -115.7907,
     "source": "OpenStreetMap node 299496225 'Amboy Crater' (cinder cone + lava field, California)"
   },
   "covers": {
-    "target_coverage": 0.19444444444444445
+    "target_coverage": 0.2222222222222222
   },
   "test_tile": {
     "tile_id": "r00c00",
     "lat": 34.65852237183218,
     "lon": -115.92612801837045,
-    "similarity": 0.7275207370169203
+    "similarity": 0.6894006166484556
   },
   "requirements": [
     {
@@ -179,7 +179,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

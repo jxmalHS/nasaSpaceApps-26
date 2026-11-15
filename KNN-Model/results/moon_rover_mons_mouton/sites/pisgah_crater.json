@@ -1,21 +1,21 @@
 {
   "site": "pisgah_crater",
   "role": "candidate",
-  "rank": 4,
-  "score": 0.6192100502112854,
+  "rank": 14,
+  "score": 0.5809910708735604,
   "location": {
     "lat": 34.7464,
     "lon": -116.3756,
     "source": "OpenStreetMap node 358790676 'Pisgah Crater' (cinder cone + lava field, California)"
   },
   "covers": {
-    "target_coverage": 0.3888888888888889
+    "target_coverage": 0.4444444444444444
   },
   "test_tile": {
     "tile_id": "r04c00",
     "lat": 34.67851174824906,
     "lon": -116.51314034393984,
-    "similarity": 0.764283714064918
+    "similarity": 0.7282628492414379
   },
   "requirements": [
     {

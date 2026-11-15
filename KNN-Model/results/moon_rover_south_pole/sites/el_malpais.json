@@ -1,21 +1,21 @@
 {
   "site": "el_malpais",
   "role": "candidate",
-  "rank": 25,
-  "score": 0.28755000010834225,
+  "rank": 76,
+  "score": 0.2779739329461632,
   "location": {
     "lat": 34.863,
     "lon": -108.098,
     "source": "OpenStreetMap relation 5946885 'El Malpais National Monument' (lava fields, New Mexico)"
   },
   "covers": {
-    "target_coverage": 0.046875
+    "target_coverage": 0.109375
   },
   "test_tile": {
     "tile_id": "r05c02",
     "lat": 34.75025801806356,
     "lon": -108.13026488222664,
-    "similarity": 0.4835390657386684
+    "similarity": 0.474122511161487
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

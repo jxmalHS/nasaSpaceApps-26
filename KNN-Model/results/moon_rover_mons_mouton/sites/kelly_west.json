@@ -1,8 +1,8 @@
 {
   "site": "kelly_west",
   "role": "candidate",
-  "rank": 30,
-  "score": 0.28374232034980473,
+  "rank": 94,
+  "score": 0.25975811702987633,
   "location": {
     "lat": -19.9333,
     "lon": 133.95,
@@ -15,7 +15,7 @@
     "tile_id": "r03c03",
     "lat": -19.956536470913356,
     "lon": 133.97360649524373,
-    "similarity": 0.3765671383605349
+    "similarity": 0.36170116489255677
   },
   "requirements": [
     {

@@ -1,21 +1,21 @@
 {
   "site": "hverfjall",
   "role": "candidate",
-  "rank": 4,
-  "score": 0.3567174027220942,
+  "rank": 5,
+  "score": 0.2990928423686176,
   "location": {
     "lat": 65.6051,
     "lon": -16.874,
     "source": "OpenStreetMap node 270956581 'Hverfjall' (tephra cone, Iceland)"
   },
   "covers": {
-    "target_coverage": 0.125
+    "target_coverage": 0.109375
   },
   "test_tile": {
     "tile_id": "r00c05",
     "lat": 65.71956962268902,
     "lon": -16.610709702498294,
-    "similarity": 0.5772620079637867
+    "similarity": 0.5182870849893234
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,7 +171,7 @@
     "closer_than": "meteor_crater, yucca_flat"
   },
   "confidence": {
-    "value": 0.8333333333333334,
+    "value": 0.9166666666666666,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

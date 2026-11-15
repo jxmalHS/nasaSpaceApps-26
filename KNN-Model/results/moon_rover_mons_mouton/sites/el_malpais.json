@@ -1,8 +1,8 @@
 {
   "site": "el_malpais",
   "role": "candidate",
-  "rank": 25,
-  "score": 0.3385176855229659,
+  "rank": 77,
+  "score": 0.31108666102959204,
   "location": {
     "lat": 34.863,
     "lon": -108.098,
@@ -15,7 +15,7 @@
     "tile_id": "r05c02",
     "lat": 34.75025801806356,
     "lon": -108.13026488222664,
-    "similarity": 0.4386514695292824
+    "similarity": 0.42145202249614616
   },
   "requirements": [
     {

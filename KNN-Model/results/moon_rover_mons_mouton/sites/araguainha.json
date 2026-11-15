@@ -1,21 +1,21 @@
 {
   "site": "araguainha",
   "role": "candidate",
-  "rank": 2,
-  "score": 0.6445173150268739,
+  "rank": 6,
+  "score": 0.6083115907272649,
   "location": {
     "lat": -16.7833,
     "lon": -52.9833,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Araguainha'"
   },
   "covers": {
-    "target_coverage": 0.3055555555555556
+    "target_coverage": 0.3888888888888889
   },
   "test_tile": {
     "tile_id": "r02c01",
     "lat": -16.760570183981162,
     "lon": -53.053535919717866,
-    "similarity": 0.7351148808476032
+    "similarity": 0.6839878025263678
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 24.332674026489258,
-      "site_median": 23.849672317504883,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 2.4155256748199463,
-      "site_median": 0.8526673316955566,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }
@@ -175,7 +175,7 @@
     }
   },
   "baselines": {
-    "nearest": "buffalo_park",
+    "nearest": "sp_crater_jett3",
     "closer_than": "buffalo_park, cinder_lake_crater_field, meteor_crater, sp_crater_jett3, yucca_flat"
   },
   "confidence": {

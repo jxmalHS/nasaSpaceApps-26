@@ -1,8 +1,8 @@
 {
   "site": "vargeao_dome",
   "role": "candidate",
-  "rank": 17,
-  "score": 0.26231167214484863,
+  "rank": 40,
+  "score": 0.20974197361752422,
   "location": {
     "lat": -26.8333,
     "lon": -52.1167,
@@ -15,7 +15,7 @@
     "tile_id": "r00c00",
     "lat": -26.71977406446931,
     "lon": -52.24164774254117,
-    "similarity": 0.39316617580333546
+    "similarity": 0.3324176334264822
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,7 +171,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 0.9166666666666666,
+    "value": 0.8333333333333334,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

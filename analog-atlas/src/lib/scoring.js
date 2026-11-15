@@ -175,6 +175,63 @@ export function rankOf(score, i) {
   return r;
 }
 
+/**
+ * A cell "covers" a target requirement when its similarity on that feature is at least
+ * exp(-1/2) = 0.61, i.e. within one kernel width (SIM_SIGMA = 12 Earth-percentile points)
+ * of the target. Same rule as the engine's coverage.py, adapted to the percentile axis.
+ */
+export const COVER_SIM = Math.exp(-0.5);
+
+/**
+ * Multi-site coverage: which requirements does each additional site cover?
+ *
+ * Requirements = every weighted target feature with an Earth layer and a target value.
+ * A cell can cover requirements only if it passes every strict limit (status PASS): the
+ * conditions must hold together at the same place, without interference. Greedy: repeatedly
+ * add the cell covering the most still-uncovered requirements (ties: higher score), skipping
+ * cells `tooClose` to one already chosen. Returns the steps and what no cell covers.
+ */
+export function coverGreedy(plan, QX, status, n, { maxSites = 5, score = null, eligible = null, tooClose = null } = {}) {
+  const reqs = plan.targets.filter((t) => !t.pending && !t.targetUnknown);
+  const unmeasurable = plan.targets.filter((t) => t.pending || t.targetUnknown)
+    .map((t) => ({ fid: t.fid, why: t.pending ? 'no-earth-layer' : 'no-target-value' }));
+  const masks = new Uint32Array(n);
+  for (let i = 0; i < n; i++) {
+    if (status[i] !== STATUS.PASS || (eligible && !eligible(i))) continue;
+    let m = 0;
+    for (let k = 0; k < reqs.length; k++) {
+      const s = featureSim(QX[reqs[k].col][i], reqs[k].qt, reqs[k].dir);
+      if (s >= COVER_SIM) m |= 1 << k;
+    }
+    masks[i] = m;
+  }
+  const bits = (m) => { let c = 0; while (m) { m &= m - 1; c++; } return c; };
+  let covered = 0;
+  const steps = [], chosen = [];
+  while (steps.length < maxSites) {
+    let best = -1, bestGain = 0, bestScore = -Infinity;
+    for (let i = 0; i < n; i++) {
+      const gain = bits(masks[i] & ~covered);
+      if (gain === 0 || gain < bestGain) continue;
+      const sc = score && !Number.isNaN(score[i]) ? score[i] : -1;
+      if (gain === bestGain && sc <= bestScore) continue;
+      if (tooClose && tooClose(i, chosen)) continue;
+      best = i; bestGain = gain; bestScore = sc;
+    }
+    if (best < 0) break;
+    const add = masks[best] & ~covered;
+    covered |= masks[best];
+    chosen.push(best);
+    steps.push({ i: best, adds: reqs.filter((_, k) => add & (1 << k)).map((t) => t.fid), coveredSoFar: bits(covered) });
+  }
+  return {
+    nRequirements: reqs.length, steps,
+    notCovered: reqs.filter((_, k) => !(covered & (1 << k))).map((t) => ({ fid: t.fid, beyond: t.beyond })),
+    beyondEarth: reqs.filter((t) => t.beyond).map((t) => ({ fid: t.fid, beyond: t.beyond })),
+    unmeasurable,
+  };
+}
+
 /** Deterministic PRNG for reproducible stability tests. */
 export function mulberry32(seed) {
   let a = seed >>> 0;

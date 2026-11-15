@@ -3,15 +3,15 @@
 **Which place on Earth looks most like the Moon (or Mars) for testing a specific piece of equipment?**
 
 This engine compares the *shape* of the ground (slopes, bumpiness, craters) on Earth with a
-target area on the Moon, and ranks Earth sites from most to least similar.
+target area on the Moon or Mars, and ranks Earth sites from most to least similar.
 
 ## How it works (5 steps)
 
 1. **Pick a subsystem** (e.g. lunar rover wheels) and sort every condition into ✅ **target** (must match: slope, bumpiness), ⚪ **ignored** (doesn't matter for this test: temperature), or ⚠️ **interference** (would ruin the test: trees, snow, water). Pass/fail requirements are set here too.
-2. **Turn the Moon site into numbers** from NASA LOLA elevation data: slope, steep ground, bumpiness, crater-like dips, cut into 5 × 5 km tiles.
-3. **Turn Earth sites into the same numbers, at the same scale** (100 m pixels): NASA's analog sites (the baseline), USGS impact craters and hand-picked volcanic/lava fields (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
+2. **Turn the target into numbers**: Moon from NASA LOLA elevation (100 m pixels, 5 × 5 km tiles), Mars from NASA MGS MOLA (500 m pixels, 20 × 20 km tiles: MOLA's resolution): slope, steep ground, bumpiness, crater-like dips.
+3. **Turn Earth sites into the same numbers, at the same scale**: NASA's analog sites (the baseline: Artemis training sites for the Moon, Mars 2020 Lander Vision System test spots for Mars), the 190 USGS impact craters and hand-picked volcanic/lava fields (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
 4. **Rank** with weighted nearest-neighbour search, comparing each site with the Moon target and with NASA's sites.
-5. **Report each site honestly:** what it covers, requirements met / not met / unknown, interference risks, confidence, and what Earth can't reproduce.
+5. **Report each site honestly:** what it covers, requirements met / not met / unknown, interference risks, confidence, and what Earth can't reproduce. **Multi-site coverage** (`coverage.py`) then picks sites one at a time: which requirements each additional site covers, and which no Earth site covers (those need a lab or chamber).
 
 Height above "sea level" is never used, because the Moon has no sea level. Missing data is always "unknown", never a pass.
 
@@ -26,8 +26,11 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 67 tests, no internet needed
-python main.py run --mission moon_rover_south_pole  # results in results/<mission>/report.md
+pytest                                               # 77 tests, no internet needed
+python main.py download --mission moon_rover_south_pole --count 300   # all 204 Moon-comparison sites
+python main.py download --mission mars_landing_jezero --count 300     # all 199 Mars-comparison sites
+python main.py run --mission moon_rover_south_pole --offline          # results in results/<mission>/report.md
+python main.py run --mission mars_landing_jezero --offline
 python main.py export-atlas                         # hand results to the Analog Atlas web app
 ```
 
@@ -37,13 +40,24 @@ the sites already downloaded.
 
 ## Status
 
-- ✅ All 5 steps work for the Moon, plus the model checks; 67 tests pass.
+- ✅ All 5 steps work for the Moon and Mars, plus the model checks and multi-site coverage; 77 tests pass.
+- ✅ Full real run (Nov 2026): all 204 Moon-comparison sites downloaded (0 failures). Per mission, 103-127 are
+  ranked; the rest are rejected for a reason the report lists: ~75-99 craters are covered everywhere by
+  forest, farmland or water (interference), 2 lie under the sea (Mjølnir, Montagnais).
+- ⚠️ What the full run showed, honestly:
+  - **Landing** (`moon_landing_hazards_south_pole`): 3 of 5 NASA sites in the top 5 of 127 (random order: 4%).
+  - **Rovers**: with 103 sites instead of 32, no NASA site makes the top 5 (best: Buffalo Park #6 and #9).
+    Many impact craters match the south pole's slopes better than NASA's Arizona training sites, which
+    were chosen for geology and logistics, not slope similarity. **Haughton Crater** (NASA's
+    Haughton-Mars Project), entered only as an ordinary USGS crater, ranks #1 for Mons Mouton and #4 for
+    the south pole: the engine finds a NASA-used site on its own.
 - ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
-- ✅ Checked on real data for the 5 sites downloaded so far (the Artemis training sites rank top).
-- ⏳ Full real run (~200 sites) not done yet: slow internet.
 - ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `moon_rover_thermal_south_pole` uses terrain + temperature.
-- ✅ Two-way matching: a site must resemble the whole Moon area, not one corner of it.
-- ⏳ Not built yet: minerals, Mars.
+  ⏳ Its full rerun needs an Earthdata login for AppEEARS (`download-temperature`); its results are still the 10-site run.
+- ✅ Two-way matching: a site must resemble the whole target area, not one corner of it.
+- ✅ Mars: Jezero Crater from NASA MOLA (500 m pixels, 20 km tiles), 199 Earth sites, two missions
+  (`mars_landing_jezero`, `mars_rover_jezero`). No pass/fail rules on Mars: NASA's numbers are set at 2 m-1 km.
+- ⏳ Not built yet: minerals (EMIT needs an Earthdata login), Mars temperature.
 
 ## Files
 
@@ -51,7 +65,7 @@ the sites already downloaded.
 |---|---|
 | `main.py` | Command you run |
 | `pipeline.py` | Runs all the steps in order |
-| `sources.py` | Streams elevation data |
+| `sources.py` | Streams elevation data (Copernicus for Earth, LOLA for the Moon, MOLA for Mars) |
 | `preprocess.py` | Cleans and resamples |
 | `tiles.py` | Cuts tiles |
 | `features.py` | Terrain measurements |
@@ -61,7 +75,8 @@ the sites already downloaded.
 | `report.py` | Step 5: requirements, differences, confidence, report files |
 | `validation.py` | Model checks: held-out NASA sites, simple-method comparison, mission sensitivity |
 | `temperature.py` | Temperature group: annual range from Diviner (Moon) and MODIS via AppEEARS (Earth) |
-| `charts.py` | Two simple PNG charts: the ranking, and "how close to the Moon" per top site |
+| `coverage.py` | Multi-site coverage: which requirements each additional site covers; what no site covers |
+| `charts.py` | Two simple PNG charts: the ranking, and "how close to the target" per top site |
 | `atlas_export.py` | Converts results into the Analog Atlas web app's sparse-score CSV + model card + validation |
 | `config/` | Settings, sites (with sources) and mission weights |
 | `docs/` | More detail: `pipeline.md`, `knn_model.md` |
@@ -114,6 +129,6 @@ the class boundaries.
 ## Data credits
 
 - Copernicus DEM: *Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.*
-- NASA LRO LOLA (LDEM_80S_20M), USGS analog site lists (doi:10.5066/P9J72921, doi:10.5066/P14KSANW), JPL PIA23265, © OpenStreetMap contributors.
+- NASA LRO LOLA (LDEM_80S_20M); NASA MGS MOLA DEM 463 m (Smith et al. 2001, JGR 106(E10), doi:10.1029/2000JE001364; USGS Astrogeology mosaic); USGS analog site lists (doi:10.5066/P9J72921, doi:10.5066/P14KSANW), JPL PIA23265, © OpenStreetMap contributors.
 
 *Mission weights are example values, not official NASA requirements. A terrain match does not validate hardware.*

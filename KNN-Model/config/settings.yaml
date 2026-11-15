@@ -7,6 +7,7 @@ bodies:
     resolution_m: 100     # LOLA 20 m and Copernicus 30 m both averaged down to 100 m
     tile_km: 5
     earth_box_km: 30      # area around each Earth site point
+    earth_read_coarsen: 2 # read Copernicus at 60 m (its built-in half-resolution copy), then average to 100 m
     cannot_reproduce:     # reported on every site (step 5)
       - "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ."
       - "Vacuum: no atmosphere; Earth sites have air, wind and weathering."
@@ -18,6 +19,16 @@ bodies:
     resolution_m: 500     # MOLA ~463 m -> 500 m (coarser, and 20 km / 500 m = 40 px exactly)
     tile_km: 20
     earth_box_km: 60
+    earth_read_coarsen: 8 # read Copernicus at 240 m (built-in overview): still 2x sharper than 500 m
+    # At 500 m pixels rough_small (500 m scale = 1 pixel) cannot be measured and is skipped;
+    # the 1 km pit window becomes the 3-pixel minimum (1.5 km).
+    cannot_reproduce:     # NASA Mars Fact Sheet (nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html)
+      - "Gravity: about 38% of Earth's (3.73 vs 9.81 m/s^2), so wheel loads, sinkage, dust and landing loads differ."
+      - "Atmosphere: thin CO2 air, 6.36 mb at mean radius (4.0-8.7 mb by season) vs ~1013 mb on Earth: parachutes, heat flow, dust lifting and drills behave differently."
+      - "Radiation: no global magnetic field and a thin atmosphere let more radiation reach the surface."
+      - "Temperatures: ~214 K average; 184-242 K daily range at Viking 1. Earth deserts are far warmer: needs thermal chambers."
+      - "Regolith chemistry: oxidising, perchlorate-bearing Martian soil has no natural Earth equivalent at scale."
+      - "Scale of the comparison: 500 m pixels and 20 km tiles see landforms, not the rocks a wheel or lander foot meets."
 
 max_missing_frac: 0.05    # tiles with more missing pixels than this are dropped (and counted)
 spike_threshold_m: 300    # pixels this far from their 5x5 neighbourhood median are treated as errors

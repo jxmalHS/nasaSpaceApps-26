@@ -1,8 +1,8 @@
 {
   "site": "valley_of_fires_carrizozo",
   "role": "candidate",
-  "rank": 6,
-  "score": 0.45158418493919,
+  "rank": 31,
+  "score": 0.3981690695103345,
   "location": {
     "lat": 33.6832,
     "lon": -105.9275,
@@ -15,7 +15,7 @@
     "tile_id": "r00c05",
     "lat": 33.79671670182142,
     "lon": -105.79400771642085,
-    "similarity": 0.39403232212940625
+    "similarity": 0.27833303950999416
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -176,10 +176,10 @@
   },
   "baselines": {
     "nearest": "meteor_crater",
-    "closer_than": "meteor_crater, yucca_flat"
+    "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 1.0,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

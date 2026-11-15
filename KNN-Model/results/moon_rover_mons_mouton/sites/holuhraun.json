@@ -1,21 +1,21 @@
 {
   "site": "holuhraun",
   "role": "candidate",
-  "rank": 15,
-  "score": 0.5405122306843118,
+  "rank": 39,
+  "score": 0.4884650981066011,
   "location": {
     "lat": 64.8709,
     "lon": -16.8348,
     "source": "OpenStreetMap node 3062325628 'Holuhraun' (2014-15 lava field, Iceland)"
   },
   "covers": {
-    "target_coverage": 0.1388888888888889
+    "target_coverage": 0.16666666666666666
   },
   "test_tile": {
     "tile_id": "r00c02",
     "lat": 64.98207884422627,
     "lon": -16.896881064237586,
-    "similarity": 0.6658108650468804
+    "similarity": 0.5876230219000671
   },
   "requirements": [
     {

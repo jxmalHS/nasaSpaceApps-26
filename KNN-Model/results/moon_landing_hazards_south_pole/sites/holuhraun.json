@@ -1,8 +1,8 @@
 {
   "site": "holuhraun",
   "role": "candidate",
-  "rank": 6,
-  "score": 0.35200271728004906,
+  "rank": 10,
+  "score": 0.29236521678933325,
   "location": {
     "lat": 64.8709,
     "lon": -16.8348,
@@ -12,10 +12,10 @@
     "target_coverage": 0.109375
   },
   "test_tile": {
-    "tile_id": "r00c02",
-    "lat": 64.98207884422627,
-    "lon": -16.896881064237586,
-    "similarity": 0.5787079270747886
+    "tile_id": "r00c03",
+    "lat": 64.98338700128346,
+    "lon": -16.790974768574646,
+    "similarity": 0.5273815375617655
   },
   "requirements": [
     {
@@ -28,7 +28,7 @@
     {
       "requirement": "relief within 150 m of the target",
       "status": "not_met",
-      "value": 310.46392822265625,
+      "value": 479.32073974609375,
       "target": 1005.6599807739258,
       "met_somewhere_on_site": false
     }
@@ -39,90 +39,90 @@
       "unit": "deg",
       "mission_role": "ignored",
       "target": 11.691177839896522,
-      "test_tile": 3.6266046374104013,
+      "test_tile": 4.913191996710999,
       "site_median": 2.1053505366626286,
-      "difference": -8.06457320248612,
-      "statement": "Average slope is 8.06\u00b0 gentler than the target"
+      "difference": -6.777985843185522,
+      "statement": "Average slope is 6.78\u00b0 gentler than the target"
     },
     {
       "feature": "slope_std",
       "unit": "deg",
       "mission_role": "ignored",
       "target": 4.35791507472881,
-      "test_tile": 3.4258942752105948,
+      "test_tile": 3.689012242455846,
       "site_median": 2.180570273114949,
-      "difference": -0.9320207995182153,
-      "statement": "Slope variability is 0.932\u00b0 lower than the target"
+      "difference": -0.668902832272964,
+      "statement": "Slope variability is 0.669\u00b0 lower than the target"
     },
     {
       "feature": "slope_p90",
       "unit": "deg",
       "mission_role": "ignored",
       "target": 18.806584481402048,
-      "test_tile": 7.343963457040689,
+      "test_tile": 9.525770731754113,
       "site_median": 3.9729944783524713,
-      "difference": -11.462621024361358,
-      "statement": "Steepest-10% slope is 11.5\u00b0 gentler than the target"
+      "difference": -9.280813749647935,
+      "statement": "Steepest-10% slope is 9.28\u00b0 gentler than the target"
     },
     {
       "feature": "frac_steep",
       "unit": "fraction",
       "mission_role": "ignored",
       "target": 0.2486,
-      "test_tile": 0.0176,
+      "test_tile": 0.0348,
       "site_median": 0.004,
-      "difference": -0.23099999999999998,
-      "statement": "Share of steep ground is 0.231 lower than the target"
+      "difference": -0.2138,
+      "statement": "Share of steep ground is 0.214 lower than the target"
     },
     {
       "feature": "relief",
       "unit": "m",
       "mission_role": "target",
       "target": 1005.6599807739258,
-      "test_tile": 310.46392822265625,
+      "test_tile": 479.32073974609375,
       "site_median": 153.30316162109375,
-      "difference": -695.1960525512695,
-      "statement": "Relief (highest minus lowest) is 695 m smaller than the target"
+      "difference": -526.339241027832,
+      "statement": "Relief (highest minus lowest) is 526 m smaller than the target"
     },
     {
       "feature": "hypsometric_integral",
       "unit": "unitless",
       "mission_role": "target",
       "target": 0.49959563105715865,
-      "test_tile": 0.39454080309579553,
+      "test_tile": 0.5711016029535,
       "site_median": 0.335258503069342,
-      "difference": -0.10505482796136312,
-      "statement": "Hypsometric integral is 0.105 lower than the target"
+      "difference": 0.07150597189634134,
+      "statement": "Hypsometric integral is 0.0715 higher than the target"
     },
     {
       "feature": "rough_small",
       "unit": "m",
       "mission_role": "ignored",
       "target": 3.2322887241050373,
-      "test_tile": 3.260534476163653,
+      "test_tile": 3.7047946965982663,
       "site_median": 1.7393994061640317,
-      "difference": 0.028245752058615903,
-      "statement": "Small-scale bumpiness is 0.0282 m rougher than the target"
+      "difference": 0.472505972493229,
+      "statement": "Small-scale bumpiness is 0.473 m rougher than the target"
     },
     {
       "feature": "rough_large",
       "unit": "m",
       "mission_role": "target",
       "target": 36.3784061016397,
-      "test_tile": 13.287847373091966,
+      "test_tile": 18.85896618191239,
       "site_median": 9.293000606343407,
-      "difference": -23.090558728547734,
-      "statement": "Large-scale bumpiness is 23.1 m smoother than the target"
+      "difference": -17.519439919727308,
+      "statement": "Large-scale bumpiness is 17.5 m smoother than the target"
     },
     {
       "feature": "curvature_abs_mean",
       "unit": "1/km",
       "mission_role": "target",
       "target": 0.2852543664550781,
-      "test_tile": 0.2859784094238282,
+      "test_tile": 0.33306089477539064,
       "site_median": 0.14701388244628907,
-      "difference": 0.0007240429687500605,
-      "statement": "Curvature is 0.000724 /km more curved than the target"
+      "difference": 0.047806528320312514,
+      "statement": "Curvature is 0.0478 /km more curved than the target"
     },
     {
       "feature": "pit_density",
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -168,7 +168,7 @@
   },
   "baselines": {
     "nearest": "yucca_flat",
-    "closer_than": "meteor_crater, yucca_flat"
+    "closer_than": "meteor_crater"
   },
   "confidence": {
     "value": 0.9166666666666666,

@@ -1,8 +1,8 @@
 {
   "site": "kentland",
   "role": "candidate",
-  "rank": 35,
-  "score": 0.16873571106960303,
+  "rank": 113,
+  "score": 0.11753910297228051,
   "location": {
     "lat": 40.75,
     "lon": -87.4,
@@ -15,7 +15,7 @@
     "tile_id": "r01c00",
     "lat": 40.81621047974031,
     "lon": -87.54900164757831,
-    "similarity": 0.3191597561931388
+    "similarity": 0.2459348598216269
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

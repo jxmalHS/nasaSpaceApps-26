@@ -1,8 +1,8 @@
 {
   "site": "vepriai",
   "role": "candidate",
-  "rank": 27,
-  "score": 0.20705470191716918,
+  "rank": 86,
+  "score": 0.15265950568156245,
   "location": {
     "lat": 55.0833,
     "lon": 24.5833,
@@ -15,7 +15,7 @@
     "tile_id": "r00c00",
     "lat": 55.19119225671513,
     "lon": 24.379677037346212,
-    "similarity": 0.321821272010696
+    "similarity": 0.2503083923972106
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

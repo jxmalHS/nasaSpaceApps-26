@@ -1,8 +1,8 @@
 {
   "site": "ries",
   "role": "candidate",
-  "rank": 19,
-  "score": 0.2571291623611923,
+  "rank": 47,
+  "score": 0.20121466743934557,
   "location": {
     "lat": 48.8833,
     "lon": 10.6167,
@@ -15,7 +15,7 @@
     "tile_id": "r00c03",
     "lat": 48.994835794933806,
     "lon": 10.654165072585856,
-    "similarity": 0.4193842520060053
+    "similarity": 0.34942875337780593
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

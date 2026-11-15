@@ -1,8 +1,8 @@
 {
   "site": "sikhote_alin",
   "role": "candidate",
-  "rank": 21,
-  "score": 0.3954901344366389,
+  "rank": 61,
+  "score": 0.36573764077325566,
   "location": {
     "lat": 46.1167,
     "lon": 134.667,
@@ -15,7 +15,7 @@
     "tile_id": "r05c00",
     "lat": 46.003002275149115,
     "lon": 134.5053475005269,
-    "similarity": 0.5109105482522385
+    "similarity": 0.49415134660322374
   },
   "requirements": [
     {
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

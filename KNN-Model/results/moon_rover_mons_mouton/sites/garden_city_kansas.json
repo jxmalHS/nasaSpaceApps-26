@@ -1,8 +1,8 @@
 {
   "site": "garden_city_kansas",
   "role": "negative_control",
-  "rank": 26,
-  "score": 0.3231941942397068,
+  "rank": 81,
+  "score": 0.29589044658393726,
   "location": {
     "lat": 37.9717,
     "lon": -100.8727,
@@ -15,7 +15,7 @@
     "tile_id": "r03c02",
     "lat": 37.948457021296846,
     "lon": -100.9006925838259,
-    "similarity": 0.43412491856028324
+    "similarity": 0.4167775725864816
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 47.069297790527344,
-      "site_median": 47.34601020812988,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 0.6698252558708191,
-      "site_median": 1.0415666103363037,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

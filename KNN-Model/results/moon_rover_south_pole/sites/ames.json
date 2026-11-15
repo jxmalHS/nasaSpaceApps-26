@@ -1,21 +1,21 @@
 {
   "site": "ames",
   "role": "candidate",
-  "rank": 27,
-  "score": 0.26568787551691686,
+  "rank": 83,
+  "score": 0.2567093420269064,
   "location": {
     "lat": 36.25,
     "lon": -98.2,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Ames'"
   },
   "covers": {
-    "target_coverage": 0.0
+    "target_coverage": 0.078125
   },
   "test_tile": {
     "tile_id": "r02c00",
     "lat": 36.2727207124831,
     "lon": -98.33976780724905,
-    "similarity": 0.432196817899777
+    "similarity": 0.42401476756404527
   },
   "requirements": [
     {
@@ -145,21 +145,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 43.65473175048828,
-      "site_median": 43.65473175048828,
-      "difference": -133.26217651367188,
-      "statement": "Annual temperature range is 133 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.2452983856201172,
-      "site_median": 1.2452983856201172,
-      "difference": -16.279614448547363,
-      "statement": "Variation of temperature range is 16.3 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {

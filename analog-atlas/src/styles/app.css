@@ -100,6 +100,9 @@ body.app-mode { overflow: hidden; }
 .sl-row { display: flex; align-items: center; gap: 8px; }
 .link-btn { background: none; border: 0; padding: 4px 0; text-align: left; color: var(--text); font-size: 14px; }
 .link-btn:hover { color: var(--earth-2); }
+.coverage { margin: 6px 12px; padding: 10px; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+.cov-steps { margin: 0; padding-left: 18px; display: grid; gap: 2px; }
+.cov-steps .cov-link { font-size: 12px; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
 .up-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); flex: none; }
 .res-actions { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px 24px; border-top: 1px solid var(--line); }
 

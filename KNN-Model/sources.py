@@ -6,6 +6,8 @@ Only the part of each file that covers our area is transferred, not the whole fi
     Earth : Copernicus DEM GLO-30 (30 m), Cloud-Optimised GeoTIFFs on AWS, no login.
             Licence requires the notice in COPERNICUS_NOTICE on anything we publish.
     Moon  : LOLA LDEM_80S_20M (20 m, 80-90 S), NASA PDS file on the MIT LOLA archive.
+    Mars  : MGS MOLA global DEM, 463 m (USGS Astrogeology mosaic of the NASA MOLA MEGDR),
+            a plain GeoTIFF read one strip of rows at a time (only the rows we need).
 
 Every function returns (heights, transform, crs):
     heights   - 2-D float32 array in metres, NaN where there is no data
@@ -32,6 +34,17 @@ COPERNICUS_NOTICE = (
     "Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved."
 )
 LOLA_SOUTH_20M = "https://imbrium.mit.edu/DATA/LOLA_GDR/POLAR/IMG/LDEM_80S_20M.LBL"
+MOLA_463M = "https://planetarymaps.usgs.gov/mosaic/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif"
+MOLA_NOTICE = ("Mars MGS MOLA DEM 463 m: Smith et al. (2001), Mars Orbiter Laser Altimeter: experiment summary "
+               "after the first year of global mapping of Mars, JGR 106(E10); mosaic by USGS Astrogeology")
+MARS_RADIUS_M = 3396190.0
+MARS_GEO = "+proj=longlat +R=3396190 +no_defs"
+
+
+def mars_local_crs(lat: float, lon: float) -> str:
+    """A metric map projection centred on a Mars point (azimuthal equidistant on the MOLA sphere).
+    Distances from the centre are true, so 20 km tiles are 20 km on the ground."""
+    return f"+proj=aeqd +lat_0={lat} +lon_0={lon} +R={MARS_RADIUS_M:.0f} +units=m +no_defs"
 
 # GDAL settings for reading over HTTP: identify ourselves, read in big chunks
 # (fewer round trips), retry on flaky connections, and don't list folders.
@@ -123,3 +136,22 @@ def read_lola(x_min: float, y_min: float, x_max: float, y_max: float):
             raw = src.read(1, window=window, masked=True)
             heights = raw.astype("float32").filled(np.nan) * float(src.scales[0])
             return heights, src.window_transform(window), src.crs
+
+
+# ------------------------------------------------------------------ Mars
+def read_mola(lon_min: float, lat_min: float, lon_max: float, lat_max: float):
+    """Stream MOLA heights for a lon/lat box (degrees east, -180..180) on Mars.
+
+    The file is in an equirectangular projection (metres along the equator). Heights are
+    whole metres; the file's nodata (-32768) becomes NaN. As on the Moon, only height
+    differences are ever used.
+    """
+    if lon_min < -180 or lon_max > 180:
+        raise ValueError("Mars boxes that cross the 180 deg meridian are not supported")
+    k = math.pi / 180 * MARS_RADIUS_M                        # metres per degree in the file's x/y
+    with rasterio.Env(**HTTP_ENV, GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR"):
+        with rasterio.open("/vsicurl/" + MOLA_463M) as src:
+            w = from_bounds(lon_min * k, lat_min * k, lon_max * k, lat_max * k, src.transform)
+            w = w.round_offsets().round_lengths()
+            raw = src.read(1, window=w, masked=True)
+            return raw.astype("float32").filled(np.nan), src.window_transform(w), src.crs

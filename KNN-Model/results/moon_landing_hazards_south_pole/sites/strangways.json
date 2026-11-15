@@ -1,8 +1,8 @@
 {
   "site": "strangways",
   "role": "candidate",
-  "rank": 32,
-  "score": 0.17324070897967178,
+  "rank": 105,
+  "score": 0.12544570016815926,
   "location": {
     "lat": -15.2,
     "lon": 133.583,
@@ -15,7 +15,7 @@
     "tile_id": "r02c02",
     "lat": -15.177787904753071,
     "lon": 133.5590344136651,
-    "similarity": 0.2663158193447457
+    "similarity": 0.20338446775160746
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

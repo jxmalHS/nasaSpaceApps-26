@@ -1,21 +1,21 @@
 {
   "site": "carancas",
   "role": "candidate",
-  "rank": 21,
-  "score": 0.32820176713844273,
+  "rank": 67,
+  "score": 0.30731189282548566,
   "location": {
     "lat": -16.6667,
     "lon": -69.05,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Carancas'"
   },
   "covers": {
-    "target_coverage": 0.109375
+    "target_coverage": 0.25
   },
   "test_tile": {
     "tile_id": "r01c01",
     "lat": -16.59900750008113,
     "lon": -69.1209370456542,
-    "similarity": 0.44748611404408395
+    "similarity": 0.44057795007274203
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

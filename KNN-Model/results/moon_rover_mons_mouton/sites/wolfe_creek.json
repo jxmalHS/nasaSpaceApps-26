@@ -1,8 +1,8 @@
 {
   "site": "wolfe_creek",
   "role": "candidate",
-  "rank": 29,
-  "score": 0.2972448454802473,
+  "rank": 90,
+  "score": 0.27356122486892726,
   "location": {
     "lat": -19.1667,
     "lon": 127.8,
@@ -15,7 +15,7 @@
     "tile_id": "r01c03",
     "lat": -19.09993037926135,
     "lon": 127.82406341362126,
-    "similarity": 0.3950933476204424
+    "similarity": 0.3804946762832735
   },
   "requirements": [
     {

@@ -1,21 +1,21 @@
 {
   "site": "strangways",
   "role": "candidate",
-  "rank": 22,
-  "score": 0.30117640704254733,
+  "rank": 71,
+  "score": 0.29169722091847644,
   "location": {
     "lat": -15.2,
     "lon": 133.583,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Strangways'"
   },
   "covers": {
-    "target_coverage": 0.078125
+    "target_coverage": 0.15625
   },
   "test_tile": {
     "tile_id": "r03c02",
     "lat": -15.222978866840528,
     "lon": 133.5587274433548,
-    "similarity": 0.532878109110024
+    "similarity": 0.525154559276115
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

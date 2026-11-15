@@ -1,8 +1,8 @@
 {
   "site": "steinheim",
   "role": "candidate",
-  "rank": 15,
-  "score": 0.2689418003136246,
+  "rank": 35,
+  "score": 0.21621460146189334,
   "location": {
     "lat": 48.6833,
     "lon": 10.0667,
@@ -15,7 +15,7 @@
     "tile_id": "r03c01",
     "lat": 48.66081621848475,
     "lon": 9.964183266116429,
-    "similarity": 0.4163628115809288
+    "similarity": 0.3543934921671294
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,7 +171,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9166666666666666,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

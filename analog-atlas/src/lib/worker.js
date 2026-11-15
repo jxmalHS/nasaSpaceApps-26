@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-globals */
 import { catalog, tests, T, A } from './catalog.js';
-import { compile, scoreAll, explain, STATUS, mulberry32, percentile, overlap } from './scoring.js';
+import { compile, scoreAll, explain, STATUS, mulberry32, percentile, overlap, coverGreedy } from './scoring.js';
 import { distanceKm } from './geo.js';
 import { mlProvider } from './ml.js';
 
@@ -333,6 +333,17 @@ async function stability({ cfg, trials = 40, jitter = 0.3 }) {
   };
 }
 
+/** Multi-site coverage for the current configuration (see scoring.coverGreedy). */
+async function coverage({ cfg, maxSites = 5, km = 250 }) {
+  const { plan, res, final } = await run(cfg);
+  const rf = regionOk(cfg);
+  const out = coverGreedy(plan, G.QX, res.status, G.n, {
+    maxSites, score: final, eligible: rf,
+    tooClose: (i, chosen) => chosen.some((j) => distanceKm(G.lat[i], G.lon[i], G.lat[j], G.lon[j], 'earth') < km),
+  });
+  return { value: { ...out, km, steps: out.steps.map((s) => ({ ...s, ...nameOf(s.i), lat: G.lat[s.i], lon: G.lon[s.i], score: final[s.i] })) } };
+}
+
 async function validateRules({ mode = 'stress' }) {
   const out = [];
   for (const t of Object.values(tests)) {
@@ -400,7 +411,7 @@ function rows({ indices }) {
 }
 
 const byId = ({ id }) => ({ value: G.cellToIndex[id] ?? -1 });
-const HANDLERS = { init, score, detail, layer, mask, stability, validateRules, nearest, scoreSites, rows, byId };
+const HANDLERS = { init, score, detail, layer, mask, stability, coverage, validateRules, nearest, scoreSites, rows, byId };
 
 self.onmessage = async (e) => {
   const { id, type, payload } = e.data;

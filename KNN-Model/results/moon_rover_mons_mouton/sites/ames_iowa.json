@@ -1,8 +1,8 @@
 {
   "site": "ames_iowa",
   "role": "negative_control",
-  "rank": 32,
-  "score": 0.3722817766649633,
+  "rank": 103,
+  "score": 0.3412275312458497,
   "location": {
     "lat": 42.0268,
     "lon": -93.617,
@@ -15,7 +15,7 @@
     "tile_id": "r01c03",
     "lat": 42.094179121198714,
     "lon": -93.58769795168688,
-    "similarity": 0.519340438769239
+    "similarity": 0.5014205899965893
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 57.355735778808594,
-      "site_median": 58.653770446777344,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 1.747062087059021,
-      "site_median": 1.0267887115478516,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }
@@ -181,7 +181,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

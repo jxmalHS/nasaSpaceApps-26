@@ -1,21 +1,21 @@
 {
   "site": "cinder_lake_crater_field",
   "role": "baseline",
-  "rank": 3,
-  "score": 0.46496783152897264,
+  "rank": 24,
+  "score": 0.4094735292843831,
   "location": {
     "lat": 35.3315,
     "lon": -111.4834,
     "source": "OpenStreetMap way 1319347968 'Cinder Hills OHV Area' (Cinder Lake Crater Field 2 lies in this recreation area, per USGS)"
   },
   "covers": {
-    "target_coverage": 0.40625
+    "target_coverage": 0.484375
   },
   "test_tile": {
     "tile_id": "r00c04",
     "lat": 35.44438706064509,
     "lon": -111.40217808840703,
-    "similarity": 0.6606306910603639
+    "similarity": 0.6534204424554358
   },
   "requirements": [
     {
@@ -145,21 +145,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 63.978004455566406,
-      "site_median": 60.9920597076416,
-      "difference": -112.93890380859375,
-      "statement": "Annual temperature range is 113 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.3693208694458008,
-      "site_median": 1.4772425889968872,
-      "difference": -16.15559196472168,
-      "statement": "Variation of temperature range is 16.2 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {
@@ -176,7 +176,7 @@
   },
   "baselines": {
     "nearest": "sp_crater_jett3",
-    "closer_than": "meteor_crater, sp_crater_jett3, yucca_flat"
+    "closer_than": "meteor_crater, yucca_flat"
   },
   "confidence": {
     "value": 0.8571428571428571,

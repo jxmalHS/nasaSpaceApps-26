@@ -1,8 +1,8 @@
 {
   "site": "ames",
   "role": "candidate",
-  "rank": 27,
-  "score": 0.3193444750068256,
+  "rank": 82,
+  "score": 0.29350856704038153,
   "location": {
     "lat": 36.25,
     "lon": -98.2,
@@ -15,7 +15,7 @@
     "tile_id": "r02c00",
     "lat": 36.2727207124831,
     "lon": -98.33976780724905,
-    "similarity": 0.4092204780217485
+    "similarity": 0.3933540689658274
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 43.65473175048828,
-      "site_median": 43.65473175048828,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 1.2452983856201172,
-      "site_median": 1.2452983856201172,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

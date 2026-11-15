@@ -1,8 +1,8 @@
 {
   "site": "matt_wilson",
   "role": "candidate",
-  "rank": 25,
-  "score": 0.2134061856628883,
+  "rank": 83,
+  "score": 0.16304331211286302,
   "location": {
     "lat": -15.5,
     "lon": 131.183,
@@ -15,7 +15,7 @@
     "tile_id": "r01c03",
     "lat": -15.432724556606232,
     "lon": 131.20480438448715,
-    "similarity": 0.3660298222435901
+    "similarity": 0.30523876114460813
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,8 +171,8 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
-    "label": "high"
+    "value": 0.75,
+    "label": "medium"
   },
   "cannot_reproduce_on_earth": [
     "Gravity: about 1/6 of Earth's (~1.62 vs 9.81 m/s^2), so wheel loads, sinkage and dust behaviour differ.",

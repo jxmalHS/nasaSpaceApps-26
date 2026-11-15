@@ -1,10 +1,10 @@
 """
 charts.py - two simple pictures for non-experts (saved as PNG next to the report).
 
-1. ranking.png       - "Which Earth sites look most like the Moon target?"
+1. ranking.png       - "Which Earth sites look most like the target (Moon or Mars)?"
                        one bar per site, coloured by type (NASA site / new candidate / farmland)
-2. closeness_<site>.png - "How close is this site to the Moon?"
-                       one small panel per measurement (each in its own unit), Moon vs site
+2. closeness_<site>.png - "How close is this site to the target?"
+                       one small panel per measurement (each in its own unit), target vs site
 
 Colours: the reference palette from the data-viz guidelines, first three slots in a
 fixed order (validated colourblind-safe for three categories). Text is never coloured.
@@ -45,7 +45,8 @@ def _style(ax):
     ax.set_axisbelow(True)
 
 
-def ranking_chart(ranking: pd.DataFrame, mission: str, out: Path, max_sites: int = 20) -> Path:
+def ranking_chart(ranking: pd.DataFrame, mission: str, out: Path, max_sites: int = 20,
+                  target_label: str = "the lunar south pole", world: str = "Moon") -> Path:
     """Horizontal bars, best at the top. Farmland controls are always shown (they prove the point)."""
     shown = ranking.head(max_sites)
     extra = ranking[(ranking.role == "negative_control") & ~ranking.site.isin(shown.site)]
@@ -64,13 +65,13 @@ def ranking_chart(ranking: pd.DataFrame, mission: str, out: Path, max_sites: int
         low = "   · low evidence" if r.get("low_evidence", False) else ""
         ax.text(r.score + 0.015, yi, f"{r.score:.2f}   {r.req_met}/{rules} rules met{low}",
                 va="center", fontsize=8.5, color=INK_2)
-    ax.set_xlabel("Similarity to the Moon target  (0 = nothing alike, 1 = identical terrain)",
+    ax.set_xlabel(f"Similarity to the {world} target  (0 = nothing alike, 1 = identical terrain)",
                   color=INK_2, fontsize=9)
     handles = [plt.Rectangle((0, 0), 1, 1, color=c) for role, (_, c) in ROLE_STYLE.items()
                if role in set(shown.role)]
     labels = [lab for role, (lab, _) in ROLE_STYLE.items() if role in set(shown.role)]
     ax.legend(handles, labels, loc="lower right", frameon=False, fontsize=8.5, labelcolor=INK_2)
-    fig.suptitle("Which Earth sites look most like the lunar south pole?", x=0.02, ha="left",
+    fig.suptitle(f"Which Earth sites look most like {target_label}?", x=0.02, ha="left",
                  fontsize=13, color=INK, fontweight="bold")
     ax.set_title(f"Mission: {mission.replace('_', ' ')}  ·  terrain shape only  ·  "
                  f"a terrain match does not validate hardware", loc="left", fontsize=8.5, color=INK_2)
@@ -81,8 +82,9 @@ def ranking_chart(ranking: pd.DataFrame, mission: str, out: Path, max_sites: int
     return path
 
 
-def closeness_chart(site: str, details: dict, mission_weights: dict, out: Path) -> Path:
-    """Small panels: for each measurement the mission cares about, the Moon vs the site."""
+def closeness_chart(site: str, details: dict, mission_weights: dict, out: Path,
+                    world: str = "Moon", tile_km: float = 5) -> Path:
+    """Small panels: for each measurement the mission cares about, the target vs the site."""
     rows = [d for d in details["differences"] if d["feature"] in mission_weights
             and d["target"] is not None and d["test_tile"] is not None]
     n = len(rows)
@@ -97,7 +99,7 @@ def closeness_chart(site: str, details: dict, mission_weights: dict, out: Path) 
         vals = [d["target"], d["test_tile"]]
         ax.barh([1, 0], vals, height=0.6, color=[MOON_COLOUR, ROLE_STYLE["baseline"][1]],
                 edgecolor=SURFACE, linewidth=2)
-        ax.set_yticks([1, 0], ["Moon", "Site"], color=INK, fontsize=9)
+        ax.set_yticks([1, 0], [world, "Site"], color=INK, fontsize=9)
         top = max(vals) * 1.35 or 1
         ax.set_xlim(0, top)
         for yi, v in zip([1, 0], vals):
@@ -106,9 +108,9 @@ def closeness_chart(site: str, details: dict, mission_weights: dict, out: Path) 
         ax.set_title(label, loc="left", fontsize=9.5, color=INK, fontweight="bold")
         gap = d["statement"].replace(label + " ", "", 1).removeprefix("is ")   # "8.5° gentler than ..."
         ax.set_xlabel(gap, fontsize=8, color=INK_2)
-    fig.suptitle(f"How close is {pretty(site)} to the Moon target?", x=0.02, ha="left",
+    fig.suptitle(f"How close is {pretty(site)} to the {world} target?", x=0.02, ha="left",
                  fontsize=13, color=INK, fontweight="bold")
-    fig.text(0.02, 0.005, "Site values are for its recommended 5 km test tile; Moon values are the "
+    fig.text(0.02, 0.005, f"Site values are for its recommended {tile_km:g} km test tile; {world} values are the "
              "target's typical (median) tile. Each panel has its own unit.", fontsize=8, color=INK_2)
     fig.tight_layout(rect=(0, 0.03, 1, 0.97))
     path = out / f"closeness_{site}.png"

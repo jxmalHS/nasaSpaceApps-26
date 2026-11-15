@@ -1,21 +1,21 @@
 {
   "site": "lunar_crater_nevada",
   "role": "candidate",
-  "rank": 15,
-  "score": 0.39485195696078884,
+  "rank": 46,
+  "score": 0.35458600568191,
   "location": {
     "lat": 38.3839,
     "lon": -116.0694,
     "source": "OpenStreetMap way 992237522 'Lunar Crater' (Lunar Crater volcanic field, Nevada)"
   },
   "covers": {
-    "target_coverage": 0.40625
+    "target_coverage": 0.46875
   },
   "test_tile": {
     "tile_id": "r03c05",
     "lat": 38.35997055103726,
     "lon": -115.9275202176832,
-    "similarity": 0.516620655478196
+    "similarity": 0.4266605507418728
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

@@ -1,8 +1,8 @@
 {
   "site": "pisgah_crater",
   "role": "candidate",
-  "rank": 5,
-  "score": 0.353333251089454,
+  "rank": 7,
+  "score": 0.2964777522770034,
   "location": {
     "lat": 34.7464,
     "lon": -116.3756,
@@ -15,7 +15,7 @@
     "tile_id": "r04c01",
     "lat": 34.6782815373265,
     "lon": -116.45856171201355,
-    "similarity": 0.6000390841424961
+    "similarity": 0.5491208490671572
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -168,7 +168,7 @@
   },
   "baselines": {
     "nearest": "yucca_flat",
-    "closer_than": "meteor_crater, yucca_flat"
+    "closer_than": "meteor_crater"
   },
   "confidence": {
     "value": 1.0,

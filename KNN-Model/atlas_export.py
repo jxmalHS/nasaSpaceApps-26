@@ -29,15 +29,22 @@ ATLAS_MAP = {
     "moon_rover_south_pole": ("ltv.wheels", "connecting-ridge"),
     "moon_rover_thermal_south_pole": ("ltv.thermal", "connecting-ridge"),
     "moon_landing_hazards_south_pole": ("land.hazards", "connecting-ridge"),
+    "mars_landing_jezero": ("land.hazards", "jezero"),
+    "mars_rover_jezero": ("ltv.wheels", "jezero"),
 }
 # Our NASA sites that are one of the Atlas's analog IDs (both lie in the San Francisco Volcanic Field).
-ATLAS_ANALOG_IDS = {"sp_crater_jett3": "sf-volcanic-field", "cinder_lake_crater_field": "sf-volcanic-field"}
+# Mars 2020 Lander Vision System test spots lie in Death Valley National Park and the Mojave National Preserve.
+ATLAS_ANALOG_IDS = {"sp_crater_jett3": "sf-volcanic-field", "cinder_lake_crater_field": "sf-volcanic-field",
+                    "mesquite_flat_dunes": "death-valley", "badwater_basin": "death-valley",
+                    "panamint_valley": "death-valley", "kelso_dunes": "mojave", "hole_in_the_wall": "mojave"}
 
 NOTES = {
     "moon_rover_thermal_south_pole": "Our ltv.thermal score is terrain + yearly temperature range "
                                      "(closest achievable to the Moon), not thermal only.",
     "moon_rover_south_pole": "Our target is a 40 km box at the south pole (incl. Shackleton walls), "
                              "mapped to the nearest Atlas target.",
+    "mars_landing_jezero": "Mars: 20 km squares at 500 m pixels (MOLA), terrain shape only.",
+    "mars_rover_jezero": "Mars: 20 km squares at 500 m pixels (MOLA): landforms, not the rocks a wheel meets.",
 }
 
 
@@ -93,7 +100,10 @@ def _rows_for(mission_name: str, mission, out: Path, summary: dict) -> list[dict
 
 
 PRETTY = {"sp_crater_jett3": "SP Crater (JETT3)", "cinder_lake_crater_field": "Cinder Lake Crater Field",
-          "buffalo_park": "Buffalo Park", "meteor_crater": "Meteor Crater", "yucca_flat": "Yucca Flat"}
+          "buffalo_park": "Buffalo Park", "meteor_crater": "Meteor Crater", "yucca_flat": "Yucca Flat",
+          "mesquite_flat_dunes": "Mesquite Flat Dunes", "badwater_basin": "Badwater Basin",
+          "panamint_valley": "Panamint Valley", "kelso_dunes": "Kelso Dunes",
+          "hole_in_the_wall": "Hole-in-the-Wall", "grand_falls_dunes": "Grand Falls Dunes"}
 POPULATION = ("the {n} Earth sites the engine ranked for this set (not the 78,993 website cells); "
               "percentile = share of the other ranked sites the held-out site beats (100 = first); "
               "rank on similarity alone, before the land-cover ordering")
@@ -125,7 +135,7 @@ def _held_out_entry(m: str, s: dict, coords: dict) -> dict:
              "top5_rate": ho.get("recall_at_5"), "random_top5_rate": ho.get("random_guess_recall_at_5"),
              "population": POPULATION.format(n=n), "engine_held_out": engine}
     if ho.get("status") == "WARN" or n < 20:
-        entry["warning"] = (f"Only {n} sites ranked (few sites have temperature data yet): a random order "
+        entry["warning"] = (f"Only {n} sites ranked: a random order "
                             f"would put {ho.get('random_guess_recall_at_5', 0):.0%} of them in the top 5. "
                             "Weak evidence.")
     return entry
@@ -151,6 +161,18 @@ def _validation(summaries: dict, coords: dict) -> list[dict]:
             out.append({"name": f"Engine stability ({test_id} / {target_id})", "test_id": test_id,
                         "target_id": target_id, "result": _stability_text(st),
                         "what_changed": "see small_change_definition in the model card"})
+        cov = s.get("multi_site_coverage")
+        if cov:
+            out.append({"name": f"Multi-site coverage ({test_id} / {target_id})", "test_id": test_id,
+                        "target_id": target_id, "status": "coverage",
+                        "result": (f"{cov['steps'][-1]['covered_so_far'] if cov['steps'] else 0} of "
+                                   f"{cov['n_requirements']} requirements covered by {len(cov['steps'])} site(s); "
+                                   f"{len(cov['not_covered_by_any_site'])} covered by no site"),
+                        "rule": cov["rule"],
+                        "steps": [{"site": PRETTY.get(x["site"], x["site"].replace("_", " ").title()),
+                                   "role": x["role"], "rank": x["rank"], "lat": x["lat"], "lon": x["lon"],
+                                   "adds": x["adds"], "covered_so_far": x["covered_so_far"]} for x in cov["steps"]],
+                        "not_covered": cov["not_covered_by_any_site"], "n_requirements": cov["n_requirements"]})
     return out
 
 
@@ -166,28 +188,30 @@ def _card(summaries: dict, n_sites: int, settings: dict) -> dict:
                 f"{ho['n_sites_ranked']} sites ranked)")
         if st.get("n_variants"):
             metrics[f"stability ({test_id} / {target_id})"] = _stability_text(st)
-    metrics["nasa_sites_for_validation"] = 5
+    metrics["nasa_sites_for_validation"] = "5 for the Moon (Artemis training sites), 6 for Mars (Mars 2020 Lander Vision System test spots + Grand Falls dunes)"
     n_runs = sorted({s["checks"]["stability"].get("n_variants") for s in summaries.values()} - {None})
     min_tiles = knn.get("min_usable_tiles", 6)
     return {
         "name": "Two-way weighted kNN (analog engine)", "version": "1.1.0",
-        "kind": "Unsupervised weighted k-nearest-neighbour on 100 m relief, two-way matching",
+        "kind": "Unsupervised weighted k-nearest-neighbour on relief (Moon: 100 m, Mars: 500 m), two-way matching",
         "trained_on": f"Copernicus GLO-30 + ESA WorldCover 2021 (+ MODIS MOD11A2 for thermal) vs "
-                      f"LOLA LDEM_80S_20M (+ Diviner for thermal); {n_sites} Earth sites; no labels",
-        "inputs": "5 km squares at 100 m pixels: slope, steep share, roughness, crater-like dips; "
+                      f"LOLA LDEM_80S_20M (+ Diviner for thermal) for the Moon and MGS MOLA 463 m for Mars; "
+                      f"{n_sites} Earth sites; no labels",
+        "inputs": "Moon: 5 km squares at 100 m pixels; Mars: 20 km squares at 500 m pixels (MOLA's resolution). "
+                  "Slope, steep share, roughness, crater-like dips; "
                   "mission weights; no absolute elevation",
         "limits": f"Sparse: {n_sites} sites of 78,993 cells; unscored cells are 'not analysed', never 0. "
-                  "Candidates whose every 5 km square breaks a land-cover limit (forest, crops, water) "
+                  "Candidates whose every square breaks a land-cover limit (forest, crops, water) "
                   "were rejected and are not exported. "
-                  "~30 cm rocks invisible at 100 m. Only 5 NASA sites to validate on: checks show the "
+                  "~30 cm rocks invisible at 100 m (Moon) or 500 m (Mars). Only 5-6 NASA sites per world to validate on: checks show the "
                   "ranking is sensible, not proven. Pass/fail limits always come from the Atlas rules.",
         "score_definition": (
-            f"Similarity, 0-1. Each 5 km square is compared with the Moon target's squares: d = weighted "
+            f"Similarity, 0-1. Each square is compared with the target's squares: d = weighted "
             f"distance after scaling every measurement by Earth's typical spread (1 unit = one interquartile "
             f"range); similarity = exp(-d). Score = 0.5 x (the {knn['site_quantile']:.0%} percentile of the "
-            f"site's square similarities, each vs its {knn['k']} nearest Moon squares) + 0.5 x (average over "
-            f"Moon squares of exp(-distance to the site's closest square)). 1.0 = identical to the Moon on "
-            f"every weighted measurement. No Earth site gets close (the Moon is steeper than any site), so "
+            f"site's square similarities, each vs its {knn['k']} nearest target squares) + 0.5 x (average over "
+            f"target squares of exp(-distance to the site's closest square)). 1.0 = identical to the target on "
+            f"every weighted measurement. No Earth site gets close to the lunar south pole (steeper than any site), so "
             f"about 0.6 is a strong match. NOT on the same scale as rule scores."),
         "score_comparability": ("Compare scores within one test/target set only: each set has its own target, "
                                 "weights and Earth scaling, so 0.5 in one set is not 0.5 in another. "
@@ -201,12 +225,12 @@ def _card(summaries: dict, n_sites: int, settings: dict) -> dict:
         "small_change_definition": (
             f"One change at a time: each weighted measurement's weight x{1 + stab['weight_change']:g} and "
             f"x{1 - stab['weight_change']:g} (2 runs per measurement), pixels {stab['alt_resolution_factor']}x "
-            f"bigger (100 m -> {100 * stab['alt_resolution_factor']} m), and the 5 km grid shifted by half a "
+            f"bigger (Moon 100 m -> {100 * stab['alt_resolution_factor']} m, Mars 500 m -> {500 * stab['alt_resolution_factor']} m), and the square grid shifted by half a "
             f"square. total_runs = 2 x (weighted measurements) + 2 = {' or '.join(str(r) for r in n_runs)} "
-            f"(land.hazards weighs 5 measurements -> 12; the others weigh 6 -> 14). Not the same as the "
+            f"(it depends on how many measurements the mission weighs). Not the same as the "
             f"website's +/-30% x 30 weight jitter."),
-        "low_evidence_rule": (f"low_evidence = true when the site has fewer than {min_tiles} usable 5 km "
-                              f"squares (under {min_tiles * 25} km2 left after removing squares with missing "
+        "low_evidence_rule": (f"low_evidence = true when the site has fewer than {min_tiles} usable "
+                              f"squares (Moon: 5 km, under {min_tiles * 25} km2; Mars: 20 km, under {min_tiles * 400} km2; left after removing squares with missing "
                               "data or over a land-cover limit): a lead to check, not a recommendation."),
         "aggregation": "Several sites in one cell: keep the highest score (--agg max), as the importer does.",
         "demo": False,

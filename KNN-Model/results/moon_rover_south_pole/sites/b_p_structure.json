@@ -1,21 +1,21 @@
 {
   "site": "b_p_structure",
   "role": "candidate",
-  "rank": 24,
-  "score": 0.29289192138991577,
+  "rank": 73,
+  "score": 0.2830065141590539,
   "location": {
     "lat": 25.3167,
     "lon": 24.3333,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'B.P. Structure'"
   },
   "covers": {
-    "target_coverage": 0.15625
+    "target_coverage": 0.203125
   },
   "test_tile": {
     "tile_id": "r03c05",
     "lat": 25.295529330407064,
     "lon": 24.457495616360955,
-    "similarity": 0.6572374520730115
+    "similarity": 0.6447187410237097
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

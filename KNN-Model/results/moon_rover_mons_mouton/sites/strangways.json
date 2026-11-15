@@ -1,8 +1,8 @@
 {
   "site": "strangways",
   "role": "candidate",
-  "rank": 23,
-  "score": 0.36364791052428225,
+  "rank": 71,
+  "score": 0.33432893308169187,
   "location": {
     "lat": -15.2,
     "lon": 133.583,
@@ -15,7 +15,7 @@
     "tile_id": "r03c02",
     "lat": -15.222978866840528,
     "lon": 133.5587274433548,
-    "similarity": 0.49782317335944737
+    "similarity": 0.48044233363842936
   },
   "requirements": [
     {

@@ -24,7 +24,7 @@ NASA's usual field site, and every result says what Earth cannot reproduce.
 npm install
 npm run dev        # http://localhost:5173
 npm run build      # static site in dist/
-npm test           # scoring tests on the real index
+npm test           # scoring, limits and coverage tests on the real index
 ```
 
 Node 18+. No API keys. Python is only needed to rebuild data or plug in a model.
@@ -61,6 +61,12 @@ see `ml/examples/`). Sparse models (a few dozen sites) are supported: unscored c
 
 **C. Nothing.** The app runs on rules alone and says so.
 
+**Multi-site coverage.** Explore → *Multi-site coverage* picks sites one at a time: each step adds
+the site (≥ 250 km from the others) that covers the most requirements still open. A cell covers a
+requirement when it is within 12 Earth-percentile points of the target AND passes every strict limit,
+so conditions needed together are present together. What no site covers is listed: it needs a lab,
+chamber or test bed. The engine runs the same check on its 5 km / 20 km squares (Trust page).
+
 Safety rails: every bundle carries the index fingerprint and the site refuses a bundle built
 for another index build; `validate.py` checks ids, sizes and coverage; the Trust page shows the
 model card and leave-one-site-out validation. The shipped bundle is a **demo** model
@@ -92,10 +98,25 @@ strength, depth to ground ice, salts/perchlorate.
 
 Rebuild: `npm run data` (= `pipeline/build_index.py` + `ml/train_demo.py`).
 
-**Target profiles** (`src/config/targets.json`) for 7 lunar and 5 Martian sites are marked
-`verify` (published/mission values) or `estimate` (placeholders pending LOLA, Diviner, MOLA,
-THEMIS, MEDA/REMS extraction at matched scale). Unknown target values score as Unknown in
-Realism mode; in Stress mode a directional feature aims for Earth's extreme and says so.
+**Target profiles** (`src/config/targets.json`) for 7 lunar and 5 Martian sites. Each value is
+`measured` (computed by our pipeline from NASA data), `verify` (a published mission value) or
+`estimate` (placeholder); unknown values score as Unknown. The Trust page lists every value's status.
+
+- **Slope and roughness, all 12 targets: measured** at the Earth index's own scale (55.6 km cell,
+  9.27 km roughness pixels) from LOLA (`LDEM_80S_80M` near the south pole, `LDEM_16` elsewhere) and
+  MOLA 463 m. The method was first checked on 12 Earth cells against the index: roughness tracks it
+  closely (r = 0.97, scaled ×0.76 for the different DEM); slope is looser (r = 0.76, ±40%).
+- **Moon south-pole temperatures (6 targets): measured** from Diviner polar seasonal maps
+  (Williams et al. 2019), averaged over the same cell: day–night swing, mean (surface) temperature,
+  seasonal range.
+- Rebuild: `python pipeline/measure_targets.py --check` (Earth calibration), then
+  `python pipeline/measure_targets.py` and `python pipeline/apply_targets.py` (needs `rasterio`).
+
+What changed because of it: the old placeholders were mostly local values. At the Earth cells'
+scale the polar Moon targets are gentle (1–3°) but very rough (280–360 m, beyond 99% of Earth
+cells), so rugged mountain cells now rank higher for wheel tests there. The old 125 K "seasonal
+range" was really the day–night extreme; the measured seasonal range is 2–33 K (the Moon's axis
+tilts only 1.5°).
 
 **Terrain patches** in Compare are synthesized from each site's regional slope and roughness
 and labelled *illustrative* until measured DEM windows are added with

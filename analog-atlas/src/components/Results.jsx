@@ -42,6 +42,7 @@ export default function Results({ onOpen }) {
         <Stability />
       </div>
       {d && <Baseline d={d} onOpen={onOpen} />}
+      {d && <Coverage onOpen={onOpen} />}
       {d?.agreement != null && rankBy !== 'rules' && (
         <p className="tiny faint res-agree">
           <Term text="Share of the top five distinct sites that the rules and the model have in common. Agreement is not accuracy: both can be wrong the same way.">Rules–model agreement</Term>: {Math.round(d.agreement * 100)}% of top 5{rankBy !== 'rules' ? ` · ranking by ${rankBy === 'ml' ? 'model' : 'blend'}` : ''}
@@ -139,6 +140,49 @@ function Stability() {
         </div>
       )}
     </div>
+  );
+}
+
+/** Multi-site coverage: which requirements each additional site covers, and what none covers. */
+function Coverage({ onOpen }) {
+  const [cv, setCv] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const key = useStore((s) => JSON.stringify(scoringConfig(s)));
+  const run = async () => {
+    setBusy(true);
+    try { setCv({ key, ...(await call('coverage', { cfg: scoringConfig(getState()) })) }); } finally { setBusy(false); }
+  };
+  const fresh = cv && cv.key === key;
+  const name = (fid) => F[fid]?.label || fid;
+  return (
+    <section className="coverage" aria-labelledby="cov-h">
+      <div className="row">
+        <h3 id="cov-h" className="label grow">
+          <Term text="One site rarely reproduces everything. A site covers a requirement when it is within 12 Earth-percentile points of the target on that measurement AND passes every strict limit there, so conditions needed together are present together. Each step adds the site that covers the most requirements still open (sites at least 250 km apart).">Multi-site coverage</Term>
+        </h3>
+        <button className="btn btn-sm" onClick={run} disabled={busy} title="Pick sites one at a time until every requirement an Earth site can meet is covered">
+          {busy ? <span className="spinner" /> : null} {fresh ? 'Recompute' : 'Cover requirements'}
+        </button>
+      </div>
+      {fresh && (
+        <div className="tiny" role="status">
+          {cv.steps.length === 0 && <p className="dim">No site that passes every strict limit is close to the target on any measurement.</p>}
+          <ol className="cov-steps">
+            {cv.steps.map((s) => (
+              <li key={s.i}>
+                <button className="link-btn cov-link" onClick={() => onOpen({ i: s.i })}>{s.place ? `near ${s.place}, ` : ''}{s.country}</button>
+                {' '}adds {s.adds.map(name).join(', ')} <span className="faint num">· {s.coveredSoFar}/{cv.nRequirements}</span>
+              </li>
+            ))}
+          </ol>
+          {cv.notCovered.length > 0 && (
+            <p><b>No Earth site covers:</b> {cv.notCovered.map((x) => name(x.fid) + (x.beyond ? ` (target ${x.beyond} anything on Earth)` : '')).join('; ')}. These need a lab, chamber or engineered test bed.</p>
+          )}
+          {cv.beyondEarth.length > 0 && <p className="faint">Beyond Earth's range, so "covered" means Earth's most extreme cells: {cv.beyondEarth.map((x) => name(x.fid)).join(', ')}.</p>}
+          {cv.unmeasurable.length > 0 && <p className="faint">Not checked (no {cv.unmeasurable.some((x) => x.why === 'no-earth-layer') ? 'Earth layer' : 'target value'} yet): {cv.unmeasurable.map((x) => name(x.fid)).join(', ')}.</p>}
+        </div>
+      )}
+    </section>
   );
 }
 

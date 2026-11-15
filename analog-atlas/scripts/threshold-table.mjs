@@ -29,7 +29,7 @@ export function engineLimits(text = readFileSync(ENGINE_YAML, 'utf8')) {
     if (/^\s{2}mandatory:\s*$/.test(line)) { block = 'mandatory'; continue; }
     if (/^\s{0,4}[a-z_]+:/.test(line) && !/^\s{6}/.test(line) && !/^\s{4}-/.test(line)) block = null;
     if (block === 'interference' && (m = line.match(/^\s{6}([a-z_]+):\s*\{max:\s*([\d.]+)\}\s*$/))) {
-      out.push({ mission, kind: 'interference', feature: m[1], rule: 'max', v: Number(m[2]), unit: 'share of 5 km tile' });
+      out.push({ mission, kind: 'interference', feature: m[1], rule: 'max', v: Number(m[2]), unit: 'share of tile' });
     } else if (block === 'mandatory' && (m = line.match(/^\s{4}-\s*\{feature:\s*([a-z_0-9]+),\s*(max_abs_diff|max|min):\s*([\d.]+),\s*unit:\s*([a-zA-Z_0-9]+)\}\s*$/))) {
       out.push({ mission, kind: 'mandatory', feature: m[1], rule: m[2], v: Number(m[3]), unit: m[4] });
     }
@@ -37,8 +37,9 @@ export function engineLimits(text = readFileSync(ENGINE_YAML, 'utf8')) {
   return out;
 }
 
-// Engine evidence, measured 14 Nov 2026 at each NASA baseline's official coordinates
-// (nearest 5 km tile in KNN-Model/results/*/tiles.csv; 5 NASA sites per mission).
+// Engine evidence, measured at each NASA baseline's official coordinates (nearest tile in
+// KNN-Model/results/*/tiles.csv): Moon 14 Nov 2026, 5 km tiles, 5 NASA sites per mission;
+// Mars 15 Nov 2026, 20 km tiles, 6 NASA sites (Mars 2020 LVS test spots + Grand Falls).
 const ENGINE_REF = {
   tree_frac: 'NASA MCD12Q1 C6.1 guide, Table 3: Savannas "Tree cover 10-30%", Woody Savannas "30-60%"',
   cropland_frac: 'No NASA number (MCD12Q1 Table 3: Croplands "At least 60%")',
@@ -47,8 +48,11 @@ const ENGINE_REF = {
   water_frac: 'No NASA number (MCD12Q1 Table 3: Water Bodies "At least 60%")',
 };
 const ENGINE_EVIDENCE = {
-  'tree_frac|0.3': 'Cinder Lake 81%, Buffalo Park 59% break it',
-  'tree_frac|0.2': 'Cinder Lake 81%, Buffalo Park 59% break it',
+  'moon|tree_frac|0.3': 'Cinder Lake 81%, Buffalo Park 59% break it',
+  'moon|tree_frac|0.2': 'Cinder Lake 81%, Buffalo Park 59% break it',
+  // Mars, measured 15 Nov 2026: no NASA Mars site breaks any land-cover limit
+  'mars_landing_jezero|tree_frac': 'none of 6', 'mars_landing_jezero|builtup_frac': 'none of 6', 'mars_landing_jezero|snow_ice_frac': 'none of 6', 'mars_landing_jezero|water_frac': 'none of 6',
+  'mars_rover_jezero|tree_frac': 'none of 6', 'mars_rover_jezero|cropland_frac': 'none of 6', 'mars_rover_jezero|builtup_frac': 'none of 6', 'mars_rover_jezero|snow_ice_frac': 'none of 6', 'mars_rover_jezero|water_frac': 'none of 6',
   'moon_rover_mons_mouton|slope_p90': '3 of 5 break it', 'moon_rover_mons_mouton|frac_steep': '2 of 5', 'moon_rover_mons_mouton|rough_small': '2 of 5',
   'moon_rover_south_pole|slope_p90': '4 of 5', 'moon_rover_south_pole|frac_steep': '4 of 5', 'moon_rover_south_pole|rough_small': '2 of 5',
   'moon_landing_hazards_south_pole|pit_density': '4 of 5', 'moon_landing_hazards_south_pole|relief': 'all 5',
@@ -115,12 +119,14 @@ export function buildTable() {
   }
 
   // 3. Engine.
-  L.push('', '## 3. Engine (KNN) limits', '', 'Read from `KNN-Model/config/missions.yaml`. NASA-site evidence was measured 14 Nov 2026 at each NASA baseline\'s official coordinates (nearest 5 km tile, 5 NASA sites per mission).', '');
+  L.push('', '## 3. Engine (KNN) limits', '', 'Read from `KNN-Model/config/missions.yaml`. NASA-site evidence was measured at each NASA baseline\'s official coordinates: Moon missions on the nearest 5 km tile (5 NASA sites), Mars missions on the nearest 20 km tile (6 NASA sites: the Mars 2020 Lander Vision System test spots and Grand Falls). The Mars missions have no pass/fail rules: NASA\'s Mars landing and rover numbers are set at 2 m to 1 km, below the 500 m pixels (see the comments in missions.yaml).', '');
   L.push('| Mission | Rule | Limit | NASA reference | NASA sites that break it |', '|---|---|---|---|---|');
   for (const e of eng) {
-    const lim = e.rule === 'max_abs_diff' ? `within ${e.v} ${e.unit} of target` : e.rule === 'max' ? `≤ ${e.v * (e.unit === 'share of 5 km tile' ? 100 : 1)}${e.unit === 'share of 5 km tile' ? '%' : ' ' + e.unit}` : `≥ ${e.v} ${e.unit}`;
+    const share = e.unit === 'share of tile';
+    const lim = e.rule === 'max_abs_diff' ? `within ${e.v} ${e.unit} of target` : e.rule === 'max' ? `≤ ${+(e.v * (share ? 100 : 1)).toFixed(4)}${share ? '% of tile' : ' ' + e.unit}` : `≥ ${e.v} ${e.unit}`;
+    const body = e.mission.startsWith('mars') ? 'mars' : 'moon';
     const ref = e.kind === 'interference' ? ENGINE_REF[e.feature] || 'No NASA number' : 'No NASA source (team example value)';
-    const ev = ENGINE_EVIDENCE[`${e.feature}|${e.v}`] || ENGINE_EVIDENCE[`${e.mission}|${e.feature}`] || 'none';
+    const ev = ENGINE_EVIDENCE[`${e.mission}|${e.feature}`] || ENGINE_EVIDENCE[`${body}|${e.feature}|${e.v}`] || 'none';
     L.push(`| ${e.mission} | ${e.feature} | ${lim} | ${cellEsc(ref)} | ${ev} |`);
   }
 

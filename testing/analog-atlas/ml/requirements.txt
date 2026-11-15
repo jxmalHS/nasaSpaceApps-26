@@ -1,8 +1,0 @@
-numpy>=1.24
-pandas>=2.0
-fastapi>=0.110
-uvicorn>=0.29
-joblib>=1.3
-pillow>=10        # ml/validate_limits.py (reads NASA GIBS images)
-# plus whatever your model needs, e.g. scikit-learn==<the version you trained with>
-rasterio==1.5.2   # pipeline/measure_targets.py (LOLA, MOLA, Diviner, Copernicus)

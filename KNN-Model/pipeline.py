@@ -26,8 +26,10 @@ import pandas as pd
 import yaml
 from affine import Affine
 from rasterio.crs import CRS
+from rasterio.warp import transform_bounds
 
 import charts
+import coverage
 import landcover
 import report
 import sources
@@ -40,7 +42,9 @@ from preprocess import earth_box, remove_spikes, snapped_box, to_metric_grid
 from tiles import cut_tiles, tile_blocks
 
 log = logging.getLogger("pipeline")
-GEO_CRS = {"earth": CRS.from_epsg(4326), "moon": CRS.from_proj4("+proj=longlat +R=1737400 +no_defs")}
+GEO_CRS = {"earth": CRS.from_epsg(4326), "moon": CRS.from_proj4("+proj=longlat +R=1737400 +no_defs"),
+           "mars": CRS.from_proj4(sources.MARS_GEO)}
+BODY_NAME = {"moon": "Moon", "mars": "Mars"}
 
 
 # ------------------------------------------------------------------ config
@@ -132,7 +136,9 @@ def earth_grid(site: dict, body_cfg: dict, root: Path, offline: bool = False):
     if offline:
         raise FileNotFoundError("not downloaded yet (offline mode)")
     crs, box, lonlat = earth_box(site["lon"], site["lat"], box_km, res)
-    got = sources.read_copernicus(*lonlat)
+    # Read the file's built-in lower-resolution copy when our pixels are big (Mars: 500 m):
+    # still at least 2x sharper than the grid we average down to, so nothing is sharpened.
+    got = sources.read_copernicus(*lonlat, coarsen=body_cfg.get("earth_read_coarsen", 2))
     if got is None:                                            # all ocean: keep an all-NaN grid
         n = round(box_km * 1000 / res)
         z, transform = np.full((n, n), np.nan, "float32"), Affine(res, 0, box[0], 0, -res, box[3])
@@ -167,11 +173,20 @@ def target_grid(name: str, target: dict, body_cfg: dict, root: Path):
     path = _cache_path(root, target["body"], name, res, target["box_km"])
     if path.exists():
         return _load(path)
-    if target["dataset"] != "lola_south_pole_20m":
+    if target["dataset"] == "lola_south_pole_20m":
+        box = snapped_box(*target["center_xy_m"], target["box_km"] * 1000, res)
+        heights, transform, crs = sources.read_lola(*box)
+        z, transform = to_metric_grid(heights, transform, crs, crs, box, res)
+    elif target["dataset"] == "mola_463m":
+        # A metric grid centred on the target point; read the lon/lat box that covers it (+1 pixel).
+        crs = CRS.from_proj4(sources.mars_local_crs(target["lat"], target["lon"]))
+        box = snapped_box(0.0, 0.0, target["box_km"] * 1000, res)
+        lon_min, lat_min, lon_max, lat_max = transform_bounds(crs, GEO_CRS["mars"], *box, densify_pts=21)
+        pad = 0.02                                       # ~1.2 km on Mars
+        heights, src_tf, src_crs = sources.read_mola(lon_min - pad, lat_min - pad, lon_max + pad, lat_max + pad)
+        z, transform = to_metric_grid(heights, src_tf, src_crs, crs, box, res)
+    else:
         raise NotImplementedError(f"No reader for dataset '{target['dataset']}' yet")
-    box = snapped_box(*target["center_xy_m"], target["box_km"] * 1000, res)
-    heights, transform, crs = sources.read_lola(*box)
-    z, transform = to_metric_grid(heights, transform, crs, crs, box, res)
     _save(path, z, transform, crs)
     return z, transform, crs
 
@@ -212,6 +227,8 @@ def landcover_by_tile(classes, body_cfg: dict, settings: dict) -> dict[str, dict
 # -------------------------------------------------------------- temperature
 def target_temperature(name: str, target: dict, body_cfg: dict, settings: dict, root: Path, offline: bool):
     """Moon annual temperature range on a 1 km grid over the target box (cached). None if unavailable."""
+    if target["body"] != "moon":                   # Diviner is lunar; no Mars temperature module yet
+        return None
     res = settings["temperature"]["resolution_m"]
     path = _cache_path(root, target["body"], name + "_temprange", res, target["box_km"])
     if path.exists():
@@ -294,7 +311,7 @@ def load_grids(mission: Mission, settings: dict, sites_cfg: dict, root: Path, of
     try:
         target_t = target_temperature(mission.target, target, body_cfg, settings, root, offline)
     except Exception as exc:
-        log.warning("Moon temperature unavailable (%s) -> unknown", exc)
+        log.warning("Target temperature unavailable (%s) -> unknown", exc)
         target_t = None
 
     earth = earth_sites_for(mission.body, sites_cfg, root)
@@ -545,6 +562,7 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
     ranking = ranking.sort_values(["interference_level", "score", "site"],
                                   ascending=[True, False, True]).reset_index(drop=True)
     ranking["rank"] = np.arange(1, len(ranking) + 1)
+    cover = coverage.greedy_cover(result.tiles, ranking, mission, table[table.role == "target"])
 
     out = root / "results" / mission_name
     out.mkdir(parents=True, exist_ok=True)
@@ -586,14 +604,19 @@ def run_mission(mission_name: str, root: Path, offline: bool = False, run_stabil
                           "held_out_nasa_sites": held_out,
                           "simple_method_agreement": agreement,
                           "mission_sensitivity": sensitivity},
-               "attribution": [sources.COPERNICUS_NOTICE, landcover.WORLDCOVER_NOTICE,
-                               temperature.DIVINER_NOTICE, temperature.MODIS_NOTICE]}
+               "multi_site_coverage": cover,
+               "attribution": [sources.COPERNICUS_NOTICE, landcover.WORLDCOVER_NOTICE]
+               + ([temperature.DIVINER_NOTICE, temperature.MODIS_NOTICE] if mission.body == "moon"
+                  else [sources.MOLA_NOTICE])}
     report.write_json(out / "summary.json", summary)
-    (out / "report.md").write_text(report.markdown_report(ranking, summary, cannot, settings["disclaimer"]),
-                                   encoding="utf-8")
-    charts.ranking_chart(ranking, mission.name, out)
-    for s in ranking.head(3)["site"]:                       # "how close to the Moon" for the top 3
-        charts.closeness_chart(s, details[s], mission.weights, out)
+    (out / "report.md").write_text(report.markdown_report(ranking, summary, cannot, settings["disclaimer"],
+                                                          extra=coverage.markdown(cover)), encoding="utf-8")
+    world = BODY_NAME[mission.body]
+    target_label = sites_cfg["targets"][mission.target].get("label", mission.target.replace("_", " "))
+    tile_km = settings["bodies"][mission.body]["tile_km"]
+    charts.ranking_chart(ranking, mission.name, out, target_label=target_label, world=world)
+    for s in ranking.head(3)["site"]:                       # "how close to the target" for the top 3
+        charts.closeness_chart(s, details[s], mission.weights, out, world=world, tile_km=tile_km)
     if summary["checks"]["negative_controls"]["status"] == "FAIL":
         log.error("NEGATIVE CONTROL CHECK FAILED: farmland ranked in the top half - see report.md")
     return out

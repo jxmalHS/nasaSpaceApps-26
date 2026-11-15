@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "_comment": "Target profiles. Each value: v (number or null), s = status. 'verify' = published or mission-measured value, still to be re-extracted at matched scale; 'estimate' = order-of-magnitude placeholder pending pipeline extraction (LOLA, Diviner, MOLA, THEMIS, MEDA/REMS); null = not known, which scores as Unknown. Regional terrain values are at ~15-55 km scale to match the Earth 0.5° index.",
+ "_comment": "Target profiles. Each value: v (number or null), s = status. 'measured' = computed by our pipeline from NASA data at the Earth index's scale (pipeline/measure_targets.py; 'was' keeps the old placeholder); 'verify' = published or mission-measured value, still to be re-extracted at matched scale; 'estimate' = order-of-magnitude placeholder pending pipeline extraction (LOLA, Diviner, MOLA, THEMIS, MEDA/REMS); null = not known, which scores as Unknown. Regional terrain values are at ~15-55 km scale to match the Earth 0.5° index.",
  "targets": [
   {
    "id": "connecting-ridge",
@@ -12,24 +12,34 @@
    "why": "Among the best-lit terrain on the Moon and a long-studied base-camp location next to Shackleton's permanently shadowed floor.",
    "f": {
     "slope_deg": {
-     "v": 6,
-     "s": "estimate"
+     "v": 0.96,
+     "s": "measured",
+     "was": 6,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 80,
-     "s": "estimate"
+     "v": 334.2,
+     "s": "measured",
+     "was": 80,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 90,
-     "s": "estimate"
+     "v": 139.1,
+     "s": "measured",
+     "was": 90,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -170,
-     "s": "estimate"
+     "v": -180.8,
+     "s": "measured",
+     "was": -170,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 120,
-     "s": "estimate"
+     "v": 33.0,
+     "s": "measured",
+     "was": 120,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -81,6 +91,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "LOLA polar DEM and illumination (Mazarico et al. 2011)",
     "Diviner polar temperatures (Williams et al. 2019)"
    ]
@@ -95,24 +107,34 @@
    "why": "NASA Artemis candidate landing region on the rim of de Gerlache crater.",
    "f": {
     "slope_deg": {
-     "v": 8,
-     "s": "estimate"
+     "v": 2.0,
+     "s": "measured",
+     "was": 8,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 100,
-     "s": "estimate"
+     "v": 306.6,
+     "s": "measured",
+     "was": 100,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 95,
-     "s": "estimate"
+     "v": 147.3,
+     "s": "measured",
+     "was": 95,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -175,
-     "s": "estimate"
+     "v": -174.9,
+     "s": "measured",
+     "was": -175,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 120,
-     "s": "estimate"
+     "v": 26.1,
+     "s": "measured",
+     "was": 120,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -164,6 +186,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "NASA Artemis III candidate regions (Oct 2024)",
     "LOLA GDR slope"
    ]
@@ -178,24 +202,34 @@
    "why": "A 5 km-high massif with good Earth visibility for direct communication, and steep flanks.",
    "f": {
     "slope_deg": {
-     "v": 15,
-     "s": "estimate"
+     "v": 2.65,
+     "s": "measured",
+     "was": 15,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 220,
-     "s": "estimate"
+     "v": 359.4,
+     "s": "measured",
+     "was": 220,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 110,
-     "s": "estimate"
+     "v": 167.9,
+     "s": "measured",
+     "was": 110,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -160,
-     "s": "estimate"
+     "v": -165.4,
+     "s": "measured",
+     "was": -160,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 130,
-     "s": "estimate"
+     "v": 20.7,
+     "s": "measured",
+     "was": 130,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -247,6 +281,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "NASA Artemis III candidate regions (Oct 2024)",
     "LOLA topography"
    ]
@@ -261,24 +297,34 @@
    "why": "Broad summit plateau of Mons Mouton (VIPER / IM-2 landing area, 84.79°S 29.20°E): gentle terrain for landing and driving.",
    "f": {
     "slope_deg": {
-     "v": 3,
-     "s": "estimate"
+     "v": 2.87,
+     "s": "measured",
+     "was": 3,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 40,
-     "s": "estimate"
+     "v": 279.2,
+     "s": "measured",
+     "was": 40,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 105,
-     "s": "estimate"
+     "v": 177.7,
+     "s": "measured",
+     "was": 105,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -165,
-     "s": "estimate"
+     "v": -148.8,
+     "s": "measured",
+     "was": -165,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 125,
-     "s": "estimate"
+     "v": 8.9,
+     "s": "measured",
+     "was": 125,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -330,6 +376,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "NASA Artemis III candidate regions (Oct 2024)"
    ]
   },
@@ -343,24 +391,34 @@
    "why": "Next to a large permanently shadowed crater: access to the coldest ground and possible ice.",
    "f": {
     "slope_deg": {
-     "v": 10,
-     "s": "estimate"
+     "v": 2.38,
+     "s": "measured",
+     "was": 10,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 120,
-     "s": "estimate"
+     "v": 309.2,
+     "s": "measured",
+     "was": 120,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 70,
-     "s": "estimate"
+     "v": 101.1,
+     "s": "measured",
+     "was": 70,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -190,
-     "s": "estimate"
+     "v": -205.6,
+     "s": "measured",
+     "was": -190,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 100,
-     "s": "estimate"
+     "v": 32.0,
+     "s": "measured",
+     "was": 100,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -412,6 +470,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "NASA Artemis III candidate regions (Oct 2024)",
     "Diviner PSR maximum temperature ~75 K"
    ]
@@ -426,24 +486,34 @@
    "why": "Rim of Nobile crater, the VIPER rover's planned exploration area.",
    "f": {
     "slope_deg": {
-     "v": 10,
-     "s": "estimate"
+     "v": 2.97,
+     "s": "measured",
+     "was": 10,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 110,
-     "s": "estimate"
+     "v": 301.5,
+     "s": "measured",
+     "was": 110,
+     "src": "LOLA LDEM_80S_80M, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
-     "v": 115,
-     "s": "estimate"
+     "v": 159.4,
+     "s": "measured",
+     "was": 115,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_mean_C": {
-     "v": -160,
-     "s": "estimate"
+     "v": -164.5,
+     "s": "measured",
+     "was": -160,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "t_range_K": {
-     "v": 130,
-     "s": "estimate"
+     "v": 1.6,
+     "s": "measured",
+     "was": 130,
+     "src": "Diviner polar seasonal temperatures (Williams et al. 2019, JGR Planets 124, 2505-2521, doi:10.1029/2019JE006028), 240 m, mean over the 55.6 km cell"
     },
     "low_sun_pct": {
      "v": 100,
@@ -495,6 +565,8 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_80S_80M, measured at Earth-index scale",
+    "Temperatures: Diviner polar seasonal maps (Williams et al. 2019), cell mean",
     "NASA Artemis III candidate regions (Oct 2024)"
    ]
   },
@@ -508,12 +580,16 @@
    "why": "A collapse pit into a probable lava tube in mare basalt: a natural radiation shelter for a permanent base.",
    "f": {
     "slope_deg": {
-     "v": 3,
-     "s": "estimate"
+     "v": 0.94,
+     "s": "measured",
+     "was": 3,
+     "src": "LOLA LDEM_16, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 50,
-     "s": "estimate"
+     "v": 23.9,
+     "s": "measured",
+     "was": 50,
+     "src": "LOLA LDEM_16, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 280,
@@ -577,6 +653,7 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): LOLA LDEM_16, measured at Earth-index scale",
     "Haruyama et al. 2009 (SELENE skylight)",
     "Diviner equatorial day/night ~390 K / ~100 K"
    ]
@@ -591,12 +668,16 @@
    "why": "Ancient delta and lake bed explored by Perseverance; olivine-rich basaltic floor.",
    "f": {
     "slope_deg": {
-     "v": 2,
-     "s": "estimate"
+     "v": 1.46,
+     "s": "measured",
+     "was": 2,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 30,
-     "s": "estimate"
+     "v": 75.3,
+     "s": "measured",
+     "was": 30,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 85,
@@ -660,6 +741,7 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): MGS MOLA 463 m, measured at Earth-index scale",
     "Perseverance MEDA ground temperature",
     "CRISM olivine detections (Jezero floor)"
    ]
@@ -674,12 +756,16 @@
    "why": "Layered sediments of Mount Sharp; the longest in-situ weather and terrain record on Mars.",
    "f": {
     "slope_deg": {
-     "v": 6,
-     "s": "estimate"
+     "v": 2.05,
+     "s": "measured",
+     "was": 6,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 120,
-     "s": "estimate"
+     "v": 195.5,
+     "s": "measured",
+     "was": 120,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 90,
@@ -743,6 +829,7 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): MGS MOLA 463 m, measured at Earth-index scale",
     "Curiosity REMS ground temperature and pressure"
    ]
   },
@@ -756,12 +843,16 @@
    "why": "Flat northern plains with shallow ground ice: a leading candidate for a crewed Mars base.",
    "f": {
     "slope_deg": {
-     "v": 0.5,
-     "s": "estimate"
+     "v": 0.04,
+     "s": "measured",
+     "was": 0.5,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 15,
-     "s": "estimate"
+     "v": 3.3,
+     "s": "measured",
+     "was": 15,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 70,
@@ -825,6 +916,7 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): MGS MOLA 463 m, measured at Earth-index scale",
     "SWIM ice consistency maps (Morgan et al. 2021)",
     "Bramson et al. 2015 excess ice"
    ]
@@ -839,12 +931,16 @@
    "why": "Scalloped terrain with thick buried ice; Viking 2 and Zhurong landed in this basin.",
    "f": {
     "slope_deg": {
-     "v": 0.5,
-     "s": "estimate"
+     "v": 0.09,
+     "s": "measured",
+     "was": 0.5,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 20,
-     "s": "estimate"
+     "v": 6.6,
+     "s": "measured",
+     "was": 20,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 70,
@@ -908,6 +1004,7 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): MGS MOLA 463 m, measured at Earth-index scale",
     "SHARAD buried ice (Stuurman et al. 2016)",
     "Viking 2 lander meteorology"
    ]
@@ -922,12 +1019,16 @@
    "why": "Debris-covered glaciers wrap rugged mesas: ice under a thin rocky lag.",
    "f": {
     "slope_deg": {
-     "v": 4,
-     "s": "estimate"
+     "v": 1.17,
+     "s": "measured",
+     "was": 4,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.995 Earth calibration"
     },
     "rough_m": {
-     "v": 150,
-     "s": "estimate"
+     "v": 117.9,
+     "s": "measured",
+     "was": 150,
+     "src": "MGS MOLA 463 m, measured at the Earth index's scale (55.6 km cell; 9.266 km roughness pixels), x0.763 Earth calibration"
     },
     "lst_dtr_K": {
      "v": 65,
@@ -991,8 +1092,35 @@
     }
    },
    "sources": [
+    "Terrain (slope, roughness): MGS MOLA 463 m, measured at Earth-index scale",
     "SHARAD lobate debris aprons (Plaut et al. 2009)"
    ]
   }
- ]
+ ],
+ "measurement": {
+  "method": "python pipeline/measure_targets.py # measure every target, write target_terrain.json python pipeline/measure_targets.py --check # FIRST: re-measure 12 Earth cells, compare with the # Earth index, save the calibration factors",
+  "cell_km": 55.6,
+  "rough_px_km": 9.266,
+  "calibration": {
+   "slope_deg": {
+    "factor": 0.995,
+    "spread_p10_p90": [
+     0.73,
+     1.73
+    ],
+    "r": 0.763,
+    "n_cells": 12
+   },
+   "rough_m": {
+    "factor": 0.763,
+    "spread_p10_p90": [
+     0.65,
+     0.88
+    ],
+    "r": 0.972,
+    "n_cells": 12
+   }
+  },
+  "script": "pipeline/measure_targets.py"
+ }
 }

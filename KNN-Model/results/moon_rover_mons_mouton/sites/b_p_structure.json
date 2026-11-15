@@ -1,8 +1,8 @@
 {
   "site": "b_p_structure",
   "role": "candidate",
-  "rank": 22,
-  "score": 0.36922724345963476,
+  "rank": 69,
+  "score": 0.339134879329261,
   "location": {
     "lat": 25.3167,
     "lon": 24.3333,
@@ -15,7 +15,7 @@
     "tile_id": "r03c05",
     "lat": 25.295529330407064,
     "lon": 24.457495616360955,
-    "similarity": 0.5702745272013493
+    "similarity": 0.5512231851130824
   },
   "requirements": [
     {

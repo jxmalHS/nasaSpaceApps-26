@@ -1,21 +1,21 @@
 {
   "site": "ouarkziz",
   "role": "candidate",
-  "rank": 11,
-  "score": 0.5663536175903687,
+  "rank": 28,
+  "score": 0.5229638911548676,
   "location": {
     "lat": 29.0,
     "lon": -7.55,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Ouarkziz'"
   },
   "covers": {
-    "target_coverage": 0.2777777777777778
+    "target_coverage": 0.25
   },
   "test_tile": {
     "tile_id": "r03c04",
     "lat": 28.976124249273578,
     "lon": -7.473752012354503,
-    "similarity": 0.7368425690133296
+    "similarity": 0.669028645822188
   },
   "requirements": [
     {

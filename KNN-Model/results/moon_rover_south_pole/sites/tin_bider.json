@@ -1,21 +1,21 @@
 {
   "site": "tin_bider",
   "role": "candidate",
-  "rank": 14,
-  "score": 0.3961181240277043,
+  "rank": 37,
+  "score": 0.3779522167224604,
   "location": {
     "lat": 27.6,
     "lon": 5.11667,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Tin Bider'"
   },
   "covers": {
-    "target_coverage": 0.21875
+    "target_coverage": 0.265625
   },
   "test_tile": {
     "tile_id": "r05c05",
     "lat": 27.484511648189336,
     "lon": 5.24086807260687,
-    "similarity": 0.8013137684990456
+    "similarity": 0.7955730792675143
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -179,7 +179,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

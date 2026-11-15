@@ -1,21 +1,21 @@
 {
   "site": "yucca_flat",
   "role": "baseline",
-  "rank": 3,
-  "score": 0.6407399928750421,
+  "rank": 12,
+  "score": 0.5894101432116154,
   "location": {
     "lat": 36.9476,
     "lon": -116.0253,
     "source": "OpenStreetMap relation 14656758 'Yucca Dry Lake' (southern Yucca Flat)"
   },
   "covers": {
-    "target_coverage": 0.4166666666666667
+    "target_coverage": 0.4444444444444444
   },
   "test_tile": {
     "tile_id": "r02c00",
     "lat": 36.97118068740702,
     "lon": -116.16639060681271,
-    "similarity": 0.7524961447784078
+    "similarity": 0.678645774957657
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 55.83045959472656,
-      "site_median": 57.02643585205078,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 1.0028860569000244,
-      "site_median": 0.9717053472995758,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }
@@ -176,10 +176,10 @@
   },
   "baselines": {
     "nearest": "sp_crater_jett3",
-    "closer_than": "buffalo_park, cinder_lake_crater_field, meteor_crater, sp_crater_jett3"
+    "closer_than": "cinder_lake_crater_field, meteor_crater, sp_crater_jett3"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

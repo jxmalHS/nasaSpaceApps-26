@@ -19,7 +19,7 @@
   {"id": "rio-tinto", "name": "Río Tinto", "place": "Andalusia, Spain", "lat": 37.72, "lon": -6.55, "pos": "verify", "agency": "NASA / CAB",
    "campaigns": "MARTE drilling experiment 2003–2005 (acidic, iron-rich)", "tests": ["isru.drill", "sci.astrobio"]},
   {"id": "mojave", "name": "Mojave Desert", "place": "California, USA", "lat": 35.00833, "lon": -115.475, "pos": "verified", "agency": "NASA JPL",
-   "campaigns": "Rover mobility and landing-sensor field trials", "tests": ["ltv.wheels", "ltv.nav"]},
+   "campaigns": "Rover mobility and landing-sensor field trials; Mars 2020 Lander Vision System helicopter flights over Kelso Dunes and Hole-in-the-Wall (JPL, Apr-May 2019)", "tests": ["ltv.wheels", "ltv.nav"]},
   {"id": "holuhraun", "name": "Holuhraun lava field", "place": "Iceland", "lat": 64.87439, "lon": -16.74003, "pos": "verified", "agency": "NASA / SAND-E",
    "campaigns": "SAND-E basaltic sediment and rover studies", "tests": ["sci.spectro", "ltv.wheels"]},
   {"id": "svalbard-bockfjorden", "name": "Bockfjorden volcanics, Svalbard", "place": "Norway", "lat": 79.4317, "lon": 13.305, "pos": "verified", "agency": "AMASE (NASA/ESA)",
@@ -29,6 +29,6 @@
   {"id": "lanzarote", "name": "Lanzarote", "place": "Canary Islands, Spain", "lat": 29.03, "lon": -13.73, "pos": "verify", "agency": "ESA",
    "campaigns": "PANGAEA geology training for astronauts", "tests": ["sci.spectro", "eva.boots"]},
   {"id": "death-valley", "name": "Death Valley", "place": "California, USA", "lat": 36.45694, "lon": -116.86528, "pos": "verified", "agency": "NASA",
-   "campaigns": "Mars rover and instrument tests in hot desert", "tests": ["ltv.dust"]}
+   "campaigns": "Mars rover and instrument tests in hot desert; Mars 2020 Lander Vision System helicopter flights over Badwater, Panamint Valley and Mesquite Flat Dunes (JPL, Apr-May 2019)", "tests": ["ltv.dust", "land.hazards"]}
  ]
 }

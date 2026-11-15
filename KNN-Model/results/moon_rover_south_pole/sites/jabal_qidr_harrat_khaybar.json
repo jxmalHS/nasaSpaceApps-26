@@ -1,21 +1,21 @@
 {
   "site": "jabal_qidr_harrat_khaybar",
   "role": "candidate",
-  "rank": 2,
-  "score": 0.4857872769067507,
+  "rank": 6,
+  "score": 0.4706451850242382,
   "location": {
     "lat": 25.72,
     "lon": 39.9433,
     "source": "OpenStreetMap node 1111949118 'Jabal Qidr' (volcano in Harrat Khaybar lava field, Saudi Arabia)"
   },
   "covers": {
-    "target_coverage": 0.390625
+    "target_coverage": 0.46875
   },
   "test_tile": {
     "tile_id": "r04c02",
     "lat": 25.652313870806395,
     "lon": 39.91757631428771,
-    "similarity": 0.5627317764863431
+    "similarity": 0.529939901900394
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

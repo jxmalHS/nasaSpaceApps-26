@@ -1,4 +1,0 @@
-cell_id,test_id,target_id,score,uncertainty,lat,lon,confidence,low_evidence,req_met,req_not_met,req_unknown,flags,spot_lat,spot_lon,note,site_name
-77897,ltv.wheels,connecting-ridge,0.455,0.24,,,0.73,false,slope;roughness,,rock abundance,,,,,black-point
-77897,ltv.wheels,mons-mouton-plateau,0.693,0.27,,,0.62,false,slope;roughness,,rock abundance,,,,,black-point
-77897,ltv.thermal,connecting-ridge,0.309,0.34,,,0.69,false,slope;roughness,,rock abundance,,,,,black-point

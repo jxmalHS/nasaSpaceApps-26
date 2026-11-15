@@ -1,21 +1,21 @@
 {
   "site": "chiyli",
   "role": "candidate",
-  "rank": 23,
-  "score": 0.2944462862851435,
+  "rank": 72,
+  "score": 0.2847121151264475,
   "location": {
     "lat": 49.1667,
     "lon": 57.85,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Chiyli'"
   },
   "covers": {
-    "target_coverage": 0.09375
+    "target_coverage": 0.15625
   },
   "test_tile": {
     "tile_id": "r00c00",
     "lat": 49.2799574077875,
     "lon": 57.679210931270944,
-    "similarity": 0.5294245320567548
+    "similarity": 0.5204199612053249
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

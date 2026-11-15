@@ -1,21 +1,21 @@
 {
   "site": "meteor_crater",
   "role": "baseline",
-  "rank": 18,
-  "score": 0.2584383806542576,
+  "rank": 43,
+  "score": 0.20874708280967452,
   "location": {
     "lat": 35.0333,
     "lon": -111.017,
     "source": "USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921), entry 'Barringer (= Meteor)'"
   },
   "covers": {
-    "target_coverage": 0.046875
+    "target_coverage": 0.03125
   },
   "test_tile": {
     "tile_id": "r03c00",
     "lat": 35.01033421389729,
     "lon": -111.1545371136451,
-    "similarity": 0.4896304873734301
+    "similarity": 0.4214515692041394
   },
   "requirements": [
     {
@@ -138,21 +138,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 57.38527297973633,
-      "site_median": 61.41387939453125,
-      "difference": -119.53163528442383,
-      "statement": "Annual temperature range is 120 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.8986916542053223,
-      "site_median": 0.8953279852867126,
-      "difference": -15.626221179962158,
-      "statement": "Variation of temperature range is 15.6 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {
@@ -171,7 +171,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 0.9166666666666666,
+    "value": 0.8333333333333334,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

@@ -1,8 +1,8 @@
 {
   "site": "odessa",
   "role": "candidate",
-  "rank": 28,
-  "score": 0.31400949766821984,
+  "rank": 86,
+  "score": 0.287981767339214,
   "location": {
     "lat": 31.75,
     "lon": -102.483,
@@ -15,7 +15,7 @@
     "tile_id": "r03c01",
     "lat": 31.728265227403345,
     "lon": -102.5629505079169,
-    "similarity": 0.42761907953454903
+    "similarity": 0.4113874360148324
   },
   "requirements": [
     {
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

@@ -1,21 +1,21 @@
 {
   "site": "meteor_crater",
   "role": "baseline",
-  "rank": 19,
-  "score": 0.4216153867263532,
+  "rank": 56,
+  "score": 0.38895350463253997,
   "location": {
     "lat": 35.0333,
     "lon": -111.017,
     "source": "USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921), entry 'Barringer (= Meteor)'"
   },
   "covers": {
-    "target_coverage": 0.027777777777777776
+    "target_coverage": 0.05555555555555555
   },
   "test_tile": {
     "tile_id": "r05c01",
     "lat": 34.92021681689306,
     "lon": -111.09962759669816,
-    "similarity": 0.6395747826305023
+    "similarity": 0.6208386546790133
   },
   "requirements": [
     {
@@ -146,8 +146,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 57.111175537109375,
-      "site_median": 61.41387939453125,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Annual temperature range: unknown (no data)"
     },
@@ -156,8 +156,8 @@
       "unit": "K",
       "mission_role": "ignored",
       "target": null,
-      "test_tile": 1.0494649410247803,
-      "site_median": 0.8953279852867126,
+      "test_tile": null,
+      "site_median": null,
       "difference": null,
       "statement": "Variation of temperature range: unknown (no data)"
     }

@@ -1,21 +1,21 @@
 {
   "site": "sp_crater_jett3",
   "role": "baseline",
-  "rank": 5,
-  "score": 0.4518868617690349,
+  "rank": 14,
+  "score": 0.42679493955166076,
   "location": {
     "lat": 35.5824,
     "lon": -111.6319,
     "source": "OpenStreetMap node 359272327 'S P Crater' (JETT3 base, NASA NTRS 20230000146)"
   },
   "covers": {
-    "target_coverage": 0.328125
+    "target_coverage": 0.375
   },
   "test_tile": {
     "tile_id": "r04c04",
     "lat": 35.51503883276221,
     "lon": -111.5492042469783,
-    "similarity": 0.7415935799944784
+    "similarity": 0.7358785539676799
   },
   "requirements": [
     {
@@ -145,21 +145,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 62.695716857910156,
-      "site_median": 61.978532791137695,
-      "difference": -114.22119140625,
-      "statement": "Annual temperature range is 114 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.5992283821105957,
-      "site_median": 1.1429837942123413,
-      "difference": -15.925684452056885,
-      "statement": "Variation of temperature range is 15.9 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {
@@ -176,10 +176,10 @@
   },
   "baselines": {
     "nearest": "cinder_lake_crater_field",
-    "closer_than": "meteor_crater, yucca_flat"
+    "closer_than": "cinder_lake_crater_field, meteor_crater, yucca_flat"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

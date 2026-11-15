@@ -1,21 +1,21 @@
 {
   "site": "odessa",
   "role": "candidate",
-  "rank": 28,
-  "score": 0.25390331004511757,
+  "rank": 87,
+  "score": 0.2451650563772017,
   "location": {
     "lat": 31.75,
     "lon": -102.483,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Odessa'"
   },
   "covers": {
-    "target_coverage": 0.015625
+    "target_coverage": 0.109375
   },
   "test_tile": {
     "tile_id": "r03c01",
     "lat": 31.728265227403345,
     "lon": -102.5629505079169,
-    "similarity": 0.4548548560131937
+    "similarity": 0.44671805473088766
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

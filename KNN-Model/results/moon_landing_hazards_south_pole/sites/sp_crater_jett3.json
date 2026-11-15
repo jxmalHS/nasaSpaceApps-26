@@ -1,8 +1,8 @@
 {
   "site": "sp_crater_jett3",
   "role": "baseline",
-  "rank": 3,
-  "score": 0.38294361183909287,
+  "rank": 4,
+  "score": 0.3282442237833029,
   "location": {
     "lat": 35.5824,
     "lon": -111.6319,
@@ -15,7 +15,7 @@
     "tile_id": "r05c03",
     "lat": 35.46969417697663,
     "lon": -111.60400513280159,
-    "similarity": 0.655677591750012
+    "similarity": 0.6203481091246502
   },
   "requirements": [
     {
@@ -138,21 +138,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 61.6591911315918,
-      "site_median": 61.978532791137695,
-      "difference": -115.25771713256836,
-      "statement": "Annual temperature range is 115 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.5218323469161987,
-      "site_median": 1.1429837942123413,
-      "difference": -16.00308048725128,
-      "statement": "Variation of temperature range is 16 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {

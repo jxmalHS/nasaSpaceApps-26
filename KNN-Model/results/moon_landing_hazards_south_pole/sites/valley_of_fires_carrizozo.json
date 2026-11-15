@@ -1,21 +1,21 @@
 {
   "site": "valley_of_fires_carrizozo",
   "role": "candidate",
-  "rank": 12,
-  "score": 0.30817992409791384,
+  "rank": 17,
+  "score": 0.2539039109559156,
   "location": {
     "lat": 33.6832,
     "lon": -105.9275,
     "source": "OpenStreetMap way 660866320 'Valley of Fires Recreation Area' (Carrizozo lava flow, New Mexico)"
   },
   "covers": {
-    "target_coverage": 0.09375
+    "target_coverage": 0.109375
   },
   "test_tile": {
     "tile_id": "r05c04",
     "lat": 33.57089738470868,
     "lon": -105.84580578668603,
-    "similarity": 0.5836480317649138
+    "similarity": 0.5471774514979191
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,7 +171,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 0.9166666666666666,
+    "value": 1.0,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

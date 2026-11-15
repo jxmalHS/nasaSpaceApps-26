@@ -1,8 +1,8 @@
 {
   "site": "zeleny_gai",
   "role": "candidate",
-  "rank": 23,
-  "score": 0.2315891624260988,
+  "rank": 70,
+  "score": 0.17587974109641313,
   "location": {
     "lat": 48.0667,
     "lon": 32.75,
@@ -15,7 +15,7 @@
     "tile_id": "r03c05",
     "lat": 48.04405391462491,
     "lon": 32.91681422128518,
-    "similarity": 0.3929450693808301
+    "similarity": 0.31907377966519074
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -171,7 +171,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 0.9166666666666666,
+    "value": 1.0,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

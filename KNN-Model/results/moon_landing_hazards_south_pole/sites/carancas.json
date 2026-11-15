@@ -1,8 +1,8 @@
 {
   "site": "carancas",
   "role": "candidate",
-  "rank": 30,
-  "score": 0.18123539594790172,
+  "rank": 100,
+  "score": 0.13271331013391208,
   "location": {
     "lat": -16.6667,
     "lon": -69.05,
@@ -15,7 +15,7 @@
     "tile_id": "r01c02",
     "lat": -16.599029472683938,
     "lon": -69.07406225912693,
-    "similarity": 0.291863707945589
+    "similarity": 0.23824337649754926
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -167,11 +167,11 @@
     }
   },
   "baselines": {
-    "nearest": "yucca_flat",
+    "nearest": "meteor_crater",
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.8333333333333334,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

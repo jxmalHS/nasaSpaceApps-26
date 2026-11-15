@@ -1,21 +1,21 @@
 {
   "site": "serra_da_cangalha",
   "role": "candidate",
-  "rank": 10,
-  "score": 0.4362463646452892,
+  "rank": 21,
+  "score": 0.4136082344738638,
   "location": {
     "lat": -8.08333,
     "lon": -46.8667,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Serra da Cangalha'"
   },
   "covers": {
-    "target_coverage": 0.234375
+    "target_coverage": 0.265625
   },
   "test_tile": {
     "tile_id": "r00c03",
     "lat": -7.970586478897427,
     "lon": -46.84440077807639,
-    "similarity": 0.730858927672282
+    "similarity": 0.7239347749740904
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -176,7 +176,7 @@
   },
   "baselines": {
     "nearest": "sp_crater_jett3",
-    "closer_than": "meteor_crater"
+    "closer_than": "cinder_lake_crater_field, meteor_crater, yucca_flat"
   },
   "confidence": {
     "value": 0.8571428571428571,

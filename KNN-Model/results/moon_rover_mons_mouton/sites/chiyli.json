@@ -1,8 +1,8 @@
 {
   "site": "chiyli",
   "role": "candidate",
-  "rank": 24,
-  "score": 0.35311019137372,
+  "rank": 75,
+  "score": 0.32508404850890216,
   "location": {
     "lat": 49.1667,
     "lon": 57.85,
@@ -15,7 +15,7 @@
     "tile_id": "r02c03",
     "lat": 49.1886193953655,
     "lon": 57.8838200091232,
-    "similarity": 0.48275178261820156
+    "similarity": 0.46676806871072
   },
   "requirements": [
     {
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

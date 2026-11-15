@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "data": "python3 pipeline/build_index.py && python3 ml/train_demo.py",
-    "test": "node --test tests/scoring.test.mjs tests/limits.test.mjs",
+    "test": "node --test tests/scoring.test.mjs tests/limits.test.mjs tests/coverage.test.mjs",
     "thresholds": "node scripts/threshold-table.mjs"
   },
   "dependencies": {

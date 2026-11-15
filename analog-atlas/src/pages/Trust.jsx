@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { tests, A, T, features, F, systems } from '../lib/catalog.js';
 import missionsJson from '../config/missions.json';
+import targetsJson from '../config/targets.json';
 import { limitChecks as checks, exceptionsFor, ExceptionTag, exceptionText } from '../lib/limitChecks.jsx';
 
 /** Precedent-site checks from ml/validate_limits.py, keyed "testId|featureId". */
@@ -75,6 +76,42 @@ function LimitSources() {
 }
 
 /** Validation shown plainly: what holds, what does not, and why. */
+const STATUS_TEXT = { measured: 'Measured', verify: 'Published', estimate: 'Estimate', TODO: 'Unknown', 'n/a': 'n/a' };
+const STATUS_KIND = { measured: 'met', verify: 'met', estimate: 'unknown', TODO: 'unknown', 'n/a': 'unknown' };
+
+/** Where each Moon/Mars target value comes from: measured by our pipeline, published, or still an estimate. */
+function TargetSources() {
+  const meas = targetsJson.measurement;
+  const fids = ['slope_deg', 'rough_m', 'lst_dtr_K', 't_mean_C', 't_range_K'];
+  const all = Object.values(T);
+  const count = (s) => all.reduce((a, t) => a + Object.values(t.f).filter((v) => v.s === s).length, 0);
+  return (
+    <section aria-labelledby="t-tg">
+      <h2 id="t-tg">Where the Moon and Mars values come from</h2>
+      <p>
+        Each target value is <b>measured</b> by our pipeline from NASA data, <b>published</b> (a mission or paper value), or still an <b>estimate</b>.
+        Across all {all.length} targets: {count('measured')} measured, {count('verify')} published, {count('estimate')} estimates, {count('TODO')} unknown (scored as Unknown, never a pass).
+      </p>
+      {meas && (
+        <p className="small">
+          Slope and roughness are measured at the <b>same physical scale as the Earth cells</b> ({meas.cell_km} km cell; {meas.rough_px_km} km roughness pixels) from LOLA (Moon) and MOLA (Mars).
+          The method was first checked on {meas.calibration.rough_m.n_cells} Earth cells against the Earth index: roughness tracks it closely (r = {meas.calibration.rough_m.r}) and is scaled by {meas.calibration.rough_m.factor}; slope is looser (r = {meas.calibration.slope_deg.r}, ratio spread {meas.calibration.slope_deg.spread_p10_p90.join('–')}), so treat target slopes as ±40%.
+          Moon temperatures are Diviner seasonal maps averaged over the same cell (surface temperature: the Moon has no air, while Earth’s mean temperature is 2 m air temperature).
+        </p>
+      )}
+      <div className="table-scroll"><table className="dt">
+        <thead><tr><th>Target</th>{fids.map((f) => <th key={f} className="num">{F[f]?.short || f}</th>)}</tr></thead>
+        <tbody>{all.map((t) => (
+          <tr key={t.id}><td>{t.name} <span className="faint tiny">{t.body}</span></td>
+            {fids.map((f) => { const v = t.f[f]; return (
+              <td key={f} className="num" title={v?.src || ''}>{v?.v == null ? '—' : v.v}{F[f]?.unit ? ` ${F[f].unit}` : ''}
+                <div><Status kind={STATUS_KIND[v?.s] || 'unknown'}>{STATUS_TEXT[v?.s] || v?.s || '—'}</Status></div></td>); })}
+          </tr>))}</tbody>
+      </table></div>
+    </section>
+  );
+}
+
 export default function Trust() {
   useScoring();
   const summary = useResult((r) => r.summary);
@@ -83,6 +120,7 @@ export default function Trust() {
   const ml = summary?.ml;
   // Keyed by test AND target: ltv.wheels is validated against two targets and must not overwrite itself.
   const loo = (ml?.validation || []).filter((v) => v.held_out || v.engine_held_out);
+  const covs = (ml?.validation || []).filter((v) => v.status === 'coverage');
   const mlVal = Object.fromEntries(loo.map((v) => [`${v.test_id}/${v.target_id}`, v]));
 
   const allRules = rules?.flatMap((t) => t.sites.filter((x) => x.representative && x.percentile != null).map((x) => x.percentile)) || [];
@@ -175,6 +213,24 @@ export default function Trust() {
         </section>
       )}
 
+      {covs.length > 0 && (
+        <section aria-labelledby="t-cov">
+          <h2 id="t-cov">Engine multi-site coverage</h2>
+          <p>One Earth site rarely reproduces everything a mission needs. The engine picks sites one at a time: each step adds the site that covers the most requirements still open. A site counts only if a single square free of interference meets them, so conditions needed together are present together. Requirements are the mission’s pass/fail rules plus every weighted measurement inside the target’s own 10–90% range. Whatever no site covers needs a lab, a chamber or an engineered test bed. The same check runs live on the website from <b>Multi-site coverage</b> in <Link to="/explore">Explore</Link>.</p>
+          {covs.map((v) => (
+            <div key={`${v.test_id}/${v.target_id}`} className="stack" style={{ marginTop: 12 }}>
+              <h3 className="small" style={{ margin: 0 }}>{setLabel(v)} <span className="faint">· {v.result}</span></h3>
+              <ol className="small" style={{ margin: 0 }}>
+                {v.steps.map((s) => <li key={s.site}><b>{s.site}</b> <span className="faint">({s.role === 'baseline' ? 'NASA site' : 'candidate'}, rank {s.rank})</span> adds {s.adds.join('; ')} <span className="faint num">→ {s.covered_so_far}/{v.n_requirements}</span></li>)}
+              </ol>
+              {v.not_covered?.length > 0 && <p className="tiny" style={{ margin: 0, color: 'var(--warn)' }}>No site covers: {v.not_covered.join('; ')}.</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      <TargetSources />
+
       <LimitSources />
 
       <section aria-labelledby="t-why">
@@ -183,7 +239,9 @@ export default function Trust() {
           <p><b>Cell scale hides field sites.</b> A 55 km cell around McMurdo’s Dry Valleys is mostly ice sheet (12 snow months), and Mauna Kea’s cell includes the wet windward island (over 1,800 mm of rain). The small, dry field site inside fails a limit its surroundings fail. Measured 2 km patches and site-scale overrides are the fix.</p>
           <p><b>Precedent sites disagree.</b> The Dry Valleys and the Atacama were both chosen for cold-and-dry testing, but they share almost nothing numerically. A model that learns from one cannot find the other: the thermal test’s held-out percentile is low for that reason.</p>
           <p><b>Some targets are beyond Earth.</b> No Earth surface reaches the lunar south pole’s day–night swing or its permanent low sun (Earth tops out near 39% of daylight hours under 10°). The ranking then finds Earth’s extreme and the report says to add a chamber test.</p>
-          <p><b>Four features have no Earth layer yet</b> (rock abundance, soil strength, ice depth, salts). They count against evidence and show as Unknown everywhere until the planned layers are added.</p>
+          <p><b>Four features have no Earth layer yet</b> (rock abundance, soil strength, ice depth, salts). They count against evidence and show as Unknown everywhere until the planned layers are added. No global NASA Earth dataset measures them directly; they need site surveys.</p>
+          <p><b>Target values are only as good as their source.</b> Slope and roughness for all 12 targets, and the Moon south-pole temperatures, are now measured from LOLA, MOLA and Diviner at the Earth cells’ scale. The rest are published mission values or estimates; the table above says which. Target slopes carry about ±40% uncertainty from the cross-check against Earth.</p>
+          <p><b>The website and the engine see different scales.</b> The website compares 55 km cells; the engine compares 5 km squares (Moon) or 20 km squares (Mars). NASA’s own Mars landing and rover limits are set at 2 m to 1 km, finer than either, so no Earth map here can check them: that needs a site survey.</p>
         </div>
       </section>
 
@@ -196,10 +254,10 @@ export default function Trust() {
             {ml.model.metrics && Object.entries(ml.model.metrics).map(([k, v]) => <tr key={k}><th style={{ width: 160 }}>{k.replace(/_/g, ' ')}</th><td>{typeof v === 'object' ? JSON.stringify(v) : String(v)}</td></tr>)}
             <tr><th>Score sets</th><td>{ml.sets.length} sets{ml.created ? ` · built ${ml.created.slice(0, 10)}` : ''}</td></tr>
           </tbody></table>
-          {ml.validation?.some((v) => !v.held_out) && (
+          {ml.validation?.some((v) => !v.held_out && v.status !== 'coverage') && (
             <div className="table-scroll"><table className="dt">
               <thead><tr><th>Validation reported by the model</th><th>Result</th></tr></thead>
-              <tbody>{ml.validation.filter((v) => !v.held_out).map((v, k) => (
+              <tbody>{ml.validation.filter((v) => !v.held_out && v.status !== 'coverage').map((v, k) => (
                 <tr key={k}><td>{v.name || v.test_id || `check ${k + 1}`}</td>
                   <td className="small">{Object.entries(v).filter(([key]) => !['name', 'test_id'].includes(key)).map(([key, val]) => `${key.replace(/_/g, ' ')}: ${typeof val === 'object' ? JSON.stringify(val) : val}`).join(' · ')}</td></tr>
               ))}</tbody>

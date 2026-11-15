@@ -2,8 +2,8 @@
 report.py - step 5 of the pipeline: an honest report for every site.
 
 For each Earth site:
-    what it covers        - target_coverage: share of the Moon area's variety it reproduces
-    test tile             - the 5 km tile we'd recommend testing in: a tile free of interference
+    what it covers        - target_coverage: share of the target area's variety it reproduces
+    test tile             - the tile (5 km Moon, 20 km Mars) we'd recommend testing in: free of interference
                             if there is one, then the most mandatory requirements met, then
                             the most similar
     requirements          - met / not met / unknown at the test tile (unknown is never a pass)
@@ -152,7 +152,7 @@ def _low_evidence_line(summary: dict) -> str:
 
 
 def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], disclaimer: str,
-                    top: int = 15) -> str:
+                    top: int = 15, extra: list[str] | None = None) -> str:
     """A short human-readable report (e.g. for the pitch)."""
     L = [f"# Analog ranking: {summary['mission']}", "", summary.get("description", ""), "",
          f"Target: **{summary['target']}** ({summary['target_tiles']} tiles). "
@@ -202,7 +202,8 @@ def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], dis
             for f, c in summary.get("closest_achievable", {}).items()],
           "- Sites not ranked because a needed measurement is missing (incomplete): "
           + (", ".join(f"{i['site']} ({', '.join(i['missing'])})" for i in summary.get("earth_sites_incomplete", []))
-             or "none"),
-          "", "## What Earth cannot reproduce", ""] + [f"- {c}" for c in cannot]
+             or "none")]
+    L += list(extra or [])
+    L += ["", "## What Earth cannot reproduce", ""] + [f"- {c}" for c in cannot]
     L += ["", "## Disclaimer", "", disclaimer, "", "## Data credits", ""] + [f"- {a}" for a in summary["attribution"]]
     return "\n".join(L) + "\n"

@@ -1,8 +1,8 @@
 {
   "site": "tin_bider",
   "role": "candidate",
-  "rank": 17,
-  "score": 0.5040616902491124,
+  "rank": 43,
+  "score": 0.46799754988651576,
   "location": {
     "lat": 27.6,
     "lon": 5.11667,
@@ -15,7 +15,7 @@
     "tile_id": "r00c01",
     "lat": 27.7131748182301,
     "lon": 5.042729519265253,
-    "similarity": 0.6239176164878646
+    "similarity": 0.6038249020126195
   },
   "requirements": [
     {
@@ -179,7 +179,7 @@
     "closer_than": "meteor_crater"
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.9285714285714286,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

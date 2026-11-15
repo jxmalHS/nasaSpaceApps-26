@@ -1,21 +1,21 @@
 {
   "site": "garden_city_kansas",
   "role": "negative_control",
-  "rank": 26,
-  "score": 0.26770016718420564,
+  "rank": 81,
+  "score": 0.25818510435380443,
   "location": {
     "lat": 37.9717,
     "lon": -100.8727,
     "source": "OpenStreetMap relation 129924 'Garden City, Kansas' (High Plains farmland)"
   },
   "covers": {
-    "target_coverage": 0.078125
+    "target_coverage": 0.140625
   },
   "test_tile": {
     "tile_id": "r03c02",
     "lat": 37.948457021296846,
     "lon": -100.9006925838259,
-    "similarity": 0.4762817216293008
+    "similarity": 0.46680108088594685
   },
   "requirements": [
     {
@@ -145,21 +145,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 47.069297790527344,
-      "site_median": 47.34601020812988,
-      "difference": -129.8476104736328,
-      "statement": "Annual temperature range is 130 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 0.6698252558708191,
-      "site_median": 1.0415666103363037,
-      "difference": -16.85508757829666,
-      "statement": "Variation of temperature range is 16.9 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {
@@ -179,7 +179,7 @@
     "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

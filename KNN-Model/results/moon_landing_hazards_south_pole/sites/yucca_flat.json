@@ -1,21 +1,21 @@
 {
   "site": "yucca_flat",
   "role": "baseline",
-  "rank": 8,
-  "score": 0.34967277387238427,
+  "rank": 6,
+  "score": 0.29848217912175967,
   "location": {
     "lat": 36.9476,
     "lon": -116.0253,
     "source": "OpenStreetMap relation 14656758 'Yucca Dry Lake' (southern Yucca Flat)"
   },
   "covers": {
-    "target_coverage": 0.109375
+    "target_coverage": 0.09375
   },
   "test_tile": {
     "tile_id": "r03c00",
     "lat": 36.92611292855323,
     "lon": -116.1668815688257,
-    "similarity": 0.5695021420020625
+    "similarity": 0.5109240087405331
   },
   "requirements": [
     {
@@ -138,21 +138,21 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
-      "test_tile": 55.578392028808594,
-      "site_median": 57.02643585205078,
-      "difference": -121.33851623535156,
-      "statement": "Annual temperature range is 121 K narrower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Annual temperature range: unknown (no data)"
     },
     {
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
-      "test_tile": 1.8636261224746704,
-      "site_median": 0.9717053472995758,
-      "difference": -15.66128671169281,
-      "statement": "Variation of temperature range is 15.7 K lower than the target"
+      "target": null,
+      "test_tile": null,
+      "site_median": null,
+      "difference": null,
+      "statement": "Variation of temperature range: unknown (no data)"
     }
   ],
   "interference": {

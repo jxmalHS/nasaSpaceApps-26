@@ -1,8 +1,8 @@
 {
   "site": "el_malpais",
   "role": "candidate",
-  "rank": 26,
-  "score": 0.2073301975530375,
+  "rank": 84,
+  "score": 0.15453386047775336,
   "location": {
     "lat": 34.863,
     "lon": -108.098,
@@ -15,7 +15,7 @@
     "tile_id": "r05c02",
     "lat": 34.75025801806356,
     "lon": -108.13026488222664,
-    "similarity": 0.3244167313334037
+    "similarity": 0.2574007495564914
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,

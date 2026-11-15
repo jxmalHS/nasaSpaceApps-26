@@ -1,21 +1,21 @@
 {
   "site": "cloud_creek",
   "role": "candidate",
-  "rank": 4,
-  "score": 0.4575979749682908,
+  "rank": 9,
+  "score": 0.44482474086947643,
   "location": {
     "lat": 43.1167,
     "lon": -106.75,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Cloud Creek'"
   },
   "covers": {
-    "target_coverage": 0.25
+    "target_coverage": 0.265625
   },
   "test_tile": {
     "tile_id": "r00c03",
     "lat": 43.22912458135756,
     "lon": -106.72278732425882,
-    "similarity": 0.7783523928417913
+    "similarity": 0.7711297723787153
   },
   "requirements": [
     {
@@ -145,7 +145,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -155,7 +155,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -176,10 +176,10 @@
   },
   "baselines": {
     "nearest": "meteor_crater",
-    "closer_than": "meteor_crater, sp_crater_jett3, yucca_flat"
+    "closer_than": "cinder_lake_crater_field, meteor_crater, sp_crater_jett3, yucca_flat"
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

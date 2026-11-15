@@ -1,8 +1,8 @@
 {
   "site": "zapadnaya",
   "role": "candidate",
-  "rank": 16,
-  "score": 0.26719823927090536,
+  "rank": 46,
+  "score": 0.20181469393037083,
   "location": {
     "lat": 49.7333,
     "lon": 29.0,
@@ -15,7 +15,7 @@
     "tile_id": "r04c02",
     "lat": 49.6655967765265,
     "lon": 28.9622877538681,
-    "similarity": 0.4553189998090929
+    "similarity": 0.3622013550702174
   },
   "requirements": [
     {
@@ -138,7 +138,7 @@
       "feature": "temp_range_mean",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 176.91690826416016,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -148,7 +148,7 @@
       "feature": "temp_range_std",
       "unit": "K",
       "mission_role": "ignored",
-      "target": 17.52491283416748,
+      "target": null,
       "test_tile": null,
       "site_median": null,
       "difference": null,
@@ -167,11 +167,11 @@
     }
   },
   "baselines": {
-    "nearest": "sp_crater_jett3",
-    "closer_than": "meteor_crater"
+    "nearest": "meteor_crater",
+    "closer_than": ""
   },
   "confidence": {
-    "value": 1.0,
+    "value": 0.8333333333333334,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [

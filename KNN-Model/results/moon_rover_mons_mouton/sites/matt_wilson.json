@@ -1,21 +1,21 @@
 {
   "site": "matt_wilson",
   "role": "candidate",
-  "rank": 8,
-  "score": 0.5920419440009181,
+  "rank": 21,
+  "score": 0.5548749844983879,
   "location": {
     "lat": -15.5,
     "lon": 131.183,
     "source": "USGS Known Terrestrial Analog Sites for Planetary Science (Hunter 2020, doi:10.5066/P9J72921), entry 'Matt Wilson'"
   },
   "covers": {
-    "target_coverage": 0.16666666666666666
+    "target_coverage": 0.4166666666666667
   },
   "test_tile": {
     "tile_id": "r01c03",
     "lat": -15.432724556606232,
     "lon": 131.20480438448715,
-    "similarity": 0.646710179285072
+    "similarity": 0.6089305163589408
   },
   "requirements": [
     {
@@ -176,10 +176,10 @@
   },
   "baselines": {
     "nearest": "yucca_flat",
-    "closer_than": "meteor_crater"
+    "closer_than": "cinder_lake_crater_field, meteor_crater"
   },
   "confidence": {
-    "value": 0.9285714285714286,
+    "value": 0.8571428571428571,
     "label": "high"
   },
   "cannot_reproduce_on_earth": [
