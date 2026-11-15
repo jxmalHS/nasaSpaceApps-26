@@ -161,12 +161,12 @@ def nasa_agreement_note(ho: dict) -> str:
             f"other sites; 5 sites picked at random do this well {p:.1%} of the time. ")
     if strength != "strong":
         text += ("NASA chooses field sites for more than terrain: road access, safety, permits and "
-                 "nearness to its teams (most are around Flagstaff, Arizona). This model measures terrain "
+                 "nearness to its teams and towns. This model measures terrain "
                  "only, so remote craters with closer terrain can outrank NASA's sites. We did not tune the "
                  "weights to push NASA's sites up: that would fit the model to the answer and make this "
                  "check meaningless. ")
-    return text + ("Top-5 counts get stricter as more sites are added (5 of 103 is the top 5%); the "
-                   "percentile does not, so it is the fairer comparison between runs.")
+    return text + ("Top-5 counts get stricter as more sites are added (with 100 sites, top 5 means top 5%); "
+                   "the percentile does not, so it is the fairer comparison between runs.")
 
 
 def markdown_report(ranking: pd.DataFrame, summary: dict, cannot: list[str], disclaimer: str,

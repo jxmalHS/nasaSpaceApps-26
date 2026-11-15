@@ -78,3 +78,8 @@ def test_mission_sensitivity_flags_identical_rankings(table):
     base = run_knn(table, W).sites
     assert validation.mission_sensitivity(base, {"same": base})["status"] == "WARN"
     assert validation.mission_sensitivity(base, {})["status"] == "NOT RUN"
+
+
+def test_chance_is_not_fooled_by_rounding():
+    """Rank 3 of 10 is percentile 77.78, stored as 77.8: still counts. Exact answer C(7,2)/C(10,5) = 8.3%."""
+    assert 0.07 < validation.chance_random_median_at_least(77.8, 5, 10) < 0.10

@@ -22,6 +22,8 @@ import pandas as pd
 
 from mission import MET, NOT_MET, parse_mission
 from pipeline import load_config
+from report import nasa_agreement_note
+from validation import chance_random_median_at_least
 
 # Our mission -> (Atlas test_id, Atlas target_id), agreed with the Atlas team.
 ATLAS_MAP = {
@@ -128,18 +130,28 @@ def _held_out_entry(m: str, s: dict, coords: dict) -> dict:
     held_out = [{"site": wid, "percentile": round(statistics.median(x["percentile"] for x in es), 1),
                  "engine_sites": ", ".join(f"{x['name']} {x['percentile']:g}" for x in es)}
                 for wid, es in matched.items()]
+    # Results made before the percentile check existed: work it out from the held-out ranks
+    med = ho.get("median_percentile")
+    if med is None and engine and n > 1:
+        med = round(statistics.median(e["percentile"] for e in engine), 1)
+    chance = ho.get("chance_random_does_as_well")
+    if chance is None and med is not None:
+        chance = chance_random_median_at_least(med, len(engine), n)
+    note = nasa_agreement_note({"median_percentile": med, "chance_random_does_as_well": chance}).replace("**", "")
     entry = {"name": f"Held-out NASA sites ({test_id} / {target_id})", "test_id": test_id,
              "target_id": target_id, "status": "loo", "held_out": held_out,
              "median_percentile": round(statistics.median(e["percentile"] for e in engine), 1) if engine else None,
              "median_over": f"all {len(engine)} engine held-out sites",
              "random_median_percentile": 50.0,
-             "chance_random_does_as_well": ho.get("chance_random_does_as_well"),
+             "chance_random_does_as_well": chance, "agreement_note": note,
              "top5_rate": ho.get("recall_at_5"), "random_top5_rate": ho.get("random_guess_recall_at_5"),
              "population": POPULATION.format(n=n), "engine_held_out": engine}
     if ho.get("status") == "WARN" or n < 20:
         entry["warning"] = (f"Only {n} sites ranked: a random order "
                             f"would put {ho.get('random_guess_recall_at_5', 0):.0%} of them in the top 5. "
                             "Weak evidence.")
+    if note and "agreement with NASA: strong" not in note:   # the Trust page shows `warning` lines
+        entry["warning"] = (entry.get("warning", "") + " " + note).strip()
     return entry
 
 

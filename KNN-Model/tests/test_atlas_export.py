@@ -46,3 +46,14 @@ def test_percentile_means_share_of_other_sites_beaten():
     assert atlas_export.percentile_from_rank(32, 32) == 0.0
     assert atlas_export.percentile_from_rank(4, 32) == 90.3          # beats 28 of the other 31
     assert atlas_export.percentile_from_rank(1, 1) == 100.0
+
+
+def test_old_results_get_percentile_and_agreement_note():
+    """Results made before the percentile check still get it, worked out from the held-out ranks."""
+    s = {"checks": {"held_out_nasa_sites": {"status": "INFO", "n_sites_ranked": 103,
+                                            "held_out": [{"site": "sp_crater_jett3", "rank": 21},
+                                                         {"site": "meteor_crater", "rank": 57}]}}}
+    e = atlas_export._held_out_entry("moon_rover_south_pole", s, {})
+    assert e["median_percentile"] is not None and 0 <= e["chance_random_does_as_well"] <= 1
+    assert e["agreement_note"].startswith("Note on agreement with NASA:") and "**" not in e["agreement_note"]
+    assert e["agreement_note"] in e["warning"]          # weak agreement: shown on the Trust page
