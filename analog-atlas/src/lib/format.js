@@ -31,6 +31,8 @@ export function fmtDiff(v, fid) {
 
 export const pct = (v, dp = 0) => (isNum(v) ? fmtNum(v * 100, dp) + '%' : '—');
 export const score100 = (v) => (isNum(v) ? fmtNum(v * 100, v >= 0.985 && v < 1 ? 1 : 0) : '—');
+export { topPct } from './rank.js';
+
 export const int = (v) => (isNum(v) ? fmtNum(v, 0) : '—');
 
 export function latlon(lat, lon) {

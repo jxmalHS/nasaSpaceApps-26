@@ -8,7 +8,7 @@ import { call } from '../lib/engine.js';
 import { go } from '../lib/router.jsx';
 import { fmt, fmtDiff, latlon, score100, pct, isNum } from '../lib/format.js';
 import { Bullet, SiteStatus, Status, toast } from '../components/ui.jsx';
-import { verdict, EvidenceTag, MatchLabel } from '../components/Inspector.jsx';
+import { verdict, EvidenceTag, RankScore } from '../components/Inspector.jsx';
 
 export default function Report() {
   useScoring();
@@ -53,7 +53,7 @@ export default function Report() {
       </header>
 
       <section className={'verdict v-' + v.tone} aria-labelledby="r-v">
-        <div className="verdict-score"><b className="num">{score100(d.score)}</b><MatchLabel d={d} /></div>
+        <RankScore d={d} />
         <div className="grow">
           <h2 id="r-v" className="verdict-head" style={{ fontSize: 22, margin: 0 }}>{v.head}</h2>
           <p><b>Recommendation</b> · {recommendation(d)}</p>

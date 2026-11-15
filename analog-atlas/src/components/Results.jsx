@@ -6,7 +6,7 @@ import { useStore, setState, scoringConfig, getState, togglePin } from '../lib/s
 import { useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
 import { parseCsv, toCsv, download } from '../lib/csv.js';
-import { latlon, score100, pct, fmt } from '../lib/format.js';
+import { latlon, score100, pct, fmt, topPct } from '../lib/format.js';
 import { ScoreBar, SiteStatus, Status, Term, toast } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
 
@@ -37,7 +37,7 @@ export default function Results({ onOpen }) {
         <div>
           <h2 className="res-title">{tests[testId].label}</h2>
           {d && r.status === 'ready' && <p className="small"><b>{rankBy === 'rules' || !d.mlAvailable ? 'Mission rules' : rankBy === 'ml' ? 'Model ranking' : 'Blended ranking'}</b> · {d.mlAvailable ? `${d.mlCount.toLocaleString()} Earth cells have a model score for this target and test.` : 'This target and test have no model scores.'}</p>}
-            <p className="small dim">100 = the closest Earth gets on the features measured for this test (55 km cells), not a perfect copy of the target. Higher is closer. Pass or fail shows whether the site meets the strict limits.</p>
+            <p className="small dim">Ranked by how closely each place matches on the features we can measure (55 km cells). “Top 1%” = closer than 99% of Earth places on those features, not a perfect copy of the target. Pass or fail shows whether the site meets the strict limits.</p>
             <div className="small dim" aria-live="polite">
             {r.status === 'loading' && 'Loading 78,993 Earth cells…'}
             {d && <>{d.counts[0].toLocaleString()} pass · {d.counts[1].toLocaleString()} unverified · {d.counts[2].toLocaleString()} fail{r.status === 'updating' ? ' · updating' : ''}</>}
@@ -61,7 +61,7 @@ export default function Results({ onOpen }) {
         {list.map((x, k) => (
           <li key={x.id}>
             <button className={'site-row' + (sel === x.id ? ' on' : '')} onClick={() => onOpen(x)} aria-current={sel === x.id ? 'true' : undefined}
-              aria-label={`Rank ${x.rank}: ${x.place ? 'near ' + x.place + ', ' : ''}${x.country}. Score ${score100(x.score)}.`}>
+              aria-label={`Rank ${x.rank}: ${x.place ? 'near ' + x.place + ', ' : ''}${x.country}. ${topPct(x.rank, d.scored) || 'Unranked'} of Earth places on what we measure.`}>
               <span className="rank num">{k + 1}</span>
               <span className="grow site-main">
                 <span className="site-name ellipsis">{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}</span>
@@ -72,7 +72,7 @@ export default function Results({ onOpen }) {
                 </span>
               </span>
               <span className="site-score">
-                <b className="num">{score100(x.score)}<small>/100</small></b>
+                <b className="num" title={`Rank #${x.rank ?? '—'} of ${d.scored.toLocaleString()} on what we measure · match score ${score100(x.score)}/100`}>{topPct(x.rank, d.scored) || <small>unranked</small>}</b>
                 <ScoreBar v={x.score} ml={rankBy === 'ml'} />
               </span>
             </button>
@@ -100,7 +100,7 @@ function ModelAnalysed({ rows, onOpen }) {
         <div key={x.id} className="sl-row">
           <button className="link-btn grow ellipsis" onClick={() => onOpen(x)}>{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}, {x.country}</button>
           <SiteStatus status={x.status} warn={x.warn} />
-          <b className="num small" title="Model score">{score100(x.ml)}/100</b>
+          <b className="num small" title={`Model score ${score100(x.ml)}/100. Share of the other sites the model analysed for this test that this one out-scores.`}>beats {rows.length > 1 ? Math.round(100 * (rows.length - 1 - rows.indexOf(x)) / (rows.length - 1)) : 100}%</b>
         </div>
       ))}
       {rows.length > 5 && <button className="btn btn-ghost btn-sm" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? 'Show fewer' : `Show all ${rows.length}`}</button>}
@@ -117,12 +117,12 @@ function Baseline({ d, onOpen }) {
       {base.map((b) => (
         <button key={b.id} className="base-row" onClick={() => onOpen({ i: b.index, id: null, lat: null })} disabled={b.index == null}>
           <span className="grow ellipsis"><b>{b.name}</b> <span className="faint small">{b.place}</span></span>
-          <span className="small num">{Number.isNaN(b.score) || b.score == null ? '—' : score100(b.score) + '/100'}</span>
+          <span className="small num">{topPct(b.rank, d.scored) || '—'}</span>
           <span className="tiny faint num">{b.rank ? `#${b.rank.toLocaleString()}` : b.status === STATUS.FAIL ? 'fails' : 'unranked'}</span>
           {!b.representative && <span className="tiny" title={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
         </button>
       ))}
-      <p className="tiny faint">The score is the Earth-relative match (100 = the closest Earth gets). # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
+      <p className="tiny faint">“Top X%” is the share of ranked Earth places at or above this one, on what we measure. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see Trust.</p>
     </div>
   );
 }

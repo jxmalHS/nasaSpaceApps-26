@@ -5,7 +5,7 @@ import { tests, T, F, limits } from '../lib/catalog.js';
 import { useStore, setState, togglePin } from '../lib/store.js';
 import { useResult } from '../lib/results.js';
 import { go } from '../lib/router.jsx';
-import { fmt, fmtDiff, latlon, score100, pct, isNum } from '../lib/format.js';
+import { fmt, fmtDiff, latlon, score100, pct, isNum, topPct } from '../lib/format.js';
 import { toCsv, download } from '../lib/csv.js';
 import { Bullet, SiteStatus, Status, Term } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
@@ -26,12 +26,21 @@ export function verdict(d) {
   return { head, tone, closer, of: scored.length };
 }
 
-export const MATCH_TIP = "100 = the closest Earth gets on the features measured for this test, compared as Earth rankings on 55 km cells. It is not a perfect copy of the target: where the target is more extreme than anywhere on Earth, Earth’s most extreme places score 100.";
+export const MATCH_TIP = "Rank among the Earth places that pass this test's strict limits, on the features we can measure (55 km cells, compared as Earth rankings). Top 1% = closer than 99% of those places on these features. It is not a perfect copy of the target, and features with no Earth layer are not counted.";
 
-/** 'Earth-relative match', plus 'on 2 of 4 features' when some have no Earth layer yet. */
-export function MatchLabel({ d }) {
+/** Big number for a site: 'Top 0.01%' of ranked Earth places, on what we measure ('on 2 of 4 features'). */
+export function RankScore({ d }) {
   const total = d.rows.length, scored = d.rows.filter((r) => r.state !== 'no-earth-layer').length;
-  return <span className="tiny" style={{ textAlign: 'center', maxWidth: 96, lineHeight: 1.25 }}><Term text={MATCH_TIP}>Earth-relative match</Term>{scored < total && <><br /><span className="faint">on {scored} of {total} features</span></>}</span>;
+  const top = topPct(d.rankFiltered, d.scoredTotal);
+  return (
+    <div className="verdict-score" style={{ maxWidth: 104 }}>
+      <b className="num" style={top ? { fontSize: 24 } : undefined}>{top || score100(d.score)}</b>
+      <span className="tiny" style={{ textAlign: 'center', lineHeight: 1.25 }}>
+        <Term text={`${MATCH_TIP} Match score: ${score100(d.score)}/100.`}>{top ? 'of Earth, on what we measure' : 'not ranked (fails a limit or lacks data)'}</Term>
+        {scored < total && <><br /><span className="faint">{scored} of {total} features measured</span></>}
+      </span>
+    </div>
+  );
 }
 
 /** Share of the target weight that has no Earth layer yet (pending features). */
@@ -92,7 +101,7 @@ export default function Inspector({ d, loading, onBack }) {
         <div className="row"><span className="tag-ab a">A</span><h2 id="ins-h">{d.place ? `Near ${d.place}` : 'Earth cell'}, {d.country}</h2></div>
         <div className="small faint"><Coordinates key={d.id} lat={d.lat} lon={d.lon} label="Selected Earth index cell center"/>0.5° cell {d.id} · {d.continent}</div>
         <div className={'verdict v-' + v.tone}>
-          <div className="verdict-score"><b className="num">{score100(d.score)}</b><MatchLabel d={d} /></div>
+          <RankScore d={d} />
           <div className="grow">
             <div className="verdict-head">{v.head}</div>
             <p className="small"><b>Recommendation</b> · {recommendation(d)}</p>
