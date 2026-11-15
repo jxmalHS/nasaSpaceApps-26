@@ -96,7 +96,7 @@ export default function Inspector({ d, loading, onBack }) {
       <div className="row">
         <button className="btn btn-ghost btn-sm" onClick={onBack}><ArrowLeft size={14} /> All results</button>
         <span className="grow" />
-        <button className="btn btn-ghost btn-sm icon-btn" onClick={() => togglePin(d.id)} aria-pressed={pinned} aria-label={pinned ? 'Remove from shortlist' : 'Add to shortlist'} title="Shortlist">{pinned ? <PinOff size={15} /> : <Pin size={15} />}</button>
+        <button className="btn btn-ghost btn-sm icon-btn" onClick={() => togglePin(d.id)} aria-pressed={pinned} aria-label={pinned ? 'Remove from shortlist' : 'Add to shortlist'} data-tooltip="Shortlist">{pinned ? <PinOff size={15} /> : <Pin size={15} />}</button>
       </div>
       <header className="ins-head">
         {(() => { const c = getLocalCheck(d.id), v2 = siteVerdict(d, c); return (

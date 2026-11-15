@@ -94,7 +94,7 @@ function TestPicker() {
                     const ok = t.bodies.includes(body);
                     return (
                       <button key={t.id} role="radio" aria-checked={t.id === testId} disabled={!ok} className="test-opt"
-                        onClick={() => selectTest(t.id)} title={ok ? t.question : `Not applicable on ${body === 'moon' ? 'the Moon' : 'Mars'}`}>
+                        onClick={() => selectTest(t.id)} data-tooltip={ok ? t.question : `Not applicable on ${body === 'moon' ? 'the Moon' : 'Mars'}`}>
                         <span className="radio" aria-hidden="true" />
                         <span className="grow">{t.label}</span>
                         {!ok && <span className="tiny faint">{body === 'moon' ? 'Mars only' : 'Moon only'}</span>}
@@ -161,7 +161,7 @@ function Weights() {
       <div key={fid} className={'w-row role-' + r}>
         <div className="w-top">
           <Term id={fid}><span className="w-name">{f.label}</span></Term>
-          {f.pending && <span className="pending-tag" title="No Earth layer yet: always Unknown">no data yet</span>}
+          {f.pending && <span className="pending-tag" tabIndex={0} data-tooltip="No Earth layer yet: always Unknown">no data yet</span>}
         </div>
         <div className="role" role="group" aria-label={`Role of ${f.label}`}>
           {[['target', 'Match'], ['interference', 'Limit'], ['ignore', 'Ignore']].map(([k, l]) => (
@@ -172,7 +172,7 @@ function Weights() {
         {r === 'target' && (
           <>
             <div className="w-ctl">
-              <input className="range" type="range" min="0" max="100" step="5" value={w} title={why || f.tip} aria-label={`Importance of ${f.label}`}
+              <input className="range" type="range" min="0" max="100" step="5" value={w} data-tooltip={why || f.tip} aria-label={`Importance of ${f.label}`}
                 style={{ '--fill': `${w}%`, '--c': 'var(--earth)' }}
                 onChange={(e) => setState((st) => ({ weights: { ...st.weights, [fid]: Number(e.target.value) } }))} />
               <span className="num w-val">{totalW ? Math.round((w / totalW) * 100) : 0}%</span>
@@ -191,7 +191,7 @@ function Weights() {
             <span className="small dim">{f.unit}</span>
             <button className={'btn btn-sm hard-btn' + (th.hard ? ' on' : '')} aria-pressed={!!th.hard}
               onClick={() => setState((st) => ({ thresholds: { ...st.thresholds, [fid]: { ...th, hard: !th.hard } } }))}
-              title={th.hard ? 'Strict: sites that break this are excluded' : 'Soft: sites that break this lose points and get a warning'}>
+              data-tooltip={th.hard ? 'Strict: sites that break this are excluded' : 'Soft: sites that break this lose points and get a warning'}>
               {th.hard ? <Lock size={13} aria-hidden="true" /> : <Unlock size={13} aria-hidden="true" />}{th.hard ? 'Strict' : 'Soft'}
             </button>
           </div>

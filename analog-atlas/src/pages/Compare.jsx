@@ -116,9 +116,9 @@ export default function Compare() {
           </select>
         </label>
         <label>Dimension <select className="select sm" value={layer} onChange={e=>setLayer(e.target.value)}><option value="height">Relative height (m)</option><option value="slope">Slope (0–90°)</option></select></label><span className="grow" />
-        <button className={'btn btn-sm'} aria-pressed={flick} onClick={() => setFlick((v) => !v)} title="Show A and B alternately in the same frame (Space to switch)"><Repeat size={14} /> Flicker</button>
+        <button className={'btn btn-sm'} aria-pressed={flick} onClick={() => setFlick((v) => !v)} data-tooltip="Show A and B alternately in the same frame (Space to switch)"><Repeat size={14} /> Flicker</button>
         <button className="btn btn-sm" aria-pressed={show3d} onClick={() => setShow3d((v) => !v)}><Box size={14} /> 3D</button>
-        <label className="row small" title="Sun elevation for the hillshade. Drop it to see the lunar south pole’s grazing light.">
+        <label className="row small" data-tooltip="Sun elevation for the hillshade. Drop it to see the lunar south pole’s grazing light.">
           <Sun size={14} aria-hidden="true" /><span className="hide-sm">Sun</span>
           <input className="range" style={{ width: 90, '--fill': `${((sun - 2) / 58) * 100}%`, '--c': 'var(--warn)' }} type="range" min="2" max="60" value={sun} onChange={(e) => setSun(Number(e.target.value))} aria-label="Sun elevation" />
           <span className="num">{sun}°</span>

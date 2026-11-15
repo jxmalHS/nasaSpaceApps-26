@@ -31,7 +31,7 @@ const fmtV = (fid, v) => (v == null ? '—' : fid === 'ndvi' ? Number(v).toFixed
 /** "EXCEPTION · field site" chip. */
 export function ExceptionTag({ kind }) {
   return (
-    <span title={KIND_TIP[kind]} style={{ display: 'inline-block', fontSize: 10, lineHeight: '16px', padding: '0 6px', borderRadius: 999, border: '1px solid var(--warn)', color: 'var(--warn)', textTransform: 'uppercase', letterSpacing: 0.4, fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
+    <span tabIndex={0} data-tooltip={KIND_TIP[kind]} style={{ display: 'inline-block', fontSize: 10, lineHeight: '16px', padding: '0 6px', borderRadius: 999, border: '1px solid var(--warn)', color: 'var(--warn)', textTransform: 'uppercase', letterSpacing: 0.4, fontWeight: 600, whiteSpace: 'nowrap', verticalAlign: 'middle' }}>
       Exception · {KIND_LABEL[kind] || kind}
     </span>
   );

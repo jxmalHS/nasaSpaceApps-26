@@ -1,3 +1,4 @@
+import { installTooltips } from './lib/tooltip.js';
 import { createRoot } from 'react-dom/client';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './styles/base.css';
@@ -15,5 +16,7 @@ document.addEventListener('keydown',e=>{
   const next=e.key==='Home'?0:e.key==='End'?options.length-1:(options.indexOf(radio)+(['ArrowLeft','ArrowUp'].includes(e.key)?-1:1)+options.length)%options.length;
   e.preventDefault();options[next].focus();options[next].click();
 });
+const disposeTooltips = installTooltips();
+if (import.meta.hot) import.meta.hot.dispose(disposeTooltips);
 hydrateFromUrl();
 createRoot(document.getElementById('root')).render(<App />);

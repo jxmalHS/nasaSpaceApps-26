@@ -11,22 +11,9 @@ export function Mark({ size = 30 }) {
 }
 
 /** Plain-language tooltip on a technical term. Hover or keyboard focus. */
-export function Term({ id, children, text, align }) {
+export function Term({ id, children, text }) {
   const tip = text || F[id]?.tip;
-  if (!tip) return children;
-  return (
-    <span className="term" tabIndex={0} onMouseEnter={warmTips}>
-      {children}
-      <span role="tooltip" className={'tip' + (align === 'right' ? ' right' : '')}>{tip}</span>
-    </span>
-  );
-}
-let warmTimer;
-function warmTips() {
-  // After the first tooltip, neighbours open instantly (no second delay).
-  setTimeout(() => document.body.classList.add('tips-warm'), 360);
-  clearTimeout(warmTimer);
-  warmTimer = setTimeout(() => document.body.classList.remove('tips-warm'), 1400);
+  return tip ? <span className="term" tabIndex={0} data-tooltip={tip}>{children}</span> : children;
 }
 
 /** Status is always icon + word + colour, never colour alone. */
@@ -64,10 +51,10 @@ export function Bullet({ fid, x, t, b, min, max, label }) {
   return (
     <div className="bullet" role="img" aria-label={label || desc}>
       <div className="axis" />
-      {isNum(min) && isNum(max) && <div className="earth-range" style={{ left: p(min), width: `calc(${p(max)} - ${p(min)})` }} title="Range found on Earth" />}
-      {isNum(b) && <div className="mk b" style={{ left: p(b) }} title={`Baseline ${fmt(b, fid)}`} />}
-      {isNum(t) && <div className="mk t" style={{ left: p(t) }} title={`Target ${fmt(t, fid)}`} />}
-      {isNum(x) ? <div className="mk e" style={{ left: p(x) }} title={`Earth site ${fmt(x, fid)}`} /> : <div className="unk" />}
+      {isNum(min) && isNum(max) && <div className="earth-range" style={{ left: p(min), width: `calc(${p(max)} - ${p(min)})` }} tabIndex={0} data-tooltip="Range found on Earth" />}
+      {isNum(b) && <div className="mk b" style={{ left: p(b) }} tabIndex={0} data-tooltip={`Baseline ${fmt(b, fid)}`} />}
+      {isNum(t) && <div className="mk t" style={{ left: p(t) }} tabIndex={0} data-tooltip={`Target ${fmt(t, fid)}`} />}
+      {isNum(x) ? <div className="mk e" style={{ left: p(x) }} tabIndex={0} data-tooltip={`Earth site ${fmt(x, fid)}`} /> : <div className="unk" />}
     </div>
   );
 }

@@ -71,7 +71,7 @@ export default function Results({ onOpen }) {
               <span className="grow site-main">
                 <span className="site-name ellipsis">{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}</span>
                 <span className="tiny faint ellipsis">{x.country} · {latlon(x.lat, x.lon)}{rankBy === 'blend' && x.mlScored === false ? ' · rules only' : ''}{rankBy !== 'rules' && x.mlScored ? ' · model-analysed' : ''}</span>
-                <span className="row site-badges" title={verdictDetails(x, checks[x.id], topPct(x.rank, d.scored))}>
+                <span className="row site-badges" tabIndex={0} data-tooltip={verdictDetails(x, checks[x.id], topPct(x.rank, d.scored))}>
                   <Status kind={siteVerdict(x, checks[x.id]).kind}>{siteVerdict(x, checks[x.id]).text}</Status>
                 </span>
               </span>
@@ -100,7 +100,7 @@ function ModelAnalysed({ rows, onOpen }) {
         <div key={x.id} className="sl-row">
           <button className="link-btn grow ellipsis" onClick={() => onOpen(x)}>{x.place ? `Near ${x.place}` : latlon(x.lat, x.lon)}, {x.country}</button>
           <SiteStatus status={x.status} warn={x.warn} />
-          <b className="num small" title={`Model score ${score100(x.ml)}/100. Share of the other sites the model analysed for this test that this one out-scores.`}>beats {rows.length > 1 ? Math.round(100 * (rows.length - 1 - rows.indexOf(x)) / (rows.length - 1)) : 100}%</b>
+          <b className="num small" tabIndex={0} data-tooltip={`Model score ${score100(x.ml)}/100. Share of the other sites the model analysed for this test that this one out-scores.`}>beats {rows.length > 1 ? Math.round(100 * (rows.length - 1 - rows.indexOf(x)) / (rows.length - 1)) : 100}%</b>
         </div>
       ))}
       {rows.length > 5 && <button className="btn btn-ghost btn-sm" onClick={() => setOpen(!open)} aria-expanded={open}>{open ? 'Show fewer' : `Show all ${rows.length}`}</button>}
@@ -119,7 +119,7 @@ function Baseline({ d, onOpen }) {
           <span className="grow ellipsis"><b>{b.name}</b> <span className="faint small">{b.place}</span></span>
           <span className="small num">{topPct(b.rank, d.scored) || '—'}</span>
           <span className="tiny faint num">{b.rank ? `#${b.rank.toLocaleString()}` : b.status === STATUS.FAIL ? 'fails' : 'unranked'}</span>
-          {!b.representative && <span className="tiny" title={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
+          {!b.representative && <span className="tiny" tabIndex={0} data-tooltip={`Nearest index cell is ${b.offsetKm} km away`} style={{ color: 'var(--warn)' }}>cell {Math.round(b.offsetKm)} km off</span>}
         </button>
       ))}
       <p className="tiny faint">“Top X%” is the share of ranked Earth places at or above this one, on what we measure. # is the position in this mission’s ranking. Distance in km is the offset between the documented field site and its scored cell center. A small field site inside a wetter or icier cell can fail here; see References.</p>
@@ -138,7 +138,7 @@ function Stability() {
   const fresh = st && st.key === key;
   return (
     <div className="stab">
-      <button className="btn btn-sm" onClick={run} disabled={busy} title="Jitter every weight by ±30% thirty times and see whether the winner holds">
+      <button className="btn btn-sm" onClick={run} disabled={busy} data-tooltip="Jitter every weight by ±30% thirty times and see whether the winner holds">
         {busy ? <span className="spinner" /> : <Activity size={14} />} Stability
       </button>
       {fresh && (
@@ -167,7 +167,7 @@ function Coverage({ onOpen }) {
         <h3 id="cov-h" className="label grow">
           <Term text="One site rarely reproduces everything. A site covers a requirement when it is within 12 Earth-percentile points of the target on that measurement AND passes every strict limit there, so conditions needed together are present together. Each step adds the site that covers the most requirements still open (sites at least 250 km apart).">Multi-site coverage</Term>
         </h3>
-        <button className="btn btn-sm" onClick={run} disabled={busy} title="Pick sites one at a time until every requirement an Earth site can meet is covered">
+        <button className="btn btn-sm" onClick={run} disabled={busy} data-tooltip="Pick sites one at a time until every requirement an Earth site can meet is covered">
           {busy ? <span className="spinner" /> : null} {fresh ? 'Recompute' : 'Cover requirements'}
         </button>
       </div>
@@ -260,7 +260,7 @@ function ImportCsv() {
   const input = useRef(null);
   return (
     <>
-      <button className="btn btn-sm" onClick={() => input.current.click()} title="CSV with lat, lon and optional name plus any feature columns (e.g. slope_deg)"><Upload size={14} /> Score your CSV</button>
+      <button className="btn btn-sm" onClick={() => input.current.click()} data-tooltip="CSV with lat, lon and optional name plus any feature columns (e.g. slope_deg)"><Upload size={14} /> Score your CSV</button>
       <input ref={input} type="file" accept=".csv,text/csv" hidden onChange={async (e) => {
         const file = e.target.files[0];
         e.target.value = '';

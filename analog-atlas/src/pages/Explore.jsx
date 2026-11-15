@@ -118,7 +118,7 @@ export default function Explore() {
         ))}
       </div>
       <button className="btn btn-sm" aria-pressed={LITE} onClick={() => setLite(!LITE)}
-        title={LITE ? 'Lite mode is on: flat map, still homepage. Click to turn it off.' : 'Turn on lite mode for slower computers: flat map, still homepage.'}>
+        data-tooltip={LITE ? 'Lite mode is on: flat map, still homepage. Click to turn it off.' : 'Turn on lite mode for slower computers: flat map, still homepage.'}>
         <Feather size={14} aria-hidden="true" /> Lite {LITE ? 'on' : 'off'}
       </button>
       <div className="row small dim">

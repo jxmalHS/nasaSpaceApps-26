@@ -63,8 +63,8 @@ function LimitSources() {
           <tr key={`${fid}${c.op}${c.v}`}>
             <td style={{ whiteSpace: 'nowrap' }}><b><Term id={fid}>{F[fid]?.label || fid}</Term></b><div className="num">{OP[c.op] || c.op} {c.v}{unitOf(fid)}</div></td>
             <td className="small" style={{ whiteSpace: 'nowrap' }}>
-              {hard.length > 0 && <div title={hard.join(', ')}><Status kind="fail" size={11}>Strict</Status> {hard.length} test{hard.length > 1 ? 's' : ''}</div>}
-              {soft.length > 0 && <div title={soft.join(', ')} style={{ marginTop: 4 }}><Status kind="warn" size={11}>Soft</Status> {soft.length} test{soft.length > 1 ? 's' : ''}</div>}
+              {hard.length > 0 && <div tabIndex={0} data-tooltip={hard.join(', ')}><Status kind="fail" size={11}>Strict</Status> {hard.length} test{hard.length > 1 ? 's' : ''}</div>}
+              {soft.length > 0 && <div tabIndex={0} data-tooltip={soft.join(', ')} style={{ marginTop: 4 }}><Status kind="warn" size={11}>Soft</Status> {soft.length} test{soft.length > 1 ? 's' : ''}</div>}
             </td>
             <td className="small"><div style={{ marginBottom: 4 }}>{isTeam(c) ? <Status kind="unknown" size={11}>Team value</Status> : <Status kind="met" size={11}>NASA number</Status>}</div>{why(c)}
               {(c.basis && c.basis.length > why(c).length + 40) || changed.length > 0 ? (
@@ -75,12 +75,12 @@ function LimitSources() {
                 </details>) : null}
             </td>
             <td className="small">{srcOf(c).length
-              ? srcOf(c).map((id) => <div key={id} style={{ marginBottom: 4 }}><a href={S[id].url} target="_blank" rel="noreferrer" title={S[id].cite}>{shortCite(S[id].cite)}</a></div>)
+              ? srcOf(c).map((id) => <div key={id} style={{ marginBottom: 4 }}><a href={S[id].url} target="_blank" rel="noreferrer" data-tooltip={S[id].cite}>{shortCite(S[id].cite)}</a></div>)
               : <span className="faint">—</span>}</td>
             <td className="small">
               {checked === 0 ? <span className="faint">No NASA site for this test yet</span>
                 : exceptions.length === 0 ? <Status kind="met" size={11}>All {checked} pass</Status>
-                : <details><summary style={{ listStyle: 'none', cursor: 'pointer' }} title="Click to see which NASA sites"><Status kind="warn" size={11}>{exceptions.length} of {checked} exceptions ▾</Status></summary>
+                : <details><summary style={{ listStyle: 'none', cursor: 'pointer' }} data-tooltip="Click to see which NASA sites"><Status kind="warn" size={11}>{exceptions.length} of {checked} exceptions ▾</Status></summary>
                     {exceptions.map((e, k) => (
                       <div key={k} className="tiny" style={{ marginTop: 6 }}>
                         <ExceptionTag kind={e.kind} /> <b>{A[e.site]?.name || e.site}</b> ({e.test}): {exceptionText({ ...e, feature: fid })}{e.reason ? `. ${e.reason}` : ''}
@@ -146,7 +146,7 @@ function TargetSources() {
         <tbody>{all.map((t) => (
           <tr key={t.id}><td>{t.name} <span className="faint tiny">{t.body}</span></td>
             {fids.map((f) => { const v = t.f[f]; return (
-              <td key={f} className="num" title={v?.src || ''}>{v?.v == null ? '—' : v.v}{F[f]?.unit ? ` ${F[f].unit}` : ''}
+              <td key={f} className="num" tabIndex={0} data-tooltip={v?.src || ''}>{v?.v == null ? '—' : v.v}{F[f]?.unit ? ` ${F[f].unit}` : ''}
                 <div><Status kind={STATUS_KIND[v?.s] || 'unknown'}>{STATUS_TEXT[v?.s] || v?.s || '—'}</Status></div></td>); })}
           </tr>))}</tbody>
       </table></div>

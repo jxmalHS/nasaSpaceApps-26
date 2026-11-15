@@ -12,6 +12,7 @@
     "thresholds": "node scripts/threshold-table.mjs"
   },
   "dependencies": {
+    "@floating-ui/dom": "^1.8.0",
     "lucide-react": "0.460.0",
     "maplibre-gl": "^6.18.0",
     "pngjs": "^7.0.0",

@@ -108,18 +108,15 @@
 /* ---------- plain-language terms ---------- */
 .term { position: relative; border-bottom: 1px dotted var(--text-3); cursor: help; }
 .term:focus-visible { outline-offset: 1px; }
-.tip {
-  position: absolute; z-index: 60; left: 50%; bottom: calc(100% + 8px); width: max-content; max-width: 280px;
-  transform: translateX(-50%) translateY(2px) scale(0.98); transform-origin: 50% 100%; opacity: 0; pointer-events: none;
-  background: var(--bg-4); color: var(--text); border: 1px solid var(--line-2); border-radius: var(--r-2);
-  padding: 9px 11px; font-size: 13px; font-weight: 400; line-height: 1.45; letter-spacing: 0; text-transform: none; box-shadow: var(--shadow);
-  transition: opacity 125ms var(--ease-out), transform 125ms var(--ease-out);
-  transition-delay: 350ms;
+.atlas-tooltip {
+  position: fixed; top: 0; left: 0; z-index: 10000; visibility: hidden;
+  box-sizing: border-box; width: max-content; max-width: min(32rem, calc(100vw - 24px));
+  overflow-y: auto; overflow-wrap: anywhere; white-space: normal;
+  background: var(--bg-4); color: var(--text); border: 1px solid var(--line-2);
+  border-radius: var(--r-2); padding: 8px 12px; box-shadow: var(--shadow);
+  font: 400 14px/1.45 var(--font); text-align: start;
 }
-body.tips-warm .tip { transition-delay: 0ms; }
-.term:hover > .tip, .term:focus-visible > .tip, .term:focus-within > .tip { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-.tip.right { left: auto; right: -8px; transform: translateY(2px) scale(0.98); transform-origin: 90% 100%; }
-.term:hover > .tip.right, .term:focus-visible > .tip.right { transform: translateY(0) scale(1); }
+
 
 /* ---------- bullet chart: real units, same axis ---------- */
 .bullet { position: relative; height: 26px; }

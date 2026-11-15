@@ -1,3 +1,4 @@
+import { showTooltip, closeTooltip } from '../lib/tooltip.js';
 import EarthLayerSelect from './EarthLayerSelect.jsx';
 import { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
@@ -113,22 +114,29 @@ function GlobeMap({ imageryOnly, result, layerImage, sel, pins = [], uploads = [
       if (f) pickRef.current?.({ i: Number(f.properties.i) });
       else pickRef.current?.({ lat: e.lngLat.lat, lon: e.lngLat.lng });
     });
-    const tip = document.createElement('div');
-    tip.className = 'map-tip';
-    box.current.appendChild(tip);
+    let marker;
+    const anchor = {
+      contextElement: box.current,
+      getBoundingClientRect() {
+        const rect = m.getCanvas().getBoundingClientRect();
+        const point = m.project(marker);
+        return new DOMRect(rect.left + point.x, rect.top + point.y, 0, 0);
+      },
+    };
     m.on('mousemove', (e) => {
       const f = m.queryRenderedFeatures(e.point, { layers: ['clusters', ...pickLayers] })[0];
       m.getCanvas().style.cursor = f ? 'pointer' : 'crosshair';
-      if (!f) { tip.style.opacity = 0; return; }
+      if (!f) return closeTooltip(anchor);
+      marker = [...f.geometry.coordinates];
+      marker[0] += 360 * Math.round((e.lngLat.lng - marker[0]) / 360);
       const p = f.properties;
-      tip.textContent = f.layer.id === 'clusters' ? `${p.point_count} candidate cells · best match ${Math.round(p.best * 100)}/100 · click to zoom in` : p.name ? `${p.name} · ${p.s != null ? Math.round(p.s * 100) + '/100 match' : ''}` : `Match ${Math.round(p.s * 100)}/100`;
-      tip.style.transform = `translate(${e.point.x + 12}px, ${e.point.y + 12}px)`;
-      tip.style.opacity = 1;
+      const text = f.layer.id === 'clusters' ? `${p.point_count} candidate cells · best match ${Math.round(p.best * 100)}/100 · click to zoom in` : p.name ? `${p.name} · ${p.s != null ? Math.round(p.s * 100) + '/100 match' : ''}` : `Match ${Math.round(p.s * 100)}/100`;
+      showTooltip(anchor, text);
     });
-    m.on('mouseout', () => { tip.style.opacity = 0; });
+    m.on('mouseout', () => closeTooltip(anchor));
     const ro = new ResizeObserver(() => m.resize());
     ro.observe(box.current);
-    return () => { ro.disconnect(); m.remove(); };
+    return () => { closeTooltip(anchor); ro.disconnect(); m.remove(); };
   }, []);
 
   // Suitability surface or single-feature layer → canvas source.
@@ -191,11 +199,11 @@ function GlobeMap({ imageryOnly, result, layerImage, sel, pins = [], uploads = [
       <div className="map-ctrl">
         <button className="btn btn-sm icon-btn" onClick={() => z(1)} aria-label="Zoom in"><Plus size={16} /></button>
         <button className="btn btn-sm icon-btn" onClick={() => z(-1)} aria-label="Zoom out"><Minus size={16} /></button>
-        <button className="btn btn-sm icon-btn" onClick={() => setProj((p) => (p === 'globe' ? 'mercator' : 'globe'))} aria-label={proj === 'globe' ? 'Switch to flat map' : 'Switch to globe'} title={proj === 'globe' ? 'Flat map' : 'Globe'}>
+        <button className="btn btn-sm icon-btn" onClick={() => setProj((p) => (p === 'globe' ? 'mercator' : 'globe'))} aria-label={proj === 'globe' ? 'Switch to flat map' : 'Switch to globe'} data-tooltip={proj === 'globe' ? 'Flat map' : 'Globe'}>
           {proj === 'globe' ? <MapIcon size={15} /> : <Globe2 size={15} />}
         </button>
         {!compact && (
-          <button ref={layerButton} className="btn btn-sm icon-btn" onClick={() => setShowLayers(v => !v)} aria-label="Choose Earth dimension" title="Choose Earth dimension" aria-expanded={showLayers}><Layers size={15} /></button>
+          <button ref={layerButton} className="btn btn-sm icon-btn" onClick={() => setShowLayers(v => !v)} aria-label="Choose Earth dimension" data-tooltip="Choose Earth dimension" aria-expanded={showLayers}><Layers size={15} /></button>
         )}
       </div>
       {showLayers && <div className="earth-layer-picker" onKeyDown={e => { if (e.key === 'Escape') { setShowLayers(false); layerButton.current.focus(); } }}>

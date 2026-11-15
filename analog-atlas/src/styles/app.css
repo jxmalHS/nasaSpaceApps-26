@@ -19,7 +19,6 @@ body.app-mode { overflow: hidden; }
 .map-ctrl { position: absolute; z-index: 5; right: 10px; top: 10px; display: grid; gap: 4px; }
 .map-ctrl .btn { background: rgba(12, 21, 40, 0.92); }
 .map-note { position: absolute; z-index: 5; left: 10px; bottom: 10px; background: rgba(7, 13, 26, 0.9); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); color: var(--warn); }
-.map-tip { position: absolute; left: 0; top: 0; z-index: 6; pointer-events: none; background: var(--bg-4); border: 1px solid var(--line-2); border-radius: 6px; padding: 4px 8px; font-size: 12.5px; white-space: nowrap; opacity: 0; transition: opacity 120ms ease; }
 .cluster-n { pointer-events: none; font: 700 12px var(--font); color: var(--text); text-shadow: 0 1px 2px #000; }
 .legend { position: absolute; z-index: 5; left: 10px; bottom: 26px; width: 240px; display: grid; gap: 5px; padding: 10px; background: rgba(7, 13, 26, 0.86); border: 1px solid var(--line); border-radius: 10px; }
 .legend .row { gap: 5px; flex-wrap: wrap; }
