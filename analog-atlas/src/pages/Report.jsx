@@ -8,7 +8,7 @@ import { call } from '../lib/engine.js';
 import { go } from '../lib/router.jsx';
 import { fmt, fmtDiff, latlon, score100, pct, isNum } from '../lib/format.js';
 import { Bullet, SiteStatus, Status, toast } from '../components/ui.jsx';
-import { verdict } from '../components/Inspector.jsx';
+import { verdict, EvidenceTag } from '../components/Inspector.jsx';
 
 export default function Report() {
   useScoring();
@@ -60,7 +60,7 @@ export default function Report() {
           <p className="small">{d.rankFiltered ? `Rank ${d.rankFiltered.toLocaleString()} of ${d.scoredTotal.toLocaleString()} listed Earth cells.` : 'Not in the ranking.'}
             {d.baseline ? ` Closer to the target than ${d.baseline.name} on ${v.closer} of ${v.of} measured target features (baseline score ${score100(d.baseline.score)}).` : ' No documented NASA field site exists for this test.'}
             {stab ? ` Ranking stability: the winner held in ${Math.round(stab.winnerKept * 100)}% of 24 runs with weights jittered ±30%${inTop ? `; this site stayed in the top 5 in ${Math.round(inTop.freq * 100)}% of runs` : ''}.` : ''}</p>
-          <div className="row wrap"><SiteStatus status={d.status} warn={d.warn} />{d.beatsBaseline && <Status kind="beats" />}<Status kind="plain">Evidence {pct(d.evidence)}</Status></div>
+          <div className="row wrap"><SiteStatus status={d.status} warn={d.warn} />{d.beatsBaseline && <Status kind="beats" />}<EvidenceTag d={d} /></div>
         </div>
       </section>
 

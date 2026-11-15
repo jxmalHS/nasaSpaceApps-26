@@ -13,6 +13,7 @@ import { Term, Bullet, useReducedMotion } from '../components/ui.jsx';
 import Relief3D from '../components/Relief3D.jsx';
 
 import SiteEvidence from '../components/SiteEvidence.jsx';
+import { scaleMismatch } from '../lib/scale.js';
 
 
 
@@ -159,6 +160,7 @@ export default function Compare() {
                 ))}
               </tbody>
             </table>
+            {pa && pb && <ScaleWarning a={pa.stats} b={pb.stats} body={tg.body} />}
             {pa && pb && <p className="small dim">Earth tile sampling ≈{pa.sampleSpacingM} m · {tg.body === 'moon' ? 'Moon' : 'Mars'} ≈{pb.sampleSpacingM} m. Coarser grids can smooth out slopes and small obstacles.</p>}
           </section>
           {earth && (
@@ -167,6 +169,18 @@ export default function Compare() {
         </aside>
       </div>
     </main>
+  );
+}
+
+function ScaleWarning({ a, b, body }) {
+  const m = scaleMismatch(a, b);
+  if (!m) return null;
+  const how = m.steeper ? (Number.isFinite(m.ratio) ? `${m.ratio.toFixed(1)}× steeper` : 'much steeper') : m.ratio > 0 ? `${(1 / m.ratio).toFixed(1)}× flatter` : 'much flatter';
+  return (
+    <p className="small" role="note" style={{ color: 'var(--warn)' }}>
+      Up close this site is {how} than the {body === 'moon' ? 'Moon' : 'Mars'} target ({m.a.toFixed(1)}° vs {m.b.toFixed(1)}° mean slope).
+      Its rank uses one 55 km cell, which averages this out. Check the terrain here before shortlisting it.
+    </p>
   );
 }
 

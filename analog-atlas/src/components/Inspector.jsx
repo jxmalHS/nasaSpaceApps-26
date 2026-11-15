@@ -26,6 +26,40 @@ export function verdict(d) {
   return { head, tone, closer, of: scored.length };
 }
 
+/** Share of the target weight that has no Earth layer yet (pending features). */
+export function noLayerShare(d) {
+  const total = d.rows.reduce((a, r) => a + (r.w || 0), 0);
+  const none = d.rows.filter((r) => r.state === 'no-earth-layer').reduce((a, r) => a + (r.w || 0), 0);
+  return total > 0 ? none / total : 0;
+}
+
+/** "Evidence 65% · 35% has no Earth layer yet": the gap is the same for every site. */
+export function EvidenceTag({ d }) {
+  const none = noLayerShare(d);
+  const tag = <Status kind="plain">Evidence {pct(d.evidence)}{none > 0 ? ` · ${pct(none)} unmapped` : ''}</Status>;
+  return none > 0
+    ? <Term text={`${pct(none)} of this test's weight is on features with no Earth layer yet (shown as No Earth layer). Every site has the same gap, so it lowers evidence everywhere but does not change the order.`}>{tag}</Term>
+    : tag;
+}
+
+/** When the detailed model analysed this site, say so up front: its result is the stronger evidence. */
+function ModelVerdict({ d }) {
+  const m = d.mlDetail || {};
+  if (d.mlStatus !== 'scored' || !isNum(m.score_percentile)) return null;
+  const p = m.score_percentile;
+  const stable = isNum(m.stable_runs) && isNum(m.total_runs) ? ` · stable in ${m.stable_runs}/${m.total_runs} runs` : '';
+  return (
+    <div className={'verdict ' + (p >= 75 ? 'v-pass' : 'v-warn')} style={{ marginTop: 8 }}>
+      <div className="verdict-score"><b className="num">{p.toFixed(0)}</b><span className="tiny">model percentile</span></div>
+      <div className="grow">
+        <div className="verdict-head">Detailed model: beats {p.toFixed(0)}% of the sites it analysed</div>
+        <p className="small dim">{m.site_name ? <>Analysed site: <b>{m.site_name}</b>{stable}. </> : stable ? stable.slice(3) + '. ' : ''}
+          The model checks this site in 5 km squares; the rules score above uses one 55 km cell, which can hide a crater or a mountain.</p>
+      </div>
+    </div>
+  );
+}
+
 export default function Inspector({ d, loading, onBack }) {
   const s = useStore((x) => x);
   const env = useResult((r) => r.data?.envelope);
@@ -61,10 +95,11 @@ export default function Inspector({ d, loading, onBack }) {
             <div className="row wrap" style={{ marginTop: 6 }}>
               <SiteStatus status={d.status} warn={d.warn} />
               {d.beatsBaseline && <Status kind="beats" />}
-              <Status kind="plain">Evidence {pct(d.evidence)}</Status>
+              <EvidenceTag d={d} />
             </div>
           </div>
         </div>
+        <ModelVerdict d={d} />
         <div className="row wrap">
           <button className="btn btn-primary btn-sm" onClick={() => { setState({ compareId: d.id }); go('/compare'); }}><Columns2 size={14} /> Compare with target</button>
           <button className="btn btn-sm" onClick={() => { setState({ sel: d.id }); go('/report'); }}><FileText size={14} /> Site report</button>
