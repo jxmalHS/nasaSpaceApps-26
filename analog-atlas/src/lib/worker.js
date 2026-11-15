@@ -311,6 +311,7 @@ async function stability({ cfg, trials = 40, jitter = 0.3 }) {
   const c = cfgFor(cfg);
   const base = await run(cfg);
   const ref = distinct(sortedCandidates(base.final, base.res.status, cfg), 5);
+  if (!ref.length) return { value: { trials: 0, jitter, winnerKept: null, meanOverlap: null, ref: [] } };
   const rng = mulberry32(7);
   let winnerKept = 0, overlapSum = 0;
   const freq = new Map();

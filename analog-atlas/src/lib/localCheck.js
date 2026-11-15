@@ -3,14 +3,12 @@ import { loadPatch } from './patch.js';
 import { scaleMismatch } from './scale.js';
 import { STATUS } from './scoring.js';
 
-/** One verdict per site, for the results list.
- *  Good match  = passes every strict limit, no warnings, and at least one 2 km spot matches the target.
- *  Check first = promising but not confirmed (2 km check not run, unverified data, or a soft-limit warning).
- *  Poor        = fails a strict limit, or no 2 km spot matches the target. */
+/** Report strict limits and the local slope check separately. */
 export function siteVerdict(x, check) {
   if (x.status === STATUS.FAIL) return { kind: 'notmet', text: 'Poor: fails a limit', order: 2 };
-  if (check && !check.ok) return { kind: 'notmet', text: 'Poor up close', order: 2 };
-  if (x.status === STATUS.PASS && check?.ok && !x.warn) return { kind: 'met', text: 'Good match', order: 0 };
+  if (check?.missing) return { kind: 'warn', text: 'Check first', order: 1 };
+  if (check && !check.ok) return { kind: 'notmet', text: 'Local slope differs', order: 2 };
+  if (x.status === STATUS.PASS && check?.ok && !x.warn) return { kind: 'met', text: 'Local slope matches', order: 0 };
   return { kind: 'warn', text: 'Check first', order: 1 };
 }
 
@@ -37,15 +35,18 @@ export function spotsAround(lat, lon, km = SPOT_OFFSET_KM) {
 /** Combine the spots of one cell: OK if ANY spot matches the target ('2 of 5 spots match'). */
 export function combineSpots(spotStats, targetStats) {
   const got = spotStats.filter((s) => s && Number.isFinite(s.slopeMean));
-  if (!got.length || !targetStats) return null;
+  if (!Number.isFinite(targetStats?.slopeMean)) return null;
+  const missing = spotStats.length - got.length;
+  if (!got.length) return { ok: null, matches: 0, n: 0, missing, text: 'Local slope unavailable at all planned spots' };
   const matches = got.filter((s) => !scaleMismatch(s, targetStats)).length;
   const n = got.length;
-  if (matches > 0) return { ok: true, matches, n, text: `2 km: ${matches} of ${n} spots match` };
+  const summary = `2 km slope: ${matches} of ${spotStats.length} spots match${missing ? `; ${missing} unavailable` : ''}`;
+  if (matches > 0) return { ok: true, matches, n, missing, text: summary };
   const median = [...got].sort((a, b) => a.slopeMean - b.slopeMean)[Math.floor(n / 2)];
   const m = scaleMismatch(median, targetStats);
   const how = m.steeper ? (Number.isFinite(m.ratio) ? `${m.ratio.toFixed(1)}× steeper` : 'much steeper')
     : m.ratio > 0 ? `${(1 / m.ratio).toFixed(1)}× flatter` : 'much flatter';
-  return { ok: false, matches: 0, n, text: `2 km: 0 of ${n} spots match (${how})` };
+  return { ok: false, matches: 0, n, missing, text: `${summary} (${how})` };
 }
 
 /** Good match first, then Check first, then Poor; the original order is kept inside each group. */
@@ -56,16 +57,18 @@ export function orderByCheck(list, checks) {
 
 const latest = new Map();
 /** The 2 km check result for a cell, if the results list has run it. */
-export const getLocalCheck = (id) => latest.get(id) || null;
+export const getLocalCheck = (targetId, id) => latest.get(`${targetId}:${id}`) || null;
 
 /** Run the 2 km check (5 spots per cell) on the top results: {cellId: {ok, matches, n, text}}. */
 export function useLocalChecks(rows, target) {
   const [checks, setChecks] = useState({});
   const ids = rows.map((x) => x.id).join(',');
+  const key = `${target?.id}:${ids}`;
   useEffect(() => {
     if (!target || !rows.length) return undefined;
     const ctrl = new AbortController();
-    setChecks({});
+    for (const row of rows) latest.delete(`${target.id}:${row.id}`);
+    setChecks({ key, values: {} });
     (async () => {
       const tp = await loadPatch({ body: target.body, key: target.id, lat: target.lat, lon: target.lon, signal: ctrl.signal });
       if (!tp || ctrl.signal.aborted) return;
@@ -76,12 +79,15 @@ export function useLocalChecks(rows, target) {
       const worker = async () => {                      // 12 fetches at a time
         while (next < jobs.length && !ctrl.signal.aborted) {
           const { x, s, lat, lon } = jobs[next++];
-          const key = null;   // pre-built Earth patch files are rare: go straight to /api/terrain (no 404s)
-          const p = await loadPatch({ body: 'earth', key, lat, lon, signal: ctrl.signal });
+          const patchKey = null;   // pre-built Earth patch files are rare: go straight to /api/terrain (no 404s)
+          const p = await loadPatch({ body: 'earth', key: patchKey, lat, lon, signal: ctrl.signal });
           stats[x.id][s] = p?.stats || null;
           if (--left[x.id] === 0 && !ctrl.signal.aborted) {
             const label = combineSpots(stats[x.id], tp.stats);
-            if (label) { latest.set(x.id, label); setChecks((c) => ({ ...c, [x.id]: label })); }
+            if (label) {
+              latest.set(`${target.id}:${x.id}`, label);
+              setChecks(c => c.key === key ? { key, values: { ...c.values, [x.id]: label } } : c);
+            }
           }
         }
       };
@@ -89,7 +95,7 @@ export function useLocalChecks(rows, target) {
     })();
     return () => ctrl.abort();
   }, [ids, target?.id]);  // eslint-disable-line react-hooks/exhaustive-deps
-  return checks;
+  return checks.key === key ? checks.values : {};
 }
 
 // Kept for older callers and tests: single-patch label.

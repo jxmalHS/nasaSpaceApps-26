@@ -254,8 +254,6 @@ body.app-mode { overflow: hidden; }
 @media(max-width:640px){.compare .cmp-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;padding:12px;gap:10px}.cmp-bar label.row:has(select){grid-column:1/-1}.cmp-bar .select{max-width:100%;min-width:0}.cmp-bar>.grow{display:none}.cmp-stage .site-images{grid-template-columns:1fr}.criteria-table th,.criteria-table td{padding:8px 4px}.survey-heading h1{font-size:32px}.survey-figure header{min-height:55px}.compare .cmp-stage{padding:14px}}
 @media(max-width:640px){.cmp-bar>button:first-child{grid-column:1/-1;justify-self:start}.cmp-bar label.row:has(select) select{flex:1;width:100%}.cmp-bar>button:last-child{grid-column:1/-1}.cmp-bar button,.survey-heading button,.survey-figure .coord-row button{min-height:36px}}
 
-.earth-layer-picker { position:absolute; z-index:8; top:10px; right:52px; max-width:calc(100% - 60px); width:220px; padding:10px; border:1px solid var(--line-2); border-radius:8px; background:var(--bg-1); }
-.earth-layer-picker label { display:grid; gap:6px; }
 .col-left, .col-right, .sheet-body { min-height:0; min-width:0; }
 .baseline-card { grid-template-columns:minmax(0,1fr); }
 .base-row { flex-wrap:wrap; min-width:0; }
@@ -274,3 +272,14 @@ body.app-mode { overflow: hidden; }
 .results > *, .site-row > .grow { min-width: 0; }
 .sl-row { flex-wrap: wrap; }
 .sl-row > .grow { min-width: 0; white-space: normal; overflow-wrap: anywhere; }
+
+/* Let the verdict follow its panel width, including at browser zoom. */
+.inspector, .ins-head { grid-template-columns: minmax(0, 1fr); }
+.ins-head { container-type: inline-size; }
+.ins-head .row.wrap { width: auto; margin-inline: 0; }
+.verdict .status { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+@container (max-width: 390px) {
+  .ins-head .verdict { flex-direction: column; align-items: stretch; }
+  .ins-head .verdict-score { max-width: none !important; justify-items: start; }
+  .ins-head .verdict-score > span { text-align: start !important; }
+}

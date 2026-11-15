@@ -99,7 +99,7 @@ export default function Inspector({ d, loading, onBack }) {
         <button className="btn btn-ghost btn-sm icon-btn" onClick={() => togglePin(d.id)} aria-pressed={pinned} aria-label={pinned ? 'Remove from shortlist' : 'Add to shortlist'} data-tooltip="Shortlist">{pinned ? <PinOff size={15} /> : <Pin size={15} />}</button>
       </div>
       <header className="ins-head">
-        {(() => { const c = getLocalCheck(d.id), v2 = siteVerdict(d, c); return (
+        {(() => { const c = getLocalCheck(s.targetId, d.id), v2 = siteVerdict(d, c); return (
           <div className="row wrap" style={{ gap: 8 }}><Status kind={v2.kind}>{v2.text}</Status>
             <span className="small dim">{c ? c.text : `2 km check not run (only the top ${LOCAL_CHECK_TOP} are checked)`}</span></div>); })()}
         <div className="row"><span className="tag-ab a">A</span><h2 id="ins-h">{d.place ? `Near ${d.place}` : 'Earth cell'}, {d.country}</h2></div>
@@ -111,7 +111,7 @@ export default function Inspector({ d, loading, onBack }) {
             <p className="small"><b>Recommendation</b> · {recommendation(d)}</p>
             <div className="small dim">
               {d.rankFiltered ? `Rank ${d.rankFiltered.toLocaleString()} of ${d.scoredTotal.toLocaleString()} listed cells` : d.rankAll ? `Would rank ${d.rankAll.toLocaleString()} overall` : 'Not ranked'}
-              {v.closer != null && d.baseline ? ` · closer than ${d.baseline.name.split(',')[0]} on ${v.closer} of ${v.of} targets` : ''}
+              {v.closer != null && d.baseline ? ` · closer than ${d.baseline.name.split(',')[0]} on ${v.closer} of ${v.of} measured criteria` : ''}
             </div>
             <div className="row wrap" style={{ marginTop: 6 }}>
               <SiteStatus status={d.status} warn={d.warn} />

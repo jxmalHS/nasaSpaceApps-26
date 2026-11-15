@@ -39,3 +39,14 @@ export function download(name, text, type = 'text/csv') {
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+const measurementRanges = {
+  slope_deg: [0, 90], ndvi: [-1, 1], snow_mo: [0, 12], basalt: [0, 1],
+  low_sun_pct: [0, 100], rock_pct: [0, 100], salt_pct: [0, 100],
+  t_mean_C: [-273.15, Infinity], elev_m: [-Infinity, Infinity],
+};
+
+export function validMeasurement(id, value) {
+  const [min, max] = measurementRanges[id] ?? [0, Infinity];
+  return Number.isFinite(value) && value >= min && value <= max;
+}

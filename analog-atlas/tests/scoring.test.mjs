@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compile, scoreAll, percentile, featureSim, STATUS, overlap } from '../src/lib/scoring.js';
+import { passes, compile, scoreAll, percentile, featureSim, STATUS, overlap } from '../src/lib/scoring.js';
 import { loadAll } from './helpers.mjs';
 
 const D = loadAll();
@@ -64,4 +64,20 @@ test('scoring the whole index stays fast enough for live sliders', () => {
   const t0 = performance.now();
   for (let k = 0; k < 5; k++) run('hab.thermal', 'connecting-ridge');
   assert.ok((performance.now() - t0) / 5 < 150);
+});
+
+import { validMeasurement } from '../src/lib/csv.js';
+
+test('inclusive limits at Earth storage precision', () => {
+  for (const op of ['<=', '>=']) assert.equal(passes(Math.fround(0.3), op, 0.3), true);
+  assert.equal(passes(0.3001, '<=', 0.3), false);
+  assert.equal(passes(0.2999, '>=', 0.3), false);
+});
+
+test('uploaded measurements respect their physical units', () => {
+  assert.equal(validMeasurement('slope_deg', 91), false);
+  assert.equal(validMeasurement('pressure_kPa', -1), false);
+  assert.equal(validMeasurement('ndvi', -0.5), true);
+  assert.equal(validMeasurement('elev_m', -10), true);
+  assert.equal(validMeasurement('basalt', 1.1), false);
 });

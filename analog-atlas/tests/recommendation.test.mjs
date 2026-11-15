@@ -10,6 +10,8 @@ for (const [name, overrides, expected] of [
   ['unanalysed cell', { ml: NaN }, 'Rules-only'],
   ['unavailable model metadata', { mlDetail: null }, 'Request'],
   ['sparse tile support', { mlDetail: { low_evidence: true } }, 'Request'],
+  ['unmet model requirement', { mlDetail: { req_not_met: ['slope_p90'], low_evidence: false } }, 'Review unmet'],
+  ['unknown model requirement', { mlDetail: { req_unknown: ['slope_p90'], low_evidence: false } }, 'Collect evidence'],
   ['soft interference', { warn: 1 }, 'Review'],
   ['field verification candidate', {}, 'Consider'],
 ]) {

@@ -1,9 +1,8 @@
 import { showTooltip, closeTooltip } from '../lib/tooltip.js';
-import EarthLayerSelect from './EarthLayerSelect.jsx';
 import { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
 import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
-import { Plus, Minus, Globe2, Map as MapIcon, Layers } from 'lucide-react';
+import { Plus, Minus, Globe2, Map as MapIcon } from 'lucide-react';
 import { cellLatLon, cellRing } from '../lib/geo.js';
 import { useReducedMotion } from './ui.jsx';
 import { hasWebGL } from '../lib/webgl.js';
@@ -36,8 +35,6 @@ function GlobeMap({ imageryOnly, result, layerImage, sel, pins = [], uploads = [
   const markers = useRef(new Map());
   const [loaded, setLoaded] = useState(false);
   const [proj, setProj] = useState(defaultProjection || (LITE ? 'mercator' : 'globe'));
-  const [showLayers, setShowLayers] = useState(false);
-  const layerButton = useRef(null);
   const [fallback, setFallback] = useState(false);
   const [failed, setFailed] = useState(false);
   const reduced = useReducedMotion();
@@ -202,13 +199,7 @@ function GlobeMap({ imageryOnly, result, layerImage, sel, pins = [], uploads = [
         <button className="btn btn-sm icon-btn" onClick={() => setProj((p) => (p === 'globe' ? 'mercator' : 'globe'))} aria-label={proj === 'globe' ? 'Switch to flat map' : 'Switch to globe'} data-tooltip={proj === 'globe' ? 'Flat map' : 'Globe'}>
           {proj === 'globe' ? <MapIcon size={15} /> : <Globe2 size={15} />}
         </button>
-        {!compact && (
-          <button ref={layerButton} className="btn btn-sm icon-btn" onClick={() => setShowLayers(v => !v)} aria-label="Choose Earth dimension" data-tooltip="Choose Earth dimension" aria-expanded={showLayers}><Layers size={15} /></button>
-        )}
       </div>
-      {showLayers && <div className="earth-layer-picker" onKeyDown={e => { if (e.key === 'Escape') { setShowLayers(false); layerButton.current.focus(); } }}>
-        <label>Earth dimension<EarthLayerSelect label="Earth dimension" onChange={() => { setShowLayers(false); layerButton.current.focus(); }} /></label>
-      </div>}
       {fallback && <div className="map-note small">Live NASA imagery unavailable: showing the bundled Blue Marble copy.</div>}
     </div>
   );

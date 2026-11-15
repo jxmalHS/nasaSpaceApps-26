@@ -42,8 +42,9 @@ export function featureSim(qx, qt, dir) {
 }
 
 export function passes(x, op, v) {
-  if (x == null || Number.isNaN(x)) return null;
-  return op === '>=' ? x >= v : x <= v;
+  if (!Number.isFinite(x) || !Number.isFinite(v)) return null;
+  // Compare at the precision used by the Earth measurement columns.
+  return op === '>=' ? Math.fround(x) >= Math.fround(v) : Math.fround(x) <= Math.fround(v);
 }
 
 /**

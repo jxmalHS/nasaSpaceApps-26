@@ -5,7 +5,7 @@ import { useLocalChecks, orderByCheck, siteVerdict, verdictDetails, LOCAL_CHECK_
 import { useStore, setState, scoringConfig, getState, togglePin } from '../lib/store.js';
 import { useResult } from '../lib/results.js';
 import { call } from '../lib/engine.js';
-import { parseCsv, toCsv, download } from '../lib/csv.js';
+import { validMeasurement, parseCsv, toCsv, download } from '../lib/csv.js';
 import { latlon, score100, pct, fmt, topPct } from '../lib/format.js';
 import { ScoreBar, SiteStatus, Status, Term, toast } from './ui.jsx';
 import { STATUS } from '../lib/scoring.js';
@@ -40,8 +40,8 @@ export default function Results({ onOpen }) {
         <div>
           <h2 className="res-title">{tests[testId].label}</h2>
           {d && r.status === 'ready' && <p className="small"><b>{rankBy === 'rules' || !d.mlAvailable ? 'Mission rules' : rankBy === 'ml' ? 'Model ranking' : 'Blended ranking'}</b> · {d.mlAvailable ? `${d.mlCount.toLocaleString()} Earth cells have a model score for this target and test.` : 'This target and test have no model scores.'}</p>}
-            <p className="small dim"><b>Good match</b> = close on what we measure and the ground matches up close (2 km check).
-              <b> Check first</b> = promising, not yet confirmed. <b>Poor</b> = fails a limit or wrong up close. Click a site for details.{' '}
+            <p className="small dim"><b>Local slope matches</b> means at least one measured 2 km spot has a similar mean slope to the target.
+              <b> Check first</b> flags incomplete evidence or warnings. Click a site for details.{' '}
               {nChecked > 0 && <button className="link-btn" onClick={() => setOriginalOrder(!originalOrder)}>{originalOrder ? 'Group by verdict' : 'Show original order'}</button>}</p>
             <div className="small dim" aria-live="polite">
             {r.status === 'loading' && 'Loading 78,993 Earth cells…'}
@@ -143,7 +143,7 @@ function Stability() {
       </button>
       {fresh && (
         <div className="stab-out tiny" role="status">
-          Winner holds in <b className="num">{Math.round(st.winnerKept * 100)}%</b> of runs · top 5 overlap <b className="num">{Math.round(st.meanOverlap * 100)}%</b>
+          {st.trials === 0 ? 'No eligible sites to test.' : <>Winner holds in <b className="num">{Math.round(st.winnerKept * 100)}%</b> of runs · top 5 overlap <b className="num">{Math.round(st.meanOverlap * 100)}%</b></>}
         </div>
       )}
     </div>
@@ -274,8 +274,8 @@ function ImportCsv() {
           const lat=Number(r[latK]),lon=Number(r[lonK]);
           if(!r[latK]?.trim()||!r[lonK]?.trim()||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>90||Math.abs(lon)>180){rejected.push((k+2)+' (invalid coordinates)');return}
           const values={};
-          for(const f of features){const raw=r[f.id.toLowerCase()];if(raw==null||raw==='')continue;
-            if(!Number.isFinite(Number(raw))){rejected.push((k+2)+' (invalid '+f.label+')');return}values[f.id]=Number(raw)}
+          for(const f of features){const raw=r[f.id.toLowerCase()];if(raw==null||raw.trim()==='')continue;
+            if(!validMeasurement(f.id,Number(raw))){rejected.push((k+2)+' (invalid '+f.label+')');return}values[f.id]=Number(raw)}
           sites.push({
           name: r.name || r.site || `Site ${k + 1}`, lat: Number(r[latK]), lon: Number(r[lonK]),
           values,

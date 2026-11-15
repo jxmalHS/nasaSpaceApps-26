@@ -28,14 +28,14 @@ test('5 spots: centre plus 15 km N, S, E, W', () => {
 test('a cell passes if ANY spot matches; else reports how far off it is', () => {
   const t = { slopeMean: 9 };
   assert.deepEqual(combineSpots([{ slopeMean: 31 }, { slopeMean: 10 }, { slopeMean: 30 }, null, { slopeMean: 28 }], t),
-    { ok: true, matches: 1, n: 4, text: '2 km: 1 of 4 spots match' });
+    { ok: true, matches: 1, n: 4, missing: 1, text: '2 km slope: 1 of 5 spots match; 1 unavailable' });
   const bad = combineSpots([{ slopeMean: 31.5 }, { slopeMean: 30 }, { slopeMean: 33 }, { slopeMean: 29 }, { slopeMean: 35 }], t);
   assert.equal(bad.ok, false); assert.match(bad.text, /0 of 5 spots match \(3\.5× steeper\)/);
-  assert.equal(combineSpots([null, null], t), null);                    // no terrain: no badge
+  assert.equal(combineSpots([null, null], t).missing, 2);                    // no terrain: no badge
 });
 
 test('order: matching first, unchecked next, no-match last; same order inside groups', () => {
-  const list = [1, 2, 3, 4, 5].map((id) => ({ id }));
+  const list = [1, 2, 3, 4, 5].map((id) => ({ id, status: 0 }));
   const checks = { 1: { ok: false }, 2: { ok: true }, 3: { ok: false }, 4: { ok: true } };
   assert.deepEqual(orderByCheck(list, checks).map((x) => x.id), [2, 4, 5, 1, 3]);
 });
@@ -44,8 +44,9 @@ import { siteVerdict } from '../src/lib/localCheck.js';
 
 test('one verdict per site', () => {
   const pass = { status: 0, warn: 0 };
-  assert.equal(siteVerdict(pass, { ok: true }).text, 'Good match');
-  assert.equal(siteVerdict(pass, { ok: false }).text, 'Poor up close');
+  assert.equal(siteVerdict(pass, { ok: true }).text, 'Local slope matches');
+  assert.equal(siteVerdict(pass, { ok: false }).text, 'Local slope differs');
+  assert.equal(siteVerdict(pass, { ok: true, missing: 4 }).text, 'Check first');
   assert.equal(siteVerdict(pass, null).text, 'Check first');                 // not checked yet
   assert.equal(siteVerdict({ status: 0, warn: 1 }, { ok: true }).text, 'Check first');   // soft-limit warning
   assert.equal(siteVerdict({ status: 1 }, { ok: true }).text, 'Check first');           // unverified
