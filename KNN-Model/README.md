@@ -7,7 +7,7 @@ target area on the Moon or Mars, and ranks Earth sites from most to least simila
 
 ## How it works (5 steps)
 
-1. **Pick a subsystem** (e.g. lunar rover wheels) and sort every condition into ✅ **target** (must match: slope, bumpiness), ⚪ **ignored** (doesn't matter for this test: temperature), or ⚠️ **interference** (would ruin the test: trees, snow, water). Pass/fail requirements are set here too.
+1. **Pick a subsystem** (e.g. lunar rover wheels) and sort every condition into **target** (must match: slope, bumpiness), **ignored** (does not matter for this test: temperature) or **interference** (would ruin the test: trees, snow, water). Pass/fail requirements are set here too.
 2. **Turn the target into numbers**: Moon from NASA LOLA elevation (100 m pixels, 5 × 5 km tiles), Mars from NASA MGS MOLA (500 m pixels, 20 × 20 km tiles: MOLA's resolution): slope, steep ground, bumpiness, crater-like dips.
 3. **Turn Earth sites into the same numbers, at the same scale**: NASA's analog sites (the baseline: Artemis training sites for the Moon, Mars 2020 Lander Vision System test spots for Mars), the 190 USGS impact craters and hand-picked volcanic/lava fields (candidates) and farmland that *should* score badly (a sanity check). Land cover from ESA WorldCover gives the interference checks.
 4. **Rank** with weighted nearest-neighbour search, comparing each site with the Moon target and with NASA's sites.
@@ -26,7 +26,7 @@ negative controls, stability checks, a simple-method comparison and mission sens
 python -m venv venv
 venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-pytest                                               # 77 tests, no internet needed
+pytest                                               # 82 tests, no internet needed
 python main.py download --mission moon_rover_south_pole --count 300   # all 204 Moon-comparison sites
 python main.py download --mission mars_landing_jezero --count 300     # all 199 Mars-comparison sites
 python main.py run --mission moon_rover_south_pole --offline          # results in results/<mission>/report.md
@@ -38,26 +38,37 @@ The first run streams data for ~200 sites, which is slow on a weak connection. E
 saved in `data/cache/`, so later runs (or a restarted run) are fast. Add `--offline` to rank only
 the sites already downloaded.
 
-## Status
+## Status (November 2026)
 
-- ✅ All 5 steps work for the Moon and Mars, plus the model checks and multi-site coverage; 77 tests pass.
-- ✅ Full real run (Nov 2026): all 204 Moon-comparison sites downloaded (0 failures). Per mission, 103-127 are
-  ranked; the rest are rejected for a reason the report lists: ~75-99 craters are covered everywhere by
-  forest, farmland or water (interference), 2 lie under the sea (Mjølnir, Montagnais).
-- ⚠️ What the full run showed, honestly:
-  - **Landing** (`moon_landing_hazards_south_pole`): 3 of 5 NASA sites in the top 5 of 127 (random order: 4%).
-  - **Rovers**: with 103 sites instead of 32, no NASA site makes the top 5 (best: Buffalo Park #6 and #9).
-    Many impact craters match the south pole's slopes better than NASA's Arizona training sites, which
-    were chosen for geology and logistics, not slope similarity. **Haughton Crater** (NASA's
-    Haughton-Mars Project), entered only as an ordinary USGS crater, ranks #1 for Mons Mouton and #4 for
-    the south pole: the engine finds a NASA-used site on its own.
-- ✅ Temperature that Earth can't reach (the Moon's ~177 K yearly swing) is ranked as "closest achievable", and the report says so.
-- ✅ Temperature group (Moon: Diviner; Earth: MODIS via NASA AppEEARS). Example mission `moon_rover_thermal_south_pole` uses terrain + temperature.
-  ⏳ Its full rerun needs an Earthdata login for AppEEARS (`download-temperature`); its results are still the 10-site run.
-- ✅ Two-way matching: a site must resemble the whole target area, not one corner of it.
-- ✅ Mars: Jezero Crater from NASA MOLA (500 m pixels, 20 km tiles), 199 Earth sites, two missions
-  (`mars_landing_jezero`, `mars_rover_jezero`). No pass/fail rules on Mars: NASA's numbers are set at 2 m-1 km.
-- ⏳ Not built yet: minerals (EMIT needs an Earthdata login), Mars temperature.
+**Working**
+
+- All five steps run for the Moon and Mars, together with the validation checks and multi-site
+  coverage; 82 tests pass.
+- Full run: all 204 Moon-comparison sites downloaded with no failures. Per mission, 103-127 are ranked;
+  the rest are excluded for a reason the report lists (about 75-99 craters are covered everywhere by
+  forest, farmland or water; 2 lie under the sea: Mjølnir and Montagnais).
+- Temperature (Moon: Diviner; Earth: MODIS via NASA AppEEARS). The example mission
+  `moon_rover_thermal_south_pole` combines terrain and temperature over 25 sites. Temperatures beyond
+  Earth's range (the Moon's ~177 K yearly swing) are ranked as "closest achievable", and the report says so.
+- Two-way matching: a site must resemble the whole target area, not one corner of it.
+- Mars: Jezero Crater from NASA MOLA (500 m pixels, 20 km tiles), 199 Earth sites and two missions
+  (`mars_landing_jezero`, `mars_rover_jezero`). There are no pass/fail rules on Mars, because NASA's
+  published limits are set at 2 m-1 km, finer than any global map.
+
+**Results against NASA's own sites** (each NASA site is held out of fitting in turn)
+
+- **Landing** (`moon_landing_hazards_south_pole`): the typical NASA site beats 97% of the other 127 sites;
+  random picks do as well 0.03% of the time. 3 of 5 NASA sites are in the top 5.
+- **Rovers**: the typical NASA site beats 74-80% of 103 sites, and none makes the top 5. Many impact craters
+  match the south pole's slopes better than NASA's Arizona training sites, which were chosen for geology and
+  logistics as well as slope. **Haughton Crater** (NASA's Haughton-Mars Project), entered only as an ordinary
+  USGS crater, ranks #1 for Mons Mouton and #4 for the south pole: the engine finds a NASA-used site on its own.
+- **Thermal**: the typical NASA site beats 88% of 25 sites (random picks: 1.8%).
+
+**Not built yet**
+
+- Minerals (NASA EMIT), Mars temperature, and Earth maps of rocks, soil strength, ground ice and salts.
+- Temperature for the remaining Earth sites (NASA AppEEARS downloads timed out for most of them).
 
 ## Files
 

@@ -34,7 +34,7 @@ A funnel with three levels:
 | Level | What happens | Scale |
 |---|---|---|
 | 1. Screen the planet | The website scores **78,993** land squares against the target using open NASA/ESA data. Pass/fail limits remove places that would spoil the test (snow, plants, rain). | 55 km squares |
-| 2. Close-up check | The top 25 places are re-measured at five 2 km spots and compared with the target. Places that only look right from far away are flagged "wrong up close" and moved down. | 2 km patches |
+| 2. Close-up check | The top 25 places are re-measured at five 2 km spots and compared with the target. Places that only look right from far away are flagged "Local slope differs" and moved down. | 2 km patches |
 | 3. Detailed model | Our engine compares **100–200 candidate sites** with real Moon or Mars terrain using a weighted nearest-neighbour model. | 5 km (Moon), 20 km (Mars) |
 
 The model is **unsupervised**: there are only 5–6 known NASA field sites per mission, far too few to

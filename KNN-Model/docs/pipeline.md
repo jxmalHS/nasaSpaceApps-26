@@ -8,11 +8,12 @@ python main.py run --mission moon_rover_south_pole --offline   # only sites alre
 | Step | What happens | Files |
 |---|---|---|
 | **1. Mission** | Every condition is sorted into **target** (must match, with a weight), **ignored**, or **interference** (would ruin the test, with a limit). Mandatory pass/fail rules are set here, before ranking. Typos and unsorted conditions are rejected | `config/missions.yaml`, `mission.py` |
-| **2. Moon → numbers** | LOLA 20 m elevation streamed, averaged to 100 m, cut into 5 km tiles, measured (slope, steep ground, relief, bumpiness, crater-like dips; never absolute height) | `sources.py`, `preprocess.py`, `tiles.py`, `features.py` |
-| **3. Earth → same numbers** | NASA baselines, USGS crater candidates and farmland controls: Copernicus 30 m elevation, same 100 m pixels and 5 km tiles. ESA WorldCover land cover per tile for interference | `config/sites.yaml`, `landcover.py` |
+| **2. Moon/Mars → numbers** | Moon: LOLA 20 m elevation streamed, averaged to 100 m, cut into 5 km tiles. Mars: MGS MOLA 463 m elevation, 500 m pixels, 20 km tiles. Measured: slope, steep ground, relief, bumpiness, crater-like dips; never absolute height | `sources.py`, `preprocess.py`, `tiles.py`, `features.py` |
+| **3. Earth → same numbers** | NASA baselines, USGS crater candidates and farmland controls: Copernicus 30 m elevation, at the same pixel and tile size as the target (100 m / 5 km for the Moon, 500 m / 20 km for Mars). ESA WorldCover land cover per tile for interference | `config/sites.yaml`, `landcover.py` |
 | **3b. Temperature** (optional group) | Annual temperature range = hottest day − coldest night, at 1 km. Moon: Diviner polar maps (summer max − winter min). Earth: MODIS MOD11A2 for one year via NASA AppEEARS (`python main.py download-temperature --mission ...`, needs the Earthdata login) | `temperature.py` |
 | **4. Rank** | Weighted k-nearest-neighbours, **two-way**: each Earth tile vs the Moon tiles AND each Moon tile vs the site, so a site must resemble the whole Moon area, not one corner. Plus a comparison with every NASA baseline | `analog_knn.py` |
-| **5. Report** | Per site: coverage, requirements met / not met / unknown, real-unit differences, interference, confidence, what Earth can't reproduce | `report.py` |
+| **5. Report** | Per site: coverage, requirements met / not met / unknown, real-unit differences, interference, confidence, what Earth can't reproduce. Multi-site coverage: which requirements each added site covers, and which no site covers | `report.py`, `coverage.py` |
+| **6. Export** | Results converted for the Analog Atlas website (`python main.py export-atlas`): sparse scores, model card, validation | `atlas_export.py` |
 
 ## What the report means
 
@@ -33,7 +34,7 @@ analogs exist (far too few to train on). Instead of a train/test split, the meth
 
 | Check | What it shows |
 |---|---|
-| **Held-out NASA sites** | Each NASA site is left out of fitting in turn; where does it rank? Reported as recall@5 / recall@10 next to what a random ranking would score. Warns when there are too few sites for this to mean much |
+| **Held-out NASA sites** | Each NASA site is left out of fitting in turn; where does it rank? Reported as the share of other sites each NASA site beats (percentile), the median over NASA sites, and how often 5 randomly picked sites would do as well, which gives a Strong (≤ 1%), Moderate (≤ 5%) or Weak verdict. Recall@5 / @10 are kept, but they get stricter as more sites are added. Warns when there are too few sites |
 | **Negative controls** | Farmland must rank in the bottom half |
 | **Stability** | 14 small changes (weights ±20%, 2× pixels, half-tile shift): does the #1 site / top 5 survive? |
 | **Simple-method comparison** | A plain "distance to the target's typical values" ranking. Agreement shows consistency, **not** accuracy |
@@ -49,6 +50,7 @@ analogs exist (far too few to train on). Instead of a train/test split, the meth
 | `tiles.csv`, `target_tiles.csv` | Every tile's measurements (for maps) |
 | `site_stats.csv` | Tiles kept / dropped and spikes removed per site |
 | `summary.json` | Mission, target profile, weights used, checks, failed sites, credits |
+| `../analog_atlas_export/` | `scores.csv`, `model_card.json`, `validation.json` for the website (from `export-atlas`) |
 
 ## Settings (`config/settings.yaml`)
 
@@ -63,15 +65,17 @@ analogs exist (far too few to train on). Instead of a train/test split, the meth
 - **Earth elevation:** Copernicus DEM GLO-30. *Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.*
 - **Earth land cover:** ESA WorldCover 2021. *© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium* (CC-BY 4.0).
 - **Moon:** LOLA LDEM_80S_20M (NASA PDS, MIT LOLA archive).
+- **Mars:** MGS MOLA DEM 463 m (Smith et al. 2001, JGR 106(E10), doi:10.1029/2000JE001364; USGS Astrogeology mosaic).
 - **Moon temperature:** Diviner polar maps, Williams et al. (2019), *Seasonal polar temperatures on the Moon*, JGR Planets 124, 2505-2521.
 - **Earth temperature:** MODIS MOD11A2 v061 (Wan, Hook, Hulley 2021), via NASA AppEEARS.
 - **Sites:** USGS Known Terrestrial Analog Sites (Hunter 2020, doi:10.5066/P9J72921); USGS LGRS Artemis training grids (McClernan 2024, doi:10.5066/P14KSANW); JPL PIA23265 (Mars 2020 test spots); © OpenStreetMap contributors (ODbL) for named-place coordinates.
 
 ## Known limits
 
-- Minerals have no data module yet.
+- Minerals have no data module yet, and rocks, soil strength, ground ice and salts have no Earth map.
 - Temperature: no Earth site reaches lunar temperature ranges (Moon ~180 K typical vs Earth deserts far less), so the temperature group ranks Earth sites by "closest achievable". Absolute lunar temperatures stay in "what Earth can't reproduce".
-- Mars: settings and baselines only; the MOLA reader and a Mars target aren't built.
+- Mars has no temperature group and no pass/fail rules: NASA's Mars landing and rover limits are set at 2 m-1 km, finer than the 500 m pixels.
+- Earth temperature exists for 25 sites so far: most NASA AppEEARS downloads timed out, so the thermal mission ranks fewer sites than the terrain missions.
 - No coordinates found for JETT5, JETT2 Iceland or the Mojave lava tube; they're left out.
 - The USGS crater list includes buried craters with little surface expression.
 - The first full run streams ~200 sites; on a slow connection that takes hours. Use `--offline` for what's already downloaded.

@@ -102,13 +102,22 @@ into a **similarity** between 0 and 1:
 similarity = e^(−distance)      distance 0 → 1.0 (identical)   distance 1 → 0.37   distance 3 → 0.05
 ```
 
-**Step 5: Score each site.** A site's score is the **75th percentile** of its tiles'
-similarities, meaning "a quarter of this site's tiles are at least this good".
+**Step 5: Score each site.** The score is a two-way match, half from each direction
+(`two_way_weight = 0.5`):
 
-- Not the best tile: one lucky tile would decide everything.
-- Not the average: a few poor tiles at the edge would unfairly drag a good site down.
+- **Site → target** (`site_to_moon_score`): the **75th percentile** of the site's tile
+  similarities, meaning "a quarter of this site's tiles are at least this good". Not the best
+  tile (one lucky tile would decide everything) and not the average (a few poor tiles at the
+  edge would unfairly drag a good site down).
+- **Target → site** (`moon_to_site_score`): for every target tile, how close the site's
+  nearest tile is, averaged over the target. A site that matches only one corner of the
+  target scores low here.
 
 The best tile is kept anyway, so we can say *where* in the site to test.
+
+**Closest achievable.** When the target is beyond anything on Earth for a measurement
+(e.g. the Moon's yearly temperature swing), `cap_to_earth` clips the target to Earth's range
+for that measurement, so sites are ranked on how close they get, and the report says so.
 
 **Step 6: Compare with NASA's baselines.** Two questions per site:
 - *Which NASA baseline does it resemble most?* (`nearest_baseline`). A baseline is never compared with itself.
@@ -128,7 +137,8 @@ The model uses no randomness, so the same input always gives the same output.
 |---|---|
 | `rank` | 1 = best match |
 | `site`, `role` | From the input |
-| `score` | 0–1, the site's overall similarity to the target (higher = better) |
+| `score` | 0–1, the site's overall similarity to the target (higher = better): the two-way blend |
+| `site_to_moon_score`, `moon_to_site_score` | The two halves of the score (Step 5) |
 | `best_tile_similarity` | Similarity of the single best tile |
 | `best_tile_tile_id`, `best_tile_lat`, `best_tile_lon` | Where the best tile is (only if those columns were in the input) |
 | `target_coverage` | 0–1, share of the target's variety this site reproduces |
@@ -143,7 +153,8 @@ All input columns, plus `distance_to_target`, `similarity`, and one
 `distance_to_baseline:<name>` column per baseline. Useful for drawing maps.
 
 ### Also included
-`result.features_used`, `result.weights` (scaled to add up to 1), `result.k`.
+`result.features_used`, `result.weights` (scaled to add up to 1), `result.k`, and
+`result.capped` (which measurements were clipped to Earth's range, and by how much).
 
 ## Example
 
@@ -166,10 +177,10 @@ print(result.sites)
 
 ## Known issues and open decisions
 
-1. **The "gentlest corner" problem.** If the target area is mixed (mostly cratered,
-   with a few smooth spots), a smooth Earth site can score well by matching only the
-   smooth spots. `target_coverage` exposes this: such a site gets a high `score` but a
-   low coverage. **Open decision:** whether to blend coverage into the score.
+1. **The "gentlest corner" problem (addressed).** If the target area is mixed (mostly
+   cratered, with a few smooth spots), a smooth Earth site could score well by matching only
+   the smooth spots. The target → site half of the score (Step 5) penalises this, and
+   `target_coverage` is still reported so it stays visible.
 2. **Not every analog is a terrain analog.** Some NASA analog sites are analogs for
    their chemistry (e.g. Lake Salda), not their ground shape. A site should only be a
    baseline for missions that match what it was actually used for.

@@ -2,6 +2,7 @@
 
 **Find the place on Earth that tests one subsystem the way the Moon or Mars will.**
 NASA Space Apps 2026 · *Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars*
+· Live: https://analog-atlas-five.vercel.app
 
 Most analog finders ask "which place looks most like Mars overall?". Analog Atlas asks
 "where can *this* hardware meet the conditions that will break it, without something else
@@ -16,30 +17,67 @@ spoiling the test?" Every condition plays one role per test:
 Every one of 78,993 real Earth land cells is scored live in a Web Worker, ranked beside
 NASA's usual field site, and every result says what Earth cannot reproduce.
 
+## What the website shows
+
+- **Explore:** a map and a ranked list for the chosen test and target. Each place's rank is shown
+  as **"Top X%" of Earth, on what we measure** (rounded up, never overclaiming). The top 25 get a
+  **2 km check**: the terrain is re-measured at five 2 km spots (centre and 15 km N, S, E, W) and
+  compared with the same patch at the target, because a 55 km cell can average out a mountain range.
+  Each row then carries one verdict: **Local slope matches**, **Check first** (not yet confirmed),
+  **Local slope differs** or **Poor: fails a limit**; non-matching sites move down the list
+  ("Show original order" restores it).
+- **Site panel and report:** the same verdict, the rank, the features measured ("2 of 4 features
+  measured"), limits and interference, what Earth cannot reproduce, and, for sites the detailed model
+  analysed, its percentile and stability ("beats 99% of the sites it analysed, stable in 12/14 runs").
+- **Compare:** Earth and target side by side on matched 2 km patches, with a warning when the
+  local terrain is much steeper or flatter than the target.
+- **References:** four plain questions (does it find NASA's own test sites, is it stable, where do
+  the numbers come from, what can it not do), each answered with one table and the same verdict
+  scale: **Strong / Moderate / Weak**. Every limit lists its source and whether its number is
+  NASA-published or a team value. Full detail folds away under "Technical details".
+
 ---
 
 ## Run it
 
 ```bash
-npm install
+npm install --legacy-peer-deps   # some packages disagree on peer versions; this installs them anyway
 npm run dev        # http://localhost:5173
 npm run build      # static site in dist/
-npm test           # scoring, limits and coverage tests on the real index
+npm test           # scoring, limits, coverage, 2 km check, verdict and rank tests
 ```
 
 Node 18+. No API keys. Python is only needed to rebuild data or plug in a model.
 
 ### Deploy (Vercel)
 
-Import the repo; `vercel.json` sets the build, SPA rewrites and caching. Any static host works
-(serve `dist/` with a fallback to `index.html`).
+Live at https://analog-atlas-five.vercel.app, redeployed automatically on every push to `main`.
+To set it up again: import the repo on Vercel, set **Root Directory** to `analog-atlas` and the
+**Install Command** to `npm install --legacy-peer-deps`; `vercel.json` sets the build, SPA rewrites
+and caching, and `api/terrain.js` runs as a Node function (the 2 km checks and Compare need it).
+On Vercel's free plan, pushes from teammates only deploy when the GitHub repo is public.
+A plain static host also works (serve `dist/` with a fallback to `index.html`), but then only the
+bundled terrain patches are available.
 
 ---
 
-## Plugging in the model trained on the other laptop
+## Model scores (from the KNN-Model engine)
 
 The app ranks with transparent rules and, when present, a model. The model never
-overrides strict requirements: **ML ranks, rules gate.** Three routes, simplest first:
+overrides strict requirements: **ML ranks, rules gate.** The shipped bundle is the export of the
+team's detailed engine in [`../KNN-Model`](../KNN-Model): 6 test/target sets (Moon wheels, landing
+hazards and thermal; Mars wheels and landing hazards) with about 25-130 analysed sites each.
+To refresh it:
+
+```bash
+cd ../KNN-Model && python main.py export-atlas
+cd ../analog-atlas && python ml/export_scores.py ../KNN-Model/results/analog_atlas_export/scores.csv \
+  --card ../KNN-Model/results/analog_atlas_export/model_card.json \
+  --validation ../KNN-Model/results/analog_atlas_export/validation.json
+python ml/validate.py
+```
+
+Other ways to plug in a model, simplest first:
 
 **A. Static bundle (recommended; no server).**
 
@@ -65,12 +103,12 @@ see `ml/examples/`). Sparse models (a few dozen sites) are supported: unscored c
 the site (≥ 250 km from the others) that covers the most requirements still open. A cell covers a
 requirement when it is within 12 Earth-percentile points of the target AND passes every strict limit,
 so conditions needed together are present together. What no site covers is listed: it needs a lab,
-chamber or test bed. The engine runs the same check on its 5 km / 20 km squares (Trust page).
+chamber or test bed. The engine runs the same check on its 5 km / 20 km squares (References page).
 
 Safety rails: every bundle carries the index fingerprint and the site refuses a bundle built
-for another index build; `validate.py` checks ids, sizes and coverage; the Trust page shows the
-model card and leave-one-site-out validation. The shipped bundle is a **demo** model
-(`ml/train_demo.py`, numpy only) that learns per-test weights from NASA's precedent sites.
+for another index build; `validate.py` checks ids, sizes and coverage; the References page shows
+the model card and leave-one-site-out validation. `ml/train_demo.py` (numpy only) is a stand-in
+model for testing the plumbing; it is not the shipped bundle.
 
 Columns, units and order the model must use: `ml/feature_schema.json`. Training table:
 `public/data/earth_index.csv.gz` (one row per cell, missing = empty).
@@ -100,7 +138,7 @@ Rebuild: `npm run data` (= `pipeline/build_index.py` + `ml/train_demo.py`).
 
 **Target profiles** (`src/config/targets.json`) for 7 lunar and 5 Martian sites. Each value is
 `measured` (computed by our pipeline from NASA data), `verify` (a published mission value) or
-`estimate` (placeholder); unknown values score as Unknown. The Trust page lists every value's status.
+`estimate` (placeholder); unknown values score as Unknown. The References page lists every value's status.
 
 - **Slope and roughness, all 12 targets: measured** at the Earth index's own scale (55.6 km cell,
   9.27 km roughness pixels) from LOLA (`LDEM_80S_80M` near the south pole, `LDEM_16` elsewhere) and
@@ -139,15 +177,15 @@ and `npm run thresholds`.
 
 Each test's hard limits (fail) and soft limits (score × 0.75 and a warning) live in
 `src/config/missions.json`. Every limit carries `src` (source ids) and `basis` (why this
-number), and the `sources` block holds the full citations. The Trust page renders the same
-table ("Where the limits come from"), so the docs and the scorer cannot disagree.
+number), and the `sources` block holds the full citations. The References page renders the same
+table ("Limits and their sources"), so the docs and the scorer cannot disagree.
 
 | Limit | Used as | Basis | Source |
 |---|---|---|---|
 | Vegetation (NDVI) ≤ 0.30 | wheels, boots, comms, lights, regolith, ice digging, solar, fission | Top of NASA's shrub/grassland range (0.2–0.3). Solar and fission were 0.35, now 0.30 | [1] |
 | Vegetation (NDVI) ≤ 0.25 | navigation, dust, suit dust, intake, water, spectrometers, landing | Inside the 0.2–0.3 range. Not 0.2: the layer is the annual maximum over a 55 km cell, and 0.2 would fail NASA's own Mojave site (0.22 on its cell; 0.28 at the field site, listed as an exception) | [1] |
 | Rain/snow ≤ 250 mm/yr | thermal, dust, suit dust, intake, regolith, habitat thermal (strict); wheels, boots, drills, fission (soft) | NASA's desert figure (about 250 mm). **Conflict:** the same NASA page also says most deserts get less than 300 mm; 250 is the stricter of the two. Wheels, boots, drills and fission were 300 mm, now 250 | [2], [5] |
-| Rain/snow ≤ 400 / 500 mm/yr | ice digging, foundations / solar, spectrometers (soft) | No NASA number exists. Checked against NASA sites: McMurdo and Haughton pass; HI-SEAS, Svalbard, Mauna Kea and Holuhraun break it on their 55 km cells (exceptions listed on the Trust page) | [5], [9] |
+| Rain/snow ≤ 400 / 500 mm/yr | ice digging, foundations / solar, spectrometers (soft) | No NASA number exists. Checked against NASA sites: McMurdo and Haughton pass; HI-SEAS, Svalbard, Mauna Kea and Holuhraun break it on their 55 km cells (exceptions listed on the References page) | [5], [9] |
 | Snow ≤ 9 months | wheels, boots, regolith, landing (strict) | MODIS land cover counts snow on ≥ 60% of the area for 10+ months as *permanent* snow and ice. NASA campaigns last one to two weeks (JETT5, D-RATS 2022), so a short snow-free window is enough | [3], [4], [6] |
 | Snow ≤ 6 months | navigation, thermal, habitat thermal, foundations (soft) | No NASA number exists. Checked against NASA sites: the snowiest NASA field sites (Holuhraun, Svalbard) read 6 months at the field site, so 6 matches them. Exception: McMurdo (thermal tests) | [4], [9] |
 | Airborne dust ≤ 60 µg/m³ | navigation (soft) | No NASA number exists. Checked against NASA sites: every NASA field site reads 51 µg/m³ or less in MERRA-2, so 60 rejects none | [7], [9] |
@@ -168,14 +206,14 @@ reasoning follows VIPER's 15° normal / 25–30° maximum slopes [8].
 ### Checked against the places NASA actually tested
 
 `python ml/validate_limits.py` (needs `pillow`) checks every limit against each test's NASA
-precedent sites and writes `src/config/limit_checks.json`, which the Trust page shows.
+precedent sites and writes `src/config/limit_checks.json`, which the References page shows.
 Vegetation and snow are re-measured at the field coordinates from NASA GIBS (MOD13A3, MOD10CM; a
 snow month = mean cover ≥ 60%, the IGBP permanent-snow line);
 rain uses the 55 km cell, because no finer NASA rain product is available without a login.
 
 Result (Nov 2026): 14 of 38 limit checks agree with every NASA site. The limits are kept
-strict on purpose, and all 32 disagreements are listed as tagged exceptions (Trust page,
-"Where the limits come from", and the site panel of each NASA site):
+strict on purpose, and all 32 disagreements are listed as tagged exceptions (References page,
+"Limits and their sources", and the site panel of each NASA site):
 
 | Tag | Meaning | Count |
 |---|---|---|
@@ -198,17 +236,25 @@ under 300 mm); NASA's NDVI ranges are "representative" values, while this layer 
 maximum; the engine's tree limit uses ESA WorldCover's tree class, not the IGBP canopy-cover
 definition it is compared with.
 
-## What the honest numbers say (see the Trust page)
+## What the honest numbers say (see the References page)
 
-* Rules place NASA precedent sites at a median **74th percentile** of Earth (43 site–test pairs),
-  without being trained on them.
-* Some precedent sites fail at cell scale: a 55 km cell around McMurdo's Dry Valleys is mostly
-  ice sheet; Mauna Kea's includes the wet windward island. Measured patches fix this.
-* Some targets are beyond Earth: no surface reaches the lunar pole's day–night swing or its
+* **Website rules vs NASA's own sites:** for each of the 20 tests, NASA's precedent sites are scored
+  without the rules ever seeing them. Verdicts (how often random places would do as well): 0 Strong,
+  3 Moderate (rover wheels, ice excavation, landing hazards), 17 Weak. Most tests have only 1-4
+  NASA sites, too few to prove more.
+* **Detailed model vs NASA's own sites:** lunar landing hazards is **Strong** (NASA's sites beat 97%
+  of 127 analysed sites; random picks do this 3 times in 10,000); thermal is Moderate (88% of 25);
+  rover wheels and Mars are Weak. NASA also chooses sites for road access and logistics, which
+  neither ranking measures, and nothing was tuned to make NASA's sites win.
+* **Stability:** in the detailed model the #1 site stays #1 in 10-14 of 12-14 small changes for
+  every set.
+* **Scale matters:** the rules' raw #1 for rover wheels at the lunar south pole, near Khorugh
+  (Afghanistan), is 3.5x steeper than the target at 2 km (31.5° vs 9.0° mean slope); the 2 km check
+  flags it and moves it down. Some precedent sites fail at cell scale for the same reason: a 55 km
+  cell around McMurdo's Dry Valleys is mostly ice sheet; Mauna Kea's includes the wet windward island.
+* **Some targets are beyond Earth:** no surface reaches the lunar pole's day–night swing or its
   permanent low sun (Earth max ≈ 39% of daylight hours under 10°). The ranking finds Earth's
   extreme and the report prescribes the chamber test.
-* Discovery works: for thermal cycling the Mongolian plateau beats the Atacama; for Mars air
-  intakes the Qaidam/Tibet plateau ranks first.
 
 ---
 
@@ -219,8 +265,11 @@ src/config/        features, targets, analogs, missions, limits: one catalogue f
 src/lib/scoring.js pure scoring engine (roles, Earth-percentile matching, strict/soft limits, evidence)
 src/lib/worker.js  owns the index; scores, ranks, paints rasters, stability, validation, CSV sites
 src/lib/store.js   all view state, mirrored in the URL (share = exact restore)
+src/lib/localCheck.js  2 km check (5 spots per cell, top 25) and the one-verdict-per-site rule
+src/lib/verdict.js     References verdict scale (Strong / Moderate / Weak); rank.js: "Top X%"
 src/components/    EarthMap (MapLibre globe), PlanetGlobe (three.js, polar cap), HomeScene, Relief3D…
-src/pages/         Home, Explore, Compare, Report (printable), Trust
+src/pages/         Home, Explore, Compare, Report (printable), References (Trust.jsx; /trust still works)
+api/terrain.js     Node function for measured 2 km terrain patches (Vercel; Vite dev/preview reuse it)
 pipeline/          build_index.py, make_patches.py, source grids
 ml/                adapter.py (edit me), run_model.py, export_scores.py, validate.py, serve.py, train_demo.py
 ```
